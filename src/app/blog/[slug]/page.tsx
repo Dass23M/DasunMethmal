@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import FooterMarquee from '@/components/sections/FooterMarquee';
@@ -81,7 +82,13 @@ export default function BlogSinglePage({ params }: Props) {
                 into your mouth.
               </p>
               <p style={{ marginBottom: '20px' }}>
-                <img src="/images/work_1_a_full.jpg" alt="Blog image" style={{ width: '100%', height: 'auto' }} />
+                <Image
+                  src="/images/work_1_a_full.jpg"
+                  alt="Blog image"
+                  width={700}
+                  height={467}
+                  style={{ width: '100%', height: 'auto' }}
+                />
               </p>
               <p style={{ marginBottom: '20px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.8' }}>
                 Even the all-powerful Pointing has no control about the blind texts it is an almost
@@ -93,7 +100,13 @@ export default function BlogSinglePage({ params }: Props) {
                 wild Question Marks and devious Semikoli, but the Little Blind Text didn&apos;t listen.
               </p>
               <p style={{ marginBottom: '30px' }}>
-                <img src="/images/work_1_full.jpg" alt="Blog image 2" style={{ width: '100%', height: 'auto' }} />
+                <Image
+                  src="/images/work_1_full.jpg"
+                  alt="Blog image 2"
+                  width={700}
+                  height={467}
+                  style={{ width: '100%', height: 'auto' }}
+                />
               </p>
               <p style={{ marginBottom: '30px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.8' }}>
                 When she reached the first hills of the Italic Mountains, she had a last view back
@@ -148,9 +161,11 @@ export default function BlogSinglePage({ params }: Props) {
                   <li style={{ listStyle: 'none', width: '100%', marginBottom: '30px' }}>
                     <div style={{ display: 'flex', gap: '20px' }}>
                       <div className="comment-vcard">
-                        <img
+                        <Image
                           src="/images/person_woman_1.jpg"
                           alt="Christine Stewart"
+                          width={50}
+                          height={50}
                           style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
                         />
                       </div>
@@ -249,9 +264,11 @@ function CommentItem({
   return (
     <li style={{ listStyle: 'none', display: 'flex', gap: '20px', marginBottom: '30px', width: '100%' }}>
       <div className="comment-vcard">
-        <img
+        <Image
           src={image}
           alt={name}
+          width={50}
+          height={50}
           style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
         />
       </div>

@@ -36,26 +36,61 @@ export default function HomePage() {
         <Hero />
 
         <div className="below-hero-reveal">
-          {/* High Impact OUR BEST WORKS Banner in the middle */}
-          <BestWorksBanner />
+          <div className="scroll-reveal-section">
+            <BestWorksBanner />
+          </div>
 
-          {/* 3D Rotating stacked text cubes */}
-          <ThreeDRotator />
+          <div className="scroll-reveal-section">
+            <ThreeDRotator />
+          </div>
 
-          <Portfolio />
-          <GSAPFlipSection />
-          <LogoSlider />
-          <About />
-          <RandomTextReveal />
-          <ScrollRevealGrid />
-          <Skills />
-          <MaskedInteractiveText />
-          <Testimonials />
-          <Journal />
-          <Contact />
+          <div className="scroll-reveal-section">
+            <Portfolio />
+          </div>
 
-          {/* Dual-band animated marquee above footer */}
-          <FooterMarquee />
+          <div className="scroll-reveal-section">
+            <GSAPFlipSection />
+          </div>
+
+          <div className="scroll-reveal-section">
+            <LogoSlider />
+          </div>
+
+          <div className="scroll-reveal-section">
+            <About />
+          </div>
+
+          <div className="scroll-reveal-section">
+            <RandomTextReveal />
+          </div>
+
+          <div className="scroll-reveal-section">
+            <ScrollRevealGrid />
+          </div>
+
+          <div className="scroll-reveal-section">
+            <Skills />
+          </div>
+
+          <div className="scroll-reveal-section">
+            <MaskedInteractiveText />
+          </div>
+
+          <div className="scroll-reveal-section">
+            <Testimonials />
+          </div>
+
+          <div className="scroll-reveal-section">
+            <Journal />
+          </div>
+
+          <div className="scroll-reveal-section">
+            <Contact />
+          </div>
+
+          <div className="scroll-reveal-section">
+            <FooterMarquee />
+          </div>
         </div>
       </div>
 

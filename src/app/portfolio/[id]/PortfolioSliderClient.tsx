@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface Props {
   images: string[];
@@ -20,9 +21,12 @@ export default function PortfolioSliderClient({ images }: Props) {
     <div className="single-slider-wrap" style={{ position: 'relative', marginBottom: '50px' }}>
       {/* Image */}
       <div style={{ position: 'relative', lineHeight: 0, overflow: 'hidden' }}>
-        <img
+        <Image
           src={images[current]}
           alt={`Slide ${current + 1}`}
+          width={1200}
+          height={800}
+          priority={current === 0}
           style={{ width: '100%', height: 'auto', display: 'block' }}
         />
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lightbox from 'yet-another-react-lightbox';
@@ -324,9 +325,11 @@ function PortfolioImage({ item }: { item: PortfolioItem }) {
       className={item.isPortrait ? 'pf-portrait' : undefined}
       style={{ position: 'relative', overflow: 'hidden', lineHeight: 0 }}
     >
-      <img
+      <Image
         src={item.image}
         alt={item.title}
+        width={800}
+        height={item.isPortrait ? 1000 : 600}
         style={{
           width: '100%',
           height: item.isPortrait ? '100%' : 'auto',

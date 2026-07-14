@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SectionHeading from '@/components/ui/SectionHeading';
@@ -83,10 +84,12 @@ export default function About() {
                     transform: 'translateX(-102%)',
                   }}
                 />
-                <img
+                <Image
                   ref={imgRef}
                   src="/images/about_me_pic2.jpg"
                   alt="About Glenn Chapman Hoyer"
+                  width={800}
+                  height={600}
                   style={{
                     width: '100%',
                     height: 'auto',

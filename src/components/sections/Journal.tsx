@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SectionHeading from '@/components/ui/SectionHeading';
@@ -80,7 +81,14 @@ function BlogCard({
               </p>
             </div>
           </div>
-          <img src={post.image} alt={post.title} loading="lazy" />
+          <Image
+            src={post.image}
+            alt={post.title}
+            width={600}
+            height={400}
+            loading="lazy"
+            style={{ width: '100%', height: 'auto' }}
+          />
         </div>
       </Link>
     </div>

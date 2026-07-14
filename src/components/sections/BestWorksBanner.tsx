@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -158,10 +159,12 @@ export default function BestWorksBanner() {
                 onMouseLeave={() => setHovered(false)}
                 aria-label="View Best Works"
               >
-                <img
+                <Image
                   src="/images/work_1_full.jpg"
                   alt="Featured work preview"
-                  className={`w-full h-full object-cover transition-transform duration-[600ms] ease-out ${
+                  fill
+                  sizes="(max-width: 767px) 100px, 260px"
+                  className={`object-cover transition-transform duration-[600ms] ease-out ${
                     hovered ? 'scale-110' : 'scale-100'
                   }`}
                 />

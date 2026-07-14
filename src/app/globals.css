@@ -1550,12 +1550,20 @@ textarea.form-control {
   position: relative;
   z-index: 10;
   background: #000;
-  will-change: clip-path;
 }
 
-@media (max-width: 991.98px) {
-  .below-hero-reveal {
-    clip-path: none !important;
+/* Hidden until GSAP ScrollTrigger scrub reveal runs */
+.scroll-reveal-section {
+  will-change: transform, opacity;
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal-section {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
     will-change: auto;
   }
 }

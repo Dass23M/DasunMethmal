@@ -56,7 +56,7 @@ export default function SmoothScrollProvider({
       const href = anchorLink.getAttribute('href');
       if (href && href.startsWith('#')) {
         e.preventDefault();
-        const element = document.querySelector(href);
+        const element = document.querySelector(href) as HTMLElement | null;
         if (element) {
           lenis.scrollTo(element, {
             offset: 0,
@@ -69,7 +69,7 @@ export default function SmoothScrollProvider({
         const hash = '#' + parts[1];
         if (window.location.pathname === parts[0] || parts[0] === '' || parts[0] === '/') {
           e.preventDefault();
-          const element = document.querySelector(hash);
+          const element = document.querySelector(hash) as HTMLElement | null;
           if (element) {
             lenis.scrollTo(element, {
               offset: 0,

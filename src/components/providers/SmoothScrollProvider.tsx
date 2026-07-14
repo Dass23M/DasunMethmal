@@ -36,13 +36,31 @@ export default function SmoothScrollProvider({
       touchMultiplier: isTouchMobile ? 1.15 : 1.5,
       syncTouch: isTouchMobile,
       syncTouchLerp: 0.08,
-      touchInertiaMultiplier: isTouchMobile ? 1.2 : 1,
     });
 
     // Share lenis globally for layouts to interact with (e.g. scrollTo)
     (window as any).lenis = lenis;
 
-    // Connect Lenis to ScrollTrigger
+    // Connect Lenis to ScrollTrigger (scrollerProxy keeps pin/scrub accurate on touch)
+    ScrollTrigger.scrollerProxy(document.documentElement, {
+      scrollTop(value) {
+        if (typeof value === 'number') {
+          lenis.scrollTo(value, { immediate: true });
+        }
+        return lenis.scroll;
+      },
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+      },
+    });
+
+    const onRefresh = () => lenis.resize();
+    ScrollTrigger.addEventListener('refresh', onRefresh);
     lenis.on('scroll', ScrollTrigger.update);
 
     // Run Lenis tick within GSAP ticker
@@ -88,6 +106,8 @@ export default function SmoothScrollProvider({
     document.addEventListener('click', handleAnchorClick);
 
     return () => {
+      ScrollTrigger.removeEventListener('refresh', onRefresh);
+      ScrollTrigger.scrollerProxy(document.documentElement, {});
       lenis.destroy();
       gsap.ticker.remove(gsapTick);
       document.removeEventListener('click', handleAnchorClick);

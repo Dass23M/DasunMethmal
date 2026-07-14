@@ -48,9 +48,8 @@ export default function HomePage() {
             <Portfolio />
           </div>
 
-          <div className="scroll-reveal-section">
-            <GSAPFlipSection />
-          </div>
+          {/* Pin + Flip — no scroll-reveal wrapper (transform breaks ScrollTrigger pin) */}
+          <GSAPFlipSection />
 
           <div className="scroll-reveal-section">
             <LogoSlider />

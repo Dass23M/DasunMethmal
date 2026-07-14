@@ -27,13 +27,16 @@ export default function SmoothScrollProvider({
     const isTouchMobile = window.matchMedia('(max-width: 991px)').matches;
 
     const lenis = new Lenis({
-      duration: isTouchMobile ? 0.9 : 1.2,
+      duration: isTouchMobile ? 0.85 : 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: isTouchMobile ? 1.1 : 1.5,
+      touchMultiplier: isTouchMobile ? 1.15 : 1.5,
+      syncTouch: isTouchMobile,
+      syncTouchLerp: 0.08,
+      touchInertiaMultiplier: isTouchMobile ? 1.2 : 1,
     });
 
     // Share lenis globally for layouts to interact with (e.g. scrollTo)

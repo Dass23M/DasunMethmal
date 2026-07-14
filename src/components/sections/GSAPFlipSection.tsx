@@ -82,7 +82,7 @@ export default function GSAPFlipSection() {
       curLayoutIdx = nextIdx;
       container.classList.add(LAYOUTS[curLayoutIdx]);
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line
       Flip.from(state as any, {
         absolute: true,
         stagger: 0.07,

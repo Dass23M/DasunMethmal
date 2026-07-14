@@ -9,8 +9,8 @@ gsap.registerPlugin(ScrollTrigger, Flip);
 
 /**
  * GSAPFlipSection — WDSC Services
- * Desktop (≥992px): scroll-pinned Flip across 4 layouts.
- * Mobile (<992px): static 2×2 grid, no pin — readable and touch-friendly.
+ * Desktop & mobile: scroll-pinned Flip across 4 layouts (ScrollTrigger + scrub).
+ * Mobile uses the same pin/scrub flow with responsive layout sizing.
  *
  * Color palette: white · black · orange (#FF6B00)
  */
@@ -109,8 +109,7 @@ export default function GSAPFlipSection() {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      mm.add('(min-width: 992px)', () => {
-        container.classList.remove('mobile-static');
+      const setupPinnedFlip = (endDistance: string) => {
         if (!LAYOUTS.some((l) => container.classList.contains(l))) {
           container.classList.add('final');
         }
@@ -118,9 +117,12 @@ export default function GSAPFlipSection() {
         ScrollTrigger.create({
           trigger: section,
           start: 'top top',
-          end: '+=2400',
+          end: endDistance,
           pin: true,
           pinSpacing: true,
+          scrub: 1.2,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
           onUpdate: (self) => {
             const p = self.progress;
             let targetIdx = 0;
@@ -131,44 +133,24 @@ export default function GSAPFlipSection() {
             applyLayout(targetIdx);
           },
         });
-      });
+      };
 
-      mm.add('(max-width: 991px)', () => {
-        LAYOUTS.forEach((l) => container.classList.remove(l));
-        container.classList.add('mobile-static');
-        curLayoutIdx = 0;
-
-        gsap.fromTo(
-          container.querySelectorAll('.flip-card'),
-          { y: 36, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.65,
-            stagger: 0.1,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
-      });
+      mm.add('(min-width: 992px)', () => setupPinnedFlip('+=2400'));
+      mm.add('(max-width: 991px)', () => setupPinnedFlip('+=1600'));
     }, sectionRef);
 
     return () => ctx.revert();
   }, [mounted]);
 
   if (!mounted) {
-    return <section id="services-section" className="w-full h-[100svh] lg:h-screen bg-black" />;
+    return <section id="services-section" className="w-full h-[100svh] bg-black" />;
   }
 
   return (
     <section
       id="services-section"
       ref={sectionRef}
-      className="flip-section w-full min-h-0 lg:h-screen bg-black overflow-hidden relative z-10 select-none"
+      className="flip-section w-full h-[100svh] lg:h-screen bg-black overflow-hidden relative z-10 select-none"
     >
       <style>{`
         /* ── Base container ──────────────────────────────────── */
@@ -182,15 +164,116 @@ export default function GSAPFlipSection() {
         }
 
         .flip-section {
-          height: auto;
-          min-height: auto;
-          padding: 3rem 0;
+          height: 100svh;
+          min-height: 100svh;
+          padding: 0;
         }
         @media (min-width: 992px) {
           .flip-section {
             height: 100vh;
             min-height: 100vh;
-            padding: 0;
+          }
+        }
+
+        /* ── Mobile responsive layout tuning (same 4 Flip states) ── */
+        @media (max-width: 991px) {
+          .flip-container.final,
+          .flip-container.plain,
+          .flip-container.columns,
+          .flip-container.grid {
+            flex-wrap: wrap;
+            align-content: center;
+            align-items: stretch;
+            padding: 12px;
+            gap: 8px;
+          }
+
+          .flip-container.final .flip-card {
+            flex: 1 1 calc(50% - 8px);
+            flex-direction: column;
+            min-height: 148px;
+            margin: 0;
+            border-radius: 14px;
+            padding: 1rem 0.75rem;
+            gap: 0.5rem;
+          }
+          .flip-container.final .flip-letter {
+            font-size: clamp(2.5rem, 12vw, 3.75rem);
+          }
+          .flip-container.final .flip-service-label {
+            align-items: center;
+          }
+          .flip-container.final .flip-service-label .svc-name {
+            font-size: clamp(0.72rem, 3.2vw, 0.92rem);
+          }
+          .flip-container.final .flip-service-label .svc-sub {
+            font-size: clamp(0.55rem, 2.4vw, 0.68rem);
+          }
+
+          .flip-container.plain {
+            gap: 10px;
+          }
+          .flip-container.plain .flip-card {
+            flex: 1 1 calc(50% - 8px);
+            min-height: 120px;
+            padding: 0.75rem;
+          }
+          .flip-container.plain .flip-letter {
+            font-size: clamp(2.75rem, 16vw, 4.5rem);
+            -webkit-text-stroke: 1.5px #FF6B00;
+          }
+
+          .flip-container.columns .flip-card {
+            flex: 1 1 calc(50% - 8px);
+            height: auto;
+            min-height: 148px;
+            padding: 1rem 0.75rem;
+            gap: 0.5rem;
+          }
+          .flip-container.columns .flip-letter {
+            font-size: clamp(2.5rem, 12vw, 3.75rem);
+          }
+          .flip-container.columns .flip-service-label .svc-name {
+            font-size: clamp(0.72rem, 3.2vw, 0.92rem);
+          }
+          .flip-container.columns .flip-service-label .svc-sub {
+            font-size: clamp(0.55rem, 2.4vw, 0.68rem);
+          }
+
+          .flip-container.grid .flip-card {
+            flex: 1 1 calc(50% - 8px);
+            height: auto;
+            min-height: 148px;
+            padding: 1rem 0.75rem;
+            gap: 0.5rem;
+          }
+          .flip-container.grid .flip-letter {
+            font-size: clamp(2.5rem, 12vw, 3.75rem);
+          }
+          .flip-container.grid .flip-service-label .svc-name {
+            font-size: clamp(0.72rem, 3.2vw, 0.92rem);
+          }
+          .flip-container.grid .flip-service-label .svc-sub {
+            font-size: clamp(0.55rem, 2.4vw, 0.68rem);
+          }
+        }
+
+        @media (max-width: 420px) {
+          .flip-container.final .flip-card,
+          .flip-container.columns .flip-card,
+          .flip-container.grid .flip-card {
+            flex: 1 1 100%;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 1rem;
+            min-height: 96px;
+            padding: 1rem 1.1rem;
+          }
+          .flip-container.final .flip-service-label,
+          .flip-container.columns .flip-service-label,
+          .flip-container.grid .flip-service-label {
+            align-items: flex-start;
           }
         }
 
@@ -338,58 +421,6 @@ export default function GSAPFlipSection() {
         }
         .flip-container.grid .flip-service-label .svc-sub {
           font-size: clamp(0.5rem, 0.85vmax, 1rem);
-        }
-
-        /* ── MOBILE static 2×2 (no Flip / no pin) ────────────── */
-        .flip-container.mobile-static {
-          flex-wrap: wrap;
-          align-content: stretch;
-          align-items: stretch;
-          min-height: auto;
-          height: auto;
-          padding: 0 12px;
-          gap: 10px;
-        }
-        .flip-container.mobile-static .flip-card {
-          flex: 1 1 calc(50% - 10px);
-          min-height: 160px;
-          height: auto;
-          border-radius: 14px;
-          flex-direction: column;
-          gap: 0.6rem;
-          padding: 1.25rem 0.75rem;
-          margin: 0;
-        }
-        .flip-container.mobile-static .flip-letter {
-          font-size: clamp(2.5rem, 12vw, 4rem);
-        }
-        .flip-container.mobile-static .flip-service-label {
-          display: flex;
-          align-items: center;
-        }
-        .flip-container.mobile-static .flip-service-label .svc-name {
-          font-size: clamp(0.72rem, 3.2vw, 0.95rem);
-        }
-        .flip-container.mobile-static .flip-service-label .svc-sub {
-          font-size: clamp(0.55rem, 2.4vw, 0.7rem);
-          letter-spacing: 0.06em;
-        }
-        @media (max-width: 420px) {
-          .flip-container.mobile-static {
-            flex-direction: column;
-            gap: 8px;
-          }
-          .flip-container.mobile-static .flip-card {
-            flex: 1 1 100%;
-            flex-direction: row;
-            justify-content: flex-start;
-            gap: 1rem;
-            min-height: 96px;
-            padding: 1rem 1.1rem;
-          }
-          .flip-container.mobile-static .flip-service-label {
-            align-items: flex-start;
-          }
         }
       `}</style>
 

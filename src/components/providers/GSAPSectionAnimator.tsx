@@ -24,70 +24,83 @@ export default function GSAPSectionAnimator({
     if (prefersReduced) return;
 
     const ctx = gsap.context(() => {
-      // 1. Full-Screen Parallax cover backgrounds (.cover-v1)
-      const covers = document.querySelectorAll('.cover-v1');
-      covers.forEach((cover) => {
-        gsap.fromTo(
-          cover,
-          { backgroundPositionY: '30%' },
-          {
-            backgroundPositionY: '70%',
-            ease: 'none',
-            scrollTrigger: {
-              trigger: cover,
-              start: 'top top',
-              end: 'bottom top',
-              scrub: 1.2,
-              invalidateOnRefresh: true,
-            },
-          }
-        );
-      });
+      const mm = gsap.matchMedia();
 
-      // 2. Hero parallax scrolling effects (title & subtitle fading out and shifting)
-      if (document.querySelector('#home-section')) {
-        gsap.to('.hero-title-meth, .hero-subtitle-meth', {
-          yPercent: -20,
-          opacity: 0.15,
-          ease: 'power1.out',
-          scrollTrigger: {
+      // Desktop-only: parallax covers, hero scrub, and pin + clip-path reveal
+      mm.add('(min-width: 992px)', () => {
+        // 1. Full-Screen Parallax cover backgrounds (.cover-v1)
+        const covers = document.querySelectorAll('.cover-v1');
+        covers.forEach((cover) => {
+          gsap.fromTo(
+            cover,
+            { backgroundPositionY: '30%' },
+            {
+              backgroundPositionY: '70%',
+              ease: 'none',
+              scrollTrigger: {
+                trigger: cover,
+                start: 'top top',
+                end: 'bottom top',
+                scrub: 1.2,
+                invalidateOnRefresh: true,
+              },
+            }
+          );
+        });
+
+        // 2. Hero parallax scrolling effects (title & subtitle fading out and shifting)
+        if (document.querySelector('#home-section')) {
+          gsap.to('.hero-title-meth, .hero-subtitle-meth', {
+            yPercent: -20,
+            opacity: 0.15,
+            ease: 'power1.out',
+            scrollTrigger: {
+              trigger: '#home-section',
+              start: 'top top',
+              end: 'bottom 20%',
+              scrub: 1.2,
+            },
+          });
+        }
+
+        // 2b. Hero section mask reveal for below sections
+        if (document.querySelector('#home-section') && document.querySelector('.below-hero-reveal')) {
+          ScrollTrigger.create({
             trigger: '#home-section',
             start: 'top top',
-            end: 'bottom 20%',
-            scrub: 1.2,
-          },
-        });
-      }
+            end: 'bottom top',
+            pin: true,
+            pinSpacing: false,
+            anticipatePin: 1,
+          });
 
-      // 2b. Hero section mask reveal for below sections
-      if (document.querySelector('#home-section') && document.querySelector('.below-hero-reveal')) {
-        ScrollTrigger.create({
-          trigger: '#home-section',
-          start: 'top top',
-          end: 'bottom top',
-          pin: true,
-          pinSpacing: false,
-          anticipatePin: 1,
-        });
-
-        gsap.fromTo(
-          '.below-hero-reveal',
-          {
-            clipPath: 'circle(0% at 50% 0%)',
-          },
-          {
-            clipPath: 'circle(150% at 50% 0%)',
-            ease: 'none',
-            scrollTrigger: {
-              trigger: '.below-hero-reveal',
-              start: 'top bottom',
-              end: 'top top',
-              scrub: 1.2,
-              invalidateOnRefresh: true,
+          gsap.fromTo(
+            '.below-hero-reveal',
+            {
+              clipPath: 'circle(0% at 50% 0%)',
             },
-          }
-        );
-      }
+            {
+              clipPath: 'circle(150% at 50% 0%)',
+              ease: 'none',
+              scrollTrigger: {
+                trigger: '.below-hero-reveal',
+                start: 'top bottom',
+                end: 'top top',
+                scrub: 1.2,
+                invalidateOnRefresh: true,
+              },
+            }
+          );
+        }
+      });
+
+      // Mobile: ensure below-hero content is fully visible (no pin / no clip mask)
+      mm.add('(max-width: 991px)', () => {
+        const below = document.querySelector('.below-hero-reveal') as HTMLElement | null;
+        if (below) {
+          gsap.set(below, { clearProps: 'clipPath' });
+        }
+      });
 
       // 3. Section headings reveal (.heading-h2 and visual divider images)
       const headings = document.querySelectorAll('.heading-h2');

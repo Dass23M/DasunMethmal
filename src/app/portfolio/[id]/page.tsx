@@ -37,28 +37,14 @@ export default function PortfolioSinglePage({ params }: Props) {
 
         {/* Hero */}
         <div
-          className="cover-v1 gradient-bottom-black"
+          className="cover-v1 gradient-bottom-black page-cover-fixed"
           style={{
             backgroundImage: `url('${project.images[0]}')`,
-            backgroundAttachment: 'fixed',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         >
-          <div
-            style={{
-              maxWidth: '1140px',
-              margin: '0 auto',
-              padding: '0 15px',
-              height: '100vh',
-              minHeight: '650px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-              zIndex: 2,
-            }}
-          >
+          <div className="page-cover-inner">
             <div style={{ textAlign: 'center', maxWidth: '800px' }}>
               <h1 className="heading">{project.title}</h1>
               <h2 className="subheading">{project.subtitle}</h2>

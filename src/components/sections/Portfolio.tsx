@@ -244,6 +244,27 @@ export default function Portfolio() {
           transform-origin: center center;
         }
         .portfolio-item:hover img { transform: scale(1.06) !important; }
+
+        /* Touch / mobile: always show titles (no hover) */
+        @media (hover: none), (max-width: 991px) {
+          .portfolio-item .portfolio-overlay {
+            opacity: 1;
+            background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.2) 55%, transparent 100%);
+          }
+          .portfolio-item:hover img { transform: none !important; }
+        }
+
+        .pf-portrait {
+          height: min(500px, 72vw);
+        }
+        .pf-portrait img {
+          height: 100% !important;
+          width: 100%;
+          object-fit: cover;
+        }
+        @media (min-width: 992px) {
+          .pf-portrait { height: 500px; }
+        }
       `}</style>
 
       <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 15px' }}>
@@ -299,13 +320,16 @@ export default function Portfolio() {
 
 function PortfolioImage({ item }: { item: PortfolioItem }) {
   return (
-    <div style={{ position: 'relative', overflow: 'hidden', lineHeight: 0, height: item.isPortrait ? '500px' : 'auto' }}>
+    <div
+      className={item.isPortrait ? 'pf-portrait' : undefined}
+      style={{ position: 'relative', overflow: 'hidden', lineHeight: 0 }}
+    >
       <img
         src={item.image}
         alt={item.title}
         style={{
           width: '100%',
-          height: item.isPortrait ? '500px' : 'auto',
+          height: item.isPortrait ? '100%' : 'auto',
           objectFit: item.isPortrait ? 'cover' : 'unset',
           display: 'block',
         }}

@@ -23,15 +23,17 @@ export default function SmoothScrollProvider({
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
 
-    // Initialize Lenis
+    // Lighter touch inertia on phones so pins / native scroll fight less
+    const isTouchMobile = window.matchMedia('(max-width: 991px)').matches;
+
     const lenis = new Lenis({
-      duration: 1.2, // standard luxurious momentum scrolling
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expoOut
+      duration: isTouchMobile ? 0.9 : 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
+      touchMultiplier: isTouchMobile ? 1.1 : 1.5,
     });
 
     // Share lenis globally for layouts to interact with (e.g. scrollTo)

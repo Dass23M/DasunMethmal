@@ -44,31 +44,17 @@ export default function BlogSinglePage({ params }: Props) {
 
         {/* Hero */}
         <div
-          className="cover-v1 overlay"
+          className="cover-v1 overlay page-cover-fixed"
           style={{
             backgroundImage: `url('${post.heroImage}')`,
-            backgroundAttachment: 'fixed',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         >
-          <div
-            style={{
-              maxWidth: '1140px',
-              margin: '0 auto',
-              padding: '0 15px',
-              height: '100vh',
-              minHeight: '650px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-              zIndex: 2,
-            }}
-          >
-            <div style={{ textAlign: 'center', maxWidth: '720px' }}>
+          <div className="page-cover-inner">
+            <div style={{ textAlign: 'center', maxWidth: '720px', padding: '0 8px' }}>
               <h1 className="blog-heading">{post.title}</h1>
-              <p style={{ fontSize: '18px', color: '#fff', marginTop: '12px' }}>
+              <p style={{ fontSize: '16px', color: '#fff', marginTop: '12px' }}>
                 By {post.author} on {post.date} &bull; {post.readTime}
               </p>
             </div>

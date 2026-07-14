@@ -28,7 +28,16 @@ export default function MobileMenu() {
     closeMenu();
     setTimeout(() => {
       const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      if (!el) return;
+      if ((window as any).lenis) {
+        (window as any).lenis.scrollTo(el, {
+          offset: 0,
+          duration: 1.4,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        });
+      } else {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
     }, 300);
   };
 

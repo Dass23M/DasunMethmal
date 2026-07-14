@@ -62,15 +62,15 @@ export default function Hero({
     <section
       id="home-section"
       ref={containerRef}
-      className="cover-v1 bg-cover bg-center bg-no-repeat w-full bg-fixed"
+      className="cover-v1 bg-cover bg-center bg-no-repeat w-full lg:bg-fixed"
       style={{
         backgroundImage: "url('/images/cover_bg_2.png')",
       }}
     >
-      <div className="relative z-[9] max-w-[1140px] mx-auto px-[15px] h-screen min-h-[650px] flex items-center justify-center">
-        <div className="text-center max-w-[850px] w-full">
+      <div className="relative z-[9] max-w-[1140px] mx-auto px-[15px] h-[100svh] min-h-0 lg:h-screen lg:min-h-[650px] flex items-center justify-center">
+        <div className="text-center max-w-[850px] w-full px-1">
           {/* Title: METH */}
-          <h1 className="hero-title-meth font-raleway text-[3rem] sm:text-[4rem] lg:text-[5.5rem] font-black text-white mb-[20px] tracking-tight leading-[1.1]">
+          <h1 className="hero-title-meth font-raleway text-[2.5rem] xs:text-[3rem] sm:text-[4rem] lg:text-[5.5rem] font-black text-white mb-[16px] sm:mb-[20px] tracking-tight leading-[1.1]">
             <span className="relative inline-block overflow-hidden align-top">
               <span className="hero-title-cover absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%]" />
               <span className="hero-title-text inline-block opacity-0">
@@ -80,7 +80,7 @@ export default function Hero({
           </h1>
 
           {/* Subtitle: A Fullstack Developer & Digital Marketer */}
-          <h2 className="hero-subtitle-meth text-[18px] sm:text-[24px] lg:text-[33px] font-light text-white leading-normal">
+          <h2 className="hero-subtitle-meth text-[16px] sm:text-[24px] lg:text-[33px] font-light text-white leading-snug sm:leading-normal max-w-[22em] mx-auto">
             <span className="relative inline-block overflow-hidden align-top">
               <span className="hero-sub-cover absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%]" />
               <span className="hero-sub-text inline-block opacity-0">

@@ -114,7 +114,7 @@ export default function ThreeDRotator() {
   }, []);
 
   return (
-    <section ref={containerRef} className="w-full h-[550px] md:h-[650px] bg-black flex items-center justify-center overflow-hidden py-12 relative z-20 select-none">
+    <section ref={containerRef} className="w-full h-[380px] xs:h-[450px] sm:h-[550px] md:h-[650px] bg-black flex items-center justify-center overflow-hidden py-8 sm:py-12 relative z-20 select-none">
       <div className="pov-3d w-full h-full flex items-center justify-center">
         <div className="tray-3d flex flex-col items-center justify-center relative origin-center">
           {Array.from({ length: n }).map((_, i) => (

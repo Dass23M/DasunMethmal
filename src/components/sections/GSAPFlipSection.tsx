@@ -9,11 +9,8 @@ gsap.registerPlugin(ScrollTrigger, Flip);
 
 /**
  * GSAPFlipSection — WDSC Services
- * Scroll-driven GSAP Flip animation across 4 layouts:
- *   0–25%   → "final"   : centered row, letter + service name + tagline
- *  25–50%   → "plain"   : giant letters only, transparent bg
- *  50–75%   → "columns" : 4 full-height columns with label
- *  75–100%  → "grid"    : 2×2 grid with label
+ * Desktop (≥992px): scroll-pinned Flip across 4 layouts.
+ * Mobile (<992px): static 2×2 grid, no pin — readable and touch-friendly.
  *
  * Color palette: white · black · orange (#FF6B00)
  */
@@ -54,12 +51,10 @@ export default function GSAPFlipSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
-  // Step 1: mark client-mounted to avoid SSR hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Step 2: run GSAP only after mount
   useEffect(() => {
     if (!mounted) return;
 
@@ -112,36 +107,68 @@ export default function GSAPFlipSection() {
     };
 
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: '+=2400',
-        pin: true,
-        pinSpacing: true,
-        onUpdate: (self) => {
-          const p = self.progress;
-          let targetIdx = 0;
-          if (p < 0.25) targetIdx = 0;
-          else if (p < 0.5) targetIdx = 1;
-          else if (p < 0.75) targetIdx = 2;
-          else targetIdx = 3;
-          applyLayout(targetIdx);
-        },
+      const mm = gsap.matchMedia();
+
+      mm.add('(min-width: 992px)', () => {
+        container.classList.remove('mobile-static');
+        if (!LAYOUTS.some((l) => container.classList.contains(l))) {
+          container.classList.add('final');
+        }
+
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top top',
+          end: '+=2400',
+          pin: true,
+          pinSpacing: true,
+          onUpdate: (self) => {
+            const p = self.progress;
+            let targetIdx = 0;
+            if (p < 0.25) targetIdx = 0;
+            else if (p < 0.5) targetIdx = 1;
+            else if (p < 0.75) targetIdx = 2;
+            else targetIdx = 3;
+            applyLayout(targetIdx);
+          },
+        });
+      });
+
+      mm.add('(max-width: 991px)', () => {
+        LAYOUTS.forEach((l) => container.classList.remove(l));
+        container.classList.add('mobile-static');
+        curLayoutIdx = 0;
+
+        gsap.fromTo(
+          container.querySelectorAll('.flip-card'),
+          { y: 36, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.65,
+            stagger: 0.1,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 80%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
       });
     }, sectionRef);
 
     return () => ctx.revert();
   }, [mounted]);
 
-  // SSR / pre-hydration placeholder — must match exactly what server renders
   if (!mounted) {
-    return <section className="w-full h-screen bg-black" />;
+    return <section id="services-section" className="w-full h-[100svh] lg:h-screen bg-black" />;
   }
 
   return (
     <section
+      id="services-section"
       ref={sectionRef}
-      className="w-full h-screen bg-black overflow-hidden relative z-10 select-none"
+      className="flip-section w-full min-h-0 lg:h-screen bg-black overflow-hidden relative z-10 select-none"
     >
       <style>{`
         /* ── Base container ──────────────────────────────────── */
@@ -152,6 +179,19 @@ export default function GSAPFlipSection() {
           justify-content: center;
           align-items: center;
           overflow: hidden;
+        }
+
+        .flip-section {
+          height: auto;
+          min-height: auto;
+          padding: 3rem 0;
+        }
+        @media (min-width: 992px) {
+          .flip-section {
+            height: 100vh;
+            min-height: 100vh;
+            padding: 0;
+          }
         }
 
         /* ── Shared card ─────────────────────────────────────── */
@@ -298,6 +338,58 @@ export default function GSAPFlipSection() {
         }
         .flip-container.grid .flip-service-label .svc-sub {
           font-size: clamp(0.5rem, 0.85vmax, 1rem);
+        }
+
+        /* ── MOBILE static 2×2 (no Flip / no pin) ────────────── */
+        .flip-container.mobile-static {
+          flex-wrap: wrap;
+          align-content: stretch;
+          align-items: stretch;
+          min-height: auto;
+          height: auto;
+          padding: 0 12px;
+          gap: 10px;
+        }
+        .flip-container.mobile-static .flip-card {
+          flex: 1 1 calc(50% - 10px);
+          min-height: 160px;
+          height: auto;
+          border-radius: 14px;
+          flex-direction: column;
+          gap: 0.6rem;
+          padding: 1.25rem 0.75rem;
+          margin: 0;
+        }
+        .flip-container.mobile-static .flip-letter {
+          font-size: clamp(2.5rem, 12vw, 4rem);
+        }
+        .flip-container.mobile-static .flip-service-label {
+          display: flex;
+          align-items: center;
+        }
+        .flip-container.mobile-static .flip-service-label .svc-name {
+          font-size: clamp(0.72rem, 3.2vw, 0.95rem);
+        }
+        .flip-container.mobile-static .flip-service-label .svc-sub {
+          font-size: clamp(0.55rem, 2.4vw, 0.7rem);
+          letter-spacing: 0.06em;
+        }
+        @media (max-width: 420px) {
+          .flip-container.mobile-static {
+            flex-direction: column;
+            gap: 8px;
+          }
+          .flip-container.mobile-static .flip-card {
+            flex: 1 1 100%;
+            flex-direction: row;
+            justify-content: flex-start;
+            gap: 1rem;
+            min-height: 96px;
+            padding: 1rem 1.1rem;
+          }
+          .flip-container.mobile-static .flip-service-label {
+            align-items: flex-start;
+          }
         }
       `}</style>
 

@@ -9,7 +9,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Pinned & Scroll-Scrubbed "MY BEST WORKS" Banner.
- * Responsive transitions using GSAP matchMedia.
+ * Desktop (≥768px): pinned scrub timeline.
+ * Mobile (<768px): unpinned entrance — no long pin spacing.
  */
 export default function BestWorksBanner() {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -38,14 +39,8 @@ export default function BestWorksBanner() {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      mm.add({
-        isMobile: '(max-width: 767px)',
-        isDesktop: '(min-width: 768px)',
-      }, (context) => {
-        const { isMobile } = context.conditions as { isMobile: boolean; isDesktop: boolean };
-        const cardTargetWidth = isMobile ? '100px' : '260px';
-
-        // Master scrub timeline for pinned section
+      // Desktop / tablet: keep existing pinned scrub experience
+      mm.add('(min-width: 768px)', () => {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: wrapper,
@@ -88,8 +83,38 @@ export default function BestWorksBanner() {
           tl.fromTo(
             card,
             { width: '30px', opacity: 0, scale: 0.6 },
-            { width: cardTargetWidth, opacity: 1, scale: 1, duration: 0.9, ease: 'power3.inOut' },
+            { width: '260px', opacity: 1, scale: 1, duration: 0.9, ease: 'power3.inOut' },
             0.3
+          );
+        }
+      });
+
+      // Mobile: unpinned entrance — no extra scroll lock
+      mm.add('(max-width: 767px)', () => {
+        gsap.set([glow, textRow1, textRow2, card].filter(Boolean), {
+          clearProps: 'transform,opacity,width,scale',
+        });
+
+        if (glow) gsap.set(glow, { scale: 1, opacity: 0.65 });
+        if (card) gsap.set(card, { width: '100px', opacity: 1, scale: 1 });
+
+        const targets = [textRow1, textRow2].filter(Boolean);
+        if (targets.length) {
+          gsap.fromTo(
+            targets,
+            { y: 40, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.7,
+              stagger: 0.12,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 80%',
+                toggleActions: 'play none none reverse',
+              },
+            }
           );
         }
       });
@@ -99,14 +124,14 @@ export default function BestWorksBanner() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full h-screen bg-black" />;
+    return <section className="w-full h-[100svh] lg:h-screen bg-black" />;
   }
 
   return (
     <div ref={wrapperRef} className="w-full overflow-hidden">
       <section
         ref={sectionRef}
-        className="relative w-full h-screen bg-black text-white flex items-center justify-center select-none"
+        className="relative w-full h-[100svh] min-h-[420px] md:h-screen bg-black text-white flex items-center justify-center select-none"
       >
         <div
           ref={glowRef}
@@ -116,12 +141,12 @@ export default function BestWorksBanner() {
         <div className="relative z-[2] max-w-[1200px] mx-auto px-[15px] w-full text-center">
           <div className="flex flex-col items-center justify-center text-center">
             {/* Row 1: MY BEST */}
-            <div className="text-row-1 font-raleway text-[2.8rem] sm:text-[3.8rem] md:text-[12vw] xl:text-[9.5rem] font-extrabold tracking-tighter uppercase leading-[0.95] will-change-transform text-white">
+            <div className="text-row-1 font-raleway text-[clamp(2.25rem,11vw,3.8rem)] md:text-[12vw] xl:text-[9.5rem] font-extrabold tracking-tighter uppercase leading-[0.95] will-change-transform text-white">
               MY BEST
             </div>
 
             {/* Row 2: WOR [CARD] KS */}
-            <div className="text-row-2 flex items-center justify-center gap-[4px] sm:gap-[8px] md:gap-[16px] mt-[8px] sm:mt-[12px] font-raleway text-[2.8rem] sm:text-[3.8rem] md:text-[12vw] xl:text-[9.5rem] font-extrabold tracking-tighter uppercase leading-[0.95] will-change-transform text-white">
+            <div className="text-row-2 flex items-center justify-center gap-[4px] sm:gap-[8px] md:gap-[16px] mt-[8px] sm:mt-[12px] font-raleway text-[clamp(2.25rem,11vw,3.8rem)] md:text-[12vw] xl:text-[9.5rem] font-extrabold tracking-tighter uppercase leading-[0.95] will-change-transform text-white">
               <span>WOR</span>
 
               {/* Embedded Work Preview Card */}

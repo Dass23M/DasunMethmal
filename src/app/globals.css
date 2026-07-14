@@ -304,9 +304,9 @@ a:hover {
 .site-mobile-menu {
   position: fixed;
   z-index: 1009;
-  height: 100vh;
+  height: 100svh;
   background: #fff;
-  width: 280px;
+  width: min(280px, 85vw);
   overflow: auto;
   padding-top: 30px;
   padding-bottom: 70px;
@@ -458,6 +458,17 @@ body.offcanvas .site-mobile-menu {
 .cover-v1 .cover-row {
   height: 100vh;
   min-height: 650px;
+}
+
+@media (max-width: 991.98px) {
+  .cover-v1 {
+    background-attachment: scroll !important;
+  }
+  .cover-v1 .cover-container,
+  .cover-v1 .cover-row {
+    height: 100svh;
+    min-height: 0;
+  }
 }
 
 .cover-v1 .heading {
@@ -781,6 +792,16 @@ body.offcanvas .site-mobile-menu {
   font-family: 'Arimo', sans-serif;
   color: #FF6B00;
   line-height: 1;
+}
+
+@media (max-width: 575.98px) {
+  .counter-number {
+    font-size: 42px;
+  }
+  .counter-append {
+    top: -18px;
+    font-size: 20px;
+  }
 }
 
 .counter-append {
@@ -1532,6 +1553,13 @@ textarea.form-control {
   will-change: clip-path;
 }
 
+@media (max-width: 991.98px) {
+  .below-hero-reveal {
+    clip-path: none !important;
+    will-change: auto;
+  }
+}
+
 @keyframes sweepCover {
   0% {
     transform: translateX(-101%);
@@ -1598,3 +1626,66 @@ textarea.form-control {
     transform: translateY(0) scale(1);
   }
 }
+
+/* ============================================
+   MOBILE RESPONSIVE HARDENING (desktop unchanged)
+   ============================================ */
+.page-cover-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 15px;
+  height: 100vh;
+  min-height: 650px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+@media (min-width: 992px) {
+  .cover-v1.page-cover-fixed {
+    background-attachment: fixed;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .page-cover-inner {
+    height: 100svh;
+    min-height: 0;
+  }
+
+  .testimonial-quote {
+    font-size: 52px;
+  }
+
+  .carousel-nav-btn.prev {
+    left: 4px !important;
+  }
+  .carousel-nav-btn.next {
+    right: 4px !important;
+  }
+
+  .heading-h2 {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
+}
+
+@media (max-width: 575.98px) {
+  body {
+    font-size: 15px;
+    line-height: 26px;
+  }
+
+  .testimonial-inner-bg {
+    padding: 24px 18px 42px;
+    font-size: 15px;
+    line-height: 28px;
+  }
+
+  .portfolio-single-details {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+

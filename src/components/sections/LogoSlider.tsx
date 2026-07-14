@@ -1,12 +1,9 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import gsap from 'gsap';
 
-/**
- * Pure Brand SVG Logo Slider.
- * All logos rendered in white via CSS filter / fill override.
- * Section has generous top/bottom padding to separate it from neighbours.
- */
 const brandLogos = [
   {
     name: 'React',
@@ -85,11 +82,34 @@ const brandLogos = [
 
 export default function LogoSlider() {
   const marqueeItems = [...brandLogos, ...brandLogos, ...brandLogos];
+  const trackRef = useRef<HTMLDivElement>(null);
+  const tweenRef = useRef<gsap.core.Tween | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    if (!mounted || !trackRef.current) return;
+
+    const track = trackRef.current;
+    const totalWidth = track.scrollWidth / 3;
+
+    const ctx = gsap.context(() => {
+      tweenRef.current = gsap.to(track, {
+        x: -totalWidth,
+        duration: 20,
+        ease: 'none',
+        repeat: -1,
+      });
+    }, trackRef);
+
+    return () => ctx.revert();
+  }, [mounted]);
 
   return (
     <div
       style={{
-        padding: '5rem 0',           /* generous top/bottom gap */
+        padding: '5rem 0',
         overflow: 'hidden',
         background: 'transparent',
         borderTop: '1px solid rgba(255,255,255,0.07)',
@@ -98,7 +118,6 @@ export default function LogoSlider() {
         position: 'relative',
       }}
     >
-      {/* Optional subtle label */}
       <p
         style={{
           textAlign: 'center',
@@ -114,11 +133,14 @@ export default function LogoSlider() {
         Technologies &amp; Partners
       </p>
 
-      <div style={{ display: 'flex', overflow: 'hidden', width: '100%' }}
-        className="group"
+      <div
+        style={{ display: 'flex', overflow: 'hidden', width: '100%' }}
+        onMouseEnter={() => tweenRef.current?.pause()}
+        onMouseLeave={() => tweenRef.current?.play()}
       >
         <div
-          className="flex items-center gap-[80px] animate-[logoScroll_24s_linear_infinite] w-max group-hover:[animation-play-state:paused]"
+          ref={trackRef}
+          className="flex items-center gap-[60px] md:gap-[80px] w-max"
         >
           {marqueeItems.map((logo, index) => (
             <div
@@ -145,7 +167,6 @@ export default function LogoSlider() {
                   height={38}
                   style={{
                     objectFit: 'contain',
-                    /* Force all raster logos to white */
                     filter: 'brightness(0) invert(1)',
                   }}
                 />

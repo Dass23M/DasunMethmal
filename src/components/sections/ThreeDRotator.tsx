@@ -6,6 +6,7 @@ import gsap from 'gsap';
 /**
  * 3D Rotating Stacked Text Cubes Section ("CODE", "DRIVEN", "ANIMATION").
  * Uses website brand palette: white, orange (#FF6B00), gray, and black.
+ * Mobile responsive: auto-scales vertically and horizontally to prevent scrollbar overflow.
  */
 export default function ThreeDRotator() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -17,11 +18,6 @@ export default function ThreeDRotator() {
     { ry: 180, a: 0.0 }
   ];
 
-  /**
-   * Build a color for face j of cube i.
-   * Each cube smoothly transitions across the brand palette
-   * (black → gray → orange → white) based on its stack position.
-   */
   const brandColors = [
     [10, 10, 10],       // black
     [60, 60, 60],       // dark gray
@@ -32,8 +28,7 @@ export default function ThreeDRotator() {
   ];
 
   function getColor(cubeIdx: number, brightnessMultiplier: number): string {
-    // Map cube index to a position along the palette
-    const t = cubeIdx / (n - 1); // 0..1
+    const t = cubeIdx / (n - 1);
     const palLen = brandColors.length - 1;
     const pos = t * palLen;
     const lo = Math.floor(pos);
@@ -94,14 +89,19 @@ export default function ThreeDRotator() {
         .from('.die-3d', { duration: 0.01, opacity: 0, stagger: { each: -0.05, ease: 'power1.in' } }, 0)
         .to('.tray-3d', { scale: 1.1, duration: 2, ease: 'power3.inOut', yoyo: true, repeat: -1 }, 0);
 
-      // 4. Handle resize and scale wrapper
+      // 4. Handle resize and scale wrapper for both vertical & horizontal mobile fit
       const handleResize = () => {
         const h = n * 56;
         gsap.set('.tray-3d', { height: h });
         const wrapper = container.querySelector('.pov-3d');
         if (wrapper) {
           const wrapperHeight = wrapper.clientHeight || 500;
-          gsap.set('.pov-3d', { scale: Math.min(0.9, wrapperHeight / h) });
+          const wrapperWidth = window.innerWidth;
+          // Calculate scale for width (cubes are 400px wide + margin)
+          const widthScale = Math.min(1.0, (wrapperWidth - 30) / 420);
+          const heightScale = wrapperHeight / h;
+          const finalScale = Math.min(0.9, heightScale, widthScale);
+          gsap.set('.pov-3d', { scale: finalScale });
         }
       };
 
@@ -131,4 +131,3 @@ export default function ThreeDRotator() {
     </section>
   );
 }
-

@@ -1,15 +1,59 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SectionHeading from '@/components/ui/SectionHeading';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function Contact() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const formColRef = useRef<HTMLDivElement>(null);
+  const infoColRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [warning, setWarning] = useState('');
   const [notEmpty, setNotEmpty] = useState<Record<string, boolean>>({});
+
+  useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    if (!mounted || !sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+        },
+      });
+
+      if (formColRef.current) {
+        tl.fromTo(
+          formColRef.current,
+          { y: 50, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
+          0
+        );
+      }
+
+      if (infoColRef.current) {
+        tl.fromTo(
+          infoColRef.current.children,
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.7, stagger: 0.15, ease: 'power3.out' },
+          0.2
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [mounted]);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -66,12 +110,12 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact-section" className="unslate-section">
+    <section id="contact-section" ref={sectionRef} className="unslate-section">
       <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 15px' }}>
         <SectionHeading title="Get In Touch" />
 
         <div className="contact-grid">
-          <div className="contact-form-col">
+          <div ref={formColRef} className="contact-form-col">
             {!success ? (
               <form onSubmit={handleSubmit} noValidate className="form-outline" id="contactForm">
                 <div className="contact-name-email-grid">
@@ -177,7 +221,7 @@ export default function Contact() {
             )}
           </div>
 
-          <div className="contact-info-col">
+          <div ref={infoColRef} className="contact-info-col">
             <div style={{ marginBottom: '30px' }}>
               <span className="contact-info-label">Email</span>
               <a

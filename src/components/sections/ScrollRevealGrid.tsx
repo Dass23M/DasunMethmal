@@ -7,14 +7,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * ScrollRevealGrid
+ * ScrollRevealGrid — Responsive GSAP Animations
  *
- * A pinned section where 4 service cards reveal one-by-one
- * synchronized to the scroll position (scrub).
- *
- * Scroll down → cards rise from below, images scale in, text fades in.
- * Scroll back up → everything smoothly reverses.
- * All animations are 1:1 tied to the scrollbar — no auto-play.
+ * Desktop (min-width: 992px): Pinned section scrubbed by scroll position.
+ * Mobile (max-width: 991px): Unpinned flow with entrance triggers per card to prevent content clipping.
  */
 
 const CARDS = [
@@ -66,126 +62,191 @@ export default function ScrollRevealGrid() {
     const heading = section.querySelector<HTMLDivElement>('.srg-heading');
 
     const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
 
-      // Master timeline — everything on one timeline, scrubbed by scroll
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: wrapper,
-          start: 'top top',
-          end: '+=2500',       // scroll distance that drives the entire animation
-          pin: true,
-          scrub: 1.5,          // smooth 1.5s lag behind scroll
-          anticipatePin: 1,
-        },
+      // ── Desktop Viewport ────────────────────────────────────────────────
+      mm.add('(min-width: 992px)', () => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'top top',
+            end: '+=2500',
+            pin: true,
+            scrub: 1.5,
+            anticipatePin: 1,
+          },
+        });
+
+        if (heading) {
+          tl.fromTo(
+            heading,
+            { y: 60, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' },
+            0
+          );
+        }
+
+        cards.forEach((card, i) => {
+          const imgWrap = card.querySelector<HTMLDivElement>('.srg-imgwrap');
+          const img = card.querySelector<HTMLDivElement>('.srg-img');
+          const number = card.querySelector<HTMLSpanElement>('.srg-number');
+          const title = card.querySelector<HTMLSpanElement>('.srg-title');
+          const meta = card.querySelector<HTMLDivElement>('.srg-meta');
+          const line = card.querySelector<HTMLDivElement>('.srg-line');
+
+          const offset = 0.15 + i * 0.2;
+
+          tl.fromTo(
+            card,
+            { y: 200, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.35, ease: 'power3.out' },
+            offset
+          );
+
+          if (imgWrap) {
+            tl.fromTo(
+              imgWrap,
+              { clipPath: 'inset(100% 0% 0% 0%)' },
+              { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.3, ease: 'power2.inOut' },
+              offset + 0.05
+            );
+          }
+
+          if (img) {
+            tl.fromTo(
+              img,
+              { scale: 1.3 },
+              { scale: 1, duration: 0.4, ease: 'power2.out' },
+              offset + 0.05
+            );
+          }
+
+          if (number) {
+            tl.fromTo(
+              number,
+              { y: 30, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.2, ease: 'power2.out' },
+              offset + 0.15
+            );
+          }
+
+          if (title) {
+            tl.fromTo(
+              title,
+              { y: 40, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.2, ease: 'power2.out' },
+              offset + 0.18
+            );
+          }
+
+          if (meta) {
+            tl.fromTo(
+              meta,
+              { y: 20, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.2, ease: 'power2.out' },
+              offset + 0.2
+            );
+          }
+
+          if (line) {
+            tl.fromTo(
+              line,
+              { scaleX: 0 },
+              { scaleX: 1, duration: 0.2, ease: 'power2.inOut' },
+              offset + 0.22
+            );
+          }
+        });
       });
 
-      // 1. Heading fades + slides in
-      if (heading) {
-        tl.fromTo(
-          heading,
-          { y: 60, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.3, ease: 'power2.out' },
-          0
-        );
-      }
-
-      // 2. Each card reveals in staggered sequence
-      cards.forEach((card, i) => {
-        const imgWrap = card.querySelector<HTMLDivElement>('.srg-imgwrap');
-        const img = card.querySelector<HTMLDivElement>('.srg-img');
-        const number = card.querySelector<HTMLSpanElement>('.srg-number');
-        const title = card.querySelector<HTMLSpanElement>('.srg-title');
-        const meta = card.querySelector<HTMLDivElement>('.srg-meta');
-        const line = card.querySelector<HTMLDivElement>('.srg-line');
-
-        const offset = 0.15 + i * 0.2; // stagger start for each card
-
-        // Card slides up from below
-        tl.fromTo(
-          card,
-          { y: 200, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.35, ease: 'power3.out' },
-          offset
-        );
-
-        // Image clip-path reveal (bottom to top wipe)
-        if (imgWrap) {
-          tl.fromTo(
-            imgWrap,
-            { clipPath: 'inset(100% 0% 0% 0%)' },
-            { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.3, ease: 'power2.inOut' },
-            offset + 0.05
-          );
-        }
-
-        // Image scale-in parallax
-        if (img) {
-          tl.fromTo(
-            img,
-            { scale: 1.3 },
-            { scale: 1, duration: 0.4, ease: 'power2.out' },
-            offset + 0.05
-          );
-        }
-
-        // Number slides in
-        if (number) {
-          tl.fromTo(
-            number,
-            { y: 30, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.2, ease: 'power2.out' },
-            offset + 0.15
-          );
-        }
-
-        // Vertical title slides in
-        if (title) {
-          tl.fromTo(
-            title,
+      // ── Mobile Viewport ─────────────────────────────────────────────────
+      mm.add('(max-width: 991px)', () => {
+        if (heading) {
+          gsap.fromTo(
+            heading,
             { y: 40, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.2, ease: 'power2.out' },
-            offset + 0.18
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.8,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: heading,
+                start: 'top 85%',
+              },
+            }
           );
         }
 
-        // Meta text below image
-        if (meta) {
-          tl.fromTo(
-            meta,
-            { y: 20, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.2, ease: 'power2.out' },
-            offset + 0.2
-          );
-        }
+        cards.forEach((card) => {
+          const imgWrap = card.querySelector<HTMLDivElement>('.srg-imgwrap');
+          const line = card.querySelector<HTMLDivElement>('.srg-line');
 
-        // Orange accent line
-        if (line) {
-          tl.fromTo(
-            line,
-            { scaleX: 0 },
-            { scaleX: 1, duration: 0.2, ease: 'power2.inOut' },
-            offset + 0.22
+          gsap.fromTo(
+            card,
+            { y: 50, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.8,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 85%',
+              },
+            }
           );
-        }
+
+          if (imgWrap) {
+            gsap.fromTo(
+              imgWrap,
+              { clipPath: 'inset(100% 0% 0% 0%)' },
+              {
+                clipPath: 'inset(0% 0% 0% 0%)',
+                duration: 0.8,
+                ease: 'power2.inOut',
+                scrollTrigger: {
+                  trigger: card,
+                  start: 'top 85%',
+                },
+              }
+            );
+          }
+
+          if (line) {
+            gsap.fromTo(
+              line,
+              { scaleX: 0 },
+              {
+                scaleX: 1,
+                duration: 0.8,
+                ease: 'power2.inOut',
+                scrollTrigger: {
+                  trigger: card,
+                  start: 'top 80%',
+                },
+              }
+            );
+          }
+        });
       });
-
     }, wrapper);
 
     return () => ctx.revert();
   }, [mounted]);
 
   if (!mounted) {
-    return <div style={{ height: '100vh', background: '#000' }} />;
+    return <div style={{ minHeight: '100vh', background: '#000' }} />;
   }
 
   return (
     <div ref={wrapperRef}>
       <section
         ref={sectionRef}
+        className="srg-section-main"
         style={{
           position: 'relative',
           width: '100%',
-          height: '100vh',
           background: '#000',
           overflow: 'hidden',
           display: 'flex',
@@ -194,6 +255,10 @@ export default function ScrollRevealGrid() {
         }}
       >
         <style>{`
+          .srg-section-main {
+            height: 100vh;
+            padding: 0;
+          }
           /* ── Heading ───────────────────────────────────────── */
           .srg-heading {
             max-width: 1200px;
@@ -322,22 +387,31 @@ export default function ScrollRevealGrid() {
             text-transform: uppercase;
           }
 
-          /* ── Responsive ────────────────────────────────────── */
+          /* ── Responsive Mobile Rules ────────────────────────── */
           @media (max-width: 991px) {
-            .srg-grid { flex-wrap: wrap; gap: 1.8rem; }
-            .srg-card { width: 42%; }
+            .srg-section-main {
+              height: auto !important;
+              padding: 4rem 0 !important;
+            }
+            .srg-grid {
+              flex-wrap: wrap;
+              gap: 2rem;
+            }
+            .srg-card {
+              width: 45%;
+            }
             .srg-card:nth-child(1) .srg-imgwrap,
             .srg-card:nth-child(2) .srg-imgwrap,
             .srg-card:nth-child(3) .srg-imgwrap,
-            .srg-card:nth-child(4) .srg-imgwrap { height: 280px; }
-            .srg-title { right: -22px; font-size: 0.68rem; }
+            .srg-card:nth-child(4) .srg-imgwrap { height: 260px; }
+            .srg-title { right: -20px; font-size: 0.65rem; }
           }
           @media (max-width: 575px) {
-            .srg-card { width: 85%; }
+            .srg-card { width: 100%; }
             .srg-card:nth-child(1) .srg-imgwrap,
             .srg-card:nth-child(2) .srg-imgwrap,
             .srg-card:nth-child(3) .srg-imgwrap,
-            .srg-card:nth-child(4) .srg-imgwrap { height: 220px; }
+            .srg-card:nth-child(4) .srg-imgwrap { height: 240px; }
           }
         `}</style>
 

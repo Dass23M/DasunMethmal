@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 import MouseScroll from '@/components/ui/MouseScroll';
 
 interface HeroProps {
@@ -9,23 +10,58 @@ interface HeroProps {
 }
 
 /**
+ * Hero Section — GSAP Powered Reveal
  * Clean, Ultra-Premium Full-Screen Parallax Hero Section.
- * Styled entirely with Tailwind CSS utility classes.
  */
 export default function Hero({
   title = 'METH',
   subtitle = 'A Fullstack Developer & Digital Marketer',
 }: HeroProps) {
-  const [animated, setAnimated] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setAnimated(true), 100);
-    return () => clearTimeout(timer);
+    setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted || !containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power4.inOut' } });
+
+      // Title cover wipe + reveal
+      tl.fromTo(
+        '.hero-title-cover',
+        { x: '-101%' },
+        { x: '101%', duration: 1.1 },
+        0.2
+      ).to(
+        '.hero-title-text',
+        { opacity: 1, duration: 0.01 },
+        0.75
+      );
+
+      // Subtitle cover wipe + reveal
+      tl.fromTo(
+        '.hero-sub-cover',
+        { x: '-101%' },
+        { x: '101%', duration: 1.1 },
+        0.5
+      ).to(
+        '.hero-sub-text',
+        { opacity: 1, duration: 0.01 },
+        1.05
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [mounted]);
 
   return (
     <section
       id="home-section"
+      ref={containerRef}
       className="cover-v1 bg-cover bg-center bg-no-repeat w-full bg-fixed"
       style={{
         backgroundImage: "url('/images/cover_bg_2.png')",
@@ -36,8 +72,8 @@ export default function Hero({
           {/* Title: METH */}
           <h1 className="hero-title-meth font-raleway text-[3rem] sm:text-[4rem] lg:text-[5.5rem] font-black text-white mb-[20px] tracking-tight leading-[1.1]">
             <span className="relative inline-block overflow-hidden align-top">
-              <span className={`absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%] ${animated ? 'animate-[sweepCover_1.1s_cubic-bezier(0.77,0,0.18,1)_0.2s_forwards]' : ''}`} />
-              <span className={`inline-block opacity-0 ${animated ? 'animate-[revealText_0.01s_linear_0.75s_forwards]' : ''}`}>
+              <span className="hero-title-cover absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%]" />
+              <span className="hero-title-text inline-block opacity-0">
                 {title}
               </span>
             </span>
@@ -46,8 +82,8 @@ export default function Hero({
           {/* Subtitle: A Fullstack Developer & Digital Marketer */}
           <h2 className="hero-subtitle-meth text-[18px] sm:text-[24px] lg:text-[33px] font-light text-white leading-normal">
             <span className="relative inline-block overflow-hidden align-top">
-              <span className={`absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%] ${animated ? 'animate-[sweepCover_1.1s_cubic-bezier(0.77,0,0.18,1)_0.5s_forwards]' : ''}`} />
-              <span className={`inline-block opacity-0 ${animated ? 'animate-[revealText_0.01s_linear_1.05s_forwards]' : ''}`}>
+              <span className="hero-sub-cover absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%]" />
+              <span className="hero-sub-text inline-block opacity-0">
                 {subtitle}
               </span>
             </span>

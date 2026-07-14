@@ -2,13 +2,14 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 /**
  * MaskedInteractiveText Component.
- * - Sits below the Skills section.
- * - Features an orange background (#FF6B00).
- * - Implements SVG text masks: left side uses white/solid black, right side uses gray/contrast black.
- * - Interactive pointer tracking: moving the cursor scrubs the GSAP animation timeline progress.
+ * Features SVG text masks animated dynamically.
+ * Interactive pointer tracking on desktop + ScrollTrigger scrub for mobile/touch scroll.
  */
 export default function MaskedInteractiveText() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -43,7 +44,6 @@ export default function MaskedInteractiveText() {
         }
       );
 
-      // Play half way as initial state
       tl.progress(0.5);
 
       // 2. Timeline 2: Individual text lines character entrance sliding
@@ -69,16 +69,13 @@ export default function MaskedInteractiveText() {
         );
       });
 
-      // Play half way initially
       tl2.progress(0.5);
 
-      // 3. Pointer move scrub handler
+      // 3. Pointer move scrub handler for desktop
       const handlePointerMove = (e: PointerEvent) => {
         const rect = container.getBoundingClientRect();
-        // Calculate horizontal mouse percentage relative to container width
         const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
 
-        // Smoothly tween both timelines to the target progress ratio
         gsap.to([tl, tl2], {
           progress: ratio,
           duration: 1.2,
@@ -88,6 +85,24 @@ export default function MaskedInteractiveText() {
       };
 
       container.addEventListener('pointermove', handlePointerMove);
+
+      // 4. ScrollTrigger scrub for mobile & general scroll flow
+      ScrollTrigger.create({
+        trigger: container,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+        onUpdate: (self) => {
+          // Only scrub via scroll on touch devices or if no pointer interaction active
+          if (window.matchMedia('(max-width: 767px)').matches) {
+            gsap.to([tl, tl2], {
+              progress: self.progress,
+              duration: 0.5,
+              overwrite: 'auto',
+            });
+          }
+        },
+      });
 
       return () => {
         container.removeEventListener('pointermove', handlePointerMove);
@@ -100,7 +115,7 @@ export default function MaskedInteractiveText() {
   return (
     <section
       ref={containerRef}
-      className="w-full h-[450px] md:h-[650px] bg-[#FF6B00] flex items-center justify-center overflow-hidden select-none relative z-10 border-t border-b border-[#e05e00]"
+      className="w-full h-[350px] sm:h-[450px] md:h-[650px] bg-[#FF6B00] flex items-center justify-center overflow-hidden select-none relative z-10 border-t border-b border-[#e05e00]"
     >
       <div className="w-full h-full max-w-[1280px] max-h-[720px] px-4 flex items-center justify-center">
         <svg
@@ -118,14 +133,12 @@ export default function MaskedInteractiveText() {
           </defs>
 
           <g className="font-raleway font-black" fontSize="140" letterSpacing="-4">
-            {/* Left masked group - Solid bold Black */}
             <g mask="url(#maskLeft)" fill="#000000" className="left-group">
               <text y="200">CODE</text>
               <text y="370">DRIVEN</text>
               <text y="540">ANIMATION</text>
             </g>
 
-            {/* Right masked group - Dark charcoal gray-black */}
             <g mask="url(#maskRight)" fill="#2a2a2a" className="right-group" fillOpacity="0.75">
               <text y="200">CODE</text>
               <text y="370">DRIVEN</text>

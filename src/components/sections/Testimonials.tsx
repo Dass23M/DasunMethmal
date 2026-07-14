@@ -1,33 +1,55 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
+import gsap from 'gsap';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { testimonials } from '@/data/testimonials';
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
-  const [transitioning, setTransitioning] = useState(false);
+  const slideRef = useRef<HTMLDivElement>(null);
+  const isAnimatingRef = useRef(false);
 
-  const goTo = useCallback(
-    (index: number) => {
-      if (transitioning) return;
-      setTransitioning(true);
-      setTimeout(() => {
-        setCurrent(index);
-        setTransitioning(false);
-      }, 300);
-    },
-    [transitioning]
-  );
+  const animateToSlide = useCallback((nextIndex: number) => {
+    if (isAnimatingRef.current || !slideRef.current) return;
+    isAnimatingRef.current = true;
+
+    // Fade out & slide current
+    gsap.to(slideRef.current, {
+      opacity: 0,
+      y: -20,
+      duration: 0.35,
+      ease: 'power2.in',
+      onComplete: () => {
+        setCurrent(nextIndex);
+        // Prepare next slide position & animate in
+        gsap.fromTo(
+          slideRef.current,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.45,
+            ease: 'power2.out',
+            onComplete: () => {
+              isAnimatingRef.current = false;
+            },
+          }
+        );
+      },
+    });
+  }, []);
 
   const prev = () => {
-    goTo((current - 1 + testimonials.length) % testimonials.length);
+    const nextIdx = (current - 1 + testimonials.length) % testimonials.length;
+    animateToSlide(nextIdx);
   };
 
   const next = useCallback(() => {
-    goTo((current + 1) % testimonials.length);
-  }, [current, goTo]);
+    const nextIdx = (current + 1) % testimonials.length;
+    animateToSlide(nextIdx);
+  }, [current, animateToSlide]);
 
   useEffect(() => {
     const timer = setInterval(next, 5000);
@@ -42,12 +64,11 @@ export default function Testimonials() {
 
       <div style={{ position: 'relative', padding: '40px 0 100px', overflow: 'hidden' }}>
         <div
+          ref={slideRef}
           style={{
             maxWidth: '900px',
             margin: '0 auto',
             padding: '0 40px',
-            opacity: transitioning ? 0 : 1,
-            transition: 'opacity 0.3s ease',
           }}
         >
           {testimonials.map((testimonial, i) => (
@@ -105,7 +126,7 @@ export default function Testimonials() {
             <button
               key={i}
               className={`carousel-dot ${current === i ? 'active' : ''}`}
-              onClick={() => goTo(i)}
+              onClick={() => animateToSlide(i)}
               aria-label={`Go to testimonial ${i + 1}`}
             />
           ))}

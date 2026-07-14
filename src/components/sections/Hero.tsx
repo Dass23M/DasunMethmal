@@ -1,0 +1,61 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import MouseScroll from '@/components/ui/MouseScroll';
+
+interface HeroProps {
+  title?: string;
+  subtitle?: string;
+}
+
+/**
+ * Clean, Ultra-Premium Full-Screen Parallax Hero Section.
+ * Styled entirely with Tailwind CSS utility classes.
+ */
+export default function Hero({
+  title = 'METH',
+  subtitle = 'A Fullstack Developer & Digital Marketer',
+}: HeroProps) {
+  const [animated, setAnimated] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setAnimated(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <section
+      id="home-section"
+      className="cover-v1 bg-cover bg-center bg-no-repeat w-full bg-fixed"
+      style={{
+        backgroundImage: "url('/images/cover_bg_2.png')",
+      }}
+    >
+      <div className="relative z-[9] max-w-[1140px] mx-auto px-[15px] h-screen min-h-[650px] flex items-center justify-center">
+        <div className="text-center max-w-[850px] w-full">
+          {/* Title: METH */}
+          <h1 className="hero-title-meth font-raleway text-[3rem] sm:text-[4rem] lg:text-[5.5rem] font-black text-white mb-[20px] tracking-tight leading-[1.1]">
+            <span className="relative inline-block overflow-hidden align-top">
+              <span className={`absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%] ${animated ? 'animate-[sweepCover_1.1s_cubic-bezier(0.77,0,0.18,1)_0.2s_forwards]' : ''}`} />
+              <span className={`inline-block opacity-0 ${animated ? 'animate-[revealText_0.01s_linear_0.75s_forwards]' : ''}`}>
+                {title}
+              </span>
+            </span>
+          </h1>
+
+          {/* Subtitle: A Fullstack Developer & Digital Marketer */}
+          <h2 className="hero-subtitle-meth text-[18px] sm:text-[24px] lg:text-[33px] font-light text-white leading-normal">
+            <span className="relative inline-block overflow-hidden align-top">
+              <span className={`absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%] ${animated ? 'animate-[sweepCover_1.1s_cubic-bezier(0.77,0,0.18,1)_0.5s_forwards]' : ''}`} />
+              <span className={`inline-block opacity-0 ${animated ? 'animate-[revealText_0.01s_linear_1.05s_forwards]' : ''}`}>
+                {subtitle}
+              </span>
+            </span>
+          </h2>
+        </div>
+      </div>
+
+      <MouseScroll targetId="portfolio-section" />
+    </section>
+  );
+}

@@ -1,26 +1,36 @@
 'use client';
 
-import Image from 'next/image';
-
 /**
- * Reusable section heading with divider image.
+ * Editorial-style section header divider matching EditorialShowcase.
+ * Features orange dot indicator, uppercase tracking title, year meta, and thin line divider.
  */
 interface SectionHeadingProps {
   title: string;
+  meta?: string;
+  theme?: 'dark' | 'light';
+  className?: string;
 }
 
-export default function SectionHeading({ title }: SectionHeadingProps) {
+export default function SectionHeading({
+  title,
+  meta = '©2026',
+  theme = 'dark',
+  className = '',
+}: SectionHeadingProps) {
+  const isLight = theme === 'light';
+
   return (
-    <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-      <h2 className="heading-h2" style={{ marginBottom: '16px' }}>{title}</h2>
-      <div>
-        <Image
-          src="/images/divider.png"
-          alt="divider"
-          width={76}
-          height={10}
-          style={{ display: 'inline-block' }}
-        />
+    <div
+      className={`w-full mb-8 sm:mb-12 border-b pb-3 transition-colors ${
+        isLight ? 'border-black/15 text-black' : 'border-white/15 text-white'
+      } ${className}`}
+    >
+      <div className="flex items-center justify-between text-xs sm:text-sm font-bold tracking-widest uppercase">
+        <span className="flex items-center gap-2.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00] inline-block flex-shrink-0" />
+          <span className="font-raleway tracking-widest">{title}</span>
+        </span>
+        <span className="font-mono text-xs opacity-65">{meta}</span>
       </div>
     </div>
   );

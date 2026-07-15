@@ -112,7 +112,7 @@ export default function Contact() {
   return (
     <section id="contact-section" ref={sectionRef} className="unslate-section">
       <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 15px' }}>
-        <SectionHeading title="Get In Touch" />
+        <SectionHeading title="GET IN TOUCH" theme="dark" />
 
         <div className="contact-grid">
           <div ref={formColRef} className="contact-form-col">

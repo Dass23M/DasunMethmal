@@ -8,6 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lightbox from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 import Video from 'yet-another-react-lightbox/plugins/video';
+import SectionHeading from '@/components/ui/SectionHeading';
 import { portfolioItems, PortfolioItem } from '@/data/portfolio';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -270,12 +271,9 @@ export default function Portfolio() {
 
       <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 15px' }}>
 
-        {/* Heading */}
-        <div className="pf-heading-wrap">
-          <h2 ref={headingRef} className="heading-h2 font-raleway font-black tracking-tight">
-            Web Development Works
-          </h2>
-          <span className="pf-heading-line" />
+        {/* Section Heading matching EditorialShowcase style */}
+        <div ref={headingRef}>
+          <SectionHeading title="WEB DEVELOPMENT WORKS" theme="dark" />
         </div>
 
         {/* Grid */}

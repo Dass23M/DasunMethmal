@@ -62,34 +62,6 @@ export const portfolioItems: PortfolioItem[] = [
     href: '/portfolio/2',
     isPortrait: true,
   },
-  {
-    id: 7,
-    title: 'Modern Building',
-    categories: 'branding, packaging',
-    image: '/images/work_7_a_md.jpg',
-    type: 'lightbox',
-    href: '/images/work_7_a_md.jpg',
-    caption: 'Modern Building',
-    isPortrait: true,
-  },
-  {
-    id: 8,
-    title: 'Showreel 2019',
-    categories: 'web, branding',
-    image: '/images/work_8_md.jpg',
-    type: 'video',
-    href: 'https://www.youtube.com/watch?v=mwtbEGNABWU',
-    caption: 'Showreel 2019',
-  },
-  {
-    id: 9,
-    title: 'Render Packaging',
-    categories: 'web, illustration',
-    image: '/images/work_9_a_md.jpg',
-    type: 'lightbox',
-    href: '/images/work_9_a_md.jpg',
-    caption: 'Render Packaging',
-  },
 ];
 
 export interface PortfolioSingle {

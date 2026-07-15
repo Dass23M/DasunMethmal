@@ -45,7 +45,7 @@ export default function Journal() {
   return (
     <section id="journal-section" ref={sectionRef} className="unslate-section">
       <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 15px' }}>
-        <SectionHeading title="My Journal" />
+        <SectionHeading title="JOURNAL & INSIGHTS" theme="dark" />
 
         <div>
           <div className="journal-row-1">

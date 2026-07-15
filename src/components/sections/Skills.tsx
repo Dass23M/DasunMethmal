@@ -50,7 +50,7 @@ export default function Skills() {
   return (
     <section id="skills-section" className="unslate-section">
       <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 15px' }}>
-        <SectionHeading title="My Skills" />
+        <SectionHeading title="MY SKILLS & EXPERTISE" theme="dark" />
 
         <div ref={sectionRef} className="skills-grid">
           {skills.map((skill) => (

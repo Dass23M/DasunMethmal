@@ -59,7 +59,7 @@ export default function Testimonials() {
   return (
     <section id="testimonial-section" className="unslate-section">
       <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 15px' }}>
-        <SectionHeading title="My Happy Clients" />
+        <SectionHeading title="CLIENT TESTIMONIALS" theme="dark" />
       </div>
 
       <div style={{ position: 'relative', padding: '40px 0 100px', overflow: 'hidden' }}>

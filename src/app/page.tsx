@@ -1,12 +1,11 @@
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import FooterMarquee from '@/components/sections/FooterMarquee';
-import Lines from '@/components/layout/Lines';
 import Hero from '@/components/sections/Hero';
 import BestWorksBanner from '@/components/sections/BestWorksBanner';
-import ThreeDRotator from '@/components/sections/ThreeDRotator';
 import Portfolio from '@/components/sections/Portfolio';
 import GSAPFlipSection from '@/components/sections/GSAPFlipSection';
+import EditorialShowcase from '@/components/sections/EditorialShowcase';
 import LogoSlider from '@/components/sections/LogoSlider';
 import About from '@/components/sections/About';
 import RandomTextReveal from '@/components/sections/RandomTextReveal';
@@ -26,9 +25,6 @@ export default function HomePage() {
     <>
       {/* Site inner — margin-bottom pushes content up to reveal fixed footer */}
       <div className="site-inner">
-        {/* Background decorative lines */}
-        <Lines />
-
         {/* Navigation */}
         <Navbar />
 
@@ -36,12 +32,11 @@ export default function HomePage() {
         <Hero />
 
         <div className="below-hero-reveal">
-          <div className="scroll-reveal-section">
-            <BestWorksBanner />
-          </div>
+          {/* Pinned Scrub About Section */}
+          <About />
 
           <div className="scroll-reveal-section">
-            <ThreeDRotator />
+            <BestWorksBanner />
           </div>
 
           <div className="scroll-reveal-section">
@@ -51,12 +46,11 @@ export default function HomePage() {
           {/* Pin + Flip — no scroll-reveal wrapper (transform breaks ScrollTrigger pin) */}
           <GSAPFlipSection />
 
-          <div className="scroll-reveal-section">
-            <LogoSlider />
-          </div>
+          {/* Pinned Editorial Showcase — placed below Services */}
+          <EditorialShowcase />
 
           <div className="scroll-reveal-section">
-            <About />
+            <LogoSlider />
           </div>
 
           <div className="scroll-reveal-section">

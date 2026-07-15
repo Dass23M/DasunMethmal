@@ -17,7 +17,6 @@ export default function BestWorksBanner() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLAnchorElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
   const [hovered, setHovered] = useState(false);
 
@@ -31,7 +30,6 @@ export default function BestWorksBanner() {
     const wrapper = wrapperRef.current;
     const section = sectionRef.current;
     const card = cardRef.current;
-    const glow = glowRef.current;
     if (!wrapper || !section) return;
 
     const textRow1 = section.querySelector('.text-row-1');
@@ -52,15 +50,6 @@ export default function BestWorksBanner() {
             anticipatePin: 1,
           },
         });
-
-        if (glow) {
-          tl.fromTo(
-            glow,
-            { scale: 0.5, opacity: 0 },
-            { scale: 1.5, opacity: 0.8, duration: 1, ease: 'power2.out' },
-            0
-          );
-        }
 
         if (textRow1) {
           tl.fromTo(
@@ -83,8 +72,8 @@ export default function BestWorksBanner() {
         if (card) {
           tl.fromTo(
             card,
-            { width: '30px', opacity: 0, scale: 0.6 },
-            { width: '260px', opacity: 1, scale: 1, duration: 0.9, ease: 'power3.inOut' },
+            { scaleX: 0.1, opacity: 0, scaleY: 0.6 },
+            { scaleX: 1, opacity: 1, scaleY: 1, duration: 0.9, ease: 'power3.inOut' },
             0.3
           );
         }
@@ -92,12 +81,9 @@ export default function BestWorksBanner() {
 
       // Mobile: unpinned entrance — no extra scroll lock
       mm.add('(max-width: 767px)', () => {
-        gsap.set([glow, textRow1, textRow2, card].filter(Boolean), {
+        gsap.set([textRow1, textRow2, card].filter(Boolean), {
           clearProps: 'transform,opacity,width,scale',
         });
-
-        if (glow) gsap.set(glow, { scale: 1, opacity: 0.65 });
-        if (card) gsap.set(card, { width: '100px', opacity: 1, scale: 1 });
 
         const targets = [textRow1, textRow2].filter(Boolean);
         if (targets.length) {
@@ -125,36 +111,31 @@ export default function BestWorksBanner() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full h-[100svh] lg:h-screen bg-black" />;
+    return <section className="w-full h-[100svh] lg:h-screen bg-white" />;
   }
 
   return (
     <div ref={wrapperRef} className="w-full overflow-hidden">
       <section
         ref={sectionRef}
-        className="relative w-full h-[100svh] min-h-[420px] md:h-screen bg-black text-white flex items-center justify-center select-none"
+        className="relative w-full h-[100svh] min-h-[420px] md:h-screen bg-white text-black flex items-center justify-center select-none overflow-hidden"
       >
-        <div
-          ref={glowRef}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.18)_0%,rgba(0,0,0,1)_70%)] pointer-events-none will-change-transform"
-        />
-
-        <div className="relative z-[2] max-w-[1200px] mx-auto px-[15px] w-full text-center">
+        <div className="relative z-[2] w-full max-w-[1400px] mx-auto px-6 sm:px-12 md:px-16 lg:px-20 text-center">
           <div className="flex flex-col items-center justify-center text-center">
-            {/* Row 1: MY BEST */}
-            <div className="text-row-1 font-raleway text-[clamp(2.25rem,11vw,3.8rem)] md:text-[12vw] xl:text-[9.5rem] font-extrabold tracking-tighter uppercase leading-[0.95] will-change-transform text-white">
-              MY BEST
+            {/* Row 1: OUR BEST */}
+            <div className="text-row-1 font-raleway text-[clamp(2.2rem,8.5vw,4rem)] md:text-[8.5vw] lg:text-[7.8vw] xl:text-[7.5rem] 2xl:text-[8.8rem] font-extrabold tracking-tighter uppercase leading-[0.92] will-change-transform text-black">
+              OUR BEST
             </div>
 
             {/* Row 2: WOR [CARD] KS */}
-            <div className="text-row-2 flex items-center justify-center gap-[4px] sm:gap-[8px] md:gap-[16px] mt-[8px] sm:mt-[12px] font-raleway text-[clamp(2.25rem,11vw,3.8rem)] md:text-[12vw] xl:text-[9.5rem] font-extrabold tracking-tighter uppercase leading-[0.95] will-change-transform text-white">
+            <div className="text-row-2 flex items-center justify-center gap-[4px] sm:gap-[10px] md:gap-[16px] mt-[8px] sm:mt-[14px] font-raleway text-[clamp(2.2rem,8.5vw,4rem)] md:text-[8.5vw] lg:text-[7.8vw] xl:text-[7.5rem] 2xl:text-[8.8rem] font-extrabold tracking-tighter uppercase leading-[0.92] will-change-transform text-black">
               <span>WOR</span>
 
               {/* Embedded Work Preview Card */}
               <Link
                 ref={cardRef}
                 href="#portfolio-section"
-                className="relative w-[100px] md:w-[260px] h-[45px] sm:h-[70px] md:h-[10vw] xl:h-[135px] rounded-[10px] sm:rounded-[14px] md:rounded-[2vw] xl:rounded-[26px] overflow-hidden inline-flex items-center justify-center border-2 border-[rgba(255,255,255,0.15)] shadow-[0_15px_35px_rgba(99,102,241,0.15)] mx-[2px] sm:mx-[4px] align-middle transition-all duration-400 hover:border-white hover:shadow-[0_25px_50px_rgba(99,102,241,0.3)] group will-change-[width,transform,opacity]"
+                className="relative w-[85px] sm:w-[130px] md:w-[15vw] xl:w-[240px] 2xl:w-[280px] h-[38px] sm:h-[60px] md:h-[7.5vw] xl:h-[120px] 2xl:h-[140px] rounded-[10px] sm:rounded-[16px] md:rounded-[1.5vw] xl:rounded-[24px] overflow-hidden inline-flex items-center justify-center border border-black/10 shadow-md mx-[2px] sm:mx-[6px] align-middle transition-all duration-400 hover:border-black/30 hover:shadow-xl group will-change-[transform,opacity]"
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
                 aria-label="View Best Works"
@@ -163,15 +144,14 @@ export default function BestWorksBanner() {
                   src="/images/work_1_full.jpg"
                   alt="Featured work preview"
                   fill
-                  sizes="(max-width: 767px) 100px, 260px"
-                  className={`object-cover transition-transform duration-[600ms] ease-out ${
-                    hovered ? 'scale-110' : 'scale-100'
-                  }`}
+                  sizes="(max-width: 767px) 130px, (max-width: 1200px) 15vw, 280px"
+                  className={`object-cover transition-transform duration-[600ms] ease-out ${hovered ? 'scale-110' : 'scale-100'
+                    }`}
                 />
 
-                <div className="absolute inset-0 flex items-center justify-center bg-black/40 transition-colors duration-300 group-hover:bg-indigo-600/10">
-                  <div className="w-[28px] h-[28px] sm:w-[44px] sm:h-[44px] rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-300 group-hover:scale-110 group-hover:bg-white group-hover:border-white">
-                    <span className="w-0 h-0 border-t-[5px] sm:border-t-[7px] border-t-transparent border-b-[5px] sm:border-b-[7px] border-b-transparent border-l-[8px] sm:border-l-[12px] border-l-white ml-[2px] sm:ml-[3px] transition-colors duration-300 group-hover:border-l-black" />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors duration-300 group-hover:bg-black/30">
+                  <div className="w-[26px] h-[26px] sm:w-[42px] sm:h-[42px] md:w-[50px] md:h-[50px] rounded-full bg-white/25 backdrop-blur-md flex items-center justify-center border border-white/50 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-white group-hover:border-white">
+                    <span className="w-0 h-0 border-t-[5px] sm:border-t-[7px] md:border-t-[9px] border-t-transparent border-b-[5px] sm:border-b-[7px] md:border-b-[9px] border-b-transparent border-l-[8px] sm:border-l-[12px] md:border-l-[15px] border-l-white ml-[2px] sm:ml-[3px] transition-colors duration-300 group-hover:border-l-black" />
                   </div>
                 </div>
               </Link>

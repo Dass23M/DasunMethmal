@@ -272,7 +272,9 @@ export default function Portfolio() {
 
         {/* Heading */}
         <div className="pf-heading-wrap">
-          <h2 ref={headingRef} className="heading-h2">Portfolio</h2>
+          <h2 ref={headingRef} className="heading-h2 font-raleway font-black tracking-tight">
+            Web Development Works
+          </h2>
           <span className="pf-heading-line" />
         </div>
 

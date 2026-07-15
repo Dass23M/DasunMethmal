@@ -115,7 +115,7 @@ export default function MaskedInteractiveText() {
   return (
     <section
       ref={containerRef}
-      className="w-full h-[350px] sm:h-[450px] md:h-[650px] bg-[#FF6B00] flex items-center justify-center overflow-hidden select-none relative z-10 border-t border-b border-[#e05e00]"
+      className="w-full h-[250px] sm:h-[400px] md:h-[650px] bg-[#FF6B00] flex items-center justify-center overflow-hidden select-none relative z-10 border-t border-b border-[#e05e00] px-2 sm:px-4"
     >
       <div className="w-full h-full max-w-[1280px] max-h-[720px] px-4 flex items-center justify-center">
         <svg

@@ -118,24 +118,24 @@ export default function BestWorksBanner() {
     <div ref={wrapperRef} className="w-full overflow-hidden">
       <section
         ref={sectionRef}
-        className="relative w-full h-[100svh] min-h-[420px] md:h-screen bg-white text-black flex items-center justify-center select-none overflow-hidden"
+        className="relative w-full min-h-[380px] h-auto py-16 sm:py-24 md:py-0 md:h-[100svh] md:h-screen bg-white text-black flex items-center justify-center select-none overflow-hidden"
       >
-        <div className="relative z-[2] w-full max-w-[1400px] mx-auto px-6 sm:px-12 md:px-16 lg:px-20 text-center">
+        <div className="relative z-[2] w-full max-w-[1400px] mx-auto px-4 sm:px-8 md:px-16 lg:px-20 text-center">
           <div className="flex flex-col items-center justify-center text-center">
             {/* Row 1: OUR BEST */}
-            <div className="text-row-1 font-raleway text-[clamp(2.2rem,8.5vw,4rem)] md:text-[8.5vw] lg:text-[7.8vw] xl:text-[7.5rem] 2xl:text-[8.8rem] font-extrabold tracking-tighter uppercase leading-[0.92] will-change-transform text-black">
+            <div className="text-row-1 font-raleway text-[clamp(2.1rem,9vw,3.8rem)] md:text-[8.5vw] lg:text-[7.8vw] xl:text-[7.5rem] 2xl:text-[8.8rem] font-extrabold tracking-tighter uppercase leading-[0.92] will-change-transform text-black">
               OUR BEST
             </div>
 
             {/* Row 2: WOR [CARD] KS */}
-            <div className="text-row-2 flex items-center justify-center gap-[4px] sm:gap-[10px] md:gap-[16px] mt-[8px] sm:mt-[14px] font-raleway text-[clamp(2.2rem,8.5vw,4rem)] md:text-[8.5vw] lg:text-[7.8vw] xl:text-[7.5rem] 2xl:text-[8.8rem] font-extrabold tracking-tighter uppercase leading-[0.92] will-change-transform text-black">
+            <div className="text-row-2 flex items-center justify-center gap-[3px] sm:gap-[10px] md:gap-[16px] mt-[6px] sm:mt-[14px] font-raleway text-[clamp(2.1rem,9vw,3.8rem)] md:text-[8.5vw] lg:text-[7.8vw] xl:text-[7.5rem] 2xl:text-[8.8rem] font-extrabold tracking-tighter uppercase leading-[0.92] will-change-transform text-black">
               <span>WOR</span>
 
               {/* Embedded Work Preview Card */}
               <Link
                 ref={cardRef}
                 href="#portfolio-section"
-                className="relative w-[85px] sm:w-[130px] md:w-[15vw] xl:w-[240px] 2xl:w-[280px] h-[38px] sm:h-[60px] md:h-[7.5vw] xl:h-[120px] 2xl:h-[140px] rounded-[10px] sm:rounded-[16px] md:rounded-[1.5vw] xl:rounded-[24px] overflow-hidden inline-flex items-center justify-center border border-black/10 shadow-md mx-[2px] sm:mx-[6px] align-middle transition-all duration-400 hover:border-black/30 hover:shadow-xl group will-change-[transform,opacity]"
+                className="relative w-[75px] sm:w-[130px] md:w-[15vw] xl:w-[240px] 2xl:w-[280px] h-[34px] sm:h-[60px] md:h-[7.5vw] xl:h-[120px] 2xl:h-[140px] rounded-[8px] sm:rounded-[16px] md:rounded-[1.5vw] xl:rounded-[24px] overflow-hidden inline-flex items-center justify-center border border-black/10 shadow-md mx-[2px] sm:mx-[6px] align-middle transition-all duration-400 hover:border-black/30 hover:shadow-xl group will-change-[transform,opacity]"
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
                 aria-label="View Best Works"
@@ -145,13 +145,14 @@ export default function BestWorksBanner() {
                   alt="Featured work preview"
                   fill
                   sizes="(max-width: 767px) 130px, (max-width: 1200px) 15vw, 280px"
-                  className={`object-cover transition-transform duration-[600ms] ease-out ${hovered ? 'scale-110' : 'scale-100'
-                    }`}
+                  className={`object-cover transition-transform duration-[600ms] ease-out ${
+                    hovered ? 'scale-110' : 'scale-100'
+                  }`}
                 />
 
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors duration-300 group-hover:bg-black/30">
-                  <div className="w-[26px] h-[26px] sm:w-[42px] sm:h-[42px] md:w-[50px] md:h-[50px] rounded-full bg-white/25 backdrop-blur-md flex items-center justify-center border border-white/50 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-white group-hover:border-white">
-                    <span className="w-0 h-0 border-t-[5px] sm:border-t-[7px] md:border-t-[9px] border-t-transparent border-b-[5px] sm:border-b-[7px] md:border-b-[9px] border-b-transparent border-l-[8px] sm:border-l-[12px] md:border-l-[15px] border-l-white ml-[2px] sm:ml-[3px] transition-colors duration-300 group-hover:border-l-black" />
+                  <div className="w-[22px] h-[22px] sm:w-[42px] sm:h-[42px] md:w-[50px] md:h-[50px] rounded-full bg-white/25 backdrop-blur-md flex items-center justify-center border border-white/50 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-white group-hover:border-white">
+                    <span className="w-0 h-0 border-t-[4px] sm:border-t-[7px] md:border-t-[9px] border-t-transparent border-b-[4px] sm:border-b-[7px] md:border-b-[9px] border-b-transparent border-l-[7px] sm:border-l-[12px] md:border-l-[15px] border-l-white ml-[2px] sm:ml-[3px] transition-colors duration-300 group-hover:border-l-black" />
                   </div>
                 </div>
               </Link>

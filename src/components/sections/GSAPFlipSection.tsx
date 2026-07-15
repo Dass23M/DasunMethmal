@@ -149,7 +149,7 @@ export default function GSAPFlipSection() {
         gsap.set(section, { clearProps: 'transform' });
 
         const pinDistance = isMobile
-          ? () => `+=${Math.round(window.innerHeight * 2.8)}`
+          ? () => `+=${Math.round(window.innerHeight * 1.8)}`
           : '+=2400';
 
         ScrollTrigger.create({

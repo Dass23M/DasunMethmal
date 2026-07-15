@@ -152,15 +152,15 @@ export default function About() {
       <section
         id="about-section"
         ref={sectionRef}
-        className="relative w-full h-[100svh] min-h-[500px] md:h-screen bg-black text-white flex items-center justify-center select-none overflow-hidden"
+        className="relative w-full h-auto py-12 sm:py-16 md:py-0 md:h-[100svh] md:h-screen bg-black text-white flex items-center justify-center select-none overflow-hidden"
       >
         {/* Outer layout container: spans screen width with small side gaps (px-4 sm:px-8 md:px-12) */}
         <div className="relative z-[2] w-full max-w-[1550px] mx-auto px-4 sm:px-8 md:px-12">
           <SectionHeading title="About Me" />
 
           {/* Main About Card - Removed white border lines for clean seamless look */}
-          <div className="w-full bg-white/[0.02] rounded-2xl sm:rounded-3xl md:rounded-[32px] p-6 sm:p-10 md:p-14 shadow-2xl backdrop-blur-md">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="w-full bg-white/[0.02] rounded-2xl sm:rounded-3xl md:rounded-[32px] p-5 sm:p-10 md:p-14 shadow-2xl backdrop-blur-md">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
               {/* Image Column */}
               <div className="lg:col-span-5 w-full">
                 <figure className="relative m-0 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl">
@@ -184,14 +184,14 @@ export default function About() {
 
               {/* Text Column */}
               <div className="lg:col-span-7 w-full flex flex-col justify-center">
-                <h3 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-6 text-white">
+                <h3 className="text-xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 sm:mb-6 text-white">
                   We can make it together
                 </h3>
 
                 {/* Visually animated paragraph scrubbed on scroll down while pinned */}
                 <div
                   ref={animatedTextRef}
-                  className="animate-me text-lg sm:text-2xl md:text-3xl font-light leading-relaxed tracking-wide text-white/90 mb-8 perspective-[500px]"
+                  className="animate-me text-base sm:text-2xl md:text-3xl font-light leading-relaxed sm:leading-relaxed tracking-wide text-white/90 mb-6 sm:mb-8 perspective-[500px]"
                   aria-hidden="true"
                 >
                   {renderScrubText()}
@@ -206,7 +206,7 @@ export default function About() {
                 <div>
                   <a
                     href="#"
-                    className="inline-flex items-center justify-center px-8 py-3.5 rounded-full border border-white/30 text-white font-medium text-base sm:text-lg transition-all duration-300 hover:bg-white hover:text-black hover:border-white shadow-md hover:shadow-xl hover:scale-105"
+                    className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-3.5 rounded-full border border-white/30 text-white font-medium text-sm sm:text-lg transition-all duration-300 hover:bg-white hover:text-black hover:border-white shadow-md hover:shadow-xl hover:scale-105"
                   >
                     Download my CV
                   </a>

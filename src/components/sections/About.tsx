@@ -191,7 +191,7 @@ export default function About() {
                 {/* Visually animated paragraph scrubbed on scroll down while pinned */}
                 <div
                   ref={animatedTextRef}
-                  className="animate-me text-base sm:text-2xl md:text-3xl font-light leading-relaxed sm:leading-relaxed tracking-wide text-white/90 mb-6 sm:mb-8 perspective-[500px]"
+                  className="animate-me font-raleway text-lg sm:text-2xl md:text-3xl lg:text-[2rem] font-medium leading-[1.38] tracking-tight text-white mb-6 sm:mb-8 perspective-[500px]"
                   aria-hidden="true"
                 >
                   {renderScrubText()}

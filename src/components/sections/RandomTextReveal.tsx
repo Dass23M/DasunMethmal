@@ -108,7 +108,7 @@ export default function RandomTextReveal() {
     >
       <h3
         ref={textRef}
-        className="font-raleway text-black text-[clamp(1.35rem,5.5vw,2.2rem)] sm:text-[3.2rem] lg:text-[4.2rem] font-black leading-tight max-w-[38ch] text-center px-5 sm:px-6 md:px-12"
+        className="font-raleway text-black text-xl sm:text-3xl md:text-4xl lg:text-[2.4rem] font-medium leading-[1.38] tracking-tight max-w-[42ch] text-center px-5 sm:px-8 md:px-12"
       >
         {textContent}
       </h3>

@@ -188,7 +188,7 @@ export default function EditorialShowcase() {
     <div ref={wrapperRef} className="w-full overflow-hidden bg-white text-black">
       <section
         ref={sectionRef}
-        className="relative w-full h-[100svh] min-h-[700px] md:h-screen bg-white flex items-center justify-center select-none py-10 md:py-0 overflow-hidden"
+        className="relative w-full h-auto py-12 sm:py-16 md:py-0 md:h-[100svh] md:h-screen bg-white flex items-center justify-center select-none overflow-hidden"
       >
         <div className="w-full max-w-[1550px] mx-auto px-5 sm:px-10 md:px-16 lg:px-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">

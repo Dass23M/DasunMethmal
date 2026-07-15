@@ -162,7 +162,6 @@ export default function GSAPFlipSection() {
           anticipatePin: 1,
           invalidateOnRefresh: true,
           ...(isMobile && {
-            pinReparent: true,
             fastScrollEnd: true,
           }),
           onUpdate: (self) => {
@@ -379,10 +378,13 @@ export default function GSAPFlipSection() {
           .flip-container.final {
             flex-direction: column;
             flex-wrap: nowrap;
+            justify-content: center;
             align-content: stretch;
             align-items: stretch;
-            padding: max(12px, env(safe-area-inset-top)) 16px max(12px, env(safe-area-inset-bottom));
-            gap: 8px;
+            height: 100svh;
+            max-height: 100svh;
+            padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+            gap: 10px;
           }
 
           .flip-container.final .flip-card {
@@ -392,14 +394,14 @@ export default function GSAPFlipSection() {
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
-            border-radius: 14px;
-            padding: 0.75rem 1rem;
-            gap: 0.85rem;
+            border-radius: 16px;
+            padding: 0.85rem 1.1rem;
+            gap: 1rem;
             margin: 0;
           }
 
           .flip-container.final .flip-letter {
-            font-size: clamp(2rem, 9vw, 3rem);
+            font-size: clamp(2.1rem, 9.5vw, 3.25rem);
             flex-shrink: 0;
           }
 
@@ -409,11 +411,11 @@ export default function GSAPFlipSection() {
           }
 
           .flip-container.final .flip-service-label .svc-name {
-            font-size: clamp(0.68rem, 3vw, 0.88rem);
+            font-size: clamp(0.78rem, 3.4vw, 1rem);
           }
 
           .flip-container.final .flip-service-label .svc-sub {
-            font-size: clamp(0.5rem, 2.1vw, 0.62rem);
+            font-size: clamp(0.55rem, 2.3vw, 0.68rem);
             letter-spacing: 0.06em;
           }
 

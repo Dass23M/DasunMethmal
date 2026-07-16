@@ -15,6 +15,7 @@ import Journal from '@/components/sections/Journal';
 import FaqSection from '@/components/sections/FaqSection';
 import Contact from '@/components/sections/Contact';
 import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
+import ImpactSection from '@/components/sections/ImpactSection';
 
 /**
  * Main one-page portfolio — home page.
@@ -30,6 +31,9 @@ export default function HomePage() {
 
         {/* Sections */}
         <Hero />
+
+        {/* Impact Showcase Section — Directly Below Hero */}
+        <ImpactSection />
 
         {/* Pinned Fan Image Showcase — no scroll-reveal wrapper (pin breaks with transform) */}
         <ImageFanShowcase />

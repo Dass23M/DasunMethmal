@@ -80,39 +80,39 @@ export default function Testimonials() {
   const slides = [...TESTIMONIALS_DATA, ...TESTIMONIALS_DATA];
 
   return (
-    <section id="testimonial-section" className="w-full bg-white text-black py-16 md:py-24 overflow-hidden select-none">
+    <section id="testimonial-section" className="w-full bg-white text-black py-12 md:py-24 overflow-hidden select-none">
       {/* ─── HEADER SECTION ─── */}
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-20 mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 mb-8 sm:mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
         <div>
           <span className="font-raleway font-bold text-xs uppercase tracking-widest text-[#FF6B00] mb-2 block">
             {"// TESTIMONIALS"}
           </span>
-          <h2 className="font-raleway font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black tracking-tight leading-tight">
+          <h2 className="font-raleway font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-black tracking-tight leading-tight">
             Trusted Brands Worldwide
           </h2>
         </div>
-        <p className="font-arimo text-sm md:text-base text-gray-600 max-w-md leading-relaxed">
+        <p className="font-arimo text-xs sm:text-sm md:text-base text-gray-600 max-w-md leading-relaxed">
           We build the next in digital experiences. From strategy to design, development to retention, we&apos;ve got you covered. 9+ years of experience, 200+ projects launched.
         </p>
       </div>
 
       {/* ─── CONTINUOUS SMOOTH GSAP INFINITE MARQUEE SLIDER ─── */}
       <div
-        className="w-full overflow-hidden py-4"
+        className="w-full overflow-hidden py-2 sm:py-4"
         onMouseEnter={() => tweenRef.current?.pause()}
         onMouseLeave={() => tweenRef.current?.play()}
       >
-        <div ref={trackRef} className="inline-flex gap-6 md:gap-8 will-change-transform">
+        <div ref={trackRef} className="inline-flex gap-4 sm:gap-6 md:gap-8 will-change-transform">
           {slides.map((card, idx) => (
             <div
               key={`${card.id}-${idx}`}
-              className="w-[85vw] sm:w-[620px] md:w-[740px] shrink-0 bg-[#f4f4f6] rounded-[28px] p-6 sm:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-center border border-gray-200/70 shadow-sm transition-all duration-300 hover:shadow-md hover:border-gray-300"
+              className="w-[88vw] sm:w-[620px] md:w-[740px] shrink-0 bg-[#f4f4f6] rounded-[22px] sm:rounded-[28px] p-5 sm:p-8 flex flex-col md:flex-row gap-5 sm:gap-6 md:gap-8 items-center border border-gray-200/70 shadow-sm transition-all duration-300 hover:shadow-md hover:border-gray-300"
             >
               {/* Text Info Container */}
-              <div className="flex-1 flex flex-col justify-between h-full text-left">
+              <div className="flex-1 flex flex-col justify-between h-full text-left w-full">
                 <div>
                   {/* Brand Logo Tag */}
-                  <div className="flex items-center gap-2 mb-4">
+                  <div className="flex items-center gap-2 mb-3 sm:mb-4">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00]" />
                     <span className="font-raleway font-bold text-base md:text-lg text-black tracking-tight">
                       {card.brand}
@@ -120,33 +120,33 @@ export default function Testimonials() {
                   </div>
 
                   {/* Quote */}
-                  <blockquote className="font-arimo text-sm sm:text-base text-gray-800 leading-relaxed mb-6 font-normal">
+                  <blockquote className="font-arimo text-xs sm:text-base text-gray-800 leading-relaxed mb-4 sm:mb-6 font-normal">
                     &ldquo;{card.quote}&rdquo;
                   </blockquote>
                 </div>
 
                 {/* Author Info */}
                 <div>
-                  <h4 className="font-raleway font-bold text-base md:text-lg text-black leading-tight">
+                  <h4 className="font-raleway font-bold text-sm sm:text-base md:text-lg text-black leading-tight">
                     {card.name}
                   </h4>
-                  <p className="font-arimo text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
+                  <p className="font-arimo text-[11px] sm:text-sm text-gray-500 font-medium mt-0.5">
                     {card.position}
                   </p>
-                  <p className="font-arimo text-xs text-gray-400 mt-0.5">
+                  <p className="font-arimo text-[10px] sm:text-xs text-gray-400 mt-0.5">
                     {card.location}
                   </p>
                 </div>
               </div>
 
               {/* Portrait Image Side */}
-              <div className="w-full md:w-[250px] lg:w-[280px] h-[260px] sm:h-[300px] shrink-0 relative rounded-2xl overflow-hidden border border-black/5">
+              <div className="w-full md:w-[250px] lg:w-[280px] h-[200px] sm:h-[300px] shrink-0 relative rounded-xl sm:rounded-2xl overflow-hidden border border-black/5">
                 <Image
                   src={card.image}
                   alt={card.name}
                   fill
-                  sizes="280px"
-                  className="object-cover rounded-2xl"
+                  sizes="(max-width: 640px) 88vw, 280px"
+                  className="object-cover rounded-xl sm:rounded-2xl"
                 />
               </div>
             </div>

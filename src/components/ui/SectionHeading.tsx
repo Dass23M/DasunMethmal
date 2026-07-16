@@ -27,7 +27,7 @@ export default function SectionHeading({
     >
       <div className="flex items-center justify-between text-xs sm:text-sm font-bold tracking-widest uppercase">
         <span className="flex items-center gap-2.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00] inline-block flex-shrink-0" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#FF8A00] inline-block flex-shrink-0" />
           <span className="font-raleway tracking-widest">{title}</span>
         </span>
         <span className="font-mono text-xs opacity-65">{meta}</span>

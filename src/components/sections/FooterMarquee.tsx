@@ -46,7 +46,7 @@ export default function FooterMarquee() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden h-[180px] md:h-[260px] bg-black select-none z-[2]"
+      className="relative w-full overflow-hidden h-[180px] md:h-[260px] bg-white select-none z-[2]"
       aria-label="Call to action marquee"
     >
       {/* ─── TOP RIBBON (orange, rotates +3°) ─── */}

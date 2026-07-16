@@ -127,7 +127,7 @@ export default function About() {
             <a
               key={key}
               href={part.href}
-              className="about-scrub-word inline-block text-[#FF6B00] hover:underline underline-offset-4 font-semibold mr-[0.25em]"
+              className="about-scrub-word inline-block text-[#FF8A00] hover:underline underline-offset-4 font-semibold mr-[0.25em]"
             >
               {word}
             </a>

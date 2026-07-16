@@ -27,7 +27,7 @@ export default function Footer() {
 
             <p className="site-copyright">
               Copyright &copy; {year} All rights reserved | This template is made with{' '}
-              <span style={{ color: '#FF6B00' }}>♥</span> by{' '}
+              <span style={{ color: '#FF8A00' }}>♥</span> by{' '}
               <a href="https://colorlib.com" target="_blank" rel="noreferrer">
                 Colorlib
               </a>

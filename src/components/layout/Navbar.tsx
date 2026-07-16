@@ -143,7 +143,7 @@ export default function Navbar() {
               scrolled ? 'text-black' : 'text-white'
             }`}
           >
-            Methmal<span className="text-[#FF6B00]">.</span>
+            Methmal<span className="text-[#FF8A00]">.</span>
           </Link>
         </div>
 
@@ -198,11 +198,11 @@ function NavLink({
 
   const colorClass = scrolled
     ? hovered
-      ? 'text-[#FF6B00]'
+      ? 'text-[#FF8A00]'
       : 'text-black'
     : 'text-white';
 
-  const underlineBg = scrolled ? 'bg-[#FF6B00]' : 'bg-white';
+  const underlineBg = scrolled ? 'bg-[#FF8A00]' : 'bg-white';
 
   return (
     <a

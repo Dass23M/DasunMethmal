@@ -1,16 +1,16 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import SectionHeading from '@/components/ui/SectionHeading';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
-  const formColRef = useRef<HTMLDivElement>(null);
-  const infoColRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -18,9 +18,10 @@ export default function Contact() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [warning, setWarning] = useState('');
-  const [notEmpty, setNotEmpty] = useState<Record<string, boolean>>({});
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!mounted || !sectionRef.current) return;
@@ -33,18 +34,18 @@ export default function Contact() {
         },
       });
 
-      if (formColRef.current) {
+      if (cardRef.current) {
         tl.fromTo(
-          formColRef.current,
-          { y: 50, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
+          cardRef.current,
+          { y: 60, opacity: 0, scale: 0.95 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' },
           0
         );
       }
 
-      if (infoColRef.current) {
+      if (contentRef.current) {
         tl.fromTo(
-          infoColRef.current.children,
+          contentRef.current.children,
           { y: 40, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.7, stagger: 0.15, ease: 'power3.out' },
           0.2
@@ -69,7 +70,6 @@ export default function Contact() {
 
   const handleInput = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    setNotEmpty((prev) => ({ ...prev, [field]: value.length > 0 }));
     if (errors[field]) {
       setErrors((prev) => {
         const next = { ...prev };
@@ -109,149 +109,188 @@ export default function Contact() {
     }
   };
 
+  if (!mounted) {
+    return <section className="w-full min-h-screen bg-white" />;
+  }
+
   return (
-    <section id="contact-section" ref={sectionRef} className="unslate-section">
-      <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 15px' }}>
-        <SectionHeading title="GET IN TOUCH" theme="dark" />
+    <section id="contact-section" ref={sectionRef} className="w-full bg-white py-12 md:py-20 overflow-hidden">
+      <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-8 md:px-12">
+        
+        {/* Main Hero Card Container with Artistic Sunset Gradient Background */}
+        <div className="relative w-full rounded-[24px] sm:rounded-[36px] md:rounded-[44px] overflow-hidden p-6 sm:p-10 md:p-14 lg:p-16 flex items-center justify-between min-h-[640px] md:min-h-[720px] shadow-2xl border border-white/10">
+          
+          {/* Background Sunset Graphic */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/contact_bg_sunset.png"
+              alt="Sunset silhouette background"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            {/* Soft tint gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/60 md:to-transparent z-[1]" />
+          </div>
 
-        <div className="contact-grid">
-          <div ref={formColRef} className="contact-form-col">
-            {!success ? (
-              <form onSubmit={handleSubmit} noValidate className="form-outline" id="contactForm">
-                <div className="contact-name-email-grid">
-                  <div
-                    className={`form-group ${notEmpty.name ? 'field--not-empty' : ''}`}
-                    style={{ position: 'relative', marginBottom: '50px' }}
-                  >
-                    <label htmlFor="name">Name</label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      className="form-control"
-                      value={formData.name}
-                      onChange={(e) => handleInput('name', e.target.value)}
-                    />
-                    {errors.name && (
-                      <span
-                        style={{
-                          color: 'rgba(255,255,255,0.5)',
-                          fontSize: '12px',
-                          position: 'absolute',
-                          bottom: '-22px',
-                          left: 0,
-                        }}
-                      >
-                        {errors.name}
-                      </span>
-                    )}
-                  </div>
-
-                  <div
-                    className={`form-group ${notEmpty.email ? 'field--not-empty' : ''}`}
-                    style={{ position: 'relative', marginBottom: '50px' }}
-                  >
-                    <label htmlFor="email">Email</label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      className="form-control"
-                      value={formData.email}
-                      onChange={(e) => handleInput('email', e.target.value)}
-                    />
-                    {errors.email && (
-                      <span
-                        style={{
-                          color: 'rgba(255,255,255,0.5)',
-                          fontSize: '12px',
-                          position: 'absolute',
-                          bottom: '-22px',
-                          left: 0,
-                        }}
-                      >
-                        {errors.email}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div
-                  className={`form-group ${notEmpty.message ? 'field--not-empty' : ''}`}
-                  style={{ position: 'relative', marginBottom: '50px' }}
-                >
-                  <label htmlFor="message">Write your message...</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={7}
-                    className="form-control"
-                    value={formData.message}
-                    onChange={(e) => handleInput('message', e.target.value)}
+          {/* Grid Layout inside Sunset Banner */}
+          <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+            
+            {/* Left Column: Floating White Contact Form Card */}
+            <div ref={cardRef} className="lg:col-span-5 w-full flex justify-center lg:justify-start">
+              <div className="bg-white text-black rounded-[24px] shadow-2xl p-5 sm:p-7 w-full max-w-[430px] border border-white/20 select-none">
+                
+                {/* Embedded Header Banner Block */}
+                <div className="relative h-[95px] rounded-[16px] overflow-hidden flex items-center justify-center shadow-md">
+                  <Image
+                    src="/images/contact_bg_sunset.png"
+                    alt="Header Banner background"
+                    fill
+                    className="object-cover"
                   />
-                  {errors.message && (
-                    <span
-                      style={{
-                        color: 'rgba(255,255,255,0.5)',
-                        fontSize: '12px',
-                        position: 'absolute',
-                        bottom: '-22px',
-                        left: 0,
-                      }}
-                    >
-                      {errors.message}
-                    </span>
-                  )}
+                  <div className="absolute inset-0 bg-black/30" />
+                  <span className="relative z-10 font-raleway font-black text-white text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">
+                    MICHAEL®
+                  </span>
                 </div>
 
-                <div>
-                  <button type="submit" className="btn-outline-pill" disabled={submitting}>
-                    {submitting ? 'Sending...' : 'Send Message'}
-                  </button>
-                </div>
+                {/* Card Title */}
+                <h3 className="font-raleway font-bold text-center text-xl text-black mt-5 mb-5 tracking-tight">
+                  Reach Out to Me
+                </h3>
 
-                {warning && (
-                  <p className="form-message-warning" style={{ marginTop: '12px' }}>
-                    {warning}
-                  </p>
+                {/* Form Elements */}
+                {!success ? (
+                  <form onSubmit={handleSubmit} noValidate className="space-y-4">
+                    
+                    {/* Name Input */}
+                    <div>
+                      <label htmlFor="name" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Emily Johnson"
+                        value={formData.name}
+                        onChange={(e) => handleInput('name', e.target.value)}
+                        className="w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all"
+                      />
+                      {errors.name && (
+                        <span className="text-[11px] text-red-500 mt-1 block font-medium">
+                          {errors.name}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Email Input */}
+                    <div>
+                      <label htmlFor="email" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                        E-mail*
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="emilyjohnson@gamil.com"
+                        value={formData.email}
+                        onChange={(e) => handleInput('email', e.target.value)}
+                        className="w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all"
+                      />
+                      {errors.email && (
+                        <span className="text-[11px] text-red-500 mt-1 block font-medium">
+                          {errors.email}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Message Input */}
+                    <div>
+                      <label htmlFor="message" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                        Message*
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows={3}
+                        placeholder="Your message"
+                        value={formData.message}
+                        onChange={(e) => handleInput('message', e.target.value)}
+                        className="w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all resize-none h-[95px]"
+                      />
+                      {errors.message && (
+                        <span className="text-[11px] text-red-500 mt-1 block font-medium">
+                          {errors.message}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Submit Button */}
+                    <div className="pt-2">
+                      <button
+                        type="submit"
+                        disabled={submitting}
+                        className="w-full bg-black text-white font-bold tracking-widest text-xs uppercase py-3.5 rounded-xl hover:bg-black/85 hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md"
+                      >
+                        {submitting ? 'SENDING...' : 'YOUR MESSAGE'}
+                      </button>
+                    </div>
+
+                    {warning && (
+                      <p className="text-xs text-red-600 text-center mt-2 font-medium">
+                        {warning}
+                      </p>
+                    )}
+                  </form>
+                ) : (
+                  <div className="py-8 text-center">
+                    <p className="font-bold text-green-600 text-sm">
+                      Your message was sent successfully!
+                    </p>
+                  </div>
                 )}
-              </form>
-            ) : (
-              <p className="form-message-success">Your message was sent, thank you!</p>
-            )}
+
+              </div>
+            </div>
+
+            {/* Right Column: Giant Typography & Subhead */}
+            <div ref={contentRef} className="lg:col-span-7 flex flex-col justify-between h-full space-y-8 lg:space-y-16">
+              
+              <div>
+                {/* Top Pill Badge */}
+                <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md text-black px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase shadow-md mb-6">
+                  <span className="text-[#FF6B00] text-sm">❇</span>
+                  <span>CONTACT ME</span>
+                </div>
+
+                {/* Giant Headline */}
+                <h2 className="font-raleway font-black text-white uppercase tracking-tight leading-[0.95] text-[clamp(2.5rem,6.5vw,5.5rem)] text-left drop-shadow-lg">
+                  LET’S CREATE <br />
+                  TOGETHER
+                </h2>
+              </div>
+
+              {/* Bottom Right Sub-section */}
+              <div className="flex items-start gap-3.5 max-w-[440px] pt-4">
+                <span className="text-[#FF6B00] text-xl mt-1 flex-shrink-0 animate-pulse">✦</span>
+                <div>
+                  <h4 className="font-raleway font-bold uppercase text-white tracking-wider text-sm sm:text-base mb-1.5">
+                    RESULTS-DRIVEN SOLUTIONS
+                  </h4>
+                  <p className="text-white/85 text-xs sm:text-sm leading-relaxed font-normal">
+                    Refining the design through feedback and testing to ensure the best user experience.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
           </div>
 
-          <div ref={infoColRef} className="contact-info-col">
-            <div style={{ marginBottom: '30px' }}>
-              <span className="contact-info-label">Email</span>
-              <a
-                href="mailto:info@yourdomain.com"
-                className="contact-info-val"
-                style={{ display: 'block' }}
-              >
-                info@yourdomain.com
-              </a>
-            </div>
-            <div style={{ marginBottom: '30px' }}>
-              <span className="contact-info-label">Phone</span>
-              <a
-                href="tel:+123456789012"
-                className="contact-info-val"
-                style={{ display: 'block' }}
-              >
-                +12 345 6789 012
-              </a>
-            </div>
-            <div style={{ marginBottom: '30px' }}>
-              <span className="contact-info-label">Address</span>
-              <address className="contact-info-val" style={{ fontStyle: 'normal', lineHeight: '1.6' }}>
-                273 South Riverview Rd.
-                <br />
-                New York, NY 10011
-              </address>
-            </div>
-          </div>
         </div>
+
       </div>
     </section>
   );

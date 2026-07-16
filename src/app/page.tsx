@@ -14,6 +14,7 @@ import Skills from '@/components/sections/Skills';
 import MaskedInteractiveText from '@/components/sections/MaskedInteractiveText';
 import Testimonials from '@/components/sections/Testimonials';
 import Journal from '@/components/sections/Journal';
+import FaqSection from '@/components/sections/FaqSection';
 import Contact from '@/components/sections/Contact';
 
 /**
@@ -75,6 +76,10 @@ export default function HomePage() {
 
           <div className="scroll-reveal-section">
             <Journal />
+          </div>
+
+          <div className="scroll-reveal-section">
+            <FaqSection />
           </div>
 
           <div className="scroll-reveal-section">

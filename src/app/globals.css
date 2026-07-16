@@ -6,7 +6,7 @@
    BASE STYLES
    ============================================ */
 :root {
-  --accent: #FF6B00;
+  --accent: #FF8A00;
   --dark: #191919;
   --card-dark: #212121;
 }
@@ -184,7 +184,7 @@ a:hover {
 }
 
 .site-nav .site-logo a span {
-  color: #FF6B00;
+  color: #FF8A00;
 }
 
 .nav-ul {
@@ -285,13 +285,13 @@ a:hover {
   color: #000;
 }
 
-.site-nav.scrolled .nav-ul > li > a::before {
-  background: #FF6B00;
+.site-nav.scrolled .nav-ul > li > a::after {
+  background: #FF8A00;
 }
 
 .site-nav.scrolled .nav-ul > li > a:hover,
 .site-nav.scrolled .nav-ul > li > a.active {
-  color: #FF6B00;
+  color: #FF8A00;
 }
 
 .site-nav.scrolled.awake {
@@ -383,7 +383,7 @@ body.offcanvas .site-mobile-menu {
 }
 
 .mobile-nav-ul li a:hover {
-  color: #FF6B00;
+  color: #FF8A00;
 }
 
 .mobile-nav-ul li ul {
@@ -795,7 +795,7 @@ body.offcanvas .site-mobile-menu {
   font-size: 69px;
   font-weight: 900;
   font-family: 'Arimo', sans-serif;
-  color: #FF6B00;
+  color: #FF8A00;
   line-height: 1;
 }
 
@@ -1100,7 +1100,7 @@ textarea.form-control {
 }
 
 .footer-logo a span {
-  color: #FF6B00;
+  color: #FF8A00;
 }
 
 .footer-social {
@@ -1178,7 +1178,7 @@ textarea.form-control {
 }
 
 .detail-val a:hover {
-  color: #FF6B00;
+  color: #FF8A00;
 }
 
 /* Single Slider */

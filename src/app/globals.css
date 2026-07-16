@@ -84,38 +84,17 @@ a:hover {
   position: relative;
   z-index: 1;
   width: 100%;
-  margin-bottom: 400px;
-}
-
-@media (max-width: 991.98px) {
-  .site-inner {
-    margin-bottom: 0 !important;
-  }
+  margin-bottom: 0 !important;
 }
 
 /* ============================================
-   FOOTER FIXED REVEAL
+   FOOTER
    ============================================ */
 .site-footer {
-  position: fixed !important;
+  position: relative !important;
   width: 100%;
-  background-color: #191919;
-  color: #fff;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-  height: 400px;
-  text-align: center;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-@media (max-width: 991.98px) {
-  .site-footer {
-    height: auto !important;
-    position: relative !important;
-  }
+  z-index: 10;
+  height: auto !important;
 }
 
 /* ============================================

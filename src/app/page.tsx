@@ -67,14 +67,6 @@ export default function HomePage() {
           </div>
 
           <div className="scroll-reveal-section">
-            <Skills />
-          </div>
-
-          <div className="scroll-reveal-section">
-            <MaskedInteractiveText />
-          </div>
-
-          <div className="scroll-reveal-section">
             <Testimonials />
           </div>
 

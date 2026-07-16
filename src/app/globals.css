@@ -448,10 +448,19 @@ body.offcanvas .site-mobile-menu {
   .cover-v1 {
     background-attachment: scroll !important;
   }
+  .hero-cover-mobile {
+    background-position: 28% center !important;
+  }
   .cover-v1 .cover-container,
   .cover-v1 .cover-row {
     height: 100svh;
     min-height: 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .hero-cover-mobile {
+    background-position: center center !important;
   }
 }
 

@@ -118,7 +118,7 @@ export default function Contact() {
       <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-8 md:px-12">
         
         {/* Main Hero Card Container with Artistic Sunset Gradient Background */}
-        <div className="relative w-full rounded-[24px] sm:rounded-[36px] md:rounded-[44px] overflow-hidden p-6 sm:p-10 md:p-14 lg:p-16 flex items-center justify-between min-h-[640px] md:min-h-[720px] shadow-2xl border border-white/10">
+        <div className="relative w-full rounded-[24px] sm:rounded-[36px] md:rounded-[44px] overflow-hidden p-5 sm:p-10 md:p-14 lg:p-16 flex items-center justify-between min-h-[640px] md:min-h-[720px] shadow-2xl border border-white/10">
           
           {/* Background Sunset Graphic */}
           <div className="absolute inset-0 z-0">
@@ -131,14 +131,14 @@ export default function Contact() {
               className="object-cover object-center"
             />
             {/* Soft tint gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/60 md:to-transparent z-[1]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70 md:bg-gradient-to-r md:from-black/50 md:via-black/30 md:to-transparent z-[1]" />
           </div>
 
           {/* Grid Layout inside Sunset Banner */}
           <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             
             {/* Left Column: Floating White Contact Form Card */}
-            <div ref={cardRef} className="lg:col-span-5 w-full flex justify-center lg:justify-start">
+            <div ref={cardRef} className="lg:col-span-5 w-full flex justify-center lg:justify-start order-2 lg:order-1">
               <div className="bg-white text-black rounded-[24px] shadow-2xl p-5 sm:p-7 w-full max-w-[430px] border border-white/20 select-none">
                 
                 {/* Embedded Header Banner Block */}
@@ -256,7 +256,7 @@ export default function Contact() {
             </div>
 
             {/* Right Column: Giant Typography & Subhead */}
-            <div ref={contentRef} className="lg:col-span-7 flex flex-col justify-between h-full space-y-8 lg:space-y-16">
+            <div ref={contentRef} className="lg:col-span-7 flex flex-col justify-between h-full space-y-8 lg:space-y-16 order-1 lg:order-2">
               
               <div>
                 {/* Top Pill Badge */}

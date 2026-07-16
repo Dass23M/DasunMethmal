@@ -149,7 +149,7 @@ export default function ScrollRevealGrid() {
             </div>
 
             {/* Bottom Quote & 92% Satisfaction Card */}
-            <div className="bento-card bg-white border border-gray-150 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between flex-1 min-h-[320px] sm:min-h-[380px]">
+            <div className="bento-card bg-white border border-gray-150 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-sm flex flex-col justify-between flex-1 min-h-[250px] sm:min-h-[380px]">
               <div>
                 <svg className="w-8 h-8 text-black fill-current mb-4" viewBox="0 0 24 24">
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
@@ -175,7 +175,7 @@ export default function ScrollRevealGrid() {
           <div ref={col2Ref} className="lg:col-span-4 flex flex-col gap-5 sm:gap-6 justify-between will-change-transform">
             
             {/* Center Orange Helmet Feature Card */}
-            <div className="bento-card bg-[#f4f4f4] border border-gray-150 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm relative h-[340px] sm:h-[400px] lg:h-[430px] flex items-center justify-center p-4">
+            <div className="bento-card bg-[#f4f4f4] border border-gray-150 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm relative h-[260px] sm:h-[400px] lg:h-[430px] flex items-center justify-center p-4">
               <Image
                 src="/images/orange1.png"
                 alt="Futuristic Helmet Feature"
@@ -206,7 +206,7 @@ export default function ScrollRevealGrid() {
           <div ref={col3Ref} className="lg:col-span-4 flex flex-col gap-5 sm:gap-6 justify-between will-change-transform">
             
             {/* Top Testimonial & 5K+ Global Project Card */}
-            <div className="bento-card bg-white border border-gray-150 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between flex-1 min-h-[320px] sm:min-h-[380px]">
+            <div className="bento-card bg-white border border-gray-150 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-sm flex flex-col justify-between flex-1 min-h-[250px] sm:min-h-[380px]">
               <div>
                 <p className="font-raleway font-bold text-base sm:text-lg text-black leading-snug">
                   <span className="text-[#FF6B00] font-black">250+</span> testimonial with trusted by YC-backed, VC-funded, a16z, Sequoia

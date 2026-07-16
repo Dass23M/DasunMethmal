@@ -10,8 +10,6 @@ import LogoSlider from '@/components/sections/LogoSlider';
 import About from '@/components/sections/About';
 import RandomTextReveal from '@/components/sections/RandomTextReveal';
 import ScrollRevealGrid from '@/components/sections/ScrollRevealGrid';
-import Skills from '@/components/sections/Skills';
-import MaskedInteractiveText from '@/components/sections/MaskedInteractiveText';
 import Testimonials from '@/components/sections/Testimonials';
 import Journal from '@/components/sections/Journal';
 import FaqSection from '@/components/sections/FaqSection';

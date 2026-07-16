@@ -85,7 +85,7 @@ export default function Testimonials() {
       <div className="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-20 mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <span className="font-raleway font-bold text-xs uppercase tracking-widest text-[#FF6B00] mb-2 block">
-            // TESTIMONIALS
+            {"// TESTIMONIALS"}
           </span>
           <h2 className="font-raleway font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black tracking-tight leading-tight">
             Trusted Brands Worldwide

@@ -111,11 +111,11 @@ export default function BestWorksBanner() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full h-[100svh] lg:h-screen bg-white" />;
+    return <section className="hidden md:block w-full h-[100svh] lg:h-screen bg-white" />;
   }
 
   return (
-    <div ref={wrapperRef} className="w-full overflow-hidden">
+    <div ref={wrapperRef} className="hidden md:block w-full overflow-hidden">
       <section
         ref={sectionRef}
         className="relative w-full min-h-[380px] h-auto py-16 sm:py-24 md:py-0 md:h-[100svh] md:h-screen bg-white text-black flex items-center justify-center select-none overflow-hidden"

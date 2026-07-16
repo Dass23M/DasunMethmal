@@ -38,7 +38,7 @@ export default function HomePage() {
           {/* Pinned Scrub About Section */}
           <About />
 
-          <div className="scroll-reveal-section">
+          <div className="scroll-reveal-section hidden md:block">
             <BestWorksBanner />
           </div>
 

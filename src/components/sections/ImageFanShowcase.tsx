@@ -78,10 +78,20 @@ export default function ImageFanShowcase() {
   const socialRef = useRef<HTMLDivElement>(null);
 
   const [mounted, setMounted] = useState(false);
+  const [activeMobileIndex, setActiveMobileIndex] = useState(0);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Mobile auto-transition timer
+  useEffect(() => {
+    if (!mounted) return;
+    const interval = setInterval(() => {
+      setActiveMobileIndex((prev) => (prev + 1) % CARDS.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [mounted]);
 
   useEffect(() => {
     if (!mounted || !wrapperRef.current || !sectionRef.current) return;
@@ -291,7 +301,7 @@ export default function ImageFanShowcase() {
         {/* ── Headline ── */}
         <h2
           ref={headlineRef}
-          className="relative z-10 font-raleway font-black text-black text-center tracking-[0.03em] leading-[1.1] md:leading-[0.92] text-[2.6rem] sm:text-[3.5rem] md:text-[5.5rem] lg:text-[7rem] xl:text-[8.5rem] mb-8 md:mb-0 will-change-transform"
+          className="relative z-10 font-raleway font-black text-black text-center tracking-[0.03em] leading-[1.1] md:leading-[0.92] text-[1.8rem] sm:text-[2.8rem] md:text-[5.5rem] lg:text-[7rem] xl:text-[8.5rem] mb-8 md:mb-0 will-change-transform"
         >
           We build the next
         </h2>
@@ -324,30 +334,49 @@ export default function ImageFanShowcase() {
             ))}
           </div>
 
-          {/* Mobile: horizontal scroll */}
-          <div className="flex md:hidden gap-3 overflow-x-auto pb-4 px-4 snap-x snap-mandatory w-full max-w-full" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {CARDS.map((card, idx) => (
-              <div
-                key={idx}
-                ref={(el) => {
-                  if (typeof window !== 'undefined' && window.innerWidth < 768) {
-                    cardRefs.current[idx] = el;
-                  }
-                }}
-                className="relative flex-shrink-0 w-[55vw] sm:w-[42vw] aspect-[3/4] rounded-xl overflow-hidden snap-center"
-                style={{
-                  boxShadow: `0 12px 35px -8px ${card.accent}, 0 4px 15px -3px rgba(0,0,0,0.12)`,
-                }}
-              >
-                <Image
-                  src={card.src}
-                  alt={card.alt}
-                  fill
-                  sizes="55vw"
-                  className="object-cover"
+          {/* Mobile: auto-transitioning single card stack */}
+          <div className="flex md:hidden flex-col items-center gap-6 w-full px-4">
+            <div className="relative w-[65vw] aspect-[3/4] rounded-2xl shadow-xl">
+              {CARDS.map((card, idx) => {
+                const isActive = activeMobileIndex === idx;
+                return (
+                  <div
+                    key={idx}
+                    ref={(el) => { cardRefs.current[idx] = el; }}
+                    className={`absolute inset-0 w-full h-full rounded-2xl overflow-hidden transition-all duration-1000 ease-in-out ${
+                      isActive
+                        ? 'opacity-100 scale-100 pointer-events-auto z-10'
+                        : 'opacity-0 scale-95 pointer-events-none z-0'
+                    }`}
+                    style={{
+                      boxShadow: isActive ? `0 20px 50px -10px ${card.accent}` : 'none',
+                    }}
+                  >
+                    <Image
+                      src={card.src}
+                      alt={card.alt}
+                      fill
+                      sizes="65vw"
+                      className="object-cover"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            
+            {/* Pagination Dots */}
+            <div className="flex gap-2">
+              {CARDS.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveMobileIndex(idx)}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    activeMobileIndex === idx ? 'bg-black w-5' : 'bg-black/20'
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
                 />
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 

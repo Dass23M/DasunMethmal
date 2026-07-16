@@ -62,7 +62,7 @@ export default function Hero({
     <section
       id="home-section"
       ref={containerRef}
-      className="cover-v1 bg-cover bg-center bg-no-repeat w-full lg:bg-fixed"
+      className="cover-v1 bg-cover bg-[65%_center] md:bg-center bg-no-repeat w-full lg:bg-fixed"
       style={{
         backgroundImage: "url('/images/cover_bg_2.png')",
       }}

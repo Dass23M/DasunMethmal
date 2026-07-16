@@ -16,6 +16,7 @@ import Testimonials from '@/components/sections/Testimonials';
 import Journal from '@/components/sections/Journal';
 import FaqSection from '@/components/sections/FaqSection';
 import Contact from '@/components/sections/Contact';
+import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
 
 /**
  * Main one-page portfolio — home page.
@@ -31,6 +32,9 @@ export default function HomePage() {
 
         {/* Sections */}
         <Hero />
+
+        {/* Pinned Fan Image Showcase — no scroll-reveal wrapper (pin breaks with transform) */}
+        <ImageFanShowcase />
 
         <div className="below-hero-reveal">
           {/* Pinned Scrub About Section */}

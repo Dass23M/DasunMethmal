@@ -210,107 +210,28 @@ export default function ImageFanShowcase() {
         });
       });
 
-      // Mobile (<768px): Touch-optimized Vertical 3D Page Flip
+      // Mobile (<768px): Smooth Responsive Card Gallery with Staggered Scroll Reveal
       mm.add('(max-width: 767px)', () => {
-        pageEls.forEach((page, idx) => {
-          gsap.set(page, {
-            transformOrigin: 'center top',
-            transformStyle: 'preserve-3d',
-            backfaceVisibility: 'hidden',
-            rotateX: 0,
-            rotateY: 0,
-            y: idx * 40, // Compact peek offset for mobile viewports
-            scale: 1 - idx * 0.025,
-            z: -idx * 10,
+        pageEls.forEach((page) => {
+          gsap.set(page, { clearProps: 'all' });
+        });
+
+        gsap.fromTo(
+          pageEls,
+          { opacity: 0, y: 50, scale: 0.95 },
+          {
             opacity: 1,
-          });
-
-          const shadowEl = page.querySelector('.page-shadow');
-          if (shadowEl && idx > 0) {
-            gsap.set(shadowEl, { opacity: 0.3 });
-          }
-        });
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: wrapper,
-            start: 'top top',
-            end: '+=2200',
-            pin: true,
-            scrub: 1,
-            anticipatePin: 1,
-            fastScrollEnd: true,
-            invalidateOnRefresh: true,
-          },
-        });
-
-        pageEls.forEach((page, i) => {
-          if (i === pageEls.length - 1) return;
-
-          const shadowEl = page.querySelector('.page-shadow');
-          const startTime = i * 1.2;
-
-          for (let j = i + 1; j < pageEls.length; j++) {
-            const targetPage = pageEls[j];
-            const targetOffset = (j - i - 1) * 40;
-            const targetScale = 1 - (j - i - 1) * 0.025;
-            const targetShadow = targetPage.querySelector('.page-shadow');
-
-            tl.to(
-              targetPage,
-              {
-                y: targetOffset,
-                scale: targetScale,
-                duration: 1.2,
-                ease: 'power2.inOut',
-              },
-              startTime
-            );
-
-            if (targetShadow && j === i + 1) {
-              tl.to(
-                targetShadow,
-                { opacity: 0, duration: 1, ease: 'power1.inOut' },
-                startTime
-              );
-            }
-          }
-
-          if (shadowEl) {
-            tl.fromTo(
-              shadowEl,
-              { opacity: 0 },
-              { opacity: 0.5, duration: 0.6, ease: 'power2.in' },
-              startTime
-            ).to(
-              shadowEl,
-              { opacity: 0, duration: 0.6, ease: 'power2.out' },
-              startTime + 0.6
-            );
-          }
-
-          tl.to(
-            page,
-            {
-              rotateX: 100,
-              y: '-=90',
-              z: 30,
-              duration: 1.2,
-              ease: 'power2.inOut',
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 80%',
             },
-            startTime
-          );
-
-          tl.to(
-            page,
-            {
-              opacity: 0,
-              duration: 0.2,
-              ease: 'power1.out',
-            },
-            startTime + 1
-          );
-        });
+          }
+        );
       });
     }, wrapperRef);
 
@@ -326,27 +247,27 @@ export default function ImageFanShowcase() {
       <section
         id="vertical-book-section"
         ref={sectionRef}
-        className="relative w-full min-h-[100svh] py-6 sm:py-10 md:py-0 md:h-[100svh] md:h-screen bg-[#f8f8fa] flex items-center justify-center overflow-hidden"
+        className="relative w-full min-h-screen py-12 md:py-0 md:h-[100svh] md:h-screen bg-[#f8f8fa] flex items-center justify-center overflow-hidden"
       >
         {/* Top Book Crease Decor Line */}
         <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-black/15 to-transparent z-40 pointer-events-none" />
 
-        {/* 3D Book Stage Container */}
+        {/* ── DESKTOP 3D BOOK STAGE CONTAINER (≥768px) ── */}
         <div
           ref={bookRef}
-          className="relative w-full max-w-[1440px] h-[500px] xs:h-[530px] sm:h-[600px] md:h-[640px] max-h-[85vh] mx-auto px-3 sm:px-8 flex items-center justify-center"
+          className="relative w-full max-w-[1440px] hidden md:flex h-[600px] md:h-[640px] max-h-[85vh] mx-auto px-6 lg:px-12 items-center justify-center"
           style={{ perspective: '2200px', transformStyle: 'preserve-3d' }}
         >
           {PAGES.map((page, idx) => (
             <div
               key={page.id}
-              className="book-page absolute inset-x-3 sm:inset-x-8 top-0 bg-white rounded-2xl sm:rounded-3xl border border-gray-200/90 shadow-2xl p-4 xs:p-6 sm:p-10 lg:p-12 flex flex-col justify-between overflow-hidden"
+              className="book-page absolute inset-x-6 lg:inset-x-12 top-0 bg-white rounded-3xl border border-gray-200/90 shadow-2xl p-8 lg:p-12 flex flex-col justify-between overflow-hidden"
               style={{
                 zIndex: (PAGES.length - idx) * 10,
                 transformOrigin: 'center top',
                 transformStyle: 'preserve-3d',
                 backfaceVisibility: 'hidden',
-                boxShadow: '0 20px 45px -10px rgba(0, 0, 0, 0.12), 0 0 25px rgba(0, 0, 0, 0.04)',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.14), 0 0 30px rgba(0, 0, 0, 0.05)',
                 willChange: 'transform, opacity',
               }}
             >
@@ -354,34 +275,34 @@ export default function ImageFanShowcase() {
               <div className="page-shadow absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-transparent pointer-events-none z-30 opacity-0" />
 
               {/* Page Top Crease Gradient */}
-              <div className="absolute top-0 left-0 right-0 h-6 sm:h-8 bg-gradient-to-b from-black/5 to-transparent pointer-events-none z-20" />
+              <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-black/5 to-transparent pointer-events-none z-20" />
 
               {/* Main Content Area */}
               <div className="page-content relative z-10 w-full h-full flex flex-col justify-between">
                 
                 {/* Top Section Number Header matching reference image (✳ /001) */}
-                <div className="flex items-center gap-2 mb-2 sm:mb-6">
-                  <span className="text-[#FF6B00] text-sm sm:text-xl font-black">✳</span>
-                  <span className="font-mono text-xs sm:text-base font-bold tracking-wider text-black">
+                <div className="flex items-center gap-2 mb-6">
+                  <span className="text-[#FF6B00] text-xl font-black">✳</span>
+                  <span className="font-mono text-base font-bold tracking-wider text-black">
                     {page.number}
                   </span>
                 </div>
 
                 {/* Main Content Grid: Title & Tags Left / Large Image Right */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 lg:gap-14 items-center my-auto">
+                <div className="grid grid-cols-12 gap-8 lg:gap-14 items-center my-auto">
                   
                   {/* Left Column: Large Headline & Skill Tag Pills */}
-                  <div className="lg:col-span-6 flex flex-col justify-center">
-                    <h3 className="font-raleway font-black text-2xl xs:text-3xl sm:text-5xl lg:text-[4rem] xl:text-[4.4rem] leading-[1.02] text-black tracking-tight mb-3 sm:mb-6">
+                  <div className="col-span-6 flex flex-col justify-center">
+                    <h3 className="font-raleway font-black text-4xl lg:text-[4rem] xl:text-[4.4rem] leading-[1.02] text-black tracking-tight mb-6">
                       {page.title}
                     </h3>
 
                     {/* Skill / Technology Pills matching reference image */}
-                    <div className="flex flex-wrap gap-1.5 xs:gap-2 sm:gap-3">
+                    <div className="flex flex-wrap gap-3">
                       {page.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="font-arimo text-[10px] xs:text-xs sm:text-sm font-medium text-gray-800 bg-[#EFEFEF] px-2.5 py-1 sm:px-4 sm:py-2 rounded-md sm:rounded-lg border border-gray-300/40 shadow-xs transition-colors hover:bg-black hover:text-white"
+                          className="font-arimo text-xs lg:text-sm font-medium text-gray-800 bg-[#EFEFEF] px-4 py-2 rounded-lg border border-gray-300/40 shadow-xs transition-colors hover:bg-black hover:text-white"
                         >
                           {tag}
                         </span>
@@ -390,31 +311,31 @@ export default function ImageFanShowcase() {
                   </div>
 
                   {/* Right Column: Large Preview Image with 3-Dot Pagination Overlay */}
-                  <div className="lg:col-span-6 flex justify-center lg:justify-end">
-                    <div className="page-image-wrap relative w-full max-w-[540px] aspect-[16/10] sm:aspect-[16/11] rounded-xl sm:rounded-2xl overflow-hidden shadow-xl sm:shadow-2xl border border-black/5 bg-gray-100 transition-transform duration-500">
+                  <div className="col-span-6 flex justify-end">
+                    <div className="page-image-wrap relative w-full max-w-[540px] aspect-[16/11] rounded-2xl overflow-hidden shadow-2xl border border-black/5 bg-gray-100 transition-transform duration-500">
                       <Image
                         src={page.image}
                         alt={page.title}
                         fill
                         priority={idx === 0}
                         sizes="(max-width: 1024px) 100vw, 540px"
-                        className="object-cover rounded-xl sm:rounded-2xl"
+                        className="object-cover rounded-2xl"
                       />
 
                       {/* 3-Dot Pagination Pill at Bottom Center (matching screenshot •••) */}
-                      <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full flex items-center gap-1.5 sm:gap-2 border border-black/10 shadow-md">
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full flex items-center gap-2 border border-black/10 shadow-md">
                         <span
-                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${
+                          className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
                             page.activeDot === 0 ? 'bg-black scale-110' : 'bg-gray-400'
                           }`}
                         />
                         <span
-                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${
+                          className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
                             page.activeDot === 1 ? 'bg-black scale-110' : 'bg-gray-400'
                           }`}
                         />
                         <span
-                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${
+                          className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
                             page.activeDot === 2 ? 'bg-black scale-110' : 'bg-gray-400'
                           }`}
                         />
@@ -425,11 +346,82 @@ export default function ImageFanShowcase() {
                 </div>
 
                 {/* Bottom Footer Spacing */}
-                <div className="pt-2 sm:pt-4 border-t border-gray-100 flex items-center justify-between text-[10px] sm:text-xs font-mono text-gray-400 uppercase tracking-widest">
+                <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-mono text-gray-400 uppercase tracking-widest">
                   <span>EXCELLENCE IN DIGITAL CRAFT</span>
-                  <span className="hidden xs:inline">VERTICAL BOOK FLIP INTERACTION</span>
+                  <span>VERTICAL BOOK FLIP INTERACTION</span>
                 </div>
 
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── MOBILE RESPONSIVE CARD GALLERY CONTAINER (<768px) ── */}
+        <div className="w-full max-w-[600px] mx-auto px-4 flex md:hidden flex-col gap-6 py-4">
+          {PAGES.map((page, idx) => (
+            <div
+              key={`mob-${page.id}`}
+              className="book-page w-full bg-white rounded-2xl border border-gray-200/90 shadow-xl p-5 flex flex-col gap-4 overflow-hidden"
+            >
+              {/* Header Number */}
+              <div className="flex items-center gap-2">
+                <span className="text-[#FF6B00] text-base font-black">✳</span>
+                <span className="font-mono text-sm font-bold tracking-wider text-black">
+                  {page.number}
+                </span>
+              </div>
+
+              {/* Title */}
+              <h3 className="font-raleway font-black text-2xl xs:text-3xl leading-tight text-black tracking-tight">
+                {page.title}
+              </h3>
+
+              {/* Tag Pills */}
+              <div className="flex flex-wrap gap-2">
+                {page.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="font-arimo text-xs font-medium text-gray-800 bg-[#EFEFEF] px-3 py-1.5 rounded-md border border-gray-300/40"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Responsive Preview Image */}
+              <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-black/5 bg-gray-100 mt-1">
+                <Image
+                  src={page.image}
+                  alt={page.title}
+                  fill
+                  sizes="(max-width: 767px) 100vw, 400px"
+                  className="object-cover rounded-xl"
+                />
+
+                {/* 3-Dot Pagination Overlay */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1.5 border border-black/10 shadow-sm">
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                      page.activeDot === 0 ? 'bg-black' : 'bg-gray-400'
+                    }`}
+                  />
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                      page.activeDot === 1 ? 'bg-black' : 'bg-gray-400'
+                    }`}
+                  />
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                      page.activeDot === 2 ? 'bg-black' : 'bg-gray-400'
+                    }`}
+                  />
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-[10px] font-mono text-gray-400 uppercase tracking-widest">
+                <span>EXCELLENCE IN DIGITAL CRAFT</span>
+                <span>0{idx + 1} / 04</span>
               </div>
             </div>
           ))}

@@ -148,7 +148,8 @@ export default function GSAPFlipSection() {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      const setupPinnedFlip = (isMobile: boolean) => {
+      // ── Desktop (≥992px): Pinned GSAP Flip Layout Scrub ──
+      mm.add('(min-width: 992px)', () => {
         container.classList.remove(...LAYOUTS);
         container.classList.add('final');
         curLayoutIdx = 0;
@@ -157,34 +158,48 @@ export default function GSAPFlipSection() {
         gsap.set(getFlipTargets(), { clearProps: 'transform,opacity' });
         gsap.set(section, { clearProps: 'transform' });
 
-        const pinDistance = isMobile
-          ? () => `+=${Math.round(window.innerHeight * 1.8)}`
-          : '+=2400';
-
         ScrollTrigger.create({
           trigger: section,
           start: 'top top',
-          end: pinDistance,
+          end: '+=2400',
           pin: section,
           pinSpacing: true,
-          scrub: isMobile ? 1 : 1.2,
+          scrub: 1.2,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          ...(isMobile && {
-            fastScrollEnd: true,
-          }),
           onUpdate: (self) => {
             const targetIdx = layoutFromProgress(self.progress);
             if (targetIdx !== activeTargetIdx) {
               activeTargetIdx = targetIdx;
-              applyLayout(targetIdx, isMobile);
+              applyLayout(targetIdx, false);
             }
           },
         });
-      };
+      });
 
-      mm.add('(min-width: 992px)', () => setupPinnedFlip(false));
-      mm.add('(max-width: 991px)', () => setupPinnedFlip(true));
+      // ── Mobile (<992px): Smooth Staggered Scroll Reveal for Responsive Cards ──
+      mm.add('(max-width: 991px)', () => {
+        container.classList.remove(...LAYOUTS);
+        container.classList.add('final');
+
+        const cards = container.querySelectorAll('.flip-card');
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 40, scale: 0.96 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 80%',
+            },
+          }
+        );
+      });
     }, section);
 
     const refresh = () => ScrollTrigger.refresh();
@@ -498,35 +513,42 @@ export default function GSAPFlipSection() {
 
         /* ── Mobile layouts (<992px) ── */
         @media (max-width: 991px) {
+          .flip-section {
+            height: auto !important;
+            min-height: auto !important;
+            padding-top: 5rem;
+            padding-bottom: 3rem;
+          }
+
           .flip-container.final {
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: stretch;
-            height: 100svh;
-            padding: max(70px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
-            gap: 12px;
+            height: auto;
+            padding: 0 16px;
+            gap: 16px;
           }
 
           .flip-container.final .flip-card {
-            flex: 1 1 0;
-            min-height: 0;
+            flex: none;
+            height: 140px;
             width: 100%;
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
-            border-radius: 16px;
-            padding: 0.9rem 1.2rem;
+            border-radius: 20px;
+            padding: 1.2rem 1.4rem;
             gap: 1.2rem;
           }
 
           .flip-container.final .flip-num-badge {
             margin-bottom: 0;
-            font-size: 0.65rem;
-            padding: 2px 7px;
+            font-size: 0.7rem;
+            padding: 3px 9px;
           }
 
           .flip-container.final .flip-letter {
-            font-size: clamp(2.2rem, 9.5vw, 3.2rem);
+            font-size: clamp(2.4rem, 10vw, 3.5rem);
             flex-shrink: 0;
           }
 
@@ -536,12 +558,12 @@ export default function GSAPFlipSection() {
           }
 
           .flip-container.final .flip-service-label .svc-name {
-            font-size: clamp(0.85rem, 3.8vw, 1.1rem);
+            font-size: clamp(0.95rem, 4vw, 1.2rem);
             text-align: left;
           }
 
           .flip-container.final .flip-service-label .svc-sub {
-            font-size: clamp(0.6rem, 2.5vw, 0.72rem);
+            font-size: clamp(0.65rem, 2.8vw, 0.8rem);
             text-align: left;
           }
 

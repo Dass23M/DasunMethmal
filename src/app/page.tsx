@@ -32,16 +32,17 @@ export default function HomePage() {
         {/* Sections */}
         <Hero />
 
-        {/* Impact Showcase Section — Directly Below Hero */}
+        {/* 1. Impact Section — Directly Below Hero */}
         <ImpactSection />
 
-        {/* Pinned Fan Image Showcase — no scroll-reveal wrapper (pin breaks with transform) */}
-        <ImageFanShowcase />
-
         <div className="below-hero-reveal">
-          {/* Pinned Scrub About Section */}
+          {/* 2. Pinned Scrub About Section */}
           <About />
 
+          {/* 3. Image Fan Showcase */}
+          <ImageFanShowcase />
+
+          {/* 4. Best Works Banner */}
           <div className="scroll-reveal-section hidden md:block">
             <BestWorksBanner />
           </div>

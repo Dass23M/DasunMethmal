@@ -1,98 +1,75 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-const CARDS_DATA = [
-  {
-    id: 'react',
-    title: 'React.js Frontend',
-    tag: 'UI Components • Hooks • Virtual DOM',
-    accentColor: '#61DAFB',
-    bgGradient: 'from-[#081826] via-[#0e273c] to-[#040e17]',
-    renderIcon: () => (
-      <svg className="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-[0_0_20px_rgba(97,218,251,0.6)]" viewBox="0 0 100 100" fill="none">
-        <circle cx="50" cy="50" r="8" fill="#61DAFB" />
-        <ellipse cx="50" cy="50" rx="36" ry="14" stroke="#61DAFB" strokeWidth="3" transform="rotate(0 50 50)" />
-        <ellipse cx="50" cy="50" rx="36" ry="14" stroke="#61DAFB" strokeWidth="3" transform="rotate(60 50 50)" />
-        <ellipse cx="50" cy="50" rx="36" ry="14" stroke="#61DAFB" strokeWidth="3" transform="rotate(120 50 50)" />
-      </svg>
-    ),
-  },
-  {
-    id: 'express',
-    title: 'Express.js Framework',
-    tag: 'RESTful APIs • Middleware • Routing',
-    accentColor: '#FF6B00',
-    bgGradient: 'from-[#1a1816] via-[#2a241e] to-[#0d0c0a]',
-    renderIcon: () => (
-      <svg className="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-[0_0_20px_rgba(255,107,0,0.5)]" viewBox="0 0 100 100" fill="none">
-        <rect x="20" y="25" width="60" height="50" rx="12" stroke="#FFFFFF" strokeWidth="3.5" fill="none" />
-        <path d="M35 50 H65 M35 40 H50 M35 60 H58" stroke="#FF6B00" strokeWidth="4" strokeLinecap="round" />
-        <circle cx="70" cy="35" r="4" fill="#FF6B00" />
-      </svg>
-    ),
-  },
-  {
-    id: 'mongo',
-    title: 'MongoDB Database',
-    tag: 'NoSQL Schemas • Aggregation • Cloud',
-    accentColor: '#47A248',
-    bgGradient: 'from-[#091f14] via-[#113322] to-[#04120a]',
-    renderIcon: () => (
-      <svg className="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-[0_0_20px_rgba(71,162,72,0.6)]" viewBox="0 0 100 100" fill="none">
-        <path d="M50 15 C50 15 25 35 25 60 C25 75 36 85 50 85 C64 85 75 75 75 60 C75 35 50 15 50 15 Z" stroke="#47A248" strokeWidth="3.5" fill="none" />
-        <path d="M50 15 V85" stroke="#47A248" strokeWidth="3" />
-        <path d="M38 52 C45 60 50 62 50 62 M62 52 C55 60 50 62 50 62" stroke="#68D391" strokeWidth="3" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    id: 'node',
-    title: 'Node.js Runtime',
-    tag: 'Event Loop • Non-Blocking • NPM',
-    accentColor: '#5FA04E',
-    bgGradient: 'from-[#0e2115] via-[#183623] to-[#06120b]',
-    renderIcon: () => (
-      <svg className="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-[0_0_20px_rgba(95,160,78,0.6)]" viewBox="0 0 100 100" fill="none">
-        <polygon points="50,15 82,33 82,67 50,85 18,67 18,33" stroke="#5FA04E" strokeWidth="3.5" fill="none" />
-        <polygon points="50,28 70,39 70,61 50,72 30,61 30,39" stroke="#68D391" strokeWidth="2.5" fill="none" />
-        <circle cx="50" cy="50" r="7" fill="#5FA04E" />
-      </svg>
-    ),
-  },
-  {
-    id: 'fullstack',
-    title: 'MERN Fullstack Architecture',
-    tag: 'End-to-End Apps • Security • Cloud',
-    accentColor: '#FF6B00',
-    bgGradient: 'from-[#19132b] via-[#271d45] to-[#0e091a]',
-    renderIcon: () => (
-      <svg className="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-[0_0_20px_rgba(255,107,0,0.5)]" viewBox="0 0 100 100" fill="none">
-        <circle cx="35" cy="35" r="16" stroke="#61DAFB" strokeWidth="3" />
-        <circle cx="65" cy="35" r="16" stroke="#5FA04E" strokeWidth="3" />
-        <circle cx="35" cy="65" r="16" stroke="#47A248" strokeWidth="3" />
-        <circle cx="65" cy="65" r="16" stroke="#FF6B00" strokeWidth="3" />
-        <path d="M35 35 L65 65 M65 35 L35 65" stroke="#FFFFFF" strokeWidth="2" opacity="0.6" />
-      </svg>
-    ),
-  },
-];
+gsap.registerPlugin(ScrollTrigger);
 
-const MERN_STACK_TAGS = [
-  { label: 'Mongo', href: '#' },
-  { label: 'Express', href: '#' },
-  { label: 'React', href: '#' },
-  { label: 'Node', href: '#' },
+const PAGES = [
+  {
+    id: '001',
+    number: '/001',
+    title: 'UI/UX Design',
+    tags: [
+      'Usability Testing',
+      'User Research',
+      'Wireframing',
+      'Interface Design',
+      'Interactive Prototyping',
+    ],
+    image: '/images/fashion1.png',
+    activeDot: 0,
+  },
+  {
+    id: '002',
+    number: '/002',
+    title: 'Mobile App Design',
+    tags: [
+      'User Research',
+      'App Wireframing',
+      'UI/UX Design',
+      'Interactive Prototyping',
+      'Usability Testing',
+    ],
+    image: '/images/fashion2.webp',
+    activeDot: 1,
+  },
+  {
+    id: '003',
+    number: '/003',
+    title: 'Brand Identity & Strategy',
+    tags: [
+      'Brand Architecture',
+      'Visual Identity',
+      'Design Systems',
+      'Typography',
+      'Digital Strategy',
+    ],
+    image: '/images/fashion3.jpg',
+    activeDot: 2,
+  },
+  {
+    id: '004',
+    number: '/004',
+    title: 'Web Development & Architecture',
+    tags: [
+      'Fullstack Development',
+      'React.js & Next.js',
+      'Node.js & Express',
+      'GSAP 3D Animations',
+      'Performance Tuning',
+    ],
+    image: '/images/fashion4.jpg',
+    activeDot: 0,
+  },
 ];
 
 export default function ImageFanShowcase() {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const galleryRef = useRef<HTMLElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const cardsListRef = useRef<HTMLUListElement>(null);
-  const stepNextRef = useRef<(() => void) | null>(null);
-  const stepPrevRef = useRef<(() => void) | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const bookRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -100,191 +77,265 @@ export default function ImageFanShowcase() {
   }, []);
 
   useEffect(() => {
-    if (!mounted || !wrapperRef.current || !galleryRef.current || !cardsListRef.current) return;
+    if (!mounted || !wrapperRef.current || !bookRef.current) return;
 
     const wrapper = wrapperRef.current;
-    const cardElements = gsap.utils.toArray<HTMLElement>(cardsListRef.current.children);
+    const book = bookRef.current;
+    const pageEls = gsap.utils.toArray<HTMLElement>(book.querySelectorAll('.book-page'));
 
     const ctx = gsap.context(() => {
-      const spacing = 0.2;
-      const seamlessLoop = buildSeamlessLoop(cardElements, spacing);
+      const mm = gsap.matchMedia();
 
-      const autoTween = gsap.to(seamlessLoop, {
-        time: seamlessLoop.duration(),
-        duration: 28,
-        ease: 'none',
-        repeat: -1,
-      });
+      // Desktop & Tablet (≥768px): Pinned 3D Physical Book Page Turning Scrub
+      mm.add('(min-width: 768px)', () => {
+        // Set initial 3D stack positions: Page 1 on top, Page 2,3,4 flat underneath
+        pageEls.forEach((page, idx) => {
+          gsap.set(page, {
+            transformOrigin: 'left center',
+            transformStyle: 'preserve-3d',
+            backfaceVisibility: 'hidden',
+            rotateY: 0,
+            rotateZ: 0,
+            z: 0,
+            opacity: 1,
+          });
 
-      stepNextRef.current = () => {
-        autoTween.pause();
-        const step = spacing * seamlessLoop.duration();
-        gsap.to(seamlessLoop, {
-          time: `+=${step}`,
-          duration: 0.8,
-          ease: 'power2.inOut',
-          onComplete: () => autoTween.play(),
+          // Initial shadow on pages underneath top page
+          const shadowEl = page.querySelector('.page-shadow');
+          if (shadowEl && idx > 0) {
+            gsap.set(shadowEl, { opacity: 0.4 });
+          }
         });
-      };
 
-      stepPrevRef.current = () => {
-        autoTween.pause();
-        const step = spacing * seamlessLoop.duration();
-        gsap.to(seamlessLoop, {
-          time: `-=${step}`,
-          duration: 0.8,
-          ease: 'power2.inOut',
-          onComplete: () => autoTween.play(),
-        });
-      };
-
-      function buildSeamlessLoop(items: HTMLElement[], spacingVal: number) {
-        const overlap = Math.ceil(1 / spacingVal);
-        const startTime = items.length * spacingVal + 0.5;
-        const loopTime = (items.length + overlap) * spacingVal + 1;
-        const rawSequence = gsap.timeline({ paused: true });
-        const loopTimeline = gsap.timeline({
-          paused: true,
-          repeat: -1,
-          onRepeat() {
-            if ((this as any)._time === (this as any)._dur) {
-              (this as any)._tTime += (this as any)._dur - 0.01;
-            }
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'top top',
+            end: '+=3600',
+            pin: true,
+            scrub: 1.2,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
           },
         });
 
-        const l = items.length + overlap * 2;
-        let time = 0;
-        let index = 0;
-        let item: HTMLElement;
+        // Loop through pages 0..N-2 (Page 1 -> Page 2 -> Page 3 -> Page 4)
+        pageEls.forEach((page, i) => {
+          if (i === pageEls.length - 1) return; // Last page stays flat as bottom base
 
-        gsap.set(items, { xPercent: 350, opacity: 0, scale: 0 });
+          const shadowEl = page.querySelector('.page-shadow');
+          const imgEl = page.querySelector('.page-image-wrap');
+          const nextPage = pageEls[i + 1];
+          const nextShadowEl = nextPage?.querySelector('.page-shadow');
 
-        for (let i = 0; i < l; i++) {
-          index = i % items.length;
-          item = items[index];
-          time = i * spacingVal;
-          rawSequence
-            .fromTo(
-              item,
-              { scale: 0, opacity: 0 },
-              {
-                scale: 1,
-                opacity: 1,
-                zIndex: 100,
-                duration: 0.5,
-                yoyo: true,
-                repeat: 1,
-                ease: 'power1.in',
-                immediateRender: false,
-              },
-              time
-            )
-            .fromTo(
-              item,
-              { xPercent: 350 },
-              { xPercent: -350, duration: 1, ease: 'none', immediateRender: false },
-              time
+          const startTime = i * 1.5;
+
+          // 1. Shadow on the page directly underneath: gradually lifts/lightens as top page turns away
+          if (nextShadowEl) {
+            tl.fromTo(
+              nextShadowEl,
+              { opacity: 0.5 },
+              { opacity: 0, duration: 1.2, ease: 'power1.inOut' },
+              startTime
             );
-
-          if (i <= items.length) {
-            loopTimeline.add('label' + i, time);
           }
-        }
 
-        rawSequence.time(startTime);
-        loopTimeline
-          .to(rawSequence, {
-            time: loopTime,
-            duration: loopTime - startTime,
-            ease: 'none',
-          })
-          .fromTo(
-            rawSequence,
-            { time: overlap * spacingVal + 1 },
+          // 2. Paper turn shadow on flipping page: ramps up mid-turn and clears as page folds
+          if (shadowEl) {
+            tl.fromTo(
+              shadowEl,
+              { opacity: 0 },
+              { opacity: 0.7, duration: 0.75, ease: 'power2.in' },
+              startTime
+            ).to(
+              shadowEl,
+              { opacity: 0, duration: 0.75, ease: 'power2.out' },
+              startTime + 0.75
+            );
+          }
+
+          // 3. 3D Page Turn Motion: lifts from right edge, rotates around left spine, adds 3D arc lift
+          tl.to(
+            page,
             {
-              time: startTime,
-              duration: startTime - (overlap * spacingVal + 1),
-              immediateRender: false,
-              ease: 'none',
-            }
+              rotateY: -160,
+              rotateZ: -1.5,
+              z: 35,
+              duration: 1.5,
+              ease: 'power2.inOut',
+            },
+            startTime
           );
 
-        return loopTimeline;
-      }
-    }, wrapper);
+          // 4. Subtle image zoom & 3D tilt during page lift
+          if (imgEl) {
+            tl.to(
+              imgEl,
+              { scale: 1.04, rotateY: 5, duration: 0.75, ease: 'power1.in' },
+              startTime
+            ).to(
+              imgEl,
+              { scale: 0.98, rotateY: 0, duration: 0.75, ease: 'power1.out' },
+              startTime + 0.75
+            );
+          }
+
+          // 5. Complete opacity transition at end of flip so folded page rests behind left spine cleanly
+          tl.to(
+            page,
+            {
+              opacity: 0,
+              duration: 0.2,
+              ease: 'power1.out',
+            },
+            startTime + 1.3
+          );
+        });
+      });
+
+      // Mobile (<768px): Responsive stacked cards with smooth scroll entrance
+      mm.add('(max-width: 767px)', () => {
+        pageEls.forEach((page) => {
+          gsap.set(page, { clearProps: 'all' });
+        });
+
+        gsap.fromTo(
+          pageEls,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 75%',
+            },
+          }
+        );
+      });
+    }, wrapperRef);
 
     return () => ctx.revert();
   }, [mounted]);
 
-  const handlePrev = () => stepPrevRef.current?.();
-  const handleNext = () => stepNextRef.current?.();
-
-  if (!mounted) return <section className="w-full min-h-screen bg-white" />;
+  if (!mounted) {
+    return <section className="w-full h-screen bg-[#f8f8fa]" />;
+  }
 
   return (
-    <div ref={wrapperRef} className="w-full overflow-hidden bg-white py-12 md:py-20">
+    <div ref={wrapperRef} className="w-full overflow-hidden bg-[#f8f8fa] text-black select-none">
       <section
-        ref={galleryRef}
-        className="relative w-full h-[550px] sm:h-[600px] md:h-[650px] bg-white flex flex-col items-center justify-center select-none overflow-hidden"
+        id="services-section"
+        ref={sectionRef}
+        className="relative w-full min-h-screen py-10 md:py-0 md:h-[100svh] md:h-screen bg-[#f8f8fa] flex items-center justify-center overflow-hidden"
       >
-        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-raleway font-black text-[18vw] md:text-[22vw] tracking-[0.1em] text-black pointer-events-none select-none z-0 whitespace-nowrap opacity-[0.05]">
-          MERN
-        </span>
+        {/* Left Book Spine Decor Binding Line */}
+        <div className="absolute top-0 bottom-0 left-0 sm:left-4 md:left-8 w-1.5 sm:w-2.5 bg-gradient-to-r from-black/20 to-transparent z-40 pointer-events-none" />
 
-        <div className="absolute left-4 sm:left-6 lg:left-10 top-1/2 -translate-y-1/2 z-20 hidden md:flex flex-col gap-4">
-          {MERN_STACK_TAGS.map((tag) => (
-            <span key={tag.label} className="font-raleway font-bold text-xs tracking-widest text-black/50 uppercase">
-              {tag.label}
-            </span>
-          ))}
-        </div>
+        {/* 3D Book Stage Container */}
+        <div
+          ref={bookRef}
+          className="relative w-full max-w-[1440px] h-[580px] sm:h-[640px] md:h-[680px] mx-auto px-4 sm:px-8 flex items-center justify-center"
+          style={{ perspective: '2200px', transformStyle: 'preserve-3d' }}
+        >
+          {PAGES.map((page, idx) => (
+            <div
+              key={page.id}
+              className="book-page absolute inset-0 bg-white rounded-2xl sm:rounded-3xl border border-gray-200/90 shadow-2xl p-6 sm:p-10 lg:p-14 flex flex-col justify-between overflow-hidden"
+              style={{
+                zIndex: (PAGES.length - idx) * 10,
+                transformOrigin: 'left center',
+                transformStyle: 'preserve-3d',
+                backfaceVisibility: 'hidden',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.14), 0 0 30px rgba(0, 0, 0, 0.05)',
+                willChange: 'transform, opacity',
+              }}
+            >
+              {/* Dynamic Paper Turn Shadow Overlay */}
+              <div className="page-shadow absolute inset-0 bg-gradient-to-r from-black/40 via-black/15 to-transparent pointer-events-none z-30 opacity-0" />
 
-        <div className="absolute right-4 sm:right-6 lg:right-10 top-1/2 -translate-y-1/2 z-20 hidden md:flex flex-col items-center gap-3">
-          <span className="font-raleway font-bold text-[10px] tracking-[0.25em] text-black/40 uppercase" style={{ writingMode: 'vertical-rl' }}>
-            Tech Stack Showcase
-          </span>
-          <span className="w-[1px] h-10 bg-black/20" />
-        </div>
+              {/* Page Spine Crease Gradient */}
+              <div className="absolute top-0 bottom-0 left-0 w-10 bg-gradient-to-r from-black/6 to-transparent pointer-events-none z-20" />
 
-        <div className="absolute top-[4vh] sm:top-[6vh] z-10 w-full px-4 text-center">
-          <h2 ref={headlineRef} className="font-raleway font-black text-black tracking-[0.03em] leading-[1.1] md:leading-[0.92] text-[1.8rem] sm:text-[2.8rem] md:text-[4.2rem] lg:text-[5.5rem] xl:text-[6.8rem]">
-            Engineering MERN Apps
-          </h2>
-        </div>
-
-        <div className="relative w-full h-[320px] sm:h-[380px] md:h-[420px] flex items-center justify-center z-10 mt-[10vh]">
-          <ul ref={cardsListRef} className="relative w-[14rem] sm:w-[16rem] md:w-[19rem] h-[17rem] sm:h-[20rem] md:h-[22rem] list-none p-0 m-0">
-            {CARDS_DATA.map((card) => (
-              <li
-                key={card.id}
-                className={`absolute top-0 left-0 w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-white/10 flex flex-col items-center justify-between p-6 bg-gradient-to-br ${card.bgGradient}`}
-              >
-                <div className="w-full flex justify-between items-center z-10">
-                  <span className="font-raleway font-bold text-[10px] uppercase tracking-widest text-white/60">MERN STACK</span>
-                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: card.accentColor }} />
-                </div>
-                <div className="my-auto flex items-center justify-center z-10 transition-transform duration-500 hover:scale-110">
-                  {card.renderIcon()}
-                </div>
-                <div className="w-full text-center z-10">
-                  <h4 className="font-raleway font-bold text-base sm:text-lg text-white tracking-tight leading-tight">{card.title}</h4>
-                  <span className="inline-block mt-1.5 font-arimo text-[10px] sm:text-[11px] font-medium text-white/80 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/15">
-                    {card.tag}
+              {/* Main Content Area */}
+              <div className="page-content relative z-10 w-full h-full flex flex-col justify-between">
+                
+                {/* Top Section Number Header matching reference image (✳ /001) */}
+                <div className="flex items-center gap-2 mb-4 sm:mb-6">
+                  <span className="text-[#FF6B00] text-base sm:text-xl font-black">✳</span>
+                  <span className="font-mono text-sm sm:text-base font-bold tracking-wider text-black">
+                    {page.number}
                   </span>
                 </div>
-              </li>
-            ))}
-          </ul>
-        </div>
 
-        <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4">
-          <button onClick={handlePrev} className="px-6 py-2.5 bg-black text-white font-raleway font-bold text-xs uppercase tracking-widest rounded-full border border-black hover:bg-white hover:text-black transition-all duration-300 shadow-lg active:scale-95 cursor-pointer">
-            Prev
-          </button>
-          <button onClick={handleNext} className="px-6 py-2.5 bg-black text-white font-raleway font-bold text-xs uppercase tracking-widest rounded-full border border-black hover:bg-white hover:text-black transition-all duration-300 shadow-lg active:scale-95 cursor-pointer">
-            Next
-          </button>
+                {/* Main Content Grid: Title & Tags Left / Large Image Right */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center my-auto">
+                  
+                  {/* Left Column: Large Headline & Skill Tag Pills */}
+                  <div className="lg:col-span-6 flex flex-col justify-center">
+                    <h3 className="font-raleway font-black text-3xl xs:text-4xl sm:text-5xl lg:text-[4rem] xl:text-[4.4rem] leading-[1.02] text-black tracking-tight mb-6">
+                      {page.title}
+                    </h3>
+
+                    {/* Skill / Technology Pills matching reference image */}
+                    <div className="flex flex-wrap gap-2.5 sm:gap-3">
+                      {page.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="font-arimo text-xs sm:text-sm font-medium text-gray-800 bg-[#EFEFEF] px-4 py-2 rounded-lg border border-gray-300/40 shadow-xs transition-colors hover:bg-black hover:text-white"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Right Column: Large Preview Image with 3-Dot Pagination Overlay */}
+                  <div className="lg:col-span-6 flex justify-center lg:justify-end">
+                    <div className="page-image-wrap relative w-full max-w-[540px] aspect-[4/3] sm:aspect-[16/11] rounded-2xl overflow-hidden shadow-2xl border border-black/5 bg-gray-100 transition-transform duration-500">
+                      <Image
+                        src={page.image}
+                        alt={page.title}
+                        fill
+                        priority={idx === 0}
+                        sizes="(max-width: 1024px) 100vw, 540px"
+                        className="object-cover rounded-2xl"
+                      />
+
+                      {/* 3-Dot Pagination Pill at Bottom Center (matching screenshot •••) */}
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full flex items-center gap-2 border border-black/10 shadow-md">
+                        <span
+                          className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                            page.activeDot === 0 ? 'bg-black scale-110' : 'bg-gray-400'
+                          }`}
+                        />
+                        <span
+                          className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                            page.activeDot === 1 ? 'bg-black scale-110' : 'bg-gray-400'
+                          }`}
+                        />
+                        <span
+                          className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                            page.activeDot === 2 ? 'bg-black scale-110' : 'bg-gray-400'
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Bottom Footer Spacing */}
+                <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-mono text-gray-400 uppercase tracking-widest">
+                  <span>EXCELLENCE IN DIGITAL CRAFT</span>
+                  <span>BOOK PAGE TURNING INTERACTION</span>
+                </div>
+
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>

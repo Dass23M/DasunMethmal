@@ -8,9 +8,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * GSAP ScrollTrigger section orchestrator.
- * - Scroll-scrubbed bottom-up reveals for every `.scroll-reveal-section`
- * - Desktop-only hero pin + parallax (layout breakpoints unchanged)
- * - Syncs with Lenis via SmoothScrollProvider for momentum-based scrub
+ * - Desktop-only smooth section reveals + parallax covers + hero pin
+ * - Mobile (<992px): Keeps all sections 100% visible, unblocked & responsive
  */
 export default function GSAPSectionAnimator({
   children,
@@ -24,33 +23,33 @@ export default function GSAPSectionAnimator({
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      // ── GSAP Element-Only Staggered Entrance Reveals (desktop + mobile) ──
-      const revealSections = gsap.utils.toArray<HTMLElement>('.scroll-reveal-section');
-
-      revealSections.forEach((section) => {
-        const innerChildren = section.querySelectorAll('h2, h3, h4, p, img, .card, a, button, .reveal-child');
-
-        if (innerChildren.length > 0) {
-          gsap.set(innerChildren, { autoAlpha: 0, y: 55 });
-
-          gsap.to(innerChildren, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 1.1,
-            stagger: 0.1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 82%',
-              toggleActions: 'play none none reverse',
-              invalidateOnRefresh: true,
-            },
-          });
-        }
-      });
-
-      // ── Desktop-only: parallax covers, hero scrub, hero pin ──
+      // ── Desktop (≥992px): Smooth, non-destructive section reveal + parallax + hero pin ──
       mm.add('(min-width: 992px)', () => {
+        const revealSections = gsap.utils.toArray<HTMLElement>('.scroll-reveal-section');
+
+        revealSections.forEach((section) => {
+          gsap.fromTo(
+            section,
+            { opacity: 0, y: 35 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 90%',
+                toggleActions: 'play none none reverse',
+                invalidateOnRefresh: true,
+                onLeave: () => {
+                  gsap.set(section, { clearProps: 'transform,opacity,visibility' });
+                },
+              },
+            }
+          );
+        });
+
+        // Parallax covers
         const covers = document.querySelectorAll('.cover-v1');
         covers.forEach((cover) => {
           gsap.fromTo(
@@ -82,9 +81,7 @@ export default function GSAPSectionAnimator({
               scrub: 1.2,
             },
           });
-        }
 
-        if (document.querySelector('#home-section')) {
           ScrollTrigger.create({
             trigger: '#home-section',
             start: 'top top',
@@ -95,11 +92,21 @@ export default function GSAPSectionAnimator({
           });
         }
       });
+
+      // ── Mobile (<992px): Ensure all sections below Hero are 100% visible and unblocked ──
+      mm.add('(max-width: 991px)', () => {
+        const revealSections = gsap.utils.toArray<HTMLElement>('.scroll-reveal-section');
+        revealSections.forEach((section) => {
+          gsap.set(section, { clearProps: 'all', opacity: 1, visibility: 'visible' });
+          const children = section.querySelectorAll('*');
+          gsap.set(children, { clearProps: 'opacity,visibility,transform' });
+        });
+      });
     });
 
     const refresh = () => ScrollTrigger.refresh();
-    const t1 = window.setTimeout(refresh, 400);
-    const t2 = window.setTimeout(refresh, 1200);
+    const t1 = window.setTimeout(refresh, 250);
+    const t2 = window.setTimeout(refresh, 800);
     window.addEventListener('load', refresh);
 
     return () => {

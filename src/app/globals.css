@@ -18,7 +18,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
@@ -1545,22 +1545,10 @@ textarea.form-control {
   background: #000;
 }
 
-/* Section reveals (desktop GSAP animated, mobile 100% visible & unblocked) */
-@media (min-width: 992px) {
-  .scroll-reveal-section {
-    will-change: transform, opacity;
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-@media (max-width: 991.98px) {
-  .scroll-reveal-section {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: none !important;
-    will-change: auto;
-  }
+/* Section wrappers */
+.scroll-reveal-section {
+  position: relative;
+  width: 100%;
 }
 
 @keyframes sweepCover {

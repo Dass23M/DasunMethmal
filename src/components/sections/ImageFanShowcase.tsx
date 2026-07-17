@@ -19,7 +19,7 @@ const PAGES = [
       'Interface Design',
       'Interactive Prototyping',
     ],
-    image: '/images/fashion1.png',
+    image: '/images/fashion2.webp',
     activeDot: 0,
   },
   {
@@ -33,7 +33,7 @@ const PAGES = [
       'Interactive Prototyping',
       'Usability Testing',
     ],
-    image: '/images/fashion2.webp',
+    image: '/images/fashion1.png',
     activeDot: 1,
   },
   {
@@ -258,7 +258,7 @@ export default function ImageFanShowcase() {
 
               {/* Main Content Area */}
               <div className="page-content relative z-10 w-full h-full flex flex-col justify-between">
-                
+
                 {/* Top Section Number Header matching reference image (✳ /001) */}
                 <div className="flex items-center gap-2 mb-2 sm:mb-6">
                   <span className="text-[#FF6B00] text-base sm:text-xl font-black">✳</span>
@@ -269,7 +269,7 @@ export default function ImageFanShowcase() {
 
                 {/* Main Content Grid: Title & Tags Left / Large Image Right */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 lg:gap-14 items-center my-auto">
-                  
+
                   {/* Left Column: Large Headline & Skill Tag Pills */}
                   <div className="lg:col-span-6 flex flex-col justify-center">
                     <h3 className="font-raleway font-black text-2xl xs:text-3xl sm:text-4xl lg:text-[4rem] xl:text-[4.4rem] leading-[1.02] text-black tracking-tight mb-3 sm:mb-6">
@@ -304,19 +304,16 @@ export default function ImageFanShowcase() {
                       {/* 3-Dot Pagination Pill at Bottom Center (matching screenshot •••) */}
                       <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full flex items-center gap-1.5 sm:gap-2 border border-black/10 shadow-md">
                         <span
-                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${
-                            page.activeDot === 0 ? 'bg-black scale-110' : 'bg-gray-400'
-                          }`}
+                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${page.activeDot === 0 ? 'bg-black scale-110' : 'bg-gray-400'
+                            }`}
                         />
                         <span
-                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${
-                            page.activeDot === 1 ? 'bg-black scale-110' : 'bg-gray-400'
-                          }`}
+                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${page.activeDot === 1 ? 'bg-black scale-110' : 'bg-gray-400'
+                            }`}
                         />
                         <span
-                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${
-                            page.activeDot === 2 ? 'bg-black scale-110' : 'bg-gray-400'
-                          }`}
+                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${page.activeDot === 2 ? 'bg-black scale-110' : 'bg-gray-400'
+                            }`}
                         />
                       </div>
                     </div>

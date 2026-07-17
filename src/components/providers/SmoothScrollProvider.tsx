@@ -9,9 +9,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Premium Momentum-Based Smooth Scrolling Engine (Lenis).
- * - Syncs with GSAP ScrollTrigger
+ * - Perfectly synchronized with GSAP ScrollTrigger ticker & pins
  * - Respects prefers-reduced-motion accessibility setting
- * - Provides natural momentum scrolling
+ * - Provides ultra-fluid momentum scrolling on Desktop and Mobile
  */
 export default function SmoothScrollProvider({
   children,
@@ -19,58 +19,41 @@ export default function SmoothScrollProvider({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    // Check reduced motion accessibility
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
 
-    // Lighter touch inertia on phones so pins / native scroll fight less
     const isTouchMobile = window.matchMedia('(max-width: 991px)').matches;
 
     const lenis = new Lenis({
-      duration: isTouchMobile ? 0.85 : 1.2,
+      duration: isTouchMobile ? 1.0 : 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: isTouchMobile ? 1.15 : 1.5,
-      syncTouch: isTouchMobile,
-      syncTouchLerp: 0.08,
+      touchMultiplier: 1.2,
     });
 
-    // Share lenis globally for layouts to interact with (e.g. scrollTo)
     (window as any).lenis = lenis;
 
-    // Connect Lenis to ScrollTrigger (scrollerProxy keeps pin/scrub accurate on touch)
-    ScrollTrigger.scrollerProxy(document.documentElement, {
-      scrollTop(value) {
-        if (typeof value === 'number') {
-          lenis.scrollTo(value, { immediate: true });
-        }
-        return lenis.scroll;
-      },
-      getBoundingClientRect() {
-        return {
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight,
-        };
-      },
-    });
-
-    const onRefresh = () => lenis.resize();
-    ScrollTrigger.addEventListener('refresh', onRefresh);
+    // Synchronize Lenis scroll updates with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
 
-    // Run Lenis tick within GSAP ticker
-    const gsapTick = (time: number) => {
+    // Run Lenis RAF via GSAP ticker for 60/120 FPS lock
+    const updateLenis = (time: number) => {
       lenis.raf(time * 1000);
     };
-    gsap.ticker.add(gsapTick);
+    gsap.ticker.add(updateLenis);
     gsap.ticker.lagSmoothing(0);
 
-    // Intercept clicks on anchor links on the same page
+    // Refresh ScrollTrigger when Lenis resizes
+    const onResize = () => {
+      lenis.resize();
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener('resize', onResize);
+
+    // Intercept clicks on anchor links (#section)
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchorLink = target.closest('a');
@@ -83,7 +66,7 @@ export default function SmoothScrollProvider({
         if (element) {
           lenis.scrollTo(element, {
             offset: 0,
-            duration: 1.4,
+            duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           });
         }
@@ -96,7 +79,7 @@ export default function SmoothScrollProvider({
           if (element) {
             lenis.scrollTo(element, {
               offset: 0,
-              duration: 1.4,
+              duration: 1.2,
             });
           }
         }
@@ -106,11 +89,10 @@ export default function SmoothScrollProvider({
     document.addEventListener('click', handleAnchorClick);
 
     return () => {
-      ScrollTrigger.removeEventListener('refresh', onRefresh);
-      ScrollTrigger.scrollerProxy(document.documentElement, {});
-      lenis.destroy();
-      gsap.ticker.remove(gsapTick);
+      window.removeEventListener('resize', onResize);
       document.removeEventListener('click', handleAnchorClick);
+      gsap.ticker.remove(updateLenis);
+      lenis.destroy();
       (window as any).lenis = undefined;
     };
   }, []);

@@ -23,22 +23,22 @@ export default function GSAPSectionAnimator({
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      // ── Desktop (≥992px): Smooth, non-destructive section reveal + parallax + hero pin ──
+      // ── Desktop (≥992px): Smooth section reveal + parallax + hero pin ──
       mm.add('(min-width: 992px)', () => {
         const revealSections = gsap.utils.toArray<HTMLElement>('.scroll-reveal-section');
 
         revealSections.forEach((section) => {
           gsap.fromTo(
             section,
-            { opacity: 0, y: 35 },
+            { autoAlpha: 0, y: 35 },
             {
-              opacity: 1,
+              autoAlpha: 1,
               y: 0,
               duration: 0.8,
               ease: 'power2.out',
               scrollTrigger: {
                 trigger: section,
-                start: 'top 90%',
+                start: 'top 92%',
                 toggleActions: 'play none none reverse',
                 invalidateOnRefresh: true,
                 onLeave: () => {

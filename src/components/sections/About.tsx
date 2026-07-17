@@ -41,9 +41,9 @@ export default function About() {
           scrollTrigger: {
             trigger: wrapper,
             start: 'top top',
-            end: '+=1200',
+            end: '+=1600',
             pin: true,
-            scrub: 1.2,
+            scrub: 1.5,
             anticipatePin: 1,
           },
         });
@@ -53,7 +53,7 @@ export default function About() {
           mainTl.fromTo(
             coverRef.current,
             { x: '-102%' },
-            { x: '102%', duration: 0.35, ease: 'power2.inOut' },
+            { x: '102%', duration: 0.5, ease: 'power3.inOut' },
             0
           );
         }
@@ -62,8 +62,8 @@ export default function About() {
         if (imgRef.current) {
           mainTl.fromTo(
             imgRef.current,
-            { scale: 1.25 },
-            { scale: 1, duration: 0.45, ease: 'power2.out' },
+            { scale: 1.3 },
+            { scale: 1, duration: 0.6, ease: 'power3.out' },
             0.1
           );
         }
@@ -73,8 +73,8 @@ export default function About() {
           const words = animatedTextRef.current.querySelectorAll('.about-scrub-word');
           mainTl.fromTo(
             words,
-            { opacity: 0.15, y: 10 },
-            { opacity: 1, y: 0, stagger: 0.05, ease: 'power1.out', duration: 0.8 },
+            { opacity: 0.1, y: 15 },
+            { opacity: 1, y: 0, stagger: 0.06, ease: 'power2.out', duration: 1.0 },
             0.2
           );
         }
@@ -86,6 +86,7 @@ export default function About() {
           scrollTrigger: {
             trigger: section,
             start: 'top 80%',
+            toggleActions: 'play none none reverse',
           },
         });
 
@@ -93,7 +94,7 @@ export default function About() {
           mobTl.fromTo(
             coverRef.current,
             { x: '-102%' },
-            { x: '102%', duration: 1.1, ease: 'power3.inOut' },
+            { x: '102%', duration: 1.5, ease: 'power4.inOut' },
             0
           );
         }
@@ -102,8 +103,8 @@ export default function About() {
           const words = animatedTextRef.current.querySelectorAll('.about-scrub-word');
           mobTl.fromTo(
             words,
-            { opacity: 0.15, y: 10 },
-            { opacity: 1, y: 0, stagger: 0.04, duration: 0.8, ease: 'power2.out' },
+            { opacity: 0.1, y: 15 },
+            { opacity: 1, y: 0, stagger: 0.05, duration: 1.2, ease: 'power3.out' },
             0.3
           );
         }

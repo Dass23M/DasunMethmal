@@ -24,24 +24,46 @@ export default function GSAPSectionAnimator({
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      // ── Scroll-scrub section reveals (desktop + mobile, same behavior) ──
+      // ── Slow, smooth cinematic GSAP section reveals (desktop + mobile) ──
       const revealSections = gsap.utils.toArray<HTMLElement>('.scroll-reveal-section');
 
       revealSections.forEach((section) => {
-        gsap.set(section, { autoAlpha: 0, y: 100 });
+        gsap.set(section, { autoAlpha: 0, y: 90 });
 
-        gsap.to(section, {
-          autoAlpha: 1,
-          y: 0,
-          ease: 'none',
+        const innerChildren = section.querySelectorAll('h2, h3, p, img, .card, a, button, .reveal-child');
+
+        const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
-            start: 'top bottom',
-            end: 'top 45%',
-            scrub: 1.2,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
             invalidateOnRefresh: true,
+            onLeave: () => {
+              gsap.set(section, { clearProps: 'transform' });
+            },
           },
         });
+
+        tl.to(section, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 1.4,
+          ease: 'power4.out',
+        });
+
+        if (innerChildren.length > 0) {
+          tl.to(
+            innerChildren,
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 1.2,
+              stagger: 0.12,
+              ease: 'power3.out',
+            },
+            '-=1.0'
+          );
+        }
       });
 
       // ── Desktop-only: parallax covers, hero scrub, hero pin ──

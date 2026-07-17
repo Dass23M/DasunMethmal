@@ -33,17 +33,23 @@ export default function HomePage() {
         <Hero />
 
         {/* 1. Impact Section — Directly Below Hero */}
-        <ImpactSection />
+        <div className="scroll-reveal-section">
+          <ImpactSection />
+        </div>
 
         <div className="below-hero-reveal">
           {/* 2. Pinned Scrub About Section */}
-          <About />
+          <div className="scroll-reveal-section">
+            <About />
+          </div>
 
           {/* 3. Image Fan Showcase */}
-          <ImageFanShowcase />
+          <div className="scroll-reveal-section">
+            <ImageFanShowcase />
+          </div>
 
           {/* 4. Best Works Banner */}
-          <div className="scroll-reveal-section hidden md:block">
+          <div className="scroll-reveal-section">
             <BestWorksBanner />
           </div>
 
@@ -51,11 +57,15 @@ export default function HomePage() {
             <Portfolio />
           </div>
 
-          {/* Pin + Flip — no scroll-reveal wrapper (transform breaks ScrollTrigger pin) */}
-          <GSAPFlipSection />
+          {/* Pin + Flip */}
+          <div className="scroll-reveal-section">
+            <GSAPFlipSection />
+          </div>
 
-          {/* Pinned Editorial Showcase — placed below Services */}
-          <EditorialShowcase />
+          {/* Pinned Editorial Showcase */}
+          <div className="scroll-reveal-section">
+            <EditorialShowcase />
+          </div>
 
           <div className="scroll-reveal-section">
             <LogoSlider />

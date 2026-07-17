@@ -24,45 +24,28 @@ export default function GSAPSectionAnimator({
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      // ── Slow, smooth cinematic GSAP section reveals (desktop + mobile) ──
+      // ── GSAP Element-Only Staggered Entrance Reveals (desktop + mobile) ──
       const revealSections = gsap.utils.toArray<HTMLElement>('.scroll-reveal-section');
 
       revealSections.forEach((section) => {
-        gsap.set(section, { autoAlpha: 0, y: 90 });
-
-        const innerChildren = section.querySelectorAll('h2, h3, p, img, .card, a, button, .reveal-child');
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 85%',
-            toggleActions: 'play none none reverse',
-            invalidateOnRefresh: true,
-            onLeave: () => {
-              gsap.set(section, { clearProps: 'transform' });
-            },
-          },
-        });
-
-        tl.to(section, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.4,
-          ease: 'power4.out',
-        });
+        const innerChildren = section.querySelectorAll('h2, h3, h4, p, img, .card, a, button, .reveal-child');
 
         if (innerChildren.length > 0) {
-          tl.to(
-            innerChildren,
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 1.2,
-              stagger: 0.12,
-              ease: 'power3.out',
+          gsap.set(innerChildren, { autoAlpha: 0, y: 55 });
+
+          gsap.to(innerChildren, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 1.1,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 82%',
+              toggleActions: 'play none none reverse',
+              invalidateOnRefresh: true,
             },
-            '-=1.0'
-          );
+          });
         }
       });
 

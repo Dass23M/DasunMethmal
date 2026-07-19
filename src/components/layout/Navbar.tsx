@@ -139,11 +139,10 @@ export default function Navbar() {
         <div className="absolute left-1/2 -translate-x-1/2 z-[99]">
           <Link
             href="/"
-            className={`font-raleway text-[1.7rem] font-bold no-underline transition-colors duration-300 ${
-              scrolled ? 'text-black' : 'text-white'
-            }`}
+            className={`font-raleway text-[1.7rem] font-bold no-underline transition-colors duration-300 ${scrolled ? 'text-black' : 'text-white'
+              }`}
           >
-            Methmal<span className="text-[#FF8A00]">.</span>
+            NEXA<span className="text-[#FF8A00]">.</span>
           </Link>
         </div>
 
@@ -169,9 +168,8 @@ export default function Navbar() {
           <a
             href="#"
             onClick={toggleMenu}
-            className={`text-[14px] px-[7px] py-[10px] block transition-colors duration-300 ${
-              scrolled ? 'text-black' : 'text-white'
-            }`}
+            className={`text-[14px] px-[7px] py-[10px] block transition-colors duration-300 ${scrolled ? 'text-black' : 'text-white'
+              }`}
           >
             Menu
           </a>
@@ -214,9 +212,8 @@ function NavLink({
     >
       {label}
       <span
-        className={`absolute bottom-0 left-[7px] right-[7px] h-[1px] transition-all duration-300 ${underlineBg} ${
-          isActive || hovered ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
-        }`}
+        className={`absolute bottom-0 left-[7px] right-[7px] h-[1px] transition-all duration-300 ${underlineBg} ${isActive || hovered ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
+          }`}
       />
     </a>
   );

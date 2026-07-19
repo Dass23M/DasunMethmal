@@ -1,17 +1,21 @@
-'use client';
+"use client";
 
-import { useRef, useState, useEffect } from 'react';
-import Image from 'next/image';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import SectionHeading from '@/components/ui/SectionHeading';
+import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SectionHeading from "@/components/ui/SectionHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ABOUT_TEXT_PARTS = [
-  { text: 'We can make it together. Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there ' },
-  { text: 'live the blind', isLink: true, href: '#' },
-  { text: ' texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.' },
+  {
+    text: "We can make it together. Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there ",
+  },
+  { text: "live the blind", isLink: true, href: "#" },
+  {
+    text: " texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.",
+  },
 ];
 
 export default function About() {
@@ -36,12 +40,12 @@ export default function About() {
       const mm = gsap.matchMedia();
 
       // Desktop & Tablet (≥768px): Pinned Scrubbed ScrollTrigger Timeline
-      mm.add('(min-width: 768px)', () => {
+      mm.add("(min-width: 768px)", () => {
         const mainTl = gsap.timeline({
           scrollTrigger: {
             trigger: wrapper,
-            start: 'top top',
-            end: '+=1600',
+            start: "top top",
+            end: "+=1600",
             pin: true,
             scrub: 1.5,
             anticipatePin: 1,
@@ -52,9 +56,9 @@ export default function About() {
         if (coverRef.current) {
           mainTl.fromTo(
             coverRef.current,
-            { x: '-102%' },
-            { x: '102%', duration: 0.5, ease: 'power3.inOut' },
-            0
+            { x: "-102%" },
+            { x: "102%", duration: 0.5, ease: "power3.inOut" },
+            0,
           );
         }
 
@@ -63,49 +67,63 @@ export default function About() {
           mainTl.fromTo(
             imgRef.current,
             { scale: 1.3 },
-            { scale: 1, duration: 0.6, ease: 'power3.out' },
-            0.1
+            { scale: 1, duration: 0.6, ease: "power3.out" },
+            0.1,
           );
         }
 
         // 3. Scrubbed word-by-word reveal while pinned
         if (animatedTextRef.current) {
-          const words = animatedTextRef.current.querySelectorAll('.about-scrub-word');
+          const words =
+            animatedTextRef.current.querySelectorAll(".about-scrub-word");
           mainTl.fromTo(
             words,
             { opacity: 0.1, y: 15 },
-            { opacity: 1, y: 0, stagger: 0.06, ease: 'power2.out', duration: 1.0 },
-            0.2
+            {
+              opacity: 1,
+              y: 0,
+              stagger: 0.06,
+              ease: "power2.out",
+              duration: 1.0,
+            },
+            0.2,
           );
         }
       });
 
       // Mobile (<768px): Unpinned standard entrance
-      mm.add('(max-width: 767px)', () => {
+      mm.add("(max-width: 767px)", () => {
         const mobTl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse',
+            start: "top 80%",
+            toggleActions: "play none none reverse",
           },
         });
 
         if (coverRef.current) {
           mobTl.fromTo(
             coverRef.current,
-            { x: '-102%' },
-            { x: '102%', duration: 1.5, ease: 'power4.inOut' },
-            0
+            { x: "-102%" },
+            { x: "102%", duration: 1.5, ease: "power4.inOut" },
+            0,
           );
         }
 
         if (animatedTextRef.current) {
-          const words = animatedTextRef.current.querySelectorAll('.about-scrub-word');
+          const words =
+            animatedTextRef.current.querySelectorAll(".about-scrub-word");
           mobTl.fromTo(
             words,
             { opacity: 0.1, y: 15 },
-            { opacity: 1, y: 0, stagger: 0.05, duration: 1.2, ease: 'power3.out' },
-            0.3
+            {
+              opacity: 1,
+              y: 0,
+              stagger: 0.05,
+              duration: 1.2,
+              ease: "power3.out",
+            },
+            0.3,
           );
         }
       });
@@ -118,7 +136,7 @@ export default function About() {
   const renderScrubText = () => {
     let wordIndex = 0;
     return ABOUT_TEXT_PARTS.flatMap((part) => {
-      const words = part.text.split(' ');
+      const words = part.text.split(" ");
       return words.map((word, idx) => {
         if (!word && idx === words.length - 1) return null;
         const key = `${wordIndex++}-${word}`;
@@ -169,11 +187,11 @@ export default function About() {
                     <div
                       ref={coverRef}
                       className="absolute inset-0 bg-[#FF6B00] z-10 will-change-transform"
-                      style={{ transform: 'translateX(-102%)' }}
+                      style={{ transform: "translateX(-102%)" }}
                     />
                     <Image
                       ref={imgRef}
-                      src="/images/about_me_pic2.jpg"
+                      src="/images/contact_bg_sunset.png"
                       alt="About Me Photo"
                       fill
                       sizes="(max-width: 1024px) 100vw, 40vw"
@@ -200,8 +218,12 @@ export default function About() {
 
                 {/* Duplicate screenreader-only element preserving semantic accessibility & nested links */}
                 <p className="sr-only">
-                  We can make it together. Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there{' '}
-                  <a href="#">live the blind</a> texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+                  We can make it together. Far far away, behind the word
+                  mountains, far from the countries Vokalia and Consonantia,
+                  there <a href="#">live the blind</a> texts. A small river
+                  named Duden flows by their place and supplies it with the
+                  necessary regelialia. It is a paradisematic country, in which
+                  roasted parts of sentences fly into your mouth.
                 </p>
 
                 <div>

@@ -64,7 +64,7 @@ export default function Hero({
             ref={containerRef}
             className="cover-v1 bg-cover bg-no-repeat w-full lg:bg-fixed hero-cover-mobile"
             style={{
-                backgroundImage: "url('/images/cover_bg_2.png')",
+                backgroundImage: "url('/images/contact_bg_sunset.png')",
             }}
         >
             <div className="relative z-[9] max-w-[1140px] mx-auto px-[15px] h-[100svh] min-h-0 lg:h-screen lg:min-h-[650px] flex items-center justify-center">

@@ -10,11 +10,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 const ABOUT_TEXT_PARTS = [
   {
-    text: "We can make it together. Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there ",
+    text: "I am a professional Fullstack Web Developer and Digital Marketer with 2 years of experience crafting high-performance web applications and growth-driven marketing strategies. ",
   },
-  { text: "live the blind", isLink: true, href: "#" },
+  { text: "Delivering complete digital solutions", isLink: true, href: "#portfolio-section" },
   {
-    text: " texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.",
+    text: " that combine technical precision, intuitive design, and impactful online strategies to help brands thrive.",
   },
 ];
 
@@ -203,8 +203,8 @@ export default function About() {
 
               {/* Text Column */}
               <div className="lg:col-span-7 w-full flex flex-col justify-center">
-                <h3 className="text-xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 sm:mb-6 text-white">
-                  We can make it together
+                <h3 className="text-xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 sm:mb-6 text-[#FF8A00]">
+                  Fullstack Developer &amp; Digital Marketer
                 </h3>
 
                 {/* Visually animated paragraph scrubbed on scroll down while pinned */}
@@ -218,12 +218,7 @@ export default function About() {
 
                 {/* Duplicate screenreader-only element preserving semantic accessibility & nested links */}
                 <p className="sr-only">
-                  We can make it together. Far far away, behind the word
-                  mountains, far from the countries Vokalia and Consonantia,
-                  there <a href="#">live the blind</a> texts. A small river
-                  named Duden flows by their place and supplies it with the
-                  necessary regelialia. It is a paradisematic country, in which
-                  roasted parts of sentences fly into your mouth.
+                  I am a professional Fullstack Web Developer and Digital Marketer with 2 years of experience crafting high-performance web applications and growth-driven marketing strategies. <a href="#portfolio-section">Delivering complete digital solutions</a> that combine technical precision, intuitive design, and impactful online strategies to help brands thrive.
                 </p>
 
                 <div>

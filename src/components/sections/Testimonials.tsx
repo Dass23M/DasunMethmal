@@ -92,7 +92,7 @@ export default function Testimonials() {
           </h2>
         </div>
         <p className="font-arimo text-xs sm:text-sm md:text-base text-gray-600 max-w-md leading-relaxed">
-          We build the next in digital experiences. From strategy to design, development to retention, we&apos;ve got you covered. 9+ years of experience, 200+ projects launched.
+          We build the next in digital experiences. From strategy to design, development to retention, we&apos;ve got you covered. 2+ years of experience, 37+ projects launched.
         </p>
       </div>
 

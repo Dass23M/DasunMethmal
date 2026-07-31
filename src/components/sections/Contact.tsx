@@ -151,7 +151,7 @@ export default function Contact() {
                                     />
                                     <div className="absolute inset-0 bg-black/30" />
                                     <span className="relative z-10 font-raleway font-black text-white text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">
-                                        MICHAEL®
+                                        METHMAL®
                                     </span>
                                 </div>
 

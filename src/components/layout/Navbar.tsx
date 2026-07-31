@@ -142,7 +142,7 @@ export default function Navbar() {
             className={`font-raleway text-[1.7rem] font-bold no-underline transition-colors duration-300 ${scrolled ? 'text-black' : 'text-white'
               }`}
           >
-            NEXA<span className="text-[#FF8A00]">.</span>
+            METHMAL<span className="text-[#FF8A00]">.</span>
           </Link>
         </div>
 

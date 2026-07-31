@@ -186,7 +186,7 @@ export default function ImageFanShowcase() {
           <div className="flex items-center gap-2.5">
             <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00] animate-pulse" />
             <span className="font-sora font-bold text-xs sm:text-sm tracking-widest text-[#FF6B00] uppercase">
-              // CORE CAPABILITIES &amp; SERVICES
+              {"// CORE CAPABILITIES & SERVICES"}
             </span>
           </div>
           <span className="font-mono text-xs text-white/50 uppercase tracking-widest hidden xs:inline">

@@ -184,7 +184,7 @@ export default function About() {
         {/* ─── 1. TOP EDITORIAL SVG TITLE BANNER ─── */}
         <div className="w-full mb-12 sm:mb-16 border-b border-white/10 pb-6">
           <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-4">
-            <span>// ABOUT METHMAL</span>
+            <span>{"// ABOUT METHMAL"}</span>
             <span>EST. 2024</span>
           </div>
 

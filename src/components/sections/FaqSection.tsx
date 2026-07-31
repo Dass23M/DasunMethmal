@@ -84,7 +84,7 @@ export default function FaqSection() {
           
           {/* Left Column: Stacked Display Title perfectly constrained within 5 columns */}
           <div className="lg:col-span-5 flex flex-col justify-center">
-            <h2 className="font-raleway font-black uppercase tracking-tighter text-white text-[clamp(2.2rem,4.5vw,4.2rem)] xl:text-[4.5rem] leading-[0.88] text-left">
+            <h2 className="font-sora font-black uppercase tracking-tighter text-white text-[clamp(2.2rem,4.5vw,4.2rem)] xl:text-[4.5rem] leading-[0.88] text-left">
               <span className="block">FREQUENTLY</span>
               <span className="block mt-1">ASKED</span>
               <span className="block mt-1 text-transparent [-webkit-text-stroke:1.8px_rgba(255,255,255,0.85)]">
@@ -110,7 +110,7 @@ export default function FaqSection() {
                     aria-expanded={isOpen}
                   >
                     <span
-                      className={`font-raleway font-bold text-base sm:text-lg md:text-[1.15rem] tracking-tight transition-colors duration-300 ${
+                      className={`font-sora font-bold text-base sm:text-lg md:text-[1.15rem] tracking-tight transition-colors duration-300 ${
                         isOpen ? 'text-white' : 'text-white/85 group-hover:text-[#FF6B00]'
                       }`}
                     >
@@ -138,7 +138,7 @@ export default function FaqSection() {
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <p className="font-arimo text-white/60 text-xs sm:text-sm leading-relaxed max-w-[620px]">
+                      <p className="font-inter text-white/60 text-xs sm:text-sm leading-relaxed max-w-[620px]">
                         {item.answer}
                       </p>
                     </div>

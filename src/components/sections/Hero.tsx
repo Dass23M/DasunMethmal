@@ -62,7 +62,7 @@ export default function Hero({
       <div className="relative z-[9] max-w-[1140px] mx-auto px-[15px] h-[100svh] min-h-0 lg:h-screen lg:min-h-[650px] flex items-center justify-center">
         <div className="text-center max-w-[850px] w-full px-1">
           {/* Title: METH */}
-          <h1 className="hero-title-meth font-raleway text-[2.5rem] xs:text-[3rem] sm:text-[4rem] lg:text-[5.5rem] font-black text-white mb-[16px] sm:mb-[20px] tracking-tight leading-[1.1]">
+          <h1 className="hero-title-meth font-sora text-[2.5rem] xs:text-[3rem] sm:text-[4rem] lg:text-[5.5rem] font-black text-white mb-[16px] sm:mb-[20px] tracking-tight leading-[1.1]">
             <span className="relative inline-block overflow-hidden align-top">
               <span className="hero-title-cover absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%]" />
               <span className="hero-title-text inline-block opacity-0">

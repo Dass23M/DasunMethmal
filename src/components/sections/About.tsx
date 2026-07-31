@@ -1,239 +1,321 @@
-"use client";
+'use client';
 
-import { useRef, useState, useEffect } from "react";
-import Image from "next/image";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SectionHeading from "@/components/ui/SectionHeading";
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ABOUT_TEXT_PARTS = [
-  {
-    text: "I am a professional Fullstack Web Developer and Digital Marketer with 2 years of experience crafting high-performance web applications and growth-driven marketing strategies. ",
-  },
-  { text: "Delivering complete digital solutions", isLink: true, href: "#portfolio-section" },
-  {
-    text: " that combine technical precision, intuitive design, and impactful online strategies to help brands thrive.",
-  },
+const GALLERY_IMAGES = [
+  { src: '/images/fashion1.png', alt: 'Mobile App Architecture', title: '01 / APP ARCHITECTURE' },
+  { src: '/images/fashion2.webp', alt: 'Fullstack Platform', title: '02 / FULLSTACK PLATFORM' },
+  { src: '/images/fashion3.jpg', alt: 'Brand Identity', title: '03 / BRAND IDENTITY' },
+  { src: '/images/fashion4.jpg', alt: 'Growth Marketing', title: '04 / GROWTH CAMPAIGN' },
+  { src: '/images/editorial_2.png', alt: 'UI/UX Design', title: '05 / UI/UX DESIGN' },
 ];
 
 export default function About() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const coverRef = useRef<HTMLDivElement>(null);
-  const imgRef = useRef<HTMLImageElement>(null);
-  const animatedTextRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const heroImageRef = useRef<HTMLDivElement>(null);
+  const aboutTextRef = useRef<HTMLDivElement>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
+  const footerCtaRef = useRef<HTMLDivElement>(null);
+
   const [mounted, setMounted] = useState(false);
+  const [emailText, setEmailText] = useState('mail@uxoradesign.com');
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!mounted || !wrapperRef.current || !sectionRef.current) return;
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText('mail@uxoradesign.com');
+    setEmailText('email copied to clipboard!');
+    setCopied(true);
+    setTimeout(() => {
+      setEmailText('mail@uxoradesign.com');
+      setCopied(false);
+    }, 2400);
+  };
 
-    const wrapper = wrapperRef.current;
-    const section = sectionRef.current;
+  useEffect(() => {
+    if (!mounted || !containerRef.current) return;
 
     const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
+      // 1. Hero Image Scale & Blur Reveal
+      if (heroImageRef.current) {
+        gsap.fromTo(
+          heroImageRef.current,
+          { scale: 0.85, opacity: 0, filter: 'blur(8px)' },
+          {
+            scale: 1,
+            opacity: 1,
+            filter: 'blur(0px)',
+            duration: 1.4,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: 'top 80%',
+            },
+          }
+        );
+      }
 
-      // Desktop & Tablet (≥768px): Pinned Scrubbed ScrollTrigger Timeline
-      mm.add("(min-width: 768px)", () => {
-        const mainTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: wrapper,
-            start: "top top",
-            end: "+=1600",
-            pin: true,
-            scrub: 1.5,
-            anticipatePin: 1,
-          },
+      // 2. Editorial About Text Slide Up & Unblur
+      if (aboutTextRef.current) {
+        gsap.fromTo(
+          aboutTextRef.current,
+          { y: 50, opacity: 0, filter: 'blur(5px)' },
+          {
+            y: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: aboutTextRef.current,
+              start: 'top 85%',
+            },
+          }
+        );
+      }
+
+      // 3. Vertical Clip-Path Reveal for Gallery Items
+      if (galleryRef.current) {
+        const galleryItems = galleryRef.current.querySelectorAll('.gallery-item-img');
+        galleryItems.forEach((item, index) => {
+          gsap.fromTo(
+            item,
+            { clipPath: 'inset(100% 0 0 0)' },
+            {
+              clipPath: 'inset(0% 0 0 0)',
+              duration: 1.3,
+              delay: index * 0.12,
+              ease: 'power3.inOut',
+              scrollTrigger: {
+                trigger: item.parentElement,
+                start: 'top 85%',
+              },
+            }
+          );
         });
 
-        // 1. Orange wipe cover slide out
-        if (coverRef.current) {
-          mainTl.fromTo(
-            coverRef.current,
-            { x: "-102%" },
-            { x: "102%", duration: 0.5, ease: "power3.inOut" },
-            0,
-          );
-        }
-
-        // 2. Image scale down
-        if (imgRef.current) {
-          mainTl.fromTo(
-            imgRef.current,
-            { scale: 1.3 },
-            { scale: 1, duration: 0.6, ease: "power3.out" },
-            0.1,
-          );
-        }
-
-        // 3. Scrubbed word-by-word reveal while pinned
-        if (animatedTextRef.current) {
-          const words =
-            animatedTextRef.current.querySelectorAll(".about-scrub-word");
-          mainTl.fromTo(
-            words,
-            { opacity: 0.1, y: 15 },
+        // Gallery Caption Unblur
+        const caption = galleryRef.current.querySelector('.gallery-caption');
+        if (caption) {
+          gsap.fromTo(
+            caption,
+            { y: 40, opacity: 0, filter: 'blur(6px)' },
             {
-              opacity: 1,
               y: 0,
-              stagger: 0.06,
-              ease: "power2.out",
-              duration: 1.0,
-            },
-            0.2,
-          );
-        }
-      });
-
-      // Mobile (<768px): Unpinned standard entrance
-      mm.add("(max-width: 767px)", () => {
-        const mobTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
-          },
-        });
-
-        if (coverRef.current) {
-          mobTl.fromTo(
-            coverRef.current,
-            { x: "-102%" },
-            { x: "102%", duration: 1.5, ease: "power4.inOut" },
-            0,
-          );
-        }
-
-        if (animatedTextRef.current) {
-          const words =
-            animatedTextRef.current.querySelectorAll(".about-scrub-word");
-          mobTl.fromTo(
-            words,
-            { opacity: 0.1, y: 15 },
-            {
               opacity: 1,
-              y: 0,
-              stagger: 0.05,
-              duration: 1.2,
-              ease: "power3.out",
-            },
-            0.3,
+              filter: 'blur(0px)',
+              duration: 1.1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: caption,
+                start: 'top 85%',
+              },
+            }
           );
         }
-      });
-    }, wrapper);
+      }
+
+      // 4. Footer CTA & Giant Text Wave Reveal
+      if (footerCtaRef.current) {
+        gsap.fromTo(
+          footerCtaRef.current,
+          { y: 35, opacity: 0, filter: 'blur(5px)' },
+          {
+            y: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: footerCtaRef.current,
+              start: 'top 85%',
+            },
+          }
+        );
+
+        const svgPaths = containerRef.current?.querySelectorAll('.footer-svg-path');
+        if (svgPaths && svgPaths.length > 0) {
+          svgPaths.forEach((path, index) => {
+            gsap.fromTo(
+              path,
+              { opacity: 0, y: 50, filter: 'blur(8px)' },
+              {
+                opacity: 1,
+                y: 0,
+                filter: 'blur(0px)',
+                duration: 1.2,
+                delay: index * 0.08,
+                ease: 'power3.out',
+                scrollTrigger: {
+                  trigger: path.parentElement,
+                  start: 'top 90%',
+                },
+              }
+            );
+          });
+        }
+      }
+    }, containerRef);
 
     return () => ctx.revert();
   }, [mounted]);
 
-  // Flatten text into array of word tokens for individual word animation
-  const renderScrubText = () => {
-    let wordIndex = 0;
-    return ABOUT_TEXT_PARTS.flatMap((part) => {
-      const words = part.text.split(" ");
-      return words.map((word, idx) => {
-        if (!word && idx === words.length - 1) return null;
-        const key = `${wordIndex++}-${word}`;
-
-        if (part.isLink) {
-          return (
-            <a
-              key={key}
-              href={part.href}
-              className="about-scrub-word inline-block text-[#FF8A00] hover:underline underline-offset-4 font-semibold mr-[0.25em]"
-            >
-              {word}
-            </a>
-          );
-        }
-
-        return (
-          <span key={key} className="about-scrub-word inline-block mr-[0.25em]">
-            {word}
-          </span>
-        );
-      });
-    });
-  };
-
   if (!mounted) {
-    return <section className="w-full min-h-screen bg-black text-white" />;
+    return <section className="w-full h-screen bg-[#0A0B0E]" />;
   }
 
   return (
-    <div ref={wrapperRef} className="w-full overflow-hidden">
-      <section
-        id="about-section"
-        ref={sectionRef}
-        className="relative w-full h-auto py-12 sm:py-16 md:py-0 md:h-[100svh] md:h-screen bg-black text-white flex items-center justify-center select-none overflow-hidden"
-      >
-        {/* Outer layout container: spans screen width with small side gaps (px-4 sm:px-8 md:px-12) */}
-        <div className="relative z-[2] w-full max-w-[1550px] mx-auto px-4 sm:px-8 md:px-12">
-          <SectionHeading title="About Me" />
+    <section
+      id="about-section"
+      ref={containerRef}
+      className="w-full bg-[#0A0B0E] text-white select-none relative overflow-hidden py-16 sm:py-24 border-y border-white/10 font-inter"
+    >
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+        
+        {/* ─── 1. TOP EDITORIAL SVG TITLE BANNER ─── */}
+        <div className="w-full mb-12 sm:mb-16 border-b border-white/10 pb-6">
+          <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-4">
+            <span>// ABOUT METHMAL</span>
+            <span>EST. 2024</span>
+          </div>
 
-          {/* Main About Card - Removed white border lines for clean seamless look */}
-          <div className="w-full bg-white/[0.02] rounded-2xl sm:rounded-3xl md:rounded-[32px] p-5 sm:p-10 md:p-14 shadow-2xl backdrop-blur-md">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
-              {/* Image Column */}
-              <div className="lg:col-span-5 w-full">
-                <figure className="relative m-0 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl">
-                  <div className="relative overflow-hidden aspect-[4/3] sm:aspect-[1/1] w-full">
-                    <div
-                      ref={coverRef}
-                      className="absolute inset-0 bg-[#FF6B00] z-10 will-change-transform"
-                      style={{ transform: "translateX(-102%)" }}
-                    />
-                    <Image
-                      ref={imgRef}
-                      src="/images/contact_bg_sunset.png"
-                      alt="About Me Photo"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 40vw"
-                      className="object-cover will-change-transform"
-                    />
-                  </div>
-                </figure>
-              </div>
+          <div className="relative w-full overflow-hidden">
+            <h1 className="font-sora font-black text-4xl sm:text-7xl md:text-8xl lg:text-[7.5rem] uppercase tracking-tight text-white leading-none">
+              ARTISTRY<span className="text-[#FF6B00]">.</span>
+            </h1>
+          </div>
+        </div>
 
-              {/* Text Column */}
-              <div className="lg:col-span-7 w-full flex flex-col justify-center">
-                <h3 className="text-xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 sm:mb-6 text-[#FF8A00]">
-                  Fullstack Developer &amp; Digital Marketer
-                </h3>
-
-                {/* Visually animated paragraph scrubbed on scroll down while pinned */}
-                <div
-                  ref={animatedTextRef}
-                  className="animate-me font-raleway text-lg sm:text-2xl md:text-3xl lg:text-[2rem] font-medium leading-[1.38] tracking-tight text-white mb-6 sm:mb-8 perspective-[500px]"
-                  aria-hidden="true"
-                >
-                  {renderScrubText()}
-                </div>
-
-                {/* Duplicate screenreader-only element preserving semantic accessibility & nested links */}
-                <p className="sr-only">
-                  I am a professional Fullstack Web Developer and Digital Marketer with 2 years of experience crafting high-performance web applications and growth-driven marketing strategies. <a href="#portfolio-section">Delivering complete digital solutions</a> that combine technical precision, intuitive design, and impactful online strategies to help brands thrive.
-                </p>
-
-                <div>
-                  <a
-                    href="#"
-                    className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-3.5 rounded-full border border-white/30 text-white font-medium text-sm sm:text-lg transition-all duration-300 hover:bg-white hover:text-black hover:border-white shadow-md hover:shadow-xl hover:scale-105"
-                  >
-                    Download my CV
-                  </a>
-                </div>
+        {/* ─── 2. HERO ROW SPLIT: PORTRAIT LEFT / ABOUT TEXT RIGHT ─── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-end mb-24 sm:mb-32">
+          {/* Left Column (5 Cols): Grayscale Portrait Image */}
+          <div className="lg:col-span-5">
+            <div
+              ref={heroImageRef}
+              className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden border border-white/15 shadow-2xl bg-[#14151C] group"
+            >
+              <Image
+                src="/images/about_me_pic.jpg"
+                alt="Methmal Portrait"
+                fill
+                sizes="(max-width: 1024px) 100vw, 42vw"
+                className="object-cover grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white font-mono text-xs">
+                <span>METHMAL®</span>
+                <span className="text-[#FF6B00]">FULLSTACK &amp; MARKETING</span>
               </div>
             </div>
           </div>
+
+          {/* Spacer Column (3 Cols) */}
+          <div className="hidden lg:block lg:col-span-2" />
+
+          {/* Right Column (5 Cols): Editorial Journey Text */}
+          <div className="lg:col-span-5">
+            <div ref={aboutTextRef} className="space-y-4">
+              <span className="font-mono text-xs font-bold text-[#FF6B00] tracking-widest uppercase block">
+                001 / PHILOSOPHY &amp; JOURNEY
+              </span>
+              <p className="font-inter text-sm sm:text-base md:text-lg text-white/85 leading-relaxed font-normal">
+                I am a fullstack software engineer and digital marketer exploring the intersection of modern web architecture and creative growth strategy. Building digital solutions as a craft, my work embodies the transformation of complex ideas into seamless, production-grade applications.
+              </p>
+              <p className="font-inter text-sm sm:text-base md:text-lg text-white/70 leading-relaxed font-normal">
+                Through deliberate practice and technical precision, I find that clean code provides structure in times of uncertainty and offers rare clarity when scaling user experiences. Each platform becomes both a foundation and a window into growth.
+              </p>
+            </div>
+          </div>
         </div>
-      </section>
-    </div>
+
+        {/* ─── 3. GALLERY MOSAIC SECTION WITH VERTICAL CLIP-PATH REVEAL ─── */}
+        <div ref={galleryRef} className="mb-24 sm:mb-36">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-8">
+            <span className="font-sora font-bold text-xs sm:text-sm text-white tracking-widest uppercase">
+              SELECTED WORKS &amp; CRAFT MOSAIC
+            </span>
+            <span className="font-mono text-xs text-[#FF6B00]">02 / SHOWCASE</span>
+          </div>
+
+          {/* Horizontal Gallery Wrapper */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 mb-10">
+            {GALLERY_IMAGES.map((item, idx) => (
+              <div
+                key={idx}
+                className="relative aspect-[3/4] rounded-xl overflow-hidden border border-white/15 bg-[#14151C] group"
+              >
+                <div className="gallery-item-img relative w-full h-full">
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    sizes="(max-width: 640px) 50vw, 20vw"
+                    className="object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+                  />
+                </div>
+                <div className="absolute inset-x-0 bottom-0 p-2.5 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="font-mono text-[10px] text-[#FF6B00] block truncate">
+                    {item.title}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Gallery Caption Text */}
+          <div className="gallery-caption max-w-4xl mx-auto text-center pt-6">
+            <p className="font-inter text-xs sm:text-sm md:text-base text-white/80 leading-relaxed max-w-3xl mx-auto">
+              When software architecture becomes a labyrinth of choices, methodical engineering offers a thread to follow. Through continuous practice—refining Next.js APIs, component composition, and SEO strategies—we create rhythm where there was noise. This discipline transforms complex challenges into intuitive experiences you can launch, measure, and scale.
+            </p>
+          </div>
+        </div>
+
+        {/* ─── 4. FOOTER SECTION WITH GIANT STAGGERED DISPLAY & CONTACT CTA ─── */}
+        <div className="footer pt-16 border-t border-white/10 flex flex-col items-center justify-between text-center relative">
+          
+          {/* Interactive Contact Button & Email Copy */}
+          <div ref={footerCtaRef} className="footer-cta flex flex-col items-center gap-3 mb-16 z-10">
+            <button
+              onClick={handleCopyEmail}
+              className="px-8 py-3.5 rounded-full bg-[#FF6B00] text-black font-sora font-extrabold text-xs tracking-wider uppercase shadow-xl hover:bg-white transition-all duration-300 hover:scale-105"
+            >
+              + GET IN TOUCH
+            </button>
+
+            <div
+              onClick={handleCopyEmail}
+              className="font-mono text-sm sm:text-base text-white/90 cursor-pointer hover:text-[#FF6B00] transition-colors flex items-center gap-1"
+            >
+              <span className="text-[#FF6B00]">[</span>
+              <span>{emailText}</span>
+              <span className="text-[#FF6B00]">]</span>
+            </div>
+            {copied && <span className="text-emerald-400 font-mono text-xs animate-pulse">COPIED!</span>}
+          </div>
+
+          {/* Giant Bottom Display Text Wave */}
+          <div className="w-full overflow-hidden">
+            <div className="flex items-center justify-center gap-4 sm:gap-8 font-sora font-black text-4xl sm:text-7xl md:text-8xl lg:text-[7rem] text-white/20 uppercase tracking-tighter">
+              <span className="footer-svg-path">CRAFT</span>
+              <span className="footer-svg-path text-[#FF6B00]">•</span>
+              <span className="footer-svg-path">VISION</span>
+              <span className="footer-svg-path text-[#FF6B00]">•</span>
+              <span className="footer-svg-path">IMPACT</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
   );
 }

@@ -143,7 +143,7 @@ export default function ScrollRevealGrid() {
                                     <Image src="/images/person_man_3.jpg" alt="Team avatar 3" fill className="object-cover" />
                                 </div>
                             </div>
-                            <span className="font-raleway text-xs sm:text-sm font-semibold text-gray-500 tracking-tight">
+                            <span className="font-sora text-xs sm:text-sm font-semibold text-gray-500 tracking-tight">
                                 200+ Brands Worldwide
                             </span>
                         </div>
@@ -154,16 +154,16 @@ export default function ScrollRevealGrid() {
                                 <svg className="w-8 h-8 text-black fill-current mb-4" viewBox="0 0 24 24">
                                     <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                                 </svg>
-                                <p className="font-raleway font-bold text-base sm:text-lg text-black leading-snug">
+                                <p className="font-sora font-bold text-base sm:text-lg text-black leading-snug">
                                     Our platform feels faster, smoother, and just works better and intuitively. The engagement metrics don&apos;t lie.
                                 </p>
                             </div>
 
                             <div className="pt-6 border-t border-gray-100">
-                                <span className="font-raleway font-black text-4xl sm:text-5xl text-black tracking-tight block">
+                                <span className="font-sora font-black text-4xl sm:text-5xl text-black tracking-tight block">
                                     92<span className="text-gray-400 font-semibold text-3xl sm:text-4xl">%</span>
                                 </span>
-                                <span className="font-arimo text-xs sm:text-sm font-medium text-gray-400 block mt-1">
+                                <span className="font-inter text-xs sm:text-sm font-medium text-gray-400 block mt-1">
                                     Client Satisfaction
                                 </span>
                             </div>
@@ -188,10 +188,10 @@ export default function ScrollRevealGrid() {
                         {/* Bottom Vibrant Orange Banner */}
                         <div className="bento-card bg-[#FF6B00] rounded-2xl sm:rounded-3xl p-5 sm:p-6 text-white flex items-center justify-between shadow-md">
                             <div>
-                                <span className="font-raleway font-black text-2xl sm:text-3xl text-white block leading-none">
+                                <span className="font-sora font-black text-2xl sm:text-3xl text-white block leading-none">
                                     20+
                                 </span>
-                                <span className="font-raleway text-xs font-semibold text-white/95 block mt-1 tracking-tight">
+                                <span className="font-sora text-xs font-semibold text-white/95 block mt-1 tracking-tight">
                                     Global Awards &amp; Features
                                 </span>
                             </div>
@@ -208,16 +208,16 @@ export default function ScrollRevealGrid() {
                         {/* Top Testimonial & 5K+ Global Project Card */}
                         <div className="bento-card bg-white border border-gray-150 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-sm flex flex-col justify-between flex-1 min-h-[250px] sm:min-h-[380px]">
                             <div>
-                                <p className="font-raleway font-bold text-base sm:text-lg text-black leading-snug">
+                                <p className="font-sora font-bold text-base sm:text-lg text-black leading-snug">
                                     <span className="text-[#FF6B00] font-black">250+</span> testimonial with trusted by YC-backed, VC-funded, a16z, Sequoia
                                 </p>
                             </div>
 
                             <div className="pt-6 border-t border-gray-100">
-                                <span className="font-raleway font-black text-4xl sm:text-5xl text-black tracking-tight block">
+                                <span className="font-sora font-black text-4xl sm:text-5xl text-black tracking-tight block">
                                     5K<span className="text-[#FF6B00]">+</span>
                                 </span>
-                                <span className="font-arimo text-xs sm:text-sm font-medium text-gray-400 block mt-1">
+                                <span className="font-inter text-xs sm:text-sm font-medium text-gray-400 block mt-1">
                                     Global Project
                                 </span>
                             </div>
@@ -227,7 +227,7 @@ export default function ScrollRevealGrid() {
                         <div className="bento-card bg-white border border-gray-150 rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex items-center justify-between shadow-sm">
                             <div className="flex items-center gap-3">
                                 <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00] animate-pulse flex-shrink-0" />
-                                <span className="font-raleway font-semibold text-xs sm:text-sm text-gray-800 tracking-tight">
+                                <span className="font-sora font-semibold text-xs sm:text-sm text-gray-800 tracking-tight">
                                     Available For Work
                                 </span>
                             </div>

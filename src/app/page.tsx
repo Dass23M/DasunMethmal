@@ -2,6 +2,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import FooterMarquee from '@/components/sections/FooterMarquee';
 import Hero from '@/components/sections/Hero';
+import LandoStyleSection from '@/components/sections/LandoStyleSection';
 import BestWorksBanner from '@/components/sections/BestWorksBanner';
 import Portfolio from '@/components/sections/Portfolio';
 import GSAPFlipSection from '@/components/sections/GSAPFlipSection';
@@ -15,6 +16,7 @@ import Journal from '@/components/sections/Journal';
 import FaqSection from '@/components/sections/FaqSection';
 import Contact from '@/components/sections/Contact';
 import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
+import OnCraftOffCraft from '@/components/sections/OnCraftOffCraft';
 import ImpactSection from '@/components/sections/ImpactSection';
 
 /**
@@ -32,7 +34,12 @@ export default function HomePage() {
         {/* Sections */}
         <Hero />
 
-        {/* 1. Impact Section — Directly Below Hero */}
+        {/* Lando Norris Style Banner Section - Directly Below Hero */}
+        <div className="scroll-reveal-section">
+          <LandoStyleSection />
+        </div>
+
+        {/* 1. Impact Section */}
         <div className="scroll-reveal-section">
           <ImpactSection />
         </div>
@@ -46,6 +53,11 @@ export default function HomePage() {
           {/* 3. Image Fan Showcase */}
           <div className="scroll-reveal-section">
             <ImageFanShowcase />
+          </div>
+
+          {/* ON CRAFT / OFF CRAFT Section — Directly Below ImageFanShowcase */}
+          <div className="scroll-reveal-section">
+            <OnCraftOffCraft />
           </div>
 
           {/* 4. Best Works Banner */}

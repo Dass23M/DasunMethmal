@@ -241,7 +241,7 @@ export default function GSAPFlipSection() {
         <div className="flex items-center justify-between text-xs sm:text-sm font-bold tracking-widest uppercase text-black/75 border-b border-black/15 pb-3">
           <span className="flex items-center gap-2.5">
             <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00] animate-pulse" />
-            <span className="font-raleway tracking-widest text-black">SERVICES &amp; EXPERTISE</span>
+            <span className="font-sora tracking-widest text-black">SERVICES &amp; EXPERTISE</span>
           </span>
           <span className="font-mono text-xs opacity-65 text-black/60">03 / CAPABILITIES</span>
         </div>
@@ -304,7 +304,7 @@ export default function GSAPFlipSection() {
 
         /* Numbered Pill Badge */
         .flip-num-badge {
-          font-family: 'Raleway', monospace;
+          font-family: 'Sora', monospace;
           font-weight: 800;
           letter-spacing: 0.15em;
           font-size: 0.75rem;
@@ -321,7 +321,7 @@ export default function GSAPFlipSection() {
 
         /* Monogram Letter */
         .flip-letter {
-          font-family: 'Raleway', sans-serif;
+          font-family: 'Sora', sans-serif;
           font-weight: 900;
           line-height: 1;
           z-index: 2;
@@ -341,7 +341,7 @@ export default function GSAPFlipSection() {
         }
 
         .flip-service-label .svc-name {
-          font-family: 'Raleway', sans-serif;
+          font-family: 'Sora', sans-serif;
           font-weight: 800;
           letter-spacing: 0.03em;
           text-align: center;
@@ -351,7 +351,7 @@ export default function GSAPFlipSection() {
         }
 
         .flip-service-label .svc-sub {
-          font-family: 'Raleway', sans-serif;
+          font-family: 'Sora', sans-serif;
           font-weight: 400;
           letter-spacing: 0.08em;
           text-transform: uppercase;
@@ -361,7 +361,7 @@ export default function GSAPFlipSection() {
         }
 
         .flip-service-label .svc-tag {
-          font-family: 'Raleway', monospace;
+          font-family: 'Sora', monospace;
           font-weight: 700;
           font-size: 0.65rem;
           letter-spacing: 0.12em;

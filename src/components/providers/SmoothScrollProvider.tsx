@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import LenisBackgroundCanvas from '@/components/ui/LenisBackgroundCanvas';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -97,5 +98,11 @@ export default function SmoothScrollProvider({
     };
   }, []);
 
-  return <>{children}</>;
+  return (
+    <>
+      <LenisBackgroundCanvas />
+      {children}
+    </>
+  );
 }
+

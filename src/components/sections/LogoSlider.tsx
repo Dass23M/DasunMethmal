@@ -122,7 +122,7 @@ export default function LogoSlider() {
         style={{
           textAlign: 'center',
           fontSize: '0.7rem',
-          fontFamily: 'Raleway, sans-serif',
+          fontFamily: 'Sora, sans-serif',
           fontWeight: 600,
           letterSpacing: '0.22em',
           textTransform: 'uppercase',

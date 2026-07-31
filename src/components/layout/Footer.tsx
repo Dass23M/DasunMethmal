@@ -13,10 +13,10 @@ export default function Footer() {
 
                     {/* Column 1: Pages */}
                     <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                        <h4 className="font-raleway font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
+                        <h4 className="font-sora font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
                             Pages
                         </h4>
-                        <ul className="space-y-3 font-arimo text-sm text-gray-700 font-medium">
+                        <ul className="space-y-3 font-inter text-sm text-gray-700 font-medium">
                             <li>
                                 <Link href="/" className="hover:text-[#FF6B00] transition-colors">
                                     Home
@@ -42,15 +42,15 @@ export default function Footer() {
 
                     {/* Column 2: Follow Us */}
                     <div className="flex flex-col items-center text-center">
-                        <h4 className="font-raleway font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
+                        <h4 className="font-sora font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
                             Follow Us
                         </h4>
-                        <p className="font-arimo text-sm text-gray-700 font-medium mb-1">
+                        <p className="font-inter text-sm text-gray-700 font-medium mb-1">
                             <a href="mailto:mail@uxoradesign.com" className="hover:text-[#FF6B00] transition-colors">
                                 mail@uxoradesign.com
                             </a>
                         </p>
-                        <p className="font-arimo text-sm text-gray-700 font-medium mb-6">
+                        <p className="font-inter text-sm text-gray-700 font-medium mb-6">
                             <a href="tel:+910123456789" className="hover:text-[#FF6B00] transition-colors">
                                 +91 0123456789
                             </a>
@@ -99,10 +99,10 @@ export default function Footer() {
 
                     {/* Column 3: Address */}
                     <div className="flex flex-col items-center md:items-end text-center md:text-right">
-                        <h4 className="font-raleway font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
+                        <h4 className="font-sora font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
                             Address
                         </h4>
-                        <address className="not-italic font-arimo text-sm text-gray-700 font-medium space-y-1">
+                        <address className="not-italic font-inter text-sm text-gray-700 font-medium space-y-1">
                             <p>#21. North Street</p>
                             <p>Velachery</p>
                             <p>VelacheryChennai</p>
@@ -124,7 +124,7 @@ export default function Footer() {
                             href="https://twitter.com"
                             target="_blank"
                             rel="noreferrer"
-                            className="px-6 py-2.5 rounded-full border border-white/80 text-white font-raleway font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
+                            className="px-6 py-2.5 rounded-full border border-white/80 text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
                         >
                             Twitter
                         </a>
@@ -132,7 +132,7 @@ export default function Footer() {
                             href="https://instagram.com"
                             target="_blank"
                             rel="noreferrer"
-                            className="px-6 py-2.5 rounded-full border border-white/80 text-white font-raleway font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
+                            className="px-6 py-2.5 rounded-full border border-white/80 text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
                         >
                             Instagram
                         </a>
@@ -170,7 +170,7 @@ export default function Footer() {
                             href="https://facebook.com"
                             target="_blank"
                             rel="noreferrer"
-                            className="px-6 py-2.5 rounded-full border border-white/80 text-white font-raleway font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
+                            className="px-6 py-2.5 rounded-full border border-white/80 text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
                         >
                             Facebook
                         </a>
@@ -178,7 +178,7 @@ export default function Footer() {
                             href="https://behance.net"
                             target="_blank"
                             rel="noreferrer"
-                            className="px-6 py-2.5 rounded-full border border-white/80 text-white font-raleway font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
+                            className="px-6 py-2.5 rounded-full border border-white/80 text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
                         >
                             Behance
                         </a>
@@ -188,7 +188,7 @@ export default function Footer() {
 
                 {/* Giant Bottom Typography */}
                 <div className="w-full text-center mt-10 md:mt-14 overflow-hidden px-2">
-                    <h1 className="font-raleway font-black text-white text-[15vw] sm:text-[17vw] lg:text-[18vw] leading-none tracking-tighter uppercase select-none opacity-95">
+                    <h1 className="font-sora font-black text-white text-[15vw] sm:text-[17vw] lg:text-[18vw] leading-none tracking-tighter uppercase select-none opacity-95">
                         METHMAL
                     </h1>
                 </div>

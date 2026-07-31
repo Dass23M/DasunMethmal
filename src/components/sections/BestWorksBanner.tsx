@@ -192,13 +192,13 @@ export default function BestWorksBanner() {
           <div className="flex flex-col items-center justify-center text-center">
             
             {/* Row 1: OUR BEST */}
-            <div className="text-row-1 font-raleway font-black text-[clamp(2.5rem,10vw,4.5rem)] md:text-[9vw] lg:text-[8.5vw] xl:text-[8rem] 2xl:text-[9.5rem] tracking-tighter uppercase leading-[0.9] text-white drop-shadow-2xl">
+            <div className="text-row-1 font-sora font-black text-[clamp(2.5rem,10vw,4.5rem)] md:text-[9vw] lg:text-[8.5vw] xl:text-[8rem] 2xl:text-[9.5rem] tracking-tighter uppercase leading-[0.9] text-white drop-shadow-2xl">
               <span className="text-white">OUR </span>
               <span className="text-black drop-shadow-none">BEST</span>
             </div>
 
             {/* Row 2: WOR [CARD] KS */}
-            <div className="text-row-2 flex items-center justify-center gap-[4px] sm:gap-[12px] md:gap-[18px] mt-[6px] sm:mt-[12px] font-raleway font-black text-[clamp(2.5rem,10vw,4.5rem)] md:text-[9vw] lg:text-[8.5vw] xl:text-[8rem] 2xl:text-[9.5rem] tracking-tighter uppercase leading-[0.9] text-white drop-shadow-2xl">
+            <div className="text-row-2 flex items-center justify-center gap-[4px] sm:gap-[12px] md:gap-[18px] mt-[6px] sm:mt-[12px] font-sora font-black text-[clamp(2.5rem,10vw,4.5rem)] md:text-[9vw] lg:text-[8.5vw] xl:text-[8rem] 2xl:text-[9.5rem] tracking-tighter uppercase leading-[0.9] text-white drop-shadow-2xl">
               <span className="text-white">WOR</span>
 
               {/* Embedded Work Preview Card */}
@@ -236,7 +236,7 @@ export default function BestWorksBanner() {
           <div className="mt-8 sm:mt-12">
             <Link
               href="#portfolio-section"
-              className="inline-flex items-center gap-3 bg-black text-white px-7 py-3.5 sm:px-9 sm:py-4 rounded-full font-raleway font-bold text-xs sm:text-sm tracking-wider uppercase border border-white/20 transition-all duration-300 hover:bg-white hover:text-black hover:scale-105 shadow-2xl group"
+              className="inline-flex items-center gap-3 bg-black text-white px-7 py-3.5 sm:px-9 sm:py-4 rounded-full font-sora font-bold text-xs sm:text-sm tracking-wider uppercase border border-white/20 transition-all duration-300 hover:bg-white hover:text-black hover:scale-105 shadow-2xl group"
             >
               <span>EXPLORE ALL PROJECTS</span>
               <span className="text-base transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>

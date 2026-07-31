@@ -209,7 +209,7 @@ export default function EditorialShowcase() {
                                 {/* Main Paragraph Text */}
                                 <p
                                     ref={textRef}
-                                    className="font-raleway text-xl sm:text-2xl md:text-3xl lg:text-[2.1rem] font-medium leading-[1.38] tracking-tight text-black mt-6 will-change-transform"
+                                    className="font-sora text-xl sm:text-2xl md:text-3xl lg:text-[2.1rem] font-medium leading-[1.38] tracking-tight text-black mt-6 will-change-transform"
                                 >
                                     We build data-driven marketing strategies, high-converting ad campaigns, and brand architectures engineered for growth. Every solution is strategically crafted to scale your customer acquisition, maximize ROAS, and elevate your brand presence.
                                 </p>
@@ -230,7 +230,7 @@ export default function EditorialShowcase() {
                             <div ref={statsRef} className="grid grid-cols-3 gap-4 sm:gap-6 pt-6 border-t border-black/10">
                                 {MARKETING_METRICS.map((metric, idx) => (
                                     <div key={idx} className="flex flex-col">
-                                        <span className="font-raleway text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-black">
+                                        <span className="font-sora text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-black">
                                             {metric.value}
                                         </span>
                                         <span className="text-xs sm:text-sm font-medium text-black/60 mt-1">

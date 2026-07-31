@@ -84,14 +84,14 @@ export default function Testimonials() {
       {/* ─── HEADER SECTION ─── */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 mb-8 sm:mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
         <div>
-          <span className="font-raleway font-bold text-xs uppercase tracking-widest text-[#FF6B00] mb-2 block">
+          <span className="font-sora font-bold text-xs uppercase tracking-widest text-[#FF6B00] mb-2 block">
             {"// TESTIMONIALS"}
           </span>
-          <h2 className="font-raleway font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-black tracking-tight leading-tight">
+          <h2 className="font-sora font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-black tracking-tight leading-tight">
             Trusted Brands Worldwide
           </h2>
         </div>
-        <p className="font-arimo text-xs sm:text-sm md:text-base text-gray-600 max-w-md leading-relaxed">
+        <p className="font-inter text-xs sm:text-sm md:text-base text-gray-600 max-w-md leading-relaxed">
           We build the next in digital experiences. From strategy to design, development to retention, we&apos;ve got you covered. 2+ years of experience, 37+ projects launched.
         </p>
       </div>
@@ -114,26 +114,26 @@ export default function Testimonials() {
                   {/* Brand Logo Tag */}
                   <div className="flex items-center gap-2 mb-3 sm:mb-4">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00]" />
-                    <span className="font-raleway font-bold text-base md:text-lg text-black tracking-tight">
+                    <span className="font-sora font-bold text-base md:text-lg text-black tracking-tight">
                       {card.brand}
                     </span>
                   </div>
 
                   {/* Quote */}
-                  <blockquote className="font-arimo text-xs sm:text-base text-gray-800 leading-relaxed mb-4 sm:mb-6 font-normal">
+                  <blockquote className="font-inter text-xs sm:text-base text-gray-800 leading-relaxed mb-4 sm:mb-6 font-normal">
                     &ldquo;{card.quote}&rdquo;
                   </blockquote>
                 </div>
 
                 {/* Author Info */}
                 <div>
-                  <h4 className="font-raleway font-bold text-sm sm:text-base md:text-lg text-black leading-tight">
+                  <h4 className="font-sora font-bold text-sm sm:text-base md:text-lg text-black leading-tight">
                     {card.name}
                   </h4>
-                  <p className="font-arimo text-[11px] sm:text-sm text-gray-500 font-medium mt-0.5">
+                  <p className="font-inter text-[11px] sm:text-sm text-gray-500 font-medium mt-0.5">
                     {card.position}
                   </p>
-                  <p className="font-arimo text-[10px] sm:text-xs text-gray-400 mt-0.5">
+                  <p className="font-inter text-[10px] sm:text-xs text-gray-400 mt-0.5">
                     {card.location}
                   </p>
                 </div>

@@ -118,9 +118,9 @@ export default function ThreeDRotator() {
           {Array.from({ length: N }).map((_, i) => (
             <div key={i} className="die-3d w-[400px] h-[55px] pb-[9px] relative [perspective:999px]">
               <div className="cube-3d absolute w-full h-full [transform-style:preserve-3d]">
-                <div className="face-3d absolute w-full h-full flex items-center justify-center [backface-visibility:hidden] font-raleway font-black text-[58px] tracking-tight">CODE</div>
-                <div className="face-3d absolute w-full h-full flex items-center justify-center [backface-visibility:hidden] font-raleway font-black text-[56px] tracking-tight">DRIVEN</div>
-                <div className="face-3d absolute w-full h-full flex items-center justify-center [backface-visibility:hidden] font-raleway font-black text-[54px] tracking-tight">ANIMATION</div>
+                <div className="face-3d absolute w-full h-full flex items-center justify-center [backface-visibility:hidden] font-sora font-black text-[58px] tracking-tight">CODE</div>
+                <div className="face-3d absolute w-full h-full flex items-center justify-center [backface-visibility:hidden] font-sora font-black text-[56px] tracking-tight">DRIVEN</div>
+                <div className="face-3d absolute w-full h-full flex items-center justify-center [backface-visibility:hidden] font-sora font-black text-[54px] tracking-tight">ANIMATION</div>
               </div>
             </div>
           ))}

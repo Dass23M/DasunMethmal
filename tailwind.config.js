@@ -8,8 +8,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        raleway: ['var(--font-raleway)', 'sans-serif'],
-        arimo: ['var(--font-arimo)', 'sans-serif'],
+        sora: ['var(--font-sora)', 'sans-serif'],
+        inter: ['var(--font-inter)', 'sans-serif'],
+        mono: ['var(--font-mono)', 'monospace'],
       },
       colors: {
         accent: '#FF6B00',

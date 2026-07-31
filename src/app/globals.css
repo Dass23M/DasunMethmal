@@ -22,7 +22,7 @@ html {
 }
 
 body {
-  font-family: var(--font-arimo), 'Arimo', sans-serif;
+  font-family: var(--font-inter), 'Inter', sans-serif;
   color: #fff;
   font-size: 16px;
   line-height: 1.7;
@@ -34,7 +34,7 @@ body {
 
 h1, h2, h3, h4, h5, h6,
 .heading-h2, .heading-h3 {
-  font-family: var(--font-raleway), 'Raleway', sans-serif;
+  font-family: var(--font-sora), 'Sora', sans-serif;
 }
 
 body::before {
@@ -159,7 +159,7 @@ a:hover {
   font-size: 1.7rem;
   color: #fff;
   font-weight: 700;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Sora', sans-serif;
 }
 
 .site-nav .site-logo a span {
@@ -723,7 +723,7 @@ body.offcanvas .site-mobile-menu {
 .portfolio-overlay-content p {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Arimo', sans-serif;
+  font-family: 'Inter', sans-serif;
   margin: 0;
 }
 
@@ -782,7 +782,7 @@ body.offcanvas .site-mobile-menu {
 .counter-number {
   font-size: 69px;
   font-weight: 900;
-  font-family: 'Arimo', sans-serif;
+  font-family: 'Inter', sans-serif;
   color: #FF8A00;
   line-height: 1;
 }
@@ -985,7 +985,7 @@ body.offcanvas .site-mobile-menu {
 .blog-overlay-content .post-meta {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Arimo', sans-serif;
+  font-family: 'Inter', sans-serif;
   margin: 0;
 }
 
@@ -1022,7 +1022,7 @@ body.offcanvas .site-mobile-menu {
   border-radius: 0;
   color: #fff;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Sora', sans-serif;
   font-size: 16px;
   outline: none;
   transition: border-color 0.3s;
@@ -1083,7 +1083,7 @@ textarea.form-control {
 .footer-logo a {
   font-size: 30px;
   font-weight: 900;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Sora', sans-serif;
   color: #fff;
 }
 

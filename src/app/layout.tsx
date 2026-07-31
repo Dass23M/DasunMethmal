@@ -1,22 +1,29 @@
 import type { Metadata } from 'next';
-import { Raleway, Arimo } from 'next/font/google';
+import { Sora, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import Loader from '@/components/layout/Loader';
 import MobileMenu from '@/components/layout/MobileMenu';
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
 import GSAPSectionAnimator from '@/components/providers/GSAPSectionAnimator';
 
-const raleway = Raleway({
+const sora = Sora({
   subsets: ['latin'],
-  weight: ['300', '400', '700', '900'],
-  variable: '--font-raleway',
+  weight: ['300', '400', '600', '700', '800'],
+  variable: '--font-sora',
   display: 'swap',
 });
 
-const arimo = Arimo({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400'],
-  variable: '--font-arimo',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-mono',
   display: 'swap',
 });
 
@@ -34,7 +41,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${raleway.variable} ${arimo.variable}`}>
+      <body className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
         {/* Smooth weighted scroll & GSAP section animator providers */}
         <SmoothScrollProvider>
           <GSAPSectionAnimator>

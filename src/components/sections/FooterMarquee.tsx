@@ -54,7 +54,7 @@ export default function FooterMarquee() {
         <div className="inline-flex items-center will-change-transform" ref={topTrackRef}>
           {Array.from({ length: REPEATS }).map((_, i) => (
             <span key={`t-${i}`} className="inline-flex items-center gap-[12px] md:gap-[20px] px-[16px] md:px-[28px] shrink-0" aria-hidden="true">
-              <span className="font-raleway text-[1.4rem] md:text-[2.6rem] font-black tracking-wide uppercase leading-none text-black">
+              <span className="font-sora text-[1.4rem] md:text-[2.6rem] font-black tracking-wide uppercase leading-none text-black">
                 Let&apos;s Get Started
               </span>
               <span className="text-[1rem] md:text-[1.8rem] leading-none text-black">✦</span>
@@ -68,7 +68,7 @@ export default function FooterMarquee() {
         <div className="inline-flex items-center will-change-transform" ref={bottomTrackRef}>
           {Array.from({ length: REPEATS }).map((_, i) => (
             <span key={`b-${i}`} className="inline-flex items-center gap-[12px] md:gap-[20px] px-[16px] md:px-[28px] shrink-0" aria-hidden="true">
-              <span className="font-raleway text-[1.4rem] md:text-[2.6rem] font-black tracking-wide uppercase leading-none text-white">
+              <span className="font-sora text-[1.4rem] md:text-[2.6rem] font-black tracking-wide uppercase leading-none text-white">
                 Let&apos;s Get Started
               </span>
               <span className="text-[1rem] md:text-[1.8rem] leading-none text-[#FF6B00]">✦</span>

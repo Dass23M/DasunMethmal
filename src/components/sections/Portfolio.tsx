@@ -229,7 +229,7 @@ export default function Portfolio() {
           padding: 3px 8px;
           border-radius: 3px;
           z-index: 10;
-          font-family: 'Raleway', sans-serif;
+          font-family: 'Sora', sans-serif;
           text-transform: uppercase;
         }
 

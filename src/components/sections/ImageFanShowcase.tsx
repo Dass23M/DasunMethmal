@@ -2,74 +2,59 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PAGES = [
+const SERVICES = [
   {
-    id: '001',
-    number: '/001',
-    title: 'UI/UX Design',
-    tags: [
-      'Usability Testing',
-      'User Research',
-      'Wireframing',
-      'Interface Design',
-      'Interactive Prototyping',
-    ],
-    image: '/images/fashion2.webp',
-    activeDot: 0,
-  },
-  {
-    id: '002',
-    number: '/002',
-    title: 'Mobile App Design',
-    tags: [
-      'User Research',
-      'App Wireframing',
-      'UI/UX Design',
-      'Interactive Prototyping',
-      'Usability Testing',
-    ],
-    image: '/images/fashion1.png',
-    activeDot: 1,
-  },
-  {
-    id: '003',
-    number: '/003',
-    title: 'Brand Identity & Strategy',
-    tags: [
-      'Brand Architecture',
-      'Visual Identity',
-      'Design Systems',
-      'Typography',
-      'Digital Strategy',
-    ],
-    image: '/images/fashion3.jpg',
-    activeDot: 2,
-  },
-  {
-    id: '004',
-    number: '/004',
-    title: 'Web Development & Architecture',
-    tags: [
-      'Fullstack Development',
-      'React.js & Next.js',
-      'Node.js & Express',
-      'GSAP 3D Animations',
-      'Performance Tuning',
-    ],
+    id: 'web-dev',
+    index: 4, // Top z-index in initial stack
+    header: 'Fullstack Web Development',
+    category: 'WEB ENGINEERING',
+    desc: 'Custom Next.js, React, Node.js, and MongoDB platforms. High-performance web applications built for speed, SEO, scalability, and seamless user experiences.',
+    accent: '#FF6B00',
     image: '/images/fashion4.jpg',
-    activeDot: 0,
+    tags: ['React.js', 'Next.js 14', 'Node.js', 'TypeScript', 'MongoDB'],
+  },
+  {
+    id: 'mobile-dev',
+    index: 3,
+    header: 'Mobile App Engineering',
+    category: 'CROSS-PLATFORM APPS',
+    desc: 'Intuitive iOS & Android mobile applications. Responsive touch-first interfaces, real-time API integration, and buttery-smooth state management.',
+    accent: '#FFA800',
+    image: '/images/fashion1.png',
+    tags: ['React Native', 'Mobile UI/UX', 'REST API', 'App Wireframing'],
+  },
+  {
+    id: 'digital-marketing',
+    index: 2,
+    header: 'Digital Growth & Marketing',
+    category: 'MARKETING & SEO',
+    desc: 'Data-driven growth marketing, technical SEO optimization, ad campaign architecture, and brand identity strategies engineered for maximum ROAS.',
+    accent: '#FF8A00',
+    image: '/images/dm_1.png',
+    tags: ['Technical SEO', 'Ad Campaigns', 'Conversion Rate', 'Brand Strategy'],
+  },
+  {
+    id: 'ui-ux-motion',
+    index: 1, // Bottom z-index in initial stack
+    header: 'UI/UX & Motion Design',
+    category: 'CREATIVE DIRECTION',
+    desc: 'Interactive 3D web motion graphics, GSAP animations, custom design systems, and user-centered interface design engineered for high engagement.',
+    accent: '#FF6B00',
+    image: '/images/fashion3.jpg',
+    tags: ['GSAP 3D', 'Design Systems', 'Interactive Motion', 'Figma'],
   },
 ];
 
 export default function ImageFanShowcase() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-  const bookRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const archRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -77,261 +62,225 @@ export default function ImageFanShowcase() {
   }, []);
 
   useEffect(() => {
-    if (!mounted || !wrapperRef.current || !bookRef.current) return;
+    if (!mounted || !archRef.current || !rightRef.current) return;
 
-    const wrapper = wrapperRef.current;
-    const book = bookRef.current;
-    const pageEls = gsap.utils.toArray<HTMLElement>(book.querySelectorAll('.book-page'));
+    const arch = archRef.current;
+    const right = rightRef.current;
+    const leftItems = gsap.utils.toArray<HTMLElement>(arch.querySelectorAll('.arch__info'));
+    const rightWrappers = gsap.utils.toArray<HTMLElement>(right.querySelectorAll('.img-wrapper'));
+    const imgs = gsap.utils.toArray<HTMLImageElement>(right.querySelectorAll('.img-wrapper img'));
 
     const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
+      // 1. Mobile vs Desktop Order Interleaving
+      const handleMobileLayout = () => {
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        if (isMobile) {
+          leftItems.forEach((item, i) => {
+            item.style.order = `${i * 2}`;
+          });
+          rightWrappers.forEach((item, i) => {
+            item.style.order = `${i * 2 + 1}`;
+          });
+        } else {
+          leftItems.forEach((item) => {
+            item.style.order = '';
+          });
+          rightWrappers.forEach((item) => {
+            item.style.order = '';
+          });
+        }
+      };
 
-      // ── Desktop & Tablet (≥768px): Vertical 3D Book Page Flip Scrub ──
-      mm.add('(min-width: 768px)', () => {
-        setupBookFlip(90, 1.5, 3800);
-      });
+      handleMobileLayout();
+      window.addEventListener('resize', handleMobileLayout);
 
-      // ── Mobile (<768px): Touch-Optimized Vertical 3D Book Page Flip Scrub ──
-      mm.add('(max-width: 767px)', () => {
-        setupBookFlip(45, 1.2, 2200);
-      });
-
-      function setupBookFlip(peekOffset: number, stepDuration: number, endScroll: number) {
-        pageEls.forEach((page, idx) => {
-          gsap.set(page, {
-            transformOrigin: 'center top',
-            transformStyle: 'preserve-3d',
-            backfaceVisibility: 'hidden',
-            rotateX: 0,
-            rotateY: 0,
-            y: idx * peekOffset,
-            scale: 1 - idx * 0.03,
-            z: -idx * 12,
-            opacity: 1,
+      // 2. Desktop Pinned Image Stack Swapping
+      ScrollTrigger.matchMedia({
+        '(min-width: 769px)': function () {
+          // Pin the right image container while scrolling through left text cards
+          ScrollTrigger.create({
+            trigger: arch,
+            start: 'top top+=80',
+            end: 'bottom bottom',
+            pin: right,
+            pinSpacing: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
           });
 
-          const shadowEl = page.querySelector('.page-shadow');
-          if (shadowEl && idx > 0) {
-            gsap.set(shadowEl, { opacity: 0.3 });
-          }
-        });
+          // Set initial full clip-path for all image wrappers
+          gsap.set(rightWrappers, {
+            clipPath: 'inset(0% 0% 0% 0%)',
+          });
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: wrapper,
-            start: 'top top',
-            end: `+=${endScroll}`,
-            pin: true,
-            scrub: 1,
-            anticipatePin: 1,
-            fastScrollEnd: true,
-            invalidateOnRefresh: true,
-          },
-        });
+          gsap.set(imgs, {
+            objectPosition: '0px 0%',
+          });
 
-        pageEls.forEach((page, i) => {
-          if (i === pageEls.length - 1) return;
+          // Tie each wrapper's clip-path mask reveal directly to its left text card
+          leftItems.forEach((leftItem, idx) => {
+            const currentWrapper = rightWrappers[idx];
+            const nextWrapper = rightWrappers[idx + 1];
 
-          const shadowEl = page.querySelector('.page-shadow');
-          const imgEl = page.querySelector('.page-image-wrap');
-          const startTime = i * stepDuration;
+            if (nextWrapper && currentWrapper) {
+              const tl = gsap.timeline({
+                scrollTrigger: {
+                  trigger: leftItem,
+                  start: 'bottom 60%',
+                  end: 'bottom 10%',
+                  scrub: 1,
+                },
+              });
 
-          for (let j = i + 1; j < pageEls.length; j++) {
-            const targetPage = pageEls[j];
-            const targetOffset = (j - i - 1) * peekOffset;
-            const targetScale = 1 - (j - i - 1) * 0.03;
-            const targetZ = -(j - i - 1) * 12;
-            const targetShadow = targetPage.querySelector('.page-shadow');
-
-            tl.to(
-              targetPage,
-              {
-                y: targetOffset,
-                scale: targetScale,
-                z: targetZ,
-                duration: stepDuration,
-                ease: 'power2.inOut',
-              },
-              startTime
-            );
-
-            if (targetShadow && j === i + 1) {
-              tl.to(
-                targetShadow,
-                { opacity: 0, duration: stepDuration * 0.8, ease: 'power1.inOut' },
-                startTime
+              tl.to(currentWrapper, {
+                clipPath: 'inset(0% 0% 100% 0%)',
+                ease: 'power1.inOut',
+              }).to(
+                imgs[idx],
+                {
+                  objectPosition: '0px 60%',
+                  ease: 'none',
+                },
+                0
               );
             }
-          }
-
-          if (shadowEl) {
-            tl.fromTo(
-              shadowEl,
-              { opacity: 0 },
-              { opacity: 0.6, duration: stepDuration * 0.5, ease: 'power2.in' },
-              startTime
-            ).to(
-              shadowEl,
-              { opacity: 0, duration: stepDuration * 0.5, ease: 'power2.out' },
-              startTime + stepDuration * 0.5
+          });
+        },
+        '(max-width: 768px)': function () {
+          imgs.forEach((image) => {
+            gsap.fromTo(
+              image,
+              { objectPosition: '0px 20%' },
+              {
+                objectPosition: '0px 70%',
+                scrollTrigger: {
+                  trigger: image,
+                  start: 'top 85%',
+                  end: 'bottom 20%',
+                  scrub: true,
+                },
+              }
             );
-          }
-
-          tl.to(
-            page,
-            {
-              rotateX: 105,
-              y: '-=100',
-              z: 40,
-              duration: stepDuration,
-              ease: 'power2.inOut',
-            },
-            startTime
-          );
-
-          if (imgEl) {
-            tl.to(
-              imgEl,
-              { scale: 1.04, rotateX: -6, duration: stepDuration * 0.5, ease: 'power1.in' },
-              startTime
-            ).to(
-              imgEl,
-              { scale: 0.98, rotateX: 0, duration: stepDuration * 0.5, ease: 'power1.out' },
-              startTime + stepDuration * 0.5
-            );
-          }
-
-          tl.to(
-            page,
-            {
-              opacity: 0,
-              duration: 0.2,
-              ease: 'power1.out',
-            },
-            startTime + stepDuration * 0.85
-          );
-        });
-      }
-    }, wrapperRef);
+          });
+        },
+      });
+    }, archRef);
 
     return () => ctx.revert();
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full h-screen bg-[#f8f8fa]" />;
+    return <section className="w-full h-screen bg-[#0A0B0E]" />;
   }
 
   return (
-    <div ref={wrapperRef} className="w-full overflow-hidden bg-[#f8f8fa] text-black select-none">
-      <section
-        id="vertical-book-section"
-        ref={sectionRef}
-        className="relative w-full min-h-screen py-12 md:py-0 md:h-[100svh] md:h-screen bg-[#f8f8fa] flex items-center justify-center overflow-hidden"
-      >
-        {/* Top Book Crease Decor Line */}
-        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-black/15 to-transparent z-40 pointer-events-none" />
-
-        {/* ── 3D BOOK STAGE CONTAINER (Desktop + Mobile) ── */}
-        <div
-          ref={bookRef}
-          className="relative w-full max-w-[1440px] flex h-[480px] xs:h-[520px] sm:h-[600px] md:h-[640px] max-h-[85vh] mx-auto px-3 sm:px-6 lg:px-12 items-center justify-center"
-          style={{ perspective: '2200px', transformStyle: 'preserve-3d' }}
-        >
-          {PAGES.map((page, idx) => (
-            <div
-              key={page.id}
-              className="book-page absolute inset-x-3 sm:inset-x-6 lg:inset-x-12 top-0 bg-white rounded-2xl sm:rounded-3xl border border-gray-200/90 shadow-2xl p-4 xs:p-6 sm:p-8 lg:p-12 flex flex-col justify-between overflow-hidden"
-              style={{
-                zIndex: (PAGES.length - idx) * 10,
-                transformOrigin: 'center top',
-                transformStyle: 'preserve-3d',
-                backfaceVisibility: 'hidden',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.14), 0 0 30px rgba(0, 0, 0, 0.05)',
-                willChange: 'transform, opacity',
-              }}
-            >
-              {/* Dynamic Paper Turn Shadow Overlay */}
-              <div className="page-shadow absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-transparent pointer-events-none z-30 opacity-0" />
-
-              {/* Page Top Crease Gradient */}
-              <div className="absolute top-0 left-0 right-0 h-6 sm:h-8 bg-gradient-to-b from-black/5 to-transparent pointer-events-none z-20" />
-
-              {/* Main Content Area */}
-              <div className="page-content relative z-10 w-full h-full flex flex-col justify-between">
-
-                {/* Top Section Number Header matching reference image (✳ /001) */}
-                <div className="flex items-center gap-2 mb-2 sm:mb-6">
-                  <span className="text-[#FF6B00] text-base sm:text-xl font-black">✳</span>
-                  <span className="font-mono text-xs sm:text-base font-bold tracking-wider text-black">
-                    {page.number}
-                  </span>
-                </div>
-
-                {/* Main Content Grid: Title & Tags Left / Large Image Right */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 lg:gap-14 items-center my-auto">
-
-                  {/* Left Column: Large Headline & Skill Tag Pills */}
-                  <div className="lg:col-span-6 flex flex-col justify-center">
-                    <h3 className="font-raleway font-black text-2xl xs:text-3xl sm:text-4xl lg:text-[4rem] xl:text-[4.4rem] leading-[1.02] text-black tracking-tight mb-3 sm:mb-6">
-                      {page.title}
-                    </h3>
-
-                    {/* Skill / Technology Pills matching reference image */}
-                    <div className="flex flex-wrap gap-1.5 xs:gap-2 sm:gap-3">
-                      {page.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="font-arimo text-[10px] xs:text-xs sm:text-sm font-medium text-gray-800 bg-[#EFEFEF] px-2.5 py-1 sm:px-4 sm:py-2 rounded-md sm:rounded-lg border border-gray-300/40 shadow-xs transition-colors hover:bg-black hover:text-white"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Right Column: Large Preview Image with 3-Dot Pagination Overlay */}
-                  <div className="lg:col-span-6 flex justify-center lg:justify-end">
-                    <div className="page-image-wrap relative w-full max-w-[540px] aspect-[16/10] sm:aspect-[16/11] rounded-xl sm:rounded-2xl overflow-hidden shadow-xl sm:shadow-2xl border border-black/5 bg-gray-100 transition-transform duration-500">
-                      <Image
-                        src={page.image}
-                        alt={page.title}
-                        fill
-                        priority={idx === 0}
-                        sizes="(max-width: 1024px) 100vw, 540px"
-                        className="object-cover rounded-xl sm:rounded-2xl"
-                      />
-
-                      {/* 3-Dot Pagination Pill at Bottom Center (matching screenshot •••) */}
-                      <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full flex items-center gap-1.5 sm:gap-2 border border-black/10 shadow-md">
-                        <span
-                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${page.activeDot === 0 ? 'bg-black scale-110' : 'bg-gray-400'
-                            }`}
-                        />
-                        <span
-                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${page.activeDot === 1 ? 'bg-black scale-110' : 'bg-gray-400'
-                            }`}
-                        />
-                        <span
-                          className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${page.activeDot === 2 ? 'bg-black scale-110' : 'bg-gray-400'
-                            }`}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* Bottom Footer Spacing */}
-                <div className="pt-2 sm:pt-4 border-t border-gray-100 flex items-center justify-between text-[10px] sm:text-xs font-mono text-gray-400 uppercase tracking-widest">
-                  <span>EXCELLENCE IN DIGITAL CRAFT</span>
-                  <span className="hidden xs:inline">VERTICAL BOOK FLIP INTERACTION</span>
-                </div>
-
-              </div>
-            </div>
-          ))}
+    <section
+      ref={containerRef}
+      id="capabilities-section"
+      className="w-full bg-[#0A0B0E] text-white py-16 sm:py-24 select-none relative overflow-hidden font-inter border-y border-white/10"
+    >
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+        
+        {/* Section Header */}
+        <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-12">
+          <div className="flex items-center gap-2.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00] animate-pulse" />
+            <span className="font-sora font-bold text-xs sm:text-sm tracking-widest text-[#FF6B00] uppercase">
+              // CORE CAPABILITIES &amp; SERVICES
+            </span>
+          </div>
+          <span className="font-mono text-xs text-white/50 uppercase tracking-widest hidden xs:inline">
+            02 / EXPERTISE
+          </span>
         </div>
-      </section>
-    </div>
+
+        {/* ─── MAIN ARCH CONTAINER ─── */}
+        <div
+          ref={archRef}
+          className="arch flex flex-col md:flex-row gap-8 lg:gap-16 justify-between max-w-[1180px] mx-auto relative"
+        >
+          {/* ── LEFT COLUMN: SCROLLING SERVICE INFO CARDS ── */}
+          <div className="arch__left flex flex-col min-w-full md:min-w-[340px] lg:min-w-[400px]">
+            {SERVICES.map((item) => (
+              <div
+                key={item.id}
+                className="arch__info max-w-full md:max-w-[380px] h-auto md:h-screen flex flex-col justify-center py-10 md:py-0"
+              >
+                <div className="content">
+                  <span className="font-mono text-xs font-bold text-[#FF6B00] tracking-widest uppercase block mb-2">
+                    {item.category}
+                  </span>
+                  
+                  <h2 className="header font-sora text-3xl sm:text-4xl lg:text-[2.6rem] font-extrabold tracking-tight text-white leading-[1.1] mb-4">
+                    {item.header}
+                  </h2>
+
+                  <p className="desc text-white/80 font-normal text-sm sm:text-base leading-relaxed mb-6">
+                    {item.desc}
+                  </p>
+
+                  {/* Skill Badges */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {item.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1 rounded-full bg-white/5 border border-white/15 text-xs font-mono text-white/80"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Action Link Button */}
+                  <Link
+                    href="#contact-section"
+                    style={{ backgroundColor: item.accent }}
+                    className="link inline-flex items-center gap-2 px-5 py-3 rounded-full text-black font-sora font-extrabold text-xs tracking-wider uppercase transition-transform duration-300 hover:scale-105 shadow-lg"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none">
+                      <path
+                        fill="#121212"
+                        d="M5 2c0 1.105-1.895 2-3 2a2 2 0 1 1 0-4c1.105 0 3 .895 3 2ZM11 3.5c0 1.105-.895 3-2 3s-2-1.895-2-3a2 2 0 1 1 4 0ZM6 9a2 2 0 1 1-4 0c0-1.105.895-3 2-3s2 1.895 2 3Z"
+                      />
+                    </svg>
+                    <span>WORK WITH ME ↗</span>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ── RIGHT COLUMN: PINNED STACKED IMAGE MASK REVEAL ── */}
+          <div
+            ref={rightRef}
+            className="arch__right shrink-0 h-auto md:h-screen w-full max-w-full md:max-w-[520px] lg:max-w-[580px] relative flex flex-col justify-center"
+          >
+            {SERVICES.map((item) => (
+              <div
+                key={item.id}
+                data-index={item.index}
+                style={{ zIndex: item.index }}
+                className="img-wrapper relative md:absolute top-0 md:top-1/2 left-0 md:-translate-y-1/2 h-[280px] sm:h-[360px] md:h-[440px] w-full rounded-2xl overflow-hidden border border-white/20 shadow-2xl bg-[#14151C]"
+              >
+                <Image
+                  src={item.image}
+                  alt={item.header}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 580px"
+                  className="object-cover object-center filter brightness-95 contrast-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white font-mono text-xs z-10">
+                  <span className="font-bold text-[#FF6B00]">{item.header}</span>
+                  <span className="opacity-60">0{5 - item.index} / 04</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+
+      </div>
+    </section>
   );
 }

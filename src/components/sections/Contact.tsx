@@ -150,13 +150,13 @@ export default function Contact() {
                                         className="object-cover"
                                     />
                                     <div className="absolute inset-0 bg-black/30" />
-                                    <span className="relative z-10 font-raleway font-black text-white text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">
+                                    <span className="relative z-10 font-sora font-black text-white text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">
                                         METHMAL®
                                     </span>
                                 </div>
 
                                 {/* Card Title */}
-                                <h3 className="font-raleway font-bold text-center text-xl text-black mt-5 mb-5 tracking-tight">
+                                <h3 className="font-sora font-bold text-center text-xl text-black mt-5 mb-5 tracking-tight">
                                     Reach Out to Me
                                 </h3>
 
@@ -266,7 +266,7 @@ export default function Contact() {
                                 </div>
 
                                 {/* Giant Headline */}
-                                <h2 className="font-raleway font-black text-white uppercase tracking-tight leading-[0.95] text-[clamp(2.5rem,6.5vw,5.5rem)] text-left drop-shadow-lg">
+                                <h2 className="font-sora font-black text-white uppercase tracking-tight leading-[0.95] text-[clamp(2.5rem,6.5vw,5.5rem)] text-left drop-shadow-lg">
                                     LET’S CREATE <br />
                                     TOGETHER
                                 </h2>
@@ -276,7 +276,7 @@ export default function Contact() {
                             <div className="flex items-start gap-3.5 max-w-[440px] pt-4">
                                 <span className="text-[#FF6B00] text-xl mt-1 flex-shrink-0 animate-pulse">✦</span>
                                 <div>
-                                    <h4 className="font-raleway font-bold uppercase text-white tracking-wider text-sm sm:text-base mb-1.5">
+                                    <h4 className="font-sora font-bold uppercase text-white tracking-wider text-sm sm:text-base mb-1.5">
                                         RESULTS-DRIVEN SOLUTIONS
                                     </h4>
                                     <p className="text-white/85 text-xs sm:text-sm leading-relaxed font-normal">

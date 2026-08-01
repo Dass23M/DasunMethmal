@@ -16,6 +16,7 @@ export default function Artifact3DSection() {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const hudReadoutRef = useRef<HTMLDivElement>(null);
   const heroCoordsRef = useRef<HTMLDivElement>(null);
+  const isSectionVisible = useRef(false);
   const [activeSidebar, setActiveSidebar] = useState(0);
   const [mounted, setMounted] = useState(false);
 
@@ -28,6 +29,7 @@ export default function Artifact3DSection() {
     if (!mounted) return;
 
     const handleMouseMove = (e: MouseEvent) => {
+      if (!isSectionVisible.current) return;
       const x = ((e.clientX / window.innerWidth) * 2 - 1).toFixed(3);
       const y = (-(e.clientY / window.innerHeight) * 2 + 1).toFixed(3);
 
@@ -44,7 +46,7 @@ export default function Artifact3DSection() {
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mounted]);
 
@@ -70,10 +72,11 @@ export default function Artifact3DSection() {
     window.addEventListener('resize', handleResize);
 
     // Torus parameters
-    const R = Math.min(width, height) * 0.22;
-    const r = Math.min(width, height) * 0.08;
-    const segMajor = 32;
-    const segMinor = 16;
+    const isMobile = window.innerWidth < 768;
+    const R = Math.min(width, height) * (isMobile ? 0.18 : 0.22);
+    const r = Math.min(width, height) * (isMobile ? 0.06 : 0.08);
+    const segMajor = isMobile ? 20 : 32;
+    const segMinor = isMobile ? 10 : 16;
 
     const project3D = (x: number, y: number, z: number) => {
       const cosY = Math.cos(rotY + scrollRotY);
@@ -91,6 +94,12 @@ export default function Artifact3DSection() {
     };
 
     const render = () => {
+      // Pause rendering calculations completely when section is offscreen
+      if (!isSectionVisible.current) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
+
       ctx.clearRect(0, 0, width, height);
       rotY += 0.006;
 
@@ -129,8 +138,9 @@ export default function Artifact3DSection() {
       }
 
       // Inner core nodes
-      for (let k = 0; k < 20; k++) {
-        const angle = (k / 20) * Math.PI * 2 + rotY;
+      const nodeCount = isMobile ? 10 : 20;
+      for (let k = 0; k < nodeCount; k++) {
+        const angle = (k / nodeCount) * Math.PI * 2 + rotY;
         const cx = R * 0.4 * Math.cos(angle);
         const cy = R * 0.4 * Math.sin(angle);
         const cz = Math.sin(angle * 3) * 20;
@@ -146,33 +156,36 @@ export default function Artifact3DSection() {
 
     render();
 
-    // GSAP ScrollTrigger — show canvas & HUD only when inside this section
+    // GSAP ScrollTrigger — enable canvas rendering ONLY when inside this section
     const ctxGSAP = gsap.context(() => {
-      // Fade in all fixed overlays when entering section
       ScrollTrigger.create({
         trigger: containerRef.current,
-        start: 'top top',
-        end: 'bottom bottom',
+        start: 'top bottom',
+        end: 'bottom top',
         onEnter: () => {
-          gsap.to([canvas, scanlinesRef.current], { opacity: 1, duration: 0.6 });
+          isSectionVisible.current = true;
+          gsap.to([canvas, scanlinesRef.current], { opacity: 1, duration: 0.5 });
           gsap.to([hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current], {
-            opacity: 1, duration: 0.6, stagger: 0.1,
+            opacity: 1, duration: 0.5, stagger: 0.1,
           });
         },
         onLeave: () => {
+          isSectionVisible.current = false;
           gsap.to([canvas, scanlinesRef.current, hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current], {
-            opacity: 0, duration: 0.4,
+            opacity: 0, duration: 0.3,
           });
         },
         onEnterBack: () => {
+          isSectionVisible.current = true;
           gsap.to([canvas, scanlinesRef.current], { opacity: 1, duration: 0.4 });
           gsap.to([hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current], {
             opacity: 1, duration: 0.4,
           });
         },
         onLeaveBack: () => {
+          isSectionVisible.current = false;
           gsap.to([canvas, scanlinesRef.current, hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current], {
-            opacity: 0, duration: 0.4,
+            opacity: 0, duration: 0.3,
           });
         },
         onUpdate: (self) => {
@@ -240,14 +253,14 @@ export default function Artifact3DSection() {
       id="artifact-3d-section"
       className="relative w-full bg-[#0A0B0E] text-white font-inter select-none"
     >
-      {/* ── FIXED FULL-SCREEN CANVAS (same pattern as original source) ── */}
+      {/* ── FIXED FULL-SCREEN CANVAS ── */}
       <canvas
         ref={canvasRef}
         className="fixed inset-0 pointer-events-none z-[2] opacity-0"
         style={{ width: '100vw', height: '100vh' }}
       />
 
-      {/* ── FIXED SCANLINES (same as original source) ── */}
+      {/* ── FIXED SCANLINES ── */}
       <div
         ref={scanlinesRef}
         className="fixed inset-0 pointer-events-none z-[3] opacity-0"
@@ -307,10 +320,10 @@ export default function Artifact3DSection() {
         {/* SECTION 1 — Hero */}
         <section
           id="artifact-section-1"
-          className="min-h-screen flex flex-col justify-between p-6 sm:p-12 lg:p-[3rem] pt-28 mb-[70vh]"
+          className="min-h-screen flex flex-col justify-between p-6 sm:p-12 lg:p-[3rem] pt-28 mb-[40vh] md:mb-[70vh]"
         >
           <div className="flex flex-col items-center text-center mt-[4vh]">
-            <h1 className="art-hero-title font-sora font-extrabold text-[clamp(3rem,7vw,7.5rem)] uppercase leading-[0.92] tracking-[-0.02em] text-white opacity-0 translate-y-8">
+            <h1 className="art-hero-title font-sora font-extrabold text-[clamp(2.8rem,7vw,7.5rem)] uppercase leading-[0.92] tracking-[-0.02em] text-white opacity-0 translate-y-8">
               The future<br />is <span className="text-[#FF6B00]">digital craft.</span>
             </h1>
 
@@ -350,10 +363,10 @@ export default function Artifact3DSection() {
         {/* SECTION 2 — Architecture */}
         <section
           id="artifact-section-2"
-          className="min-h-screen mb-[70vh] grid grid-cols-1 lg:grid-cols-2"
+          className="min-h-screen mb-[40vh] md:mb-[70vh] grid grid-cols-1 lg:grid-cols-2"
         >
           <div className="hidden lg:block" />
-          <div className="flex flex-col justify-center p-8 sm:p-14 lg:p-[clamp(4rem,8vh,7rem)] border-l border-white/[0.04]">
+          <div className="flex flex-col justify-center p-8 sm:p-14 lg:p-[clamp(4rem,8vh,7rem)] border-l border-white/[0.04] bg-black/40 lg:bg-transparent">
             <div className="sec-num font-mono text-[0.6rem] tracking-[0.2em] text-white/15 mb-12 opacity-0">
               02 / 03
             </div>
@@ -391,7 +404,7 @@ export default function Artifact3DSection() {
           id="artifact-section-3"
           className="min-h-screen mb-[10vh] grid grid-cols-1 lg:grid-cols-2"
         >
-          <div className="flex flex-col justify-center p-8 sm:p-14 lg:p-[clamp(4rem,8vh,7rem)] border-r border-white/[0.04]">
+          <div className="flex flex-col justify-center p-8 sm:p-14 lg:p-[clamp(4rem,8vh,7rem)] border-r border-white/[0.04] bg-black/40 lg:bg-transparent">
             <div className="sec-num font-mono text-[0.6rem] tracking-[0.2em] text-white/15 mb-12 opacity-0">
               03 / 03
             </div>

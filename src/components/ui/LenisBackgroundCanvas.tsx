@@ -17,7 +17,10 @@ export default function LenisBackgroundCanvas() {
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
+    const isMobile = window.innerWidth < 768;
+    
+    // Disable background particle canvas on mobile screens for maximum smoothness
+    if (prefersReduced || isMobile) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -29,11 +32,18 @@ export default function LenisBackgroundCanvas() {
     let height = (canvas.height = window.innerHeight);
     let scrollVelocity = 0;
     let lastScrollY = window.scrollY;
+    let isVisible = true;
 
-    // Track scroll velocity from Lenis
+    // Pause rendering when tab is inactive
+    const handleVisibilityChange = () => {
+      isVisible = !document.hidden;
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Track scroll velocity
     const updateScrollVelocity = () => {
       const currentScrollY = window.scrollY;
-      scrollVelocity = (currentScrollY - lastScrollY) * 0.15;
+      scrollVelocity = (currentScrollY - lastScrollY) * 0.1;
       lastScrollY = currentScrollY;
     };
 
@@ -53,36 +63,39 @@ export default function LenisBackgroundCanvas() {
       mouseX = e.clientX;
       mouseY = e.clientY;
     };
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    // Create subtle particles
-    const particleCount = Math.min(Math.floor((width * height) / 22000), 55);
+    // Cap particle count at 35 on desktop
+    const particleCount = 35;
     const particles: Particle[] = [];
 
     const colors = [
-      'rgba(255, 107, 0, 0.6)',  // Brand Orange
-      'rgba(255, 168, 0, 0.4)',  // Gold Accent
-      'rgba(255, 255, 255, 0.25)', // White
+      'rgba(255, 107, 0, 0.5)',   // Brand Orange
+      'rgba(255, 168, 0, 0.35)',  // Gold Accent
+      'rgba(255, 255, 255, 0.2)',  // White
     ];
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        radius: Math.random() * 2 + 1,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        radius: Math.random() * 1.8 + 1,
         color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: Math.random() * 0.5 + 0.2,
+        alpha: Math.random() * 0.4 + 0.2,
       });
     }
 
     // Render loop
     const render = () => {
-      ctx.clearRect(0, 0, width, height);
+      if (!isVisible) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
 
-      // Dampen scroll velocity boost
-      scrollVelocity *= 0.92;
+      ctx.clearRect(0, 0, width, height);
+      scrollVelocity *= 0.9;
 
       // Draw faint connections
       for (let i = 0; i < particles.length; i++) {
@@ -91,12 +104,12 @@ export default function LenisBackgroundCanvas() {
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 130) {
+          if (dist < 110) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(255, 107, 0, ${0.12 * (1 - dist / 130)})`;
-            ctx.lineWidth = 0.6;
+            ctx.strokeStyle = `rgba(255, 107, 0, ${0.1 * (1 - dist / 110)})`;
+            ctx.lineWidth = 0.5;
             ctx.stroke();
           }
         }
@@ -104,27 +117,23 @@ export default function LenisBackgroundCanvas() {
 
       // Update and draw particles
       particles.forEach((p) => {
-        // Move with velocity + scroll boost
         p.x += p.vx;
         p.y += p.vy - scrollVelocity;
 
-        // Wrap edges
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
         if (p.y < 0) p.y = height;
         if (p.y > height) p.y = 0;
 
-        // Subtle mouse repulsion / attraction
         const mdx = mouseX - p.x;
         const mdy = mouseY - p.y;
         const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-        if (mdist < 140) {
-          const force = (1 - mdist / 140) * 0.8;
+        if (mdist < 120) {
+          const force = (1 - mdist / 120) * 0.6;
           p.x -= (mdx / mdist) * force;
           p.y -= (mdy / mdist) * force;
         }
 
-        // Draw particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
@@ -137,6 +146,7 @@ export default function LenisBackgroundCanvas() {
     render();
 
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('scroll', updateScrollVelocity);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
@@ -147,7 +157,7 @@ export default function LenisBackgroundCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-[1] opacity-70"
+      className="fixed inset-0 pointer-events-none z-[1] opacity-60 hidden md:block"
     />
   );
 }

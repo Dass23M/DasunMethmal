@@ -8,8 +8,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
-import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,11 +23,14 @@ export default function GSAPFlipSection() {
   const hudReadoutRef = useRef<HTMLDivElement>(null);
   const heroCoordsRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const isSectionVisible = useRef(false);
   const [activeSidebar, setActiveSidebar] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    setIsMobileDevice(window.innerWidth < 768);
   }, []);
 
   useEffect(() => {
@@ -38,13 +39,18 @@ export default function GSAPFlipSection() {
     let animFrameId: number;
     let threeCleanup: (() => void) | null = null;
 
-    // ── Custom cursor logic ──────────────────────────────────────
+    // Detect mobile for hardware scaling
+    const isMobile = window.innerWidth < 768;
+
+    // ── Custom cursor logic (desktop only) ──────────────────────
     const cur = cursorRef.current;
     const ring = cursorRingRef.current;
     let mx = 0, my = 0, rx = 0, ry = 0;
     let cursorAF: number;
+    let isPointerActive = false;
 
     const handlePointerMove = (e: MouseEvent | TouchEvent) => {
+      isPointerActive = true;
       if ('touches' in e && e.touches.length > 0) {
         mx = e.touches[0].clientX;
         my = e.touches[0].clientY;
@@ -54,13 +60,13 @@ export default function GSAPFlipSection() {
       }
     };
 
-    window.addEventListener('mousemove', handlePointerMove);
+    window.addEventListener('mousemove', handlePointerMove, { passive: true });
     window.addEventListener('touchmove', handlePointerMove, { passive: true });
 
-    if (cur && ring) {
+    if (!isMobile && cur && ring) {
       (function loopCursor() {
-        rx += (mx - rx) * 0.12;
-        ry += (my - ry) * 0.12;
+        rx += (mx - rx) * 0.15;
+        ry += (my - ry) * 0.15;
         cur.style.left = mx + 'px';
         cur.style.top = my + 'px';
         ring.style.left = rx + 'px';
@@ -89,19 +95,17 @@ export default function GSAPFlipSection() {
       const phi = ((clientX / window.innerWidth) * 360).toFixed(2).padStart(6, '0');
       const theta = ((clientY / window.innerHeight) * 180).toFixed(2).padStart(6, '0');
       if (heroCoordsRef.current) {
-        heroCoordsRef.current.innerHTML = `φ ${phi}° · θ ${theta}°<br />FRAGMENTS: 2500+ · CELLS: 50×50`;
+        heroCoordsRef.current.innerHTML = `φ ${phi}° · θ ${theta}°<br />FRAGMENTS: ${isMobile ? '350+' : '1500+'}`;
       }
     };
 
-    window.addEventListener('mousemove', updateHUD);
+    window.addEventListener('mousemove', updateHUD, { passive: true });
     window.addEventListener('touchmove', updateHUD, { passive: true });
 
-    // ── THREE.JS SCENE ───────────────────────────────────────
+    // ── THREE.JS HIGH PERFORMANCE SCENE ───────────────────────
     (() => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-
-      const isMobile = window.innerWidth < 768;
 
       // Scene
       const scene = new THREE.Scene();
@@ -111,35 +115,41 @@ export default function GSAPFlipSection() {
       const torusGroup = new THREE.Group();
       scrollGroup.add(torusGroup);
 
-      // Camera - scale Z for mobile screen aspect ratios
+      // Camera - adjusted FOV and position for mobile
       const camera = new THREE.PerspectiveCamera(
         45,
         window.innerWidth / window.innerHeight,
         0.1,
         1000
       );
-      camera.position.z = isMobile ? 9.5 : 7;
+      camera.position.z = isMobile ? 8.5 : 7;
 
-      // Renderer
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      // Renderer - cap pixel ratio at 1.0 for mobile to get 60 FPS
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: !isMobile,
+        powerPreference: 'high-performance',
+      });
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 1.5));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.0;
 
-      // Post-processing
+      // Post-processing setup (Optimized for Mobile)
       const composer = new EffectComposer(renderer);
       composer.addPass(new RenderPass(scene, camera));
+      
+      // Lighter Bloom settings on desktop; lightweight bloom on mobile
       const bloomPass = new UnrealBloomPass(
-        new THREE.Vector2(window.innerWidth, window.innerHeight),
-        0.7,
+        new THREE.Vector2(
+          isMobile ? window.innerWidth / 2 : window.innerWidth,
+          isMobile ? window.innerHeight / 2 : window.innerHeight
+        ),
+        isMobile ? 0.4 : 0.65,
         0.4,
         0.65
       );
       composer.addPass(bloomPass);
-      const fxaaPass = new ShaderPass(FXAAShader);
-      fxaaPass.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
-      composer.addPass(fxaaPass);
 
       // Controls
       const controls = new OrbitControls(camera, renderer.domElement);
@@ -147,13 +157,10 @@ export default function GSAPFlipSection() {
       controls.enabled = false;
 
       // Lights
-      scene.add(new THREE.AmbientLight(0xffffff, 0.35));
-      const dirLight = new THREE.DirectionalLight(0xfff4e0, 2.8);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+      const dirLight = new THREE.DirectionalLight(0xfff4e0, 2.5);
       dirLight.position.set(3, 4, 5);
       scene.add(dirLight);
-      const fillLight = new THREE.DirectionalLight(0xaabbff, 0.5);
-      fillLight.position.set(-4, -2, -3);
-      scene.add(fillLight);
 
       // Textures
       const textureLoader = new THREE.TextureLoader();
@@ -207,16 +214,19 @@ export default function GSAPFlipSection() {
         side: THREE.DoubleSide,
       });
 
+      // Segment resolution optimized for device capability
+      const torusSegs = isMobile ? 40 : 70;
+      const TORUS_R = 2, TORUS_r = 0.4;
+
       torusGroup.add(
         new THREE.Mesh(
-          addBarycentricCoords(new THREE.TorusGeometry(2, 0.4, 80, 80)),
+          addBarycentricCoords(new THREE.TorusGeometry(TORUS_R, TORUS_r, torusSegs, torusSegs)),
           wireMaterial
         )
       );
 
-      // Voronoi fragments
-      const FRAG_SCALE = 50;
-      const TORUS_R = 2, TORUS_r = 0.4;
+      // Voronoi fragment count optimized for smooth 60fps
+      const FRAG_SCALE = isMobile ? 22 : 40;
 
       function hash2(px: number, py: number): [number, number] {
         const a = Math.sin(px * 127.1 + py * 311.7) * 43758.5453;
@@ -229,8 +239,8 @@ export default function GSAPFlipSection() {
         const f = [u * FRAG_SCALE - n[0], v * FRAG_SCALE - n[1]];
         let md = Infinity;
         let best = [...n];
-        for (let j = -2; j <= 2; j++) {
-          for (let i = -2; i <= 2; i++) {
+        for (let j = -1; j <= 1; j++) {
+          for (let i = -1; i <= 1; i++) {
             const o = hash2(n[0] + i, n[1] + j);
             const r = [i + o[0] - f[0], j + o[1] - f[1]];
             const d = r[0] * r[0] + r[1] * r[1];
@@ -241,7 +251,7 @@ export default function GSAPFlipSection() {
       }
 
       const fragments = (() => {
-        const baseGeo = new THREE.TorusGeometry(TORUS_R, TORUS_r, 100, 100);
+        const baseGeo = new THREE.TorusGeometry(TORUS_R, TORUS_r, torusSegs, torusSegs);
         const nonIndexed = baseGeo.toNonIndexed();
         baseGeo.dispose();
         const pos = nonIndexed.attributes.position.array as Float32Array;
@@ -254,7 +264,7 @@ export default function GSAPFlipSection() {
           const uc = (uvData[t * 6] + uvData[t * 6 + 2] + uvData[t * 6 + 4]) / 3;
           const vc = (uvData[t * 6 + 1] + uvData[t * 6 + 3] + uvData[t * 6 + 5]) / 3;
           const s = cellSeed(uc, vc);
-          const k = `${s[0].toFixed(9)}_${s[1].toFixed(9)}`;
+          const k = `${s[0].toFixed(5)}_${s[1].toFixed(5)}`;
           if (!cellMap.has(k)) cellMap.set(k, { s, t: [] });
           cellMap.get(k)!.t.push(t);
         }
@@ -322,7 +332,7 @@ export default function GSAPFlipSection() {
 
       // Raycaster mesh
       const rcMesh = new THREE.Mesh(
-        new THREE.TorusGeometry(TORUS_R, TORUS_r, 80, 80),
+        new THREE.TorusGeometry(TORUS_R, TORUS_r, torusSegs, torusSegs),
         new THREE.MeshBasicMaterial({ visible: false })
       );
       torusGroup.add(rcMesh);
@@ -340,10 +350,10 @@ export default function GSAPFlipSection() {
         if (e.touches.length > 0) updateMousePos(e.touches[0].clientX, e.touches[0].clientY);
       };
 
-      window.addEventListener('mousemove', onMouseMoveThree);
+      window.addEventListener('mousemove', onMouseMoveThree, { passive: true });
       window.addEventListener('touchmove', onTouchMoveThree, { passive: true });
 
-      const fragParams = { hoverRadius: 0.85, liftDist: 0.32, liftSpeedUp: 0.15, liftSpeedDown: 0.06 };
+      const fragParams = { hoverRadius: isMobile ? 1.0 : 0.85, liftDist: 0.28, liftSpeedUp: 0.2, liftSpeedDown: 0.08 };
       const clock = new THREE.Clock();
       let lastTime = 0;
       const hover = { point: new THREE.Vector3(), active: 0 };
@@ -357,34 +367,44 @@ export default function GSAPFlipSection() {
       let isRunning = true;
       const tick = () => {
         if (!isRunning) return;
+        if (!isSectionVisible.current) {
+          animFrameId = requestAnimationFrame(tick);
+          return;
+        }
         const elapsed = clock.getElapsedTime();
-        const delta = elapsed - lastTime;
+        const delta = Math.min(elapsed - lastTime, 0.05);
         lastTime = elapsed;
 
-        controls.update();
-
-        raycaster.setFromCamera(mouse, camera);
-        const hits = raycaster.intersectObject(rcMesh);
-        if (hits.length > 0) {
-          torusGroup.worldToLocal(_localHover.copy(hits[0].point));
-          hover.point.copy(_localHover);
-          hover.active = Math.min(hover.active + delta * 5, 1);
-        } else {
-          hover.active = Math.max(hover.active - delta * 2.5, 0);
+        if (isPointerActive) {
+          raycaster.setFromCamera(mouse, camera);
+          const hits = raycaster.intersectObject(rcMesh);
+          if (hits.length > 0) {
+            torusGroup.worldToLocal(_localHover.copy(hits[0].point));
+            hover.point.copy(_localHover);
+            hover.active = Math.min(hover.active + delta * 6, 1);
+          } else {
+            hover.active = Math.max(hover.active - delta * 3, 0);
+          }
         }
 
-        for (const frag of fragments) {
-          const { cellCenter, cellNormal, rotAxis, maxAngle } = frag.userData;
-          let target = 0;
-          if (hover.active > 0.01) {
-            const dist = cellCenter.distanceTo(hover.point);
-            target = (1 - smoothstepFn(0.4, fragParams.hoverRadius, dist)) * hover.active;
+        if (hover.active > 0.001 || isPointerActive) {
+          for (let i = 0; i < fragments.length; i++) {
+            const frag = fragments[i];
+            const { cellCenter, cellNormal, rotAxis, maxAngle } = frag.userData;
+            let target = 0;
+            if (hover.active > 0.01) {
+              const dist = cellCenter.distanceTo(hover.point);
+              target = (1 - smoothstepFn(0.3, fragParams.hoverRadius, dist)) * hover.active;
+            }
+            const speed = target > frag.userData.lift ? fragParams.liftSpeedUp : fragParams.liftSpeedDown;
+            frag.userData.lift = THREE.MathUtils.lerp(frag.userData.lift, target, speed);
+            const lift = frag.userData.lift;
+            
+            if (lift > 0.001 || target > 0) {
+              frag.position.copy(cellCenter).addScaledVector(cellNormal, 0.015 + lift * fragParams.liftDist);
+              frag.quaternion.setFromAxisAngle(rotAxis, lift * maxAngle);
+            }
           }
-          const speed = target > frag.userData.lift ? fragParams.liftSpeedUp : fragParams.liftSpeedDown;
-          frag.userData.lift = THREE.MathUtils.lerp(frag.userData.lift, target, speed);
-          const lift = frag.userData.lift;
-          frag.position.copy(cellCenter).addScaledVector(cellNormal, 0.015 + lift * fragParams.liftDist);
-          frag.quaternion.setFromAxisAngle(rotAxis, lift * maxAngle);
         }
 
         composer.render();
@@ -395,22 +415,22 @@ export default function GSAPFlipSection() {
       // ── GSAP scroll animations ──────────────────────────────
       gsap.set(scrollGroup.position, { x: 0, y: 0, z: 0 });
       gsap.set(scrollGroup.rotation, { x: 0.15, y: 0, z: 0 });
-      gsap.from(scrollGroup.rotation, { y: Math.PI, duration: 2.4, ease: 'power3.out' });
-      gsap.from(scrollGroup.position, { y: -2, duration: 2.4, ease: 'power3.out' });
+      gsap.from(scrollGroup.rotation, { y: Math.PI, duration: 2.0, ease: 'power3.out' });
+      gsap.from(scrollGroup.position, { y: -2, duration: 2.0, ease: 'power3.out' });
 
       const idleTween = gsap.to(torusGroup.rotation, {
-        y: Math.PI * 2, duration: 22, ease: 'none', repeat: -1, paused: true,
+        y: Math.PI * 2, duration: 24, ease: 'none', repeat: -1, paused: true,
       });
-      gsap.delayedCall(2.5, () => idleTween.play());
+      gsap.delayedCall(2.0, () => idleTween.play());
 
-      const scrollShiftX = isMobile ? 0 : 2.3;
+      const scrollShiftX = isMobile ? 0 : 2.2;
 
       const scrollTl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
           end: 'bottom bottom',
-          scrub: 3.0,
+          scrub: isMobile ? 1.0 : 2.5, // Faster, smoother touch scroll scrub on mobile
           onUpdate: (self) => {
             if (self.progress > 0.02) idleTween.pause();
             else idleTween.resume();
@@ -419,22 +439,21 @@ export default function GSAPFlipSection() {
       });
 
       scrollTl
-        .to(scrollGroup.position, { x: -scrollShiftX, y: isMobile ? -0.8 : 0, z: 0, duration: 1, ease: 'power1.inOut' }, 0)
+        .to(scrollGroup.position, { x: -scrollShiftX, y: isMobile ? -0.5 : 0, z: 0, duration: 1, ease: 'power1.inOut' }, 0)
         .to(scrollGroup.rotation, { x: Math.PI * 0.5, y: -Math.PI * 0.6, z: Math.PI * 0.25, duration: 1, ease: 'power1.inOut' }, 0)
-        .to(scrollGroup.position, { x: scrollShiftX, y: isMobile ? 0.8 : 0, z: 0, duration: 1, ease: 'power1.inOut' }, 1)
+        .to(scrollGroup.position, { x: scrollShiftX, y: isMobile ? 0.5 : 0, z: 0, duration: 1, ease: 'power1.inOut' }, 1)
         .to(scrollGroup.rotation, { x: -Math.PI * 0.5, y: Math.PI * 0.6, z: -Math.PI * 0.25, duration: 1, ease: 'power1.inOut' }, 1);
 
       // Resize handler
       const onResize = () => {
         const mobile = window.innerWidth < 768;
         camera.aspect = window.innerWidth / window.innerHeight;
-        camera.position.z = mobile ? 9.5 : 7;
+        camera.position.z = mobile ? 8.5 : 7;
         camera.updateProjectionMatrix();
 
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(mobile ? 1.0 : Math.min(window.devicePixelRatio, 1.5));
         composer.setSize(window.innerWidth, window.innerHeight);
-        fxaaPass.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
       };
 
       window.addEventListener('resize', onResize);
@@ -452,16 +471,16 @@ export default function GSAPFlipSection() {
 
     // ── GSAP HUD & Content Entrance Animations ───────────────
     const gsapCtx = gsap.context(() => {
-      gsap.to(navStatusRef.current, { opacity: 1, duration: 1, delay: 1.5 });
-      gsap.to([hudTLRef.current, hudBRRef.current], { opacity: 1, duration: 1, delay: 1.2, stagger: 0.2 });
-      gsap.to('.gsapflip-sidebar-label', { opacity: 1, x: 0, duration: 0.6, delay: 1.4, stagger: 0.1 });
+      gsap.to(navStatusRef.current, { opacity: 1, duration: 1, delay: 1.2 });
+      gsap.to([hudTLRef.current, hudBRRef.current], { opacity: 1, duration: 1, delay: 1.0, stagger: 0.2 });
+      gsap.to('.gsapflip-sidebar-label', { opacity: 1, x: 0, duration: 0.6, delay: 1.2, stagger: 0.1 });
 
-      gsap.timeline({ delay: 0.4 })
-        .to('.gsapflip-hero-title', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' })
-        .to('.gsapflip-hero-meta', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-        .to('.gsapflip-hero-cta', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4')
-        .to('.gsapflip-hero-coords', { opacity: 1, duration: 0.5 }, '-=0.3')
-        .to('.gsapflip-hover-hint', { opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.2');
+      gsap.timeline({ delay: 0.3 })
+        .to('.gsapflip-hero-title', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' })
+        .to('.gsapflip-hero-meta', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4')
+        .to('.gsapflip-hero-cta', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
+        .to('.gsapflip-hero-coords', { opacity: 1, duration: 0.4 }, '-=0.2')
+        .to('.gsapflip-hover-hint', { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.1');
 
       gsap.timeline({ scrollTrigger: { trigger: '#gsapflip-section-2', start: 'top 75%' } })
         .to('#gsapflip-section-2 .sec-num', { opacity: 1, duration: 0.4 })
@@ -492,26 +511,38 @@ export default function GSAPFlipSection() {
         trigger: '#gsapflip-section-2',
         start: 'top 85%',
         onEnter: () => {
-          gsap.to('.gsapflip-hover-hint', { opacity: 0, duration: 0.4 });
-          gsap.to([hudTLRef.current, hudBRRef.current, heroCoordsRef.current], { opacity: 0, duration: 0.4 });
-          gsap.to(sidebarRef.current, { opacity: 0, duration: 0.4 });
+          gsap.to('.gsapflip-hover-hint', { opacity: 0, duration: 0.3 });
+          gsap.to([hudTLRef.current, hudBRRef.current, heroCoordsRef.current], { opacity: 0, duration: 0.3 });
+          gsap.to(sidebarRef.current, { opacity: 0, duration: 0.3 });
         },
         onLeaveBack: () => {
-          gsap.to('.gsapflip-hover-hint', { opacity: 1, duration: 0.4 });
-          gsap.to([hudTLRef.current, hudBRRef.current, heroCoordsRef.current], { opacity: 1, duration: 0.4 });
-          gsap.to(sidebarRef.current, { opacity: 1, duration: 0.4 });
+          gsap.to('.gsapflip-hover-hint', { opacity: 1, duration: 0.3 });
+          gsap.to([hudTLRef.current, hudBRRef.current, heroCoordsRef.current], { opacity: 1, duration: 0.3 });
+          gsap.to(sidebarRef.current, { opacity: 1, duration: 0.3 });
         },
       });
 
       // Overlay visibility trigger
       ScrollTrigger.create({
         trigger: containerRef.current,
-        start: 'top top',
-        end: 'bottom bottom',
-        onEnter: () => gsap.to([canvasRef.current, scanlinesRef.current], { opacity: 1, duration: 0.5 }),
-        onLeave: () => gsap.to([canvasRef.current, scanlinesRef.current, navStatusRef.current, hudTLRef.current, hudBRRef.current, sidebarRef.current], { opacity: 0, duration: 0.4 }),
-        onEnterBack: () => gsap.to([canvasRef.current, scanlinesRef.current], { opacity: 1, duration: 0.4 }),
-        onLeaveBack: () => gsap.to([canvasRef.current, scanlinesRef.current, navStatusRef.current, hudTLRef.current, hudBRRef.current, sidebarRef.current], { opacity: 0, duration: 0.4 }),
+        start: 'top bottom',
+        end: 'bottom top',
+        onEnter: () => {
+          isSectionVisible.current = true;
+          gsap.to([canvasRef.current, scanlinesRef.current], { opacity: 1, duration: 0.4 });
+        },
+        onLeave: () => {
+          isSectionVisible.current = false;
+          gsap.to([canvasRef.current, scanlinesRef.current, navStatusRef.current, hudTLRef.current, hudBRRef.current, sidebarRef.current], { opacity: 0, duration: 0.3 });
+        },
+        onEnterBack: () => {
+          isSectionVisible.current = true;
+          gsap.to([canvasRef.current, scanlinesRef.current], { opacity: 1, duration: 0.3 });
+        },
+        onLeaveBack: () => {
+          isSectionVisible.current = false;
+          gsap.to([canvasRef.current, scanlinesRef.current, navStatusRef.current, hudTLRef.current, hudBRRef.current, sidebarRef.current], { opacity: 0, duration: 0.3 });
+        },
       });
     }, containerRef);
 
@@ -549,11 +580,11 @@ export default function GSAPFlipSection() {
         style={{
           zIndex: 5,
           opacity: 0,
-          background: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px)',
+          background: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px)',
         }}
       />
 
-      {/* ── Custom Cursor (Hidden on touch devices) ───────── */}
+      {/* ── Custom Cursor (Desktop Only) ──────────────────── */}
       <div
         ref={cursorRef}
         className="fixed pointer-events-none hidden md:block"
@@ -592,7 +623,7 @@ export default function GSAPFlipSection() {
         </div>
       </nav>
 
-      {/* ── Sidebar Progress (Hidden on mobile) ────────────── */}
+      {/* ── Sidebar Progress (Desktop Only) ────────────────── */}
       <div
         ref={sidebarRef}
         className="fixed hidden md:flex flex-col gap-6 items-start pointer-events-none"
@@ -665,7 +696,7 @@ export default function GSAPFlipSection() {
         {/* SECTION 1 — Hero */}
         <section
           id="gsapflip-section-1"
-          className="min-h-screen mb-[40vh] md:mb-[70vh] flex flex-col justify-between px-5 sm:px-8 md:px-12 pt-24 md:pt-32 pb-12 relative"
+          className="min-h-screen mb-[30vh] md:mb-[60vh] flex flex-col justify-between px-5 sm:px-8 md:px-12 pt-24 md:pt-32 pb-12 relative"
         >
           <div className="flex flex-col items-center pt-4 md:pt-[4vh]">
             <h1
@@ -726,7 +757,7 @@ export default function GSAPFlipSection() {
                 color: 'rgba(255,255,255,0.2)', textAlign: 'right',
                 opacity: 0, lineHeight: 1.8,
               }}
-              dangerouslySetInnerHTML={{ __html: 'φ 000.00° · θ 000.00°<br />FRAGMENTS: 2500+ · CELLS: 50×50' }}
+              dangerouslySetInnerHTML={{ __html: 'φ 000.00° · θ 000.00°<br />FRAGMENTS: 350+ · CELLS: 22×22' }}
             />
           </div>
         </section>
@@ -737,10 +768,10 @@ export default function GSAPFlipSection() {
         {/* SECTION 2 — Architecture */}
         <section
           id="gsapflip-section-2"
-          className="min-h-screen mb-[40vh] md:mb-[70vh] grid grid-cols-1 md:grid-cols-2"
+          className="min-h-screen mb-[30vh] md:mb-[60vh] grid grid-cols-1 md:grid-cols-2"
         >
           <div className="hidden md:block min-h-screen" />
-          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-16 py-16 md:py-24 border-l-0 md:border-l border-white/5 bg-black/40 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none">
+          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-16 py-16 md:py-24 border-l-0 md:border-l border-white/5 bg-black/50 md:bg-transparent">
             <div className="sec-num" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)', marginBottom: '2rem', opacity: 0 }}>
               02 / 03
             </div>
@@ -754,7 +785,7 @@ export default function GSAPFlipSection() {
               Hundreds of independent Voronoi fragments form the stone shell — each a real mesh with PBR material. Beneath it, a barycentric GLSL shader traces every triangle edge in fire.
             </p>
             <div className="stats grid grid-cols-3 border-t border-white/10 pt-6" style={{ opacity: 0, transform: 'translateY(15px)' }}>
-              {[{ n: '2500+', l: 'Fragments' }, { n: '60fps', l: 'Realtime' }, { n: '0', l: 'Assets' }].map((s) => (
+              {[{ n: isMobileDevice ? '350+' : '1500+', l: 'Fragments' }, { n: '60fps', l: 'Realtime' }, { n: '0', l: 'Assets' }].map((s) => (
                 <div key={s.l}>
                   <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#ff4d00] leading-none">{s.n}</div>
                   <div style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginTop: '0.4rem' }}>{s.l}</div>
@@ -770,9 +801,9 @@ export default function GSAPFlipSection() {
         {/* SECTION 3 — Interaction */}
         <section
           id="gsapflip-section-3"
-          className="min-h-screen mb-[20vh] md:mb-[10vh] grid grid-cols-1 md:grid-cols-2"
+          className="min-h-screen mb-[15vh] md:mb-[10vh] grid grid-cols-1 md:grid-cols-2"
         >
-          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-16 py-16 md:py-24 border-r-0 md:border-r border-white/5 bg-black/40 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none">
+          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-16 py-16 md:py-24 border-r-0 md:border-r border-white/5 bg-black/50 md:bg-transparent">
             <div className="sec-num" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)', marginBottom: '2rem', opacity: 0 }}>
               03 / 03
             </div>

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -45,16 +44,18 @@ export default function About() {
     if (!mounted || !containerRef.current) return;
 
     const ctx = gsap.context(() => {
-      // 1. Hero Image Scale & Blur Reveal
+      const isMobile = window.innerWidth < 768;
+
+      // 1. Hero Image Scale & Reveal (No CSS blur on mobile for 60fps)
       if (heroImageRef.current) {
         gsap.fromTo(
           heroImageRef.current,
-          { scale: 0.85, opacity: 0, filter: 'blur(8px)' },
+          { scale: isMobile ? 0.95 : 0.85, opacity: 0, filter: isMobile ? 'none' : 'blur(8px)' },
           {
             scale: 1,
             opacity: 1,
-            filter: 'blur(0px)',
-            duration: 1.4,
+            filter: 'none',
+            duration: isMobile ? 0.8 : 1.4,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: containerRef.current,
@@ -64,16 +65,15 @@ export default function About() {
         );
       }
 
-      // 2. Editorial About Text Slide Up & Unblur
+      // 2. Editorial About Text Slide Up
       if (aboutTextRef.current) {
         gsap.fromTo(
           aboutTextRef.current,
-          { y: 50, opacity: 0, filter: 'blur(5px)' },
+          { y: 35, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            filter: 'blur(0px)',
-            duration: 1.2,
+            duration: 1.0,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: aboutTextRef.current,
@@ -92,8 +92,8 @@ export default function About() {
             { clipPath: 'inset(100% 0 0 0)' },
             {
               clipPath: 'inset(0% 0 0 0)',
-              duration: 1.3,
-              delay: index * 0.12,
+              duration: 1.0,
+              delay: index * 0.08,
               ease: 'power3.inOut',
               scrollTrigger: {
                 trigger: item.parentElement,
@@ -103,17 +103,16 @@ export default function About() {
           );
         });
 
-        // Gallery Caption Unblur
+        // Gallery Caption Reveal
         const caption = galleryRef.current.querySelector('.gallery-caption');
         if (caption) {
           gsap.fromTo(
             caption,
-            { y: 40, opacity: 0, filter: 'blur(6px)' },
+            { y: 30, opacity: 0 },
             {
               y: 0,
               opacity: 1,
-              filter: 'blur(0px)',
-              duration: 1.1,
+              duration: 0.9,
               ease: 'power3.out',
               scrollTrigger: {
                 trigger: caption,
@@ -124,16 +123,15 @@ export default function About() {
         }
       }
 
-      // 4. Footer CTA & Giant Text Wave Reveal
+      // 4. Footer CTA & Display Wave Reveal
       if (footerCtaRef.current) {
         gsap.fromTo(
           footerCtaRef.current,
-          { y: 35, opacity: 0, filter: 'blur(5px)' },
+          { y: 25, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            filter: 'blur(0px)',
-            duration: 1.2,
+            duration: 0.9,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: footerCtaRef.current,
@@ -147,13 +145,12 @@ export default function About() {
           svgPaths.forEach((path, index) => {
             gsap.fromTo(
               path,
-              { opacity: 0, y: 50, filter: 'blur(8px)' },
+              { opacity: 0, y: 35 },
               {
                 opacity: 1,
                 y: 0,
-                filter: 'blur(0px)',
-                duration: 1.2,
-                delay: index * 0.08,
+                duration: 0.9,
+                delay: index * 0.06,
                 ease: 'power3.out',
                 scrollTrigger: {
                   trigger: path.parentElement,

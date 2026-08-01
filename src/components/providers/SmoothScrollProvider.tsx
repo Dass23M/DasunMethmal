@@ -10,9 +10,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Premium Momentum-Based Smooth Scrolling Engine (Lenis).
+ * - Enables smooth momentum scrolling on Desktop (≥992px)
+ * - Uses native 120Hz/60Hz hardware touch scrolling on Mobile (<992px) for zero lag
  * - Perfectly synchronized with GSAP ScrollTrigger ticker & pins
- * - Respects prefers-reduced-motion accessibility setting
- * - Provides ultra-fluid momentum scrolling on Desktop and Mobile
  */
 export default function SmoothScrollProvider({
   children,
@@ -21,12 +21,18 @@ export default function SmoothScrollProvider({
 }) {
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
-
     const isTouchMobile = window.matchMedia('(max-width: 991px)').matches;
 
+    if (prefersReduced) return;
+
+    // On mobile touch devices, use native hardware touch scrolling for 100% responsiveness & 0 lag
+    if (isTouchMobile) {
+      ScrollTrigger.config({ autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load' });
+      return;
+    }
+
     const lenis = new Lenis({
-      duration: isTouchMobile ? 0.8 : 1.1,
+      duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
@@ -105,4 +111,3 @@ export default function SmoothScrollProvider({
     </>
   );
 }
-

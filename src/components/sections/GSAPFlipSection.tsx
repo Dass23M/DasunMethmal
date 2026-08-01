@@ -569,7 +569,7 @@ export default function GSAPFlipSection() {
       {/* ── Fixed WebGL Canvas ─────────────────────────────── */}
       <canvas
         ref={canvasRef}
-        className="fixed top-0 left-0 pointer-events-auto"
+        className="fixed top-0 left-0 pointer-events-none md:pointer-events-auto"
         style={{ width: '100vw', height: '100vh', zIndex: 0, opacity: 0 }}
       />
 

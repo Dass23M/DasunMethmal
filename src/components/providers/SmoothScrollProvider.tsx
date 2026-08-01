@@ -32,7 +32,7 @@ export default function SmoothScrollProvider({
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchInertiaMultiplier: 1.0,
+      touchMultiplier: 1.0,
     });
 
     (window as any).lenis = lenis;

@@ -11,7 +11,7 @@ import About from '@/components/sections/About';
 import RandomTextReveal from '@/components/sections/RandomTextReveal';
 import ScrollRevealGrid from '@/components/sections/ScrollRevealGrid';
 import Testimonials from '@/components/sections/Testimonials';
-import Journal from '@/components/sections/Journal';
+import PosterDesign from '@/components/sections/PosterDesign';
 import FaqSection from '@/components/sections/FaqSection';
 import Contact from '@/components/sections/Contact';
 import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
@@ -89,7 +89,7 @@ export default function HomePage() {
           </div>
 
           <div className="scroll-reveal-section">
-            <Journal />
+            <PosterDesign />
           </div>
 
           <div className="scroll-reveal-section">

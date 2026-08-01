@@ -48,7 +48,7 @@ export default function Navbar() {
       'services-section',
       'skills-section',
       'testimonial-section',
-      'journal-section',
+      'poster-design-section',
       'contact-section',
     ];
 
@@ -111,7 +111,7 @@ export default function Navbar() {
   const rightLinks = [
     { label: 'Skills', id: 'skills-section' },
     { label: 'Testimonial', id: 'testimonial-section' },
-    { label: 'Journal', id: 'journal-section' },
+    { label: 'Poster Design', id: 'poster-design-section' },
     { label: 'Contact', id: 'contact-section' },
   ];
 

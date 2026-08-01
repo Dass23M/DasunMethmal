@@ -16,18 +16,18 @@ const SERVICES = [
     category: 'WEB ENGINEERING',
     desc: 'Custom Next.js, React, Node.js, and MongoDB platforms. High-performance web applications built for speed, SEO, scalability, and seamless user experiences.',
     accent: '#FF6B00',
-    image: '/images/fashion4.jpg',
+    image: '/images/fullstack.png',
     tags: ['React.js', 'Next.js 14', 'Node.js', 'TypeScript', 'MongoDB'],
   },
   {
-    id: 'mobile-dev',
+    id: 'poster-design',
     index: 3,
-    header: 'Mobile App Engineering',
-    category: 'CROSS-PLATFORM APPS',
-    desc: 'Intuitive iOS & Android mobile applications. Responsive touch-first interfaces, real-time API integration, and buttery-smooth state management.',
+    header: 'Poster & Social Post Design',
+    category: 'GRAPHIC & POST DESIGN',
+    desc: 'Creative poster designs, social media post graphics, promotional banners, and visual branding assets crafted to capture attention and communicate strong brand narratives.',
     accent: '#FFA800',
-    image: '/images/fashion1.png',
-    tags: ['React Native', 'Mobile UI/UX', 'REST API', 'App Wireframing'],
+    image: '/images/poster.png',
+    tags: ['Poster Design', 'Social Posts', 'Banner Design', 'Visual Branding', 'Photoshop'],
   },
   {
     id: 'digital-marketing',
@@ -36,7 +36,7 @@ const SERVICES = [
     category: 'MARKETING & SEO',
     desc: 'Data-driven growth marketing, technical SEO optimization, ad campaign architecture, and brand identity strategies engineered for maximum ROAS.',
     accent: '#FF8A00',
-    image: '/images/dm_1.png',
+    image: '/images/digitalmarketing.png',
     tags: ['Technical SEO', 'Ad Campaigns', 'Conversion Rate', 'Brand Strategy'],
   },
   {
@@ -46,7 +46,7 @@ const SERVICES = [
     category: 'CREATIVE DIRECTION',
     desc: 'Interactive 3D web motion graphics, GSAP animations, custom design systems, and user-centered interface design engineered for high engagement.',
     accent: '#FF6B00',
-    image: '/images/fashion3.jpg',
+    image: '/images/uiux.png',
     tags: ['GSAP 3D', 'Design Systems', 'Interactive Motion', 'Figma'],
   },
 ];
@@ -180,7 +180,7 @@ export default function ImageFanShowcase() {
       className="w-full bg-[#0A0B0E] text-white py-16 sm:py-24 select-none relative overflow-hidden font-inter border-y border-white/10"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
-        
+
         {/* Section Header */}
         <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-12">
           <div className="flex items-center gap-2.5">
@@ -210,7 +210,7 @@ export default function ImageFanShowcase() {
                   <span className="font-mono text-xs font-bold text-[#FF6B00] tracking-widest uppercase block mb-2">
                     {item.category}
                   </span>
-                  
+
                   <h2 className="header font-sora text-3xl sm:text-4xl lg:text-[2.6rem] font-extrabold tracking-tight text-white leading-[1.1] mb-4">
                     {item.header}
                   </h2>

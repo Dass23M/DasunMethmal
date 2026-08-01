@@ -154,18 +154,18 @@ export default function OnCraftOffCraft() {
       {/* ─── 2. MAIN CONTAINER ─── */}
       <div className="relative z-10 w-full max-w-[1480px] mx-auto px-4 sm:px-8 lg:px-12 flex flex-col lg:flex-row items-center justify-between gap-10">
 
-        {/* ─── LEFT ASSET: HELMET / GEAR ITEM ─── */}
+        {/* ─── LEFT ASSET: TECH GEAR ASSET ON LEFT EDGE ─── */}
         <div
           ref={leftItemRef}
-          className="hidden xl:flex shrink-0 w-[240px] 2xl:w-[280px] h-[340px] relative items-center justify-center pointer-events-none"
+          className="hidden lg:flex shrink-0 w-[240px] xl:w-[280px] h-[360px] relative items-center justify-start pointer-events-none"
         >
-          <div className="relative w-full h-full drop-shadow-2xl">
+          <div className="relative w-full h-full">
             <Image
               src="/images/orange1.png"
               alt="Tech Gear Asset"
               fill
               sizes="280px"
-              className="object-contain transform -scale-x-100 filter drop-shadow-xl"
+              className="object-contain object-right-bottom filter drop-shadow-[0_15px_25px_rgba(0,0,0,0.12)] contrast-105"
             />
           </div>
         </div>
@@ -247,19 +247,18 @@ export default function OnCraftOffCraft() {
           </div>
         </div>
 
-        {/* ─── RIGHT ASSET: PROFILE HEADSHOT ON RIGHT EDGE ─── */}
+        {/* ─── RIGHT ASSET: TRANSPARENT PROFILE HEADSHOT ON RIGHT EDGE ─── */}
         <div
           ref={rightItemRef}
-          className="hidden lg:flex shrink-0 w-[240px] xl:w-[290px] h-[360px] relative items-center justify-end overflow-hidden rounded-l-3xl border-l-2 border-y-2 border-black/10 shadow-2xl bg-gray-200"
+          className="hidden lg:flex shrink-0 w-[240px] xl:w-[280px] h-[360px] relative items-center justify-end overflow-visible bg-transparent pointer-events-none"
         >
           <Image
-            src="/images/about_me_pic.jpg"
+            src="/images/offcraft1.png"
             alt="Methmal Side Headshot"
             fill
-            sizes="300px"
-            className="object-cover object-left filter contrast-110"
+            sizes="280px"
+            className="object-contain object-left-bottom filter drop-shadow-[0_15px_25px_rgba(0,0,0,0.15)] contrast-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-black/30" />
         </div>
 
       </div>

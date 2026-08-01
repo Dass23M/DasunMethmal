@@ -83,8 +83,8 @@ export default function MobileMenu() {
           </a>
         </li>
         <li>
-          <a href="#journal-section" onClick={(e) => handleSectionClick(e, 'journal-section')}>
-            Journal
+          <a href="#poster-design-section" onClick={(e) => handleSectionClick(e, 'poster-design-section')}>
+            Poster Design
           </a>
         </li>
         <li>

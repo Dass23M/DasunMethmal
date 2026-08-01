@@ -3,7 +3,6 @@ import Footer from '@/components/layout/Footer';
 import FooterMarquee from '@/components/sections/FooterMarquee';
 import Hero from '@/components/sections/Hero';
 import LandoStyleSection from '@/components/sections/LandoStyleSection';
-import BestWorksBanner from '@/components/sections/BestWorksBanner';
 import Portfolio from '@/components/sections/Portfolio';
 import GSAPFlipSection from '@/components/sections/GSAPFlipSection';
 import EditorialShowcase from '@/components/sections/EditorialShowcase';
@@ -17,6 +16,7 @@ import FaqSection from '@/components/sections/FaqSection';
 import Contact from '@/components/sections/Contact';
 import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
 import OnCraftOffCraft from '@/components/sections/OnCraftOffCraft';
+import Artifact3DSection from '@/components/sections/Artifact3DSection';
 import ImpactSection from '@/components/sections/ImpactSection';
 
 /**
@@ -60,9 +60,9 @@ export default function HomePage() {
             <OnCraftOffCraft />
           </div>
 
-          {/* 4. Best Works Banner */}
+          {/* 3D WebGL HUD Generative Artifact Section — Directly Below OnCraftOffCraft */}
           <div className="scroll-reveal-section">
-            <BestWorksBanner />
+            <Artifact3DSection />
           </div>
 
           <div className="scroll-reveal-section">

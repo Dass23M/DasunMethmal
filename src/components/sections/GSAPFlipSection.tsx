@@ -1,57 +1,31 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Flip } from 'gsap/Flip';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js';
 
-gsap.registerPlugin(ScrollTrigger, Flip);
-
-const LAYOUTS = ['final', 'plain', 'columns', 'grid'] as const;
-
-const SERVICES = [
-  {
-    num: '01',
-    letter: 'W',
-    label: 'Web Development',
-    sublabel: 'Modern, blazing-fast web applications',
-    tag: 'FULLSTACK • PERFORMANCE',
-    image: '/images/fashion1.png',
-    accent: '#FF6B00',
-  },
-  {
-    num: '02',
-    letter: 'D',
-    label: 'Digital Strategy',
-    sublabel: 'Data-driven growth & scaling plans',
-    tag: 'ANALYTICS • CAMPAIGNS',
-    image: '/images/fashion2.webp',
-    accent: '#FFA800',
-  },
-  {
-    num: '03',
-    letter: 'S',
-    label: 'Social Media',
-    sublabel: 'Engaging community & brand presence',
-    tag: 'GROWTH • ENGAGEMENT',
-    image: '/images/fashion3.jpg',
-    accent: '#FF6B00',
-  },
-  {
-    num: '04',
-    letter: 'C',
-    label: 'Content Creation',
-    sublabel: 'High-converting stories & visuals',
-    tag: 'CREATIVE • CONVERSION',
-    image: '/images/fashion4.jpg',
-    accent: '#FF9500',
-  },
-];
+gsap.registerPlugin(ScrollTrigger);
 
 export default function GSAPFlipSection() {
-  const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const scanlinesRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const cursorRingRef = useRef<HTMLDivElement>(null);
+  const navStatusRef = useRef<HTMLDivElement>(null);
+  const hudTLRef = useRef<HTMLDivElement>(null);
+  const hudBRRef = useRef<HTMLDivElement>(null);
+  const hudReadoutRef = useRef<HTMLDivElement>(null);
+  const heroCoordsRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const [activeSidebar, setActiveSidebar] = useState(0);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -59,643 +33,788 @@ export default function GSAPFlipSection() {
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !canvasRef.current || !containerRef.current) return;
 
-    const section = sectionRef.current;
-    const container = containerRef.current;
-    if (!section || !container) return;
+    let animFrameId: number;
+    let threeCleanup: (() => void) | null = null;
 
-    let curLayoutIdx = 0;
-    let activeTargetIdx = 0;
-    let flipTween: gsap.core.Timeline | null = null;
-    let isFlipping = false;
-    let pendingIdx: number | null = null;
+    // ── Custom cursor logic ──────────────────────────────────────
+    const cur = cursorRef.current;
+    const ring = cursorRingRef.current;
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    let cursorAF: number;
 
-    const getFlipTargets = () =>
-      container.querySelectorAll('.flip-card, .flip-letter, .flip-service-label, .flip-num-badge');
+    const handlePointerMove = (e: MouseEvent | TouchEvent) => {
+      if ('touches' in e && e.touches.length > 0) {
+        mx = e.touches[0].clientX;
+        my = e.touches[0].clientY;
+      } else if ('clientX' in e) {
+        mx = (e as MouseEvent).clientX;
+        my = (e as MouseEvent).clientY;
+      }
+    };
 
-    const applyLayout = (nextIdx: number, isMobile: boolean) => {
-      if (nextIdx === curLayoutIdx) return;
+    window.addEventListener('mousemove', handlePointerMove);
+    window.addEventListener('touchmove', handlePointerMove, { passive: true });
 
-      if (isFlipping) {
-        pendingIdx = nextIdx;
-        return;
+    if (cur && ring) {
+      (function loopCursor() {
+        rx += (mx - rx) * 0.12;
+        ry += (my - ry) * 0.12;
+        cur.style.left = mx + 'px';
+        cur.style.top = my + 'px';
+        ring.style.left = rx + 'px';
+        ring.style.top = ry + 'px';
+        cursorAF = requestAnimationFrame(loopCursor);
+      })();
+    }
+
+    // ── HUD readout update ──────────────────────────────────────
+    const updateHUD = (e: MouseEvent | TouchEvent) => {
+      let clientX = 0, clientY = 0;
+      if ('touches' in e && e.touches.length > 0) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else if ('clientX' in e) {
+        clientX = (e as MouseEvent).clientX;
+        clientY = (e as MouseEvent).clientY;
       }
 
-      flipTween?.kill();
-      isFlipping = true;
-      pendingIdx = null;
+      const x = ((clientX / window.innerWidth) * 2 - 1).toFixed(3);
+      const y = (-(clientY / window.innerHeight) * 2 + 1).toFixed(3);
+      if (hudReadoutRef.current) {
+        hudReadoutRef.current.innerHTML =
+          `X: ${Number(x) > 0 ? '+' : ''}${x}<br />Y: ${Number(y) > 0 ? '+' : ''}${y}<br />Z: +7.000`;
+      }
+      const phi = ((clientX / window.innerWidth) * 360).toFixed(2).padStart(6, '0');
+      const theta = ((clientY / window.innerHeight) * 180).toFixed(2).padStart(6, '0');
+      if (heroCoordsRef.current) {
+        heroCoordsRef.current.innerHTML = `φ ${phi}° · θ ${theta}°<br />FRAGMENTS: 2500+ · CELLS: 50×50`;
+      }
+    };
 
-      const state = Flip.getState(getFlipTargets(), {
-        props: 'color,backgroundColor,borderColor,opacity',
-        simple: true,
+    window.addEventListener('mousemove', updateHUD);
+    window.addEventListener('touchmove', updateHUD, { passive: true });
+
+    // ── THREE.JS SCENE ───────────────────────────────────────
+    (() => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const isMobile = window.innerWidth < 768;
+
+      // Scene
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x080808);
+      const scrollGroup = new THREE.Group();
+      scene.add(scrollGroup);
+      const torusGroup = new THREE.Group();
+      scrollGroup.add(torusGroup);
+
+      // Camera - scale Z for mobile screen aspect ratios
+      const camera = new THREE.PerspectiveCamera(
+        45,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.z = isMobile ? 9.5 : 7;
+
+      // Renderer
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.0;
+
+      // Post-processing
+      const composer = new EffectComposer(renderer);
+      composer.addPass(new RenderPass(scene, camera));
+      const bloomPass = new UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        0.7,
+        0.4,
+        0.65
+      );
+      composer.addPass(bloomPass);
+      const fxaaPass = new ShaderPass(FXAAShader);
+      fxaaPass.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
+      composer.addPass(fxaaPass);
+
+      // Controls
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.enabled = false;
+
+      // Lights
+      scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+      const dirLight = new THREE.DirectionalLight(0xfff4e0, 2.8);
+      dirLight.position.set(3, 4, 5);
+      scene.add(dirLight);
+      const fillLight = new THREE.DirectionalLight(0xaabbff, 0.5);
+      fillLight.position.set(-4, -2, -3);
+      scene.add(fillLight);
+
+      // Textures
+      const textureLoader = new THREE.TextureLoader();
+      const loadTex = (url: string) => textureLoader.load(url);
+      const diffuse = loadTex('https://raw.githubusercontent.com/danielyl123/person/refs/heads/main/diffuse.jpg');
+      const normalTex = loadTex('https://raw.githubusercontent.com/danielyl123/person/refs/heads/main/normal.jpg');
+      const arm = loadTex('https://raw.githubusercontent.com/danielyl123/person/refs/heads/main/arm.jpg');
+      [diffuse, normalTex, arm].forEach((tex) => {
+        tex.repeat.set(2, 2);
+        tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
       });
+      diffuse.colorSpace = THREE.SRGBColorSpace;
 
-      container.classList.remove(LAYOUTS[curLayoutIdx]);
-      curLayoutIdx = nextIdx;
-      container.classList.add(LAYOUTS[curLayoutIdx]);
+      // Barycentric wireframe inner torus
+      function addBarycentricCoords(geo: THREE.BufferGeometry) {
+        const g = geo.toNonIndexed();
+        const count = g.attributes.position.count;
+        const bary = new Float32Array(count * 3);
+        for (let i = 0; i < count; i += 3) {
+          bary[i * 3] = 1; bary[i * 3 + 1] = 0; bary[i * 3 + 2] = 0;
+          bary[(i + 1) * 3] = 0; bary[(i + 1) * 3 + 1] = 1; bary[(i + 1) * 3 + 2] = 0;
+          bary[(i + 2) * 3] = 0; bary[(i + 2) * 3 + 1] = 0; bary[(i + 2) * 3 + 2] = 1;
+        }
+        g.setAttribute('barycentric', new THREE.BufferAttribute(bary, 3));
+        return g;
+      }
 
-      flipTween = Flip.from(state, {
-        absolute: true,
-        nested: false,
-        stagger: isMobile ? 0.04 : 0.06,
-        duration: isMobile ? 0.45 : 0.65,
-        ease: 'power3.inOut',
-        spin: !isMobile && curLayoutIdx === 0,
-        simple: true,
-        overwrite: 'auto',
-        onComplete: () => {
-          isFlipping = false;
-          flipTween = null;
-          if (pendingIdx !== null && pendingIdx !== curLayoutIdx) {
-            const next = pendingIdx;
-            pendingIdx = null;
-            applyLayout(next, isMobile);
+      const wireMaterial = new THREE.ShaderMaterial({
+        vertexShader: `
+          attribute vec3 barycentric;
+          varying vec3 vBary;
+          void main() {
+            vBary = barycentric;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
           }
-        },
-        onEnter: (elements) => {
-          gsap.fromTo(
-            elements,
-            { opacity: 0, scale: 0.92 },
-            {
-              opacity: 1,
-              scale: 1,
-              duration: isMobile ? 0.3 : 0.4,
-              ease: 'power2.out',
-              overwrite: 'auto',
+        `,
+        fragmentShader: `
+          varying vec3 vBary;
+          float wireMask(vec3 b, float t) {
+            vec3 d = fwidth(b);
+            vec3 a = smoothstep(vec3(0.0), d * t, b);
+            return 1.0 - min(a.x, min(a.y, a.z));
+          }
+          void main() {
+            float wf = wireMask(vBary, 1.6);
+            vec3 col = mix(vec3(0.07, 0.01, 0.0), vec3(1.0, 0.28, 0.04), wf);
+            col = mix(col, vec3(1.0, 0.8, 0.3) * 2.2, wf * 0.55);
+            gl_FragColor = vec4(col, 1.0);
+          }
+        `,
+        side: THREE.DoubleSide,
+      });
+
+      torusGroup.add(
+        new THREE.Mesh(
+          addBarycentricCoords(new THREE.TorusGeometry(2, 0.4, 80, 80)),
+          wireMaterial
+        )
+      );
+
+      // Voronoi fragments
+      const FRAG_SCALE = 50;
+      const TORUS_R = 2, TORUS_r = 0.4;
+
+      function hash2(px: number, py: number): [number, number] {
+        const a = Math.sin(px * 127.1 + py * 311.7) * 43758.5453;
+        const b = Math.sin(px * 269.5 + py * 183.3) * 43758.5453;
+        return [a - Math.floor(a), b - Math.floor(b)];
+      }
+
+      function cellSeed(u: number, v: number): [number, number] {
+        const n = [Math.floor(u * FRAG_SCALE), Math.floor(v * FRAG_SCALE)];
+        const f = [u * FRAG_SCALE - n[0], v * FRAG_SCALE - n[1]];
+        let md = Infinity;
+        let best = [...n];
+        for (let j = -2; j <= 2; j++) {
+          for (let i = -2; i <= 2; i++) {
+            const o = hash2(n[0] + i, n[1] + j);
+            const r = [i + o[0] - f[0], j + o[1] - f[1]];
+            const d = r[0] * r[0] + r[1] * r[1];
+            if (d < md) { md = d; best = [n[0] + i + o[0], n[1] + j + o[1]]; }
+          }
+        }
+        return [best[0] / FRAG_SCALE, best[1] / FRAG_SCALE];
+      }
+
+      const fragments = (() => {
+        const baseGeo = new THREE.TorusGeometry(TORUS_R, TORUS_r, 100, 100);
+        const nonIndexed = baseGeo.toNonIndexed();
+        baseGeo.dispose();
+        const pos = nonIndexed.attributes.position.array as Float32Array;
+        const nrm = nonIndexed.attributes.normal.array as Float32Array;
+        const uvData = nonIndexed.attributes.uv.array as Float32Array;
+        const tris = pos.length / 9;
+
+        const cellMap = new Map<string, { s: [number, number]; t: number[] }>();
+        for (let t = 0; t < tris; t++) {
+          const uc = (uvData[t * 6] + uvData[t * 6 + 2] + uvData[t * 6 + 4]) / 3;
+          const vc = (uvData[t * 6 + 1] + uvData[t * 6 + 3] + uvData[t * 6 + 5]) / 3;
+          const s = cellSeed(uc, vc);
+          const k = `${s[0].toFixed(9)}_${s[1].toFixed(9)}`;
+          if (!cellMap.has(k)) cellMap.set(k, { s, t: [] });
+          cellMap.get(k)!.t.push(t);
+        }
+
+        const mat = new THREE.MeshStandardMaterial({
+          map: diffuse, normalMap: normalTex, roughnessMap: arm,
+          roughness: 1.0, metalness: 0.0, side: THREE.DoubleSide,
+        });
+
+        const list: THREE.Mesh[] = [];
+        const TWO_PI = Math.PI * 2;
+
+        for (const { s: seed, t: triList } of Array.from(cellMap.values())) {
+          if (!triList.length) continue;
+          const vertCount = triList.length * 3;
+          const pArr = new Float32Array(vertCount * 3), nArr = new Float32Array(vertCount * 3), uvArr = new Float32Array(vertCount * 2);
+          let vi = 0;
+          for (const tri of triList) {
+            for (let v = 0; v < 3; v++) {
+              const sv = tri * 3 + v;
+              pArr[vi * 3] = pos[sv * 3]; pArr[vi * 3 + 1] = pos[sv * 3 + 1]; pArr[vi * 3 + 2] = pos[sv * 3 + 2];
+              nArr[vi * 3] = nrm[sv * 3]; nArr[vi * 3 + 1] = nrm[sv * 3 + 1]; nArr[vi * 3 + 2] = nrm[sv * 3 + 2];
+              uvArr[vi * 2] = uvData[sv * 2]; uvArr[vi * 2 + 1] = uvData[sv * 2 + 1];
+              vi++;
             }
-          );
-        },
-        onLeave: (elements) => {
-          gsap.to(elements, {
-            opacity: 0,
-            scale: 0.92,
-            duration: isMobile ? 0.2 : 0.25,
-            ease: 'power2.in',
-            overwrite: 'auto',
-          });
+          }
+
+          const phi = seed[0] * TWO_PI, theta = seed[1] * TWO_PI;
+          const cx = (TORUS_R + TORUS_r * Math.cos(theta)) * Math.cos(phi);
+          const cy = (TORUS_R + TORUS_r * Math.cos(theta)) * Math.sin(phi);
+          const cz = TORUS_r * Math.sin(theta);
+          const cellCenter = new THREE.Vector3(cx, cy, cz);
+          const majorPt = new THREE.Vector3(TORUS_R * Math.cos(phi), TORUS_R * Math.sin(phi), 0);
+          const cellNormal = cellCenter.clone().sub(majorPt).normalize();
+
+          const SHRINK = 0.96;
+          for (let i = 0; i < pArr.length; i += 3) {
+            pArr[i] = (pArr[i] - cx) * SHRINK;
+            pArr[i + 1] = (pArr[i + 1] - cy) * SHRINK;
+            pArr[i + 2] = (pArr[i + 2] - cz) * SHRINK;
+          }
+
+          const geo = new THREE.BufferGeometry();
+          geo.setAttribute('position', new THREE.BufferAttribute(pArr, 3));
+          geo.setAttribute('normal', new THREE.BufferAttribute(nArr, 3));
+          geo.setAttribute('uv', new THREE.BufferAttribute(uvArr, 2));
+
+          const rnd = hash2(seed[0] * 137.53, seed[1] * 137.53);
+          const up = Math.abs(cellNormal.z) < 0.9 ? new THREE.Vector3(0, 0, 1) : new THREE.Vector3(0, 1, 0);
+          const tang = new THREE.Vector3().crossVectors(cellNormal, up).normalize();
+          const bitang = new THREE.Vector3().crossVectors(cellNormal, tang);
+          const aa = rnd[0] * TWO_PI;
+          const rotAxis = tang.clone().multiplyScalar(Math.cos(aa)).addScaledVector(bitang, Math.sin(aa)).normalize();
+
+          const mesh = new THREE.Mesh(geo, mat);
+          mesh.position.copy(cellCenter).addScaledVector(cellNormal, 0.015);
+          mesh.userData = { cellCenter, cellNormal, rotAxis, maxAngle: 0.7 + rnd[1] * 0.9, lift: 0 };
+          torusGroup.add(mesh);
+          list.push(mesh);
+        }
+
+        nonIndexed.dispose();
+        return list;
+      })();
+
+      // Raycaster mesh
+      const rcMesh = new THREE.Mesh(
+        new THREE.TorusGeometry(TORUS_R, TORUS_r, 80, 80),
+        new THREE.MeshBasicMaterial({ visible: false })
+      );
+      torusGroup.add(rcMesh);
+
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2(-999, -999);
+
+      const updateMousePos = (clientX: number, clientY: number) => {
+        mouse.x = (clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+      };
+
+      const onMouseMoveThree = (e: MouseEvent) => updateMousePos(e.clientX, e.clientY);
+      const onTouchMoveThree = (e: TouchEvent) => {
+        if (e.touches.length > 0) updateMousePos(e.touches[0].clientX, e.touches[0].clientY);
+      };
+
+      window.addEventListener('mousemove', onMouseMoveThree);
+      window.addEventListener('touchmove', onTouchMoveThree, { passive: true });
+
+      const fragParams = { hoverRadius: 0.85, liftDist: 0.32, liftSpeedUp: 0.15, liftSpeedDown: 0.06 };
+      const clock = new THREE.Clock();
+      let lastTime = 0;
+      const hover = { point: new THREE.Vector3(), active: 0 };
+      const _localHover = new THREE.Vector3();
+
+      function smoothstepFn(min: number, max: number, v: number) {
+        const t = Math.max(0, Math.min(1, (v - min) / (max - min)));
+        return t * t * (3 - 2 * t);
+      }
+
+      let isRunning = true;
+      const tick = () => {
+        if (!isRunning) return;
+        const elapsed = clock.getElapsedTime();
+        const delta = elapsed - lastTime;
+        lastTime = elapsed;
+
+        controls.update();
+
+        raycaster.setFromCamera(mouse, camera);
+        const hits = raycaster.intersectObject(rcMesh);
+        if (hits.length > 0) {
+          torusGroup.worldToLocal(_localHover.copy(hits[0].point));
+          hover.point.copy(_localHover);
+          hover.active = Math.min(hover.active + delta * 5, 1);
+        } else {
+          hover.active = Math.max(hover.active - delta * 2.5, 0);
+        }
+
+        for (const frag of fragments) {
+          const { cellCenter, cellNormal, rotAxis, maxAngle } = frag.userData;
+          let target = 0;
+          if (hover.active > 0.01) {
+            const dist = cellCenter.distanceTo(hover.point);
+            target = (1 - smoothstepFn(0.4, fragParams.hoverRadius, dist)) * hover.active;
+          }
+          const speed = target > frag.userData.lift ? fragParams.liftSpeedUp : fragParams.liftSpeedDown;
+          frag.userData.lift = THREE.MathUtils.lerp(frag.userData.lift, target, speed);
+          const lift = frag.userData.lift;
+          frag.position.copy(cellCenter).addScaledVector(cellNormal, 0.015 + lift * fragParams.liftDist);
+          frag.quaternion.setFromAxisAngle(rotAxis, lift * maxAngle);
+        }
+
+        composer.render();
+        animFrameId = requestAnimationFrame(tick);
+      };
+      tick();
+
+      // ── GSAP scroll animations ──────────────────────────────
+      gsap.set(scrollGroup.position, { x: 0, y: 0, z: 0 });
+      gsap.set(scrollGroup.rotation, { x: 0.15, y: 0, z: 0 });
+      gsap.from(scrollGroup.rotation, { y: Math.PI, duration: 2.4, ease: 'power3.out' });
+      gsap.from(scrollGroup.position, { y: -2, duration: 2.4, ease: 'power3.out' });
+
+      const idleTween = gsap.to(torusGroup.rotation, {
+        y: Math.PI * 2, duration: 22, ease: 'none', repeat: -1, paused: true,
+      });
+      gsap.delayedCall(2.5, () => idleTween.play());
+
+      const scrollShiftX = isMobile ? 0 : 2.3;
+
+      const scrollTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 3.0,
+          onUpdate: (self) => {
+            if (self.progress > 0.02) idleTween.pause();
+            else idleTween.resume();
+          },
         },
       });
-    };
 
-    const layoutFromProgress = (progress: number) => {
-      if (progress < 0.25) return 0;
-      if (progress < 0.5) return 1;
-      if (progress < 0.75) return 2;
-      return 3;
-    };
+      scrollTl
+        .to(scrollGroup.position, { x: -scrollShiftX, y: isMobile ? -0.8 : 0, z: 0, duration: 1, ease: 'power1.inOut' }, 0)
+        .to(scrollGroup.rotation, { x: Math.PI * 0.5, y: -Math.PI * 0.6, z: Math.PI * 0.25, duration: 1, ease: 'power1.inOut' }, 0)
+        .to(scrollGroup.position, { x: scrollShiftX, y: isMobile ? 0.8 : 0, z: 0, duration: 1, ease: 'power1.inOut' }, 1)
+        .to(scrollGroup.rotation, { x: -Math.PI * 0.5, y: Math.PI * 0.6, z: -Math.PI * 0.25, duration: 1, ease: 'power1.inOut' }, 1);
 
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
+      // Resize handler
+      const onResize = () => {
+        const mobile = window.innerWidth < 768;
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.position.z = mobile ? 9.5 : 7;
+        camera.updateProjectionMatrix();
 
-      // ── Desktop (≥992px): Pinned GSAP Flip Layout Scrub ──
-      mm.add('(min-width: 992px)', () => {
-        container.classList.remove(...LAYOUTS);
-        container.classList.add('final');
-        curLayoutIdx = 0;
-        activeTargetIdx = 0;
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        composer.setSize(window.innerWidth, window.innerHeight);
+        fxaaPass.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
+      };
 
-        gsap.set(getFlipTargets(), { clearProps: 'transform,opacity' });
-        gsap.set(section, { clearProps: 'transform' });
+      window.addEventListener('resize', onResize);
 
+      threeCleanup = () => {
+        isRunning = false;
+        cancelAnimationFrame(animFrameId);
+        window.removeEventListener('mousemove', onMouseMoveThree);
+        window.removeEventListener('touchmove', onTouchMoveThree);
+        window.removeEventListener('resize', onResize);
+        renderer.dispose();
+        composer.dispose();
+      };
+    })();
+
+    // ── GSAP HUD & Content Entrance Animations ───────────────
+    const gsapCtx = gsap.context(() => {
+      gsap.to(navStatusRef.current, { opacity: 1, duration: 1, delay: 1.5 });
+      gsap.to([hudTLRef.current, hudBRRef.current], { opacity: 1, duration: 1, delay: 1.2, stagger: 0.2 });
+      gsap.to('.gsapflip-sidebar-label', { opacity: 1, x: 0, duration: 0.6, delay: 1.4, stagger: 0.1 });
+
+      gsap.timeline({ delay: 0.4 })
+        .to('.gsapflip-hero-title', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' })
+        .to('.gsapflip-hero-meta', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
+        .to('.gsapflip-hero-cta', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4')
+        .to('.gsapflip-hero-coords', { opacity: 1, duration: 0.5 }, '-=0.3')
+        .to('.gsapflip-hover-hint', { opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.2');
+
+      gsap.timeline({ scrollTrigger: { trigger: '#gsapflip-section-2', start: 'top 75%' } })
+        .to('#gsapflip-section-2 .sec-num', { opacity: 1, duration: 0.4 })
+        .to('#gsapflip-section-2 .sec-tag', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.1')
+        .to('#gsapflip-section-2 .sec-h2', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.2')
+        .to('#gsapflip-section-2 .sec-body', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+        .to('#gsapflip-section-2 .stats', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2');
+
+      gsap.timeline({ scrollTrigger: { trigger: '#gsapflip-section-3', start: 'top 75%' } })
+        .to('#gsapflip-section-3 .sec-num', { opacity: 1, duration: 0.4 })
+        .to('#gsapflip-section-3 .sec-tag', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.1')
+        .to('#gsapflip-section-3 .sec-h2', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.2')
+        .to('#gsapflip-section-3 .sec-body', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+        .to('#gsapflip-section-3 .feat-list', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2');
+
+      // Sidebar active state
+      ['#gsapflip-section-1', '#gsapflip-section-2', '#gsapflip-section-3'].forEach((id, i) => {
         ScrollTrigger.create({
-          trigger: section,
-          start: 'top top',
-          end: '+=2400',
-          pin: section,
-          pinSpacing: true,
-          scrub: 1.2,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const targetIdx = layoutFromProgress(self.progress);
-            if (targetIdx !== activeTargetIdx) {
-              activeTargetIdx = targetIdx;
-              applyLayout(targetIdx, false);
-            }
-          },
+          trigger: id,
+          start: 'top center',
+          end: 'bottom center',
+          onToggle: (self) => { if (self.isActive) setActiveSidebar(i); },
         });
       });
 
-      // ── Mobile (<992px): Smooth Staggered Scroll Reveal for Responsive Cards ──
-      mm.add('(max-width: 991px)', () => {
-        container.classList.remove(...LAYOUTS);
-        container.classList.add('final');
-
-        const cards = container.querySelectorAll('.flip-card');
-        gsap.fromTo(
-          cards,
-          { opacity: 0, y: 40, scale: 0.96 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 80%',
-            },
-          }
-        );
+      // Hide HUD elements when leaving hero section
+      ScrollTrigger.create({
+        trigger: '#gsapflip-section-2',
+        start: 'top 85%',
+        onEnter: () => {
+          gsap.to('.gsapflip-hover-hint', { opacity: 0, duration: 0.4 });
+          gsap.to([hudTLRef.current, hudBRRef.current, heroCoordsRef.current], { opacity: 0, duration: 0.4 });
+          gsap.to(sidebarRef.current, { opacity: 0, duration: 0.4 });
+        },
+        onLeaveBack: () => {
+          gsap.to('.gsapflip-hover-hint', { opacity: 1, duration: 0.4 });
+          gsap.to([hudTLRef.current, hudBRRef.current, heroCoordsRef.current], { opacity: 1, duration: 0.4 });
+          gsap.to(sidebarRef.current, { opacity: 1, duration: 0.4 });
+        },
       });
-    }, section);
 
-    const refresh = () => ScrollTrigger.refresh();
-    const t1 = window.setTimeout(refresh, 300);
-    const t2 = window.setTimeout(refresh, 1000);
-
-    const onLoad = () => refresh();
-    const onResize = () => refresh();
-
-    window.addEventListener('load', onLoad);
-    window.addEventListener('orientationchange', onResize);
-    window.visualViewport?.addEventListener('resize', onResize);
+      // Overlay visibility trigger
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: 'top top',
+        end: 'bottom bottom',
+        onEnter: () => gsap.to([canvasRef.current, scanlinesRef.current], { opacity: 1, duration: 0.5 }),
+        onLeave: () => gsap.to([canvasRef.current, scanlinesRef.current, navStatusRef.current, hudTLRef.current, hudBRRef.current, sidebarRef.current], { opacity: 0, duration: 0.4 }),
+        onEnterBack: () => gsap.to([canvasRef.current, scanlinesRef.current], { opacity: 1, duration: 0.4 }),
+        onLeaveBack: () => gsap.to([canvasRef.current, scanlinesRef.current, navStatusRef.current, hudTLRef.current, hudBRRef.current, sidebarRef.current], { opacity: 0, duration: 0.4 }),
+      });
+    }, containerRef);
 
     return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-      window.removeEventListener('load', onLoad);
-      window.removeEventListener('orientationchange', onResize);
-      window.visualViewport?.removeEventListener('resize', onResize);
-      flipTween?.kill();
-      ctx.revert();
+      cancelAnimationFrame(cursorAF);
+      window.removeEventListener('mousemove', handlePointerMove);
+      window.removeEventListener('touchmove', handlePointerMove);
+      window.removeEventListener('mousemove', updateHUD);
+      window.removeEventListener('touchmove', updateHUD);
+      gsapCtx.revert();
+      threeCleanup?.();
     };
   }, [mounted]);
 
-  if (!mounted) {
-    return (
-      <section id="services-section" className="w-full h-[100svh] bg-white" />
-    );
-  }
+  if (!mounted) return <section className="w-full h-screen" style={{ background: '#080808' }} />;
 
   return (
-    <section
-      id="services-section"
-      ref={sectionRef}
-      className="flip-section w-full h-[100svh] lg:h-screen bg-white text-black overflow-hidden relative z-10 select-none flex flex-col justify-between"
+    <div
+      ref={containerRef}
+      id="gsapflip-section"
+      className="relative w-full overflow-hidden"
+      style={{ background: '#080808', color: '#eee8de', fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
     >
-      {/* Editorial Section Header (Pinned at top) */}
-      <div className="absolute top-5 sm:top-8 left-0 right-0 z-30 px-5 sm:px-10 lg:px-16 max-w-[1550px] mx-auto pointer-events-none">
-        <div className="flex items-center justify-between text-xs sm:text-sm font-bold tracking-widest uppercase text-black/75 border-b border-black/15 pb-3">
-          <span className="flex items-center gap-2.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00] animate-pulse" />
-            <span className="font-sora tracking-widest text-black">SERVICES &amp; EXPERTISE</span>
-          </span>
-          <span className="font-mono text-xs opacity-65 text-black/60">03 / CAPABILITIES</span>
+      {/* ── Fixed WebGL Canvas ─────────────────────────────── */}
+      <canvas
+        ref={canvasRef}
+        className="fixed top-0 left-0 pointer-events-auto"
+        style={{ width: '100vw', height: '100vh', zIndex: 0, opacity: 0 }}
+      />
+
+      {/* ── Scanlines ──────────────────────────────────────── */}
+      <div
+        ref={scanlinesRef}
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          zIndex: 5,
+          opacity: 0,
+          background: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px)',
+        }}
+      />
+
+      {/* ── Custom Cursor (Hidden on touch devices) ───────── */}
+      <div
+        ref={cursorRef}
+        className="fixed pointer-events-none hidden md:block"
+        style={{
+          width: 10, height: 10, borderRadius: '50%', background: '#ff4d00',
+          zIndex: 9999, transform: 'translate(-50%, -50%)', mixBlendMode: 'screen',
+        }}
+      />
+      <div
+        ref={cursorRingRef}
+        className="fixed pointer-events-none hidden md:block"
+        style={{
+          width: 40, height: 40, borderRadius: '50%', border: '1px solid rgba(255,77,0,0.5)',
+          zIndex: 9998, transform: 'translate(-50%, -50%)',
+        }}
+      />
+
+      {/* ── Responsive Top Navigation Bar ──────────────────── */}
+      <nav
+        className="fixed top-0 left-0 right-0 flex justify-between items-center pointer-events-none px-5 md:px-12 py-4 md:py-7"
+        style={{
+          zIndex: 100,
+          borderBottom: '1px solid rgba(255,255,255,0.04)',
+        }}
+      >
+        <span style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.65rem', letterSpacing: '0.25em', color: '#eee8de', opacity: 0.6 }}>
+          DD-2026 / ARTIFACT
+        </span>
+        <div
+          ref={navStatusRef}
+          className="flex items-center gap-2.5"
+          style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.6rem', letterSpacing: '0.15em', color: '#ff4d00', opacity: 0 }}
+        >
+          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#ff4d00', animation: 'gsapflip-blink 1.4s ease-in-out infinite' }} />
+          REALTIME · WEBGL
         </div>
-      </div>
+      </nav>
 
-      <style>{`
-        .flip-section {
-          height: 100svh;
-          min-height: 100svh;
-          padding: 0;
-          touch-action: pan-y;
-          background: #ffffff;
-        }
-
-        .flip-container {
-          display: flex;
-          width: 100%;
-          height: 100%;
-          justify-content: center;
-          align-items: center;
-          overflow: hidden;
-          box-sizing: border-box;
-          padding-top: 4.5rem;
-          padding-bottom: 2rem;
-        }
-
-        /* Luxury Glassmorphism Cards with Fashion Backgrounds on White Section */
-        .flip-card {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
-          position: relative;
-          background: #111116;
-          border: 1px solid rgba(0, 0, 0, 0.1);
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), 0 5px 15px rgba(0, 0, 0, 0.08);
-          transition: border-color 0.4s ease, box-shadow 0.4s ease;
-        }
-
-        .flip-card:hover {
-          border-color: rgba(255, 107, 0, 0.6);
-          box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25), 0 0 25px rgba(255, 107, 0, 0.2);
-        }
-
-        /* Glass Overlay Layer */
-        .flip-card-glass {
-          position: absolute;
-          inset: 0;
-          z-index: 1;
-          background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 65%, rgba(0, 0, 0, 0.9) 100%);
-          backdrop-filter: blur(6px);
-          transition: backdrop-filter 0.5s ease, background 0.5s ease;
-        }
-
-        .flip-card:hover .flip-card-glass {
-          backdrop-filter: blur(2px);
-          background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.55) 65%, rgba(0, 0, 0, 0.85) 100%);
-        }
-
-        /* Numbered Pill Badge */
-        .flip-num-badge {
-          font-family: 'Sora', monospace;
-          font-weight: 800;
-          letter-spacing: 0.15em;
-          font-size: 0.75rem;
-          color: #FF6B00;
-          background: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(255, 107, 0, 0.4);
-          padding: 4px 12px;
-          border-radius: 9999px;
-          z-index: 2;
-          margin-bottom: 0.5rem;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-        }
-
-        /* Monogram Letter */
-        .flip-letter {
-          font-family: 'Sora', sans-serif;
-          font-weight: 900;
-          line-height: 1;
-          z-index: 2;
-          background: linear-gradient(135deg, #ffffff 40%, rgba(255, 255, 255, 0.75) 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.8));
-        }
-
-        /* Service Label */
-        .flip-service-label {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.3em;
-          z-index: 2;
-        }
-
-        .flip-service-label .svc-name {
-          font-family: 'Sora', sans-serif;
-          font-weight: 800;
-          letter-spacing: 0.03em;
-          text-align: center;
-          line-height: 1.25;
-          color: #FFFFFF;
-          text-shadow: 0 2px 10px rgba(0,0,0,0.9);
-        }
-
-        .flip-service-label .svc-sub {
-          font-family: 'Sora', sans-serif;
-          font-weight: 400;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          text-align: center;
-          color: rgba(255, 255, 255, 0.85);
-          text-shadow: 0 2px 8px rgba(0,0,0,0.9);
-        }
-
-        .flip-service-label .svc-tag {
-          font-family: 'Sora', monospace;
-          font-weight: 700;
-          font-size: 0.65rem;
-          letter-spacing: 0.12em;
-          color: #FF6B00;
-          background: rgba(0, 0, 0, 0.65);
-          padding: 3px 9px;
-          border-radius: 4px;
-          border: 1px solid rgba(255, 107, 0, 0.35);
-          margin-top: 0.4rem;
-        }
-
-        /* ── Desktop layouts (≥992px) ── */
-        @media (min-width: 992px) {
-          .flip-section {
-            height: 100vh;
-            min-height: 100vh;
-          }
-
-          /* State 0: Final / Initial Hero view - 4 sleek horizontal luxury cards */
-          .flip-container.final {
-            flex-direction: row;
-            gap: 1.2vmax;
-            padding: 5.5rem 3vmax 3rem 3vmax;
-          }
-          .flip-container.final .flip-card {
-            flex: 1 1 0;
-            height: 70vh;
-            max-height: 520px;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 2.2vmax 2vmax;
-            border-radius: 1.5vmax;
-          }
-          .flip-container.final .flip-letter {
-            font-size: clamp(3.5rem, 7vmax, 7.5rem);
-            align-self: flex-start;
-          }
-          .flip-container.final .flip-service-label {
-            align-items: flex-start;
-            text-align: left;
-          }
-          .flip-container.final .flip-service-label .svc-name {
-            font-size: clamp(1.1rem, 1.6vmax, 1.8rem);
-            text-align: left;
-          }
-          .flip-container.final .flip-service-label .svc-sub {
-            font-size: clamp(0.7rem, 0.85vmax, 0.95rem);
-            text-align: left;
-          }
-
-          /* State 1: Plain / High-impact glowing typography */
-          .flip-container.plain {
-            flex-direction: row;
-            gap: 2.5vmax;
-            padding: 5rem 2vmax;
-          }
-          .flip-container.plain .flip-card {
-            background: #ffffff !important;
-            border: 1px solid rgba(255, 107, 0, 0.4) !important;
-            border-radius: 2vmax;
-            padding: 2vmax;
-            flex: 1;
-            height: 60vh;
-          }
-          .flip-container.plain .flip-card-glass {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
-          }
-          .flip-container.plain .flip-letter {
-            font-size: clamp(6rem, 14vmax, 16rem);
-            background: linear-gradient(135deg, #FF6B00 0%, #FF8A00 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 10px 25px rgba(255, 107, 0, 0.35));
-          }
-          .flip-container.plain .flip-service-label,
-          .flip-container.plain .flip-num-badge {
-            display: none;
-          }
-
-          /* State 2: Columns / Vertical Full-Height Pillars */
-          .flip-container.columns {
-            flex-direction: row;
-            align-items: stretch;
-            padding-top: 4.5rem;
-            padding-bottom: 0;
-          }
-          .flip-container.columns .flip-card {
-            flex: 1 1 25%;
-            height: 100%;
-            border-radius: 0;
-            border-top: none;
-            border-bottom: none;
-            border-left: none;
-            border-right: 1px solid rgba(0, 0, 0, 0.1);
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 3vmax 2.2vmax;
-          }
-          .flip-container.columns .flip-letter {
-            font-size: clamp(3.5rem, 8vmax, 10rem);
-          }
-          .flip-container.columns .flip-service-label {
-            align-items: flex-start;
-          }
-          .flip-container.columns .flip-service-label .svc-name {
-            font-size: clamp(1rem, 1.5vmax, 1.7rem);
-            text-align: left;
-          }
-          .flip-container.columns .flip-service-label .svc-sub {
-            font-size: clamp(0.65rem, 0.8vmax, 0.9vmax);
-            text-align: left;
-          }
-
-          /* State 3: Bento Grid / 2x2 Modern Grid */
-          .flip-container.grid {
-            flex-wrap: wrap;
-            align-content: stretch;
-            align-items: stretch;
-            padding: 5rem 3vmax 2rem 3vmax;
-            gap: 1.2vmax;
-          }
-          .flip-container.grid .flip-card {
-            flex: 0 0 calc(50% - 0.6vmax);
-            height: calc(50% - 0.6vmax);
-            border-radius: 1.5vmax;
-            flex-direction: row;
-            justify-content: flex-start;
-            gap: 2.5vmax;
-            padding: 2.5vmax;
-          }
-          .flip-container.grid .flip-letter {
-            font-size: clamp(4rem, 8.5vmax, 11rem);
-          }
-          .flip-container.grid .flip-service-label {
-            align-items: flex-start;
-          }
-          .flip-container.grid .flip-service-label .svc-name {
-            font-size: clamp(1.1rem, 1.8vmax, 2.1rem);
-            text-align: left;
-          }
-          .flip-container.grid .flip-service-label .svc-sub {
-            font-size: clamp(0.7rem, 0.9vmax, 1rem);
-            text-align: left;
-          }
-        }
-
-        /* ── Mobile layouts (<992px) ── */
-        @media (max-width: 991px) {
-          .flip-section {
-            height: auto !important;
-            min-height: auto !important;
-            padding-top: 5rem;
-            padding-bottom: 3rem;
-          }
-
-          .flip-container.final {
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: stretch;
-            height: auto;
-            padding: 0 16px;
-            gap: 16px;
-          }
-
-          .flip-container.final .flip-card {
-            flex: none;
-            height: 140px;
-            width: 100%;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            border-radius: 20px;
-            padding: 1.2rem 1.4rem;
-            gap: 1.2rem;
-          }
-
-          .flip-container.final .flip-num-badge {
-            margin-bottom: 0;
-            font-size: 0.7rem;
-            padding: 3px 9px;
-          }
-
-          .flip-container.final .flip-letter {
-            font-size: clamp(2.4rem, 10vw, 3.5rem);
-            flex-shrink: 0;
-          }
-
-          .flip-container.final .flip-service-label {
-            align-items: flex-start;
-            min-width: 0;
-          }
-
-          .flip-container.final .flip-service-label .svc-name {
-            font-size: clamp(0.95rem, 4vw, 1.2rem);
-            text-align: left;
-          }
-
-          .flip-container.final .flip-service-label .svc-sub {
-            font-size: clamp(0.65rem, 2.8vw, 0.8rem);
-            text-align: left;
-          }
-
-          .flip-container.plain {
-            flex-wrap: wrap;
-            align-content: center;
-            align-items: center;
-            padding: max(70px, env(safe-area-inset-top)) 16px 16px;
-            gap: 12px;
-          }
-
-          .flip-container.plain .flip-card {
-            flex: 1 1 calc(50% - 12px);
-            background: #ffffff !important;
-            border: 1px solid rgba(255, 107, 0, 0.4) !important;
-            min-height: 0;
-            height: calc(50% - 12px);
-            padding: 1rem;
-            border-radius: 16px;
-          }
-
-          .flip-container.plain .flip-letter {
-            font-size: clamp(3rem, 16vw, 4.5rem);
-            background: linear-gradient(135deg, #FF6B00 0%, #FFA800 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 20px rgba(255, 107, 0, 0.4));
-          }
-
-          .flip-container.plain .flip-service-label,
-          .flip-container.plain .flip-num-badge {
-            display: none;
-          }
-
-          .flip-container.columns {
-            flex-direction: column;
-            align-items: stretch;
-            padding: max(60px, env(safe-area-inset-top)) 0 0;
-            gap: 0;
-          }
-
-          .flip-container.columns .flip-card {
-            flex: 1 1 25%;
-            width: 100%;
-            border-radius: 0;
-            border-left: none;
-            border-right: none;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.85rem 1.25rem;
-          }
-
-          .flip-container.columns .flip-letter {
-            font-size: clamp(2.2rem, 9vw, 3.2rem);
-            flex-shrink: 0;
-          }
-
-          .flip-container.columns .flip-service-label {
-            align-items: flex-start;
-          }
-
-          .flip-container.columns .flip-service-label .svc-name {
-            font-size: clamp(0.75rem, 3.2vw, 0.95rem);
-            text-align: left;
-          }
-
-          .flip-container.columns .flip-service-label .svc-sub {
-            font-size: clamp(0.55rem, 2.3vw, 0.68rem);
-            text-align: left;
-          }
-
-          .flip-container.grid {
-            flex-wrap: wrap;
-            align-content: stretch;
-            align-items: stretch;
-            padding: max(65px, env(safe-area-inset-top)) 10px 10px;
-            gap: 10px;
-          }
-
-          .flip-container.grid .flip-card {
-            flex: 0 0 calc(50% - 5px);
-            width: calc(50% - 5px);
-            height: calc(50% - 5px);
-            border-radius: 14px;
-            flex-direction: column;
-            gap: 0.4rem;
-            padding: 0.85rem 0.75rem;
-          }
-
-          .flip-container.grid .flip-letter {
-            font-size: clamp(2.4rem, 11vw, 3.5rem);
-          }
-
-          .flip-container.grid .flip-service-label .svc-name {
-            font-size: clamp(0.7rem, 3vw, 0.88rem);
-          }
-
-          .flip-container.grid .flip-service-label .svc-sub {
-            font-size: clamp(0.52rem, 2.2vw, 0.65rem);
-          }
-        }
-      `}</style>
-
-      <div ref={containerRef} className="flip-container final">
-        {SERVICES.map(({ num, letter, label, sublabel, tag, image }) => (
-          <div key={letter} className="flip-card group">
-            {/* Background Fashion Glass Image */}
-            <div className="absolute inset-0 z-0 overflow-hidden">
-              <Image
-                src={image}
-                alt={label}
-                fill
-                sizes="(max-width: 991px) 100vw, 25vw"
-                className="object-cover object-center scale-105 group-hover:scale-110 transition-transform duration-700 ease-out"
-              />
-            </div>
-            {/* Frosted Glass Overlay */}
-            <div className="flip-card-glass" />
-
-            <span className="flip-num-badge">{num}</span>
-            <div className="flip-letter">{letter}</div>
-            <div className="flip-service-label">
-              <span className="svc-name">{label}</span>
-              <span className="svc-sub">{sublabel}</span>
-              <span className="svc-tag">{tag}</span>
-            </div>
+      {/* ── Sidebar Progress (Hidden on mobile) ────────────── */}
+      <div
+        ref={sidebarRef}
+        className="fixed hidden md:flex flex-col gap-6 items-start pointer-events-none"
+        style={{ left: '2.5rem', top: '50%', transform: 'translateY(-50%)', zIndex: 100, opacity: 0 }}
+      >
+        {[{ label: 'Hero' }, { label: 'Architecture' }, { label: 'Interaction' }].map((item, i) => (
+          <div key={i} className="flex items-center gap-3">
+            <div style={{
+              width: activeSidebar === i ? 32 : 20,
+              height: 1,
+              background: activeSidebar === i ? '#ff4d00' : 'rgba(255,255,255,0.15)',
+              transition: 'width 0.4s, background 0.4s',
+            }} />
+            <span
+              className="gsapflip-sidebar-label"
+              style={{
+                fontFamily: '"Courier New", Courier, monospace',
+                fontSize: '0.58rem',
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: activeSidebar === i ? '#ff4d00' : 'rgba(255,255,255,0.25)',
+                opacity: 0,
+                transform: 'translateX(-8px)',
+                transition: 'color 0.4s',
+              }}
+            >
+              {item.label}
+            </span>
           </div>
         ))}
       </div>
-    </section>
+
+      {/* ── HUD Corner Decorations (Desktop & Tablet) ─────── */}
+      <div
+        ref={hudTLRef}
+        className="fixed pointer-events-none hidden sm:block"
+        style={{ top: '4.5rem', left: '2.5rem', zIndex: 100, opacity: 0 }}
+      >
+        <svg width="32" height="32" fill="none">
+          <path d="M32 1H1v31" stroke="rgba(255,77,0,0.3)" strokeWidth="1" />
+        </svg>
+      </div>
+
+      <div
+        ref={hudBRRef}
+        className="fixed pointer-events-none hidden sm:flex flex-col items-end"
+        style={{ bottom: '2rem', right: '2.5rem', zIndex: 100, opacity: 0, gap: '0.5rem' }}
+      >
+        <div
+          ref={hudReadoutRef}
+          style={{
+            fontFamily: '"Courier New", Courier, monospace',
+            fontSize: '0.6rem',
+            letterSpacing: '0.12em',
+            color: 'rgba(255,255,255,0.2)',
+            lineHeight: 1.8,
+            textAlign: 'right',
+          }}
+        >
+          X: +0.000<br />Y: +0.000<br />Z: +7.000
+        </div>
+        <svg width="32" height="32" fill="none" style={{ transform: 'rotate(180deg)' }}>
+          <path d="M32 1H1v31" stroke="rgba(255,77,0,0.3)" strokeWidth="1" />
+        </svg>
+      </div>
+
+      {/* ── Scrollable Sections Container ──────────────────── */}
+      <div className="relative" style={{ zIndex: 10, pointerEvents: 'none' }}>
+
+        {/* SECTION 1 — Hero */}
+        <section
+          id="gsapflip-section-1"
+          className="min-h-screen mb-[40vh] md:mb-[70vh] flex flex-col justify-between px-5 sm:px-8 md:px-12 pt-24 md:pt-32 pb-12 relative"
+        >
+          <div className="flex flex-col items-center pt-4 md:pt-[4vh]">
+            <h1
+              className="gsapflip-hero-title text-[clamp(2.5rem,8vw,7.5rem)] font-extrabold leading-[0.95] tracking-tight text-center uppercase"
+              style={{ opacity: 0, transform: 'translateY(30px)' }}
+            >
+              The future<br />is <span style={{ color: '#ff4d00' }}>fracture.</span>
+            </h1>
+
+            <div
+              className="gsapflip-hero-meta text-center mt-6 md:mt-8"
+              style={{ opacity: 0, transform: 'translateY(20px)' }}
+            >
+              <span style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.62rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: '#ff4d00', display: 'block', marginBottom: '0.6rem' }}>
+                Generative 3D · 2026
+              </span>
+              <span className="text-xs md:text-sm text-[#eee8de]/40 max-w-[36ch] md:max-w-[40ch] leading-relaxed mx-auto block">
+                Procedural stone shell.<br />Wireframe core.<br />Touch to break open.
+              </span>
+            </div>
+          </div>
+
+          <div
+            className="gsapflip-hover-hint absolute bottom-36 md:bottom-60 left-1/2 -translate-x-1/2 whitespace-nowrap"
+            style={{
+              fontFamily: '"Courier New", Courier, monospace',
+              fontSize: '0.58rem',
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.3)',
+              opacity: 0,
+            }}
+          >
+            ↑ Touch / move over surface to interact ↑
+          </div>
+
+          <div className="flex justify-center items-end relative w-full">
+            <div
+              className="gsapflip-hero-cta flex flex-col items-center gap-4 pointer-events-auto cursor-pointer"
+              style={{ opacity: 0, transform: 'translateY(20px)' }}
+            >
+              <span style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(238,232,222,0.4)' }}>
+                Scroll to explore
+              </span>
+              <div style={{ width: 42, height: 42, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'gsapflip-float 2.5s ease-in-out infinite' }}>
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 2v12M3 9l5 5 5-5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+                </svg>
+              </div>
+            </div>
+
+            <div
+              ref={heroCoordsRef}
+              className="gsapflip-hero-coords hidden sm:block absolute bottom-0 right-0"
+              style={{
+                fontFamily: '"Courier New", Courier, monospace',
+                fontSize: '0.58rem', letterSpacing: '0.12em',
+                color: 'rgba(255,255,255,0.2)', textAlign: 'right',
+                opacity: 0, lineHeight: 1.8,
+              }}
+              dangerouslySetInnerHTML={{ __html: 'φ 000.00° · θ 000.00°<br />FRAGMENTS: 2500+ · CELLS: 50×50' }}
+            />
+          </div>
+        </section>
+
+        {/* Separator Divider */}
+        <div className="w-full h-px bg-white/5" />
+
+        {/* SECTION 2 — Architecture */}
+        <section
+          id="gsapflip-section-2"
+          className="min-h-screen mb-[40vh] md:mb-[70vh] grid grid-cols-1 md:grid-cols-2"
+        >
+          <div className="hidden md:block min-h-screen" />
+          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-16 py-16 md:py-24 border-l-0 md:border-l border-white/5 bg-black/40 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none">
+            <div className="sec-num" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)', marginBottom: '2rem', opacity: 0 }}>
+              02 / 03
+            </div>
+            <p className="sec-tag" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#ff4d00', marginBottom: '1.2rem', opacity: 0, transform: 'translateY(15px)' }}>
+              {"// Architecture"}
+            </p>
+            <h2 className="sec-h2 text-[clamp(2rem,4vw,3.8rem)] font-extrabold leading-[1.05] tracking-tight mb-6" style={{ opacity: 0, transform: 'translateY(25px)' }}>
+              Two layers.<br />One truth.
+            </h2>
+            <p className="sec-body text-sm leading-relaxed text-[#eee8de]/50 max-w-[38ch] mb-8" style={{ opacity: 0, transform: 'translateY(15px)' }}>
+              Hundreds of independent Voronoi fragments form the stone shell — each a real mesh with PBR material. Beneath it, a barycentric GLSL shader traces every triangle edge in fire.
+            </p>
+            <div className="stats grid grid-cols-3 border-t border-white/10 pt-6" style={{ opacity: 0, transform: 'translateY(15px)' }}>
+              {[{ n: '2500+', l: 'Fragments' }, { n: '60fps', l: 'Realtime' }, { n: '0', l: 'Assets' }].map((s) => (
+                <div key={s.l}>
+                  <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#ff4d00] leading-none">{s.n}</div>
+                  <div style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginTop: '0.4rem' }}>{s.l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Separator Divider */}
+        <div className="w-full h-px bg-white/5" />
+
+        {/* SECTION 3 — Interaction */}
+        <section
+          id="gsapflip-section-3"
+          className="min-h-screen mb-[20vh] md:mb-[10vh] grid grid-cols-1 md:grid-cols-2"
+        >
+          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-16 py-16 md:py-24 border-r-0 md:border-r border-white/5 bg-black/40 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none">
+            <div className="sec-num" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)', marginBottom: '2rem', opacity: 0 }}>
+              03 / 03
+            </div>
+            <p className="sec-tag" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#ff4d00', marginBottom: '1.2rem', opacity: 0, transform: 'translateY(15px)' }}>
+              {"// Interaction"}
+            </p>
+            <h2 className="sec-h2 text-[clamp(2rem,4vw,3.8rem)] font-extrabold leading-[1.05] tracking-tight mb-6" style={{ opacity: 0, transform: 'translateY(25px)' }}>
+              Touch it.<br />Break it open.
+            </h2>
+            <p className="sec-body text-sm leading-relaxed text-[#eee8de]/50 max-w-[38ch] mb-8" style={{ opacity: 0, transform: 'translateY(15px)' }}>
+              Move your cursor across the surface. Each fragment responds independently — lifting away on a random hinge axis, exposing the luminous wireframe within.
+            </p>
+            <ul className="feat-list flex flex-col border-t border-white/10" style={{ opacity: 0, transform: 'translateY(15px)' }}>
+              {[
+                'Voronoi decomposition · GLSL + JS',
+                'Barycentric wireframe · UnrealBloom',
+                'PBR stone · normal + roughness maps',
+                'GSAP ScrollTrigger · spring animation',
+              ].map((feat, i) => (
+                <li key={i} className="flex items-center gap-3 py-3 border-b border-white/5 text-xs text-[#eee8de]/50" style={{ fontFamily: '"Courier New", Courier, monospace', letterSpacing: '0.05em' }}>
+                  <span style={{ color: '#ff4d00' }}>→</span>
+                  {feat}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="hidden md:block min-h-screen" />
+        </section>
+
+      </div>
+
+      {/* ── Keyframe Animations ────────────────────────────── */}
+      <style>{`
+        @keyframes gsapflip-blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.2; }
+        }
+        @keyframes gsapflip-float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+      `}</style>
+    </div>
   );
 }

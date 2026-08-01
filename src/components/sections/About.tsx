@@ -1,18 +1,38 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const GALLERY_IMAGES = [
-  { src: '/images/fashion1.png', alt: 'Mobile App Architecture', title: '01 / APP ARCHITECTURE' },
-  { src: '/images/fashion2.webp', alt: 'Fullstack Platform', title: '02 / FULLSTACK PLATFORM' },
-  { src: '/images/fashion3.jpg', alt: 'Brand Identity', title: '03 / BRAND IDENTITY' },
-  { src: '/images/fashion4.jpg', alt: 'Growth Marketing', title: '04 / GROWTH CAMPAIGN' },
-  { src: '/images/editorial_2.png', alt: 'UI/UX Design', title: '05 / UI/UX DESIGN' },
+  {
+    src: "/images/fashion1.png",
+    alt: "Mobile App Architecture",
+    title: "01 / APP ARCHITECTURE",
+  },
+  {
+    src: "/images/fashion2.webp",
+    alt: "Fullstack Platform",
+    title: "02 / FULLSTACK PLATFORM",
+  },
+  {
+    src: "/images/fashion3.jpg",
+    alt: "Brand Identity",
+    title: "03 / BRAND IDENTITY",
+  },
+  {
+    src: "/images/fashion4.jpg",
+    alt: "Growth Marketing",
+    title: "04 / GROWTH CAMPAIGN",
+  },
+  {
+    src: "/images/editorial_2.png",
+    alt: "UI/UX Design",
+    title: "05 / UI/UX DESIGN",
+  },
 ];
 
 export default function About() {
@@ -23,7 +43,7 @@ export default function About() {
   const footerCtaRef = useRef<HTMLDivElement>(null);
 
   const [mounted, setMounted] = useState(false);
-  const [emailText, setEmailText] = useState('mail@uxoradesign.com');
+  const [emailText, setEmailText] = useState("mail@uxoradesign.com");
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -31,11 +51,11 @@ export default function About() {
   }, []);
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('mail@uxoradesign.com');
-    setEmailText('email copied to clipboard!');
+    navigator.clipboard.writeText("mail@uxoradesign.com");
+    setEmailText("email copied to clipboard!");
     setCopied(true);
     setTimeout(() => {
-      setEmailText('mail@uxoradesign.com');
+      setEmailText("mail@uxoradesign.com");
       setCopied(false);
     }, 2400);
   };
@@ -50,18 +70,22 @@ export default function About() {
       if (heroImageRef.current) {
         gsap.fromTo(
           heroImageRef.current,
-          { scale: isMobile ? 0.95 : 0.85, opacity: 0, filter: isMobile ? 'none' : 'blur(8px)' },
+          {
+            scale: isMobile ? 0.95 : 0.85,
+            opacity: 0,
+            filter: isMobile ? "none" : "blur(8px)",
+          },
           {
             scale: 1,
             opacity: 1,
-            filter: 'none',
+            filter: "none",
             duration: isMobile ? 0.8 : 1.4,
-            ease: 'power3.out',
+            ease: "power3.out",
             scrollTrigger: {
               trigger: containerRef.current,
-              start: 'top 80%',
+              start: "top 80%",
             },
-          }
+          },
         );
       }
 
@@ -74,37 +98,38 @@ export default function About() {
             y: 0,
             opacity: 1,
             duration: 1.0,
-            ease: 'power3.out',
+            ease: "power3.out",
             scrollTrigger: {
               trigger: aboutTextRef.current,
-              start: 'top 85%',
+              start: "top 85%",
             },
-          }
+          },
         );
       }
 
       // 3. Vertical Clip-Path Reveal for Gallery Items
       if (galleryRef.current) {
-        const galleryItems = galleryRef.current.querySelectorAll('.gallery-item-img');
+        const galleryItems =
+          galleryRef.current.querySelectorAll(".gallery-item-img");
         galleryItems.forEach((item, index) => {
           gsap.fromTo(
             item,
-            { clipPath: 'inset(100% 0 0 0)' },
+            { clipPath: "inset(100% 0 0 0)" },
             {
-              clipPath: 'inset(0% 0 0 0)',
+              clipPath: "inset(0% 0 0 0)",
               duration: 1.0,
               delay: index * 0.08,
-              ease: 'power3.inOut',
+              ease: "power3.inOut",
               scrollTrigger: {
                 trigger: item.parentElement,
-                start: 'top 85%',
+                start: "top 85%",
               },
-            }
+            },
           );
         });
 
         // Gallery Caption Reveal
-        const caption = galleryRef.current.querySelector('.gallery-caption');
+        const caption = galleryRef.current.querySelector(".gallery-caption");
         if (caption) {
           gsap.fromTo(
             caption,
@@ -113,12 +138,12 @@ export default function About() {
               y: 0,
               opacity: 1,
               duration: 0.9,
-              ease: 'power3.out',
+              ease: "power3.out",
               scrollTrigger: {
                 trigger: caption,
-                start: 'top 85%',
+                start: "top 85%",
               },
-            }
+            },
           );
         }
       }
@@ -132,15 +157,16 @@ export default function About() {
             y: 0,
             opacity: 1,
             duration: 0.9,
-            ease: 'power3.out',
+            ease: "power3.out",
             scrollTrigger: {
               trigger: footerCtaRef.current,
-              start: 'top 85%',
+              start: "top 85%",
             },
-          }
+          },
         );
 
-        const svgPaths = containerRef.current?.querySelectorAll('.footer-svg-path');
+        const svgPaths =
+          containerRef.current?.querySelectorAll(".footer-svg-path");
         if (svgPaths && svgPaths.length > 0) {
           svgPaths.forEach((path, index) => {
             gsap.fromTo(
@@ -151,12 +177,12 @@ export default function About() {
                 y: 0,
                 duration: 0.9,
                 delay: index * 0.06,
-                ease: 'power3.out',
+                ease: "power3.out",
                 scrollTrigger: {
                   trigger: path.parentElement,
-                  start: 'top 90%',
+                  start: "top 90%",
                 },
-              }
+              },
             );
           });
         }
@@ -177,7 +203,6 @@ export default function About() {
       className="w-full bg-[#0A0B0E] text-white select-none relative overflow-hidden py-16 sm:py-24 border-y border-white/10 font-inter"
     >
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
-        
         {/* ─── 1. TOP EDITORIAL SVG TITLE BANNER ─── */}
         <div className="w-full mb-12 sm:mb-16 border-b border-white/10 pb-6">
           <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-4">
@@ -201,7 +226,7 @@ export default function About() {
               className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden border border-white/15 shadow-2xl bg-[#14151C] group"
             >
               <Image
-                src="/images/about_me_pic.jpg"
+                src="/images/methmal2.png"
                 alt="Methmal Portrait"
                 fill
                 sizes="(max-width: 1024px) 100vw, 42vw"
@@ -210,7 +235,9 @@ export default function About() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white font-mono text-xs">
                 <span>METHMAL®</span>
-                <span className="text-[#FF6B00]">FULLSTACK &amp; MARKETING</span>
+                <span className="text-[#FF6B00]">
+                  FULLSTACK &amp; MARKETING
+                </span>
               </div>
             </div>
           </div>
@@ -225,10 +252,17 @@ export default function About() {
                 001 / PHILOSOPHY &amp; JOURNEY
               </span>
               <p className="font-inter text-sm sm:text-base md:text-lg text-white/85 leading-relaxed font-normal">
-                I am a fullstack software engineer and digital marketer exploring the intersection of modern web architecture and creative growth strategy. Building digital solutions as a craft, my work embodies the transformation of complex ideas into seamless, production-grade applications.
+                I am a fullstack software engineer and digital marketer
+                exploring the intersection of modern web architecture and
+                creative growth strategy. Building digital solutions as a craft,
+                my work embodies the transformation of complex ideas into
+                seamless, production-grade applications.
               </p>
               <p className="font-inter text-sm sm:text-base md:text-lg text-white/70 leading-relaxed font-normal">
-                Through deliberate practice and technical precision, I find that clean code provides structure in times of uncertainty and offers rare clarity when scaling user experiences. Each platform becomes both a foundation and a window into growth.
+                Through deliberate practice and technical precision, I find that
+                clean code provides structure in times of uncertainty and offers
+                rare clarity when scaling user experiences. Each platform
+                becomes both a foundation and a window into growth.
               </p>
             </div>
           </div>
@@ -240,7 +274,9 @@ export default function About() {
             <span className="font-sora font-bold text-xs sm:text-sm text-white tracking-widest uppercase">
               SELECTED WORKS &amp; CRAFT MOSAIC
             </span>
-            <span className="font-mono text-xs text-[#FF6B00]">02 / SHOWCASE</span>
+            <span className="font-mono text-xs text-[#FF6B00]">
+              02 / SHOWCASE
+            </span>
           </div>
 
           {/* Horizontal Gallery Wrapper */}
@@ -271,16 +307,23 @@ export default function About() {
           {/* Gallery Caption Text */}
           <div className="gallery-caption max-w-4xl mx-auto text-center pt-6">
             <p className="font-inter text-xs sm:text-sm md:text-base text-white/80 leading-relaxed max-w-3xl mx-auto">
-              When software architecture becomes a labyrinth of choices, methodical engineering offers a thread to follow. Through continuous practice—refining Next.js APIs, component composition, and SEO strategies—we create rhythm where there was noise. This discipline transforms complex challenges into intuitive experiences you can launch, measure, and scale.
+              When software architecture becomes a labyrinth of choices,
+              methodical engineering offers a thread to follow. Through
+              continuous practice—refining Next.js APIs, component composition,
+              and SEO strategies—we create rhythm where there was noise. This
+              discipline transforms complex challenges into intuitive
+              experiences you can launch, measure, and scale.
             </p>
           </div>
         </div>
 
         {/* ─── 4. FOOTER SECTION WITH GIANT STAGGERED DISPLAY & CONTACT CTA ─── */}
         <div className="footer pt-16 border-t border-white/10 flex flex-col items-center justify-between text-center relative">
-          
           {/* Interactive Contact Button & Email Copy */}
-          <div ref={footerCtaRef} className="footer-cta flex flex-col items-center gap-3 mb-16 z-10">
+          <div
+            ref={footerCtaRef}
+            className="footer-cta flex flex-col items-center gap-3 mb-16 z-10"
+          >
             <button
               onClick={handleCopyEmail}
               className="px-8 py-3.5 rounded-full bg-[#FF6B00] text-black font-sora font-extrabold text-xs tracking-wider uppercase shadow-xl hover:bg-white transition-all duration-300 hover:scale-105"
@@ -296,7 +339,11 @@ export default function About() {
               <span>{emailText}</span>
               <span className="text-[#FF6B00]">]</span>
             </div>
-            {copied && <span className="text-emerald-400 font-mono text-xs animate-pulse">COPIED!</span>}
+            {copied && (
+              <span className="text-emerald-400 font-mono text-xs animate-pulse">
+                COPIED!
+              </span>
+            )}
           </div>
 
           {/* Giant Bottom Display Text Wave */}
@@ -309,9 +356,7 @@ export default function About() {
               <span className="footer-svg-path">IMPACT</span>
             </div>
           </div>
-
         </div>
-
       </div>
     </section>
   );

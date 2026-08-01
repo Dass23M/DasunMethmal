@@ -86,43 +86,11 @@ export default function LandoStyleSection() {
             METHMAL<span className="text-[#FF6B00]">.</span>
           </span>
         </div>
-
-        {/* Center Pill Badge matching reference "MESSAGE FROM METHMAL" */}
-        <div className="absolute left-1/2 -translate-x-1/2 top-0 md:top-2">
-          <div className="bg-[#181C17] border border-[#FF6B00]/40 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full flex items-center gap-2.5 shadow-lg backdrop-blur-md">
-            {/* Monogram emblem */}
-            <div className="w-5 h-5 rounded-md bg-[#FF6B00] text-black font-sora font-black text-xs flex items-center justify-center tracking-tighter">
-              M
-            </div>
-            <span className="font-mono text-[10px] sm:text-xs font-bold tracking-widest text-white uppercase">
-              MESSAGE FROM METHMAL
-            </span>
-          </div>
-        </div>
-
-        {/* Right CTA Buttons */}
-        <div className="flex items-center gap-3">
-          <a
-            href="#contact-section"
-            className="hidden sm:inline-flex items-center gap-2 bg-[#FF6B00] hover:bg-[#FF8A00] text-black font-sora font-extrabold text-xs tracking-wider uppercase px-4 py-2.5 rounded-lg transition-all duration-300 shadow-md"
-          >
-            <span>WORK WITH ME</span>
-            <span className="text-sm">↗</span>
-          </a>
-          <button
-            aria-label="Toggle Menu"
-            onClick={() => document.body.classList.add('offcanvas')}
-            className="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex flex-col items-center justify-center gap-1.5 hover:bg-white/20 transition-colors"
-          >
-            <span className="w-5 h-[2px] bg-white rounded-full" />
-            <span className="w-5 h-[2px] bg-[#FF6B00] rounded-full" />
-          </button>
-        </div>
       </div>
 
       {/* ─── 3. CENTER HERO CONTAINER WITH BACKDROP MARQUEE & PORTRAIT OVERLAY ─── */}
       <div className="relative z-10 w-full my-auto py-12 md:py-20 flex items-center justify-center">
-        
+
         {/* BACKGROUND CONTINUOUS GIANT MARQUEE TEXT LAYER */}
         <div className="absolute inset-0 flex flex-col justify-center gap-4 sm:gap-6 overflow-hidden pointer-events-none opacity-85 select-none">
           {/* Row 1: Leftward Scrolling Giant Headline */}
@@ -148,11 +116,11 @@ export default function LandoStyleSection() {
 
         {/* CENTER PORTRAIT CARD & NEON SIGNATURE OVERLAY */}
         <div className="relative z-20 w-[280px] xs:w-[320px] sm:w-[420px] md:w-[480px] aspect-[4/5] sm:aspect-[3/4] rounded-2xl overflow-visible group">
-          
+
           {/* Main Portrait Frame */}
           <div className="relative w-full h-full rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl bg-[#1c201a]">
             <Image
-              src="/images/about_me_pic.jpg"
+              src="/images/methmal1.png"
               alt="Methmal Portrait"
               fill
               priority
@@ -161,7 +129,7 @@ export default function LandoStyleSection() {
             />
             {/* Subtle Vignette & Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
-            
+
             {/* Bottom Card Title */}
             <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white z-10">
               <div>

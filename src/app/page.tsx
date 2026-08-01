@@ -17,8 +17,6 @@ import Contact from '@/components/sections/Contact';
 import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
 import OnCraftOffCraft from '@/components/sections/OnCraftOffCraft';
 import Artifact3DSection from '@/components/sections/Artifact3DSection';
-import ImpactSection from '@/components/sections/ImpactSection';
-
 /**
  * Main one-page portfolio — home page.
  * Assembles all sections in order, with fixed footer reveal effect.
@@ -37,11 +35,6 @@ export default function HomePage() {
         {/* Lando Norris Style Banner Section - Directly Below Hero */}
         <div className="scroll-reveal-section">
           <LandoStyleSection />
-        </div>
-
-        {/* 1. Impact Section */}
-        <div className="scroll-reveal-section">
-          <ImpactSection />
         </div>
 
         <div className="below-hero-reveal">

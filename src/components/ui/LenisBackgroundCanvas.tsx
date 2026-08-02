@@ -97,23 +97,7 @@ export default function LenisBackgroundCanvas() {
       ctx.clearRect(0, 0, width, height);
       scrollVelocity *= 0.9;
 
-      // Draw faint connections
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 110) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(255, 107, 0, ${0.1 * (1 - dist / 110)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
 
       // Update and draw particles
       particles.forEach((p) => {

@@ -260,12 +260,12 @@ export default function Artifact3DSection() {
         style={{ width: '100vw', height: '100vh' }}
       />
 
-      {/* ── FIXED SCANLINES ── */}
+      {/* ── FIXED SCANLINES (Disabled for clean layout) ── */}
       <div
         ref={scanlinesRef}
         className="fixed inset-0 pointer-events-none z-[3] opacity-0"
         style={{
-          background: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px)',
+          background: 'none',
         }}
       />
 

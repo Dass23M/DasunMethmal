@@ -573,14 +573,14 @@ export default function GSAPFlipSection() {
         style={{ width: '100vw', height: '100vh', zIndex: 0, opacity: 0 }}
       />
 
-      {/* ── Scanlines ──────────────────────────────────────── */}
+      {/* ── Scanlines (Disabled for clean layout) ── */}
       <div
         ref={scanlinesRef}
         className="fixed inset-0 pointer-events-none"
         style={{
           zIndex: 5,
           opacity: 0,
-          background: 'repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px)',
+          background: 'none',
         }}
       />
 

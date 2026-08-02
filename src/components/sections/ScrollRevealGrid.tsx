@@ -117,11 +117,11 @@ export default function ScrollRevealGrid() {
     }, [mounted]);
 
     if (!mounted) {
-        return <section className="w-full min-h-[400px] bg-white" />;
+        return <section className="w-full min-h-[400px] bg-[#F5F5F7]" />;
     }
 
     return (
-        <section ref={sectionRef} className="w-full bg-white py-12 sm:py-20 overflow-hidden select-none">
+        <section ref={sectionRef} className="w-full bg-[#F5F5F7] py-12 sm:py-20 overflow-hidden select-none">
             <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
 
                 {/* 3-Column Bento Metric Layout with Opposing Horizontal Scrub Motions */}

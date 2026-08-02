@@ -73,14 +73,14 @@ export default function Testimonials() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full min-h-[400px] bg-white" />;
+    return <section className="w-full min-h-[400px] bg-[#F5F5F7]" />;
   }
 
   // Duplicate items array so infinite marquee wraps 100% seamlessly
   const slides = [...TESTIMONIALS_DATA, ...TESTIMONIALS_DATA];
 
   return (
-    <section id="testimonial-section" className="w-full bg-white text-black py-12 md:py-24 overflow-hidden select-none">
+    <section id="testimonial-section" className="w-full bg-[#F5F5F7] text-black py-12 md:py-24 overflow-hidden select-none">
       {/* ─── HEADER SECTION ─── */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 mb-8 sm:mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
         <div>
@@ -106,7 +106,7 @@ export default function Testimonials() {
           {slides.map((card, idx) => (
             <div
               key={`${card.id}-${idx}`}
-              className="w-[88vw] sm:w-[620px] md:w-[740px] shrink-0 bg-[#f4f4f6] rounded-[22px] sm:rounded-[28px] p-5 sm:p-8 flex flex-col md:flex-row gap-5 sm:gap-6 md:gap-8 items-center border border-gray-200/70 shadow-sm transition-all duration-300 hover:shadow-md hover:border-gray-300"
+              className="w-[88vw] sm:w-[620px] md:w-[740px] shrink-0 bg-white rounded-[22px] sm:rounded-[28px] p-5 sm:p-8 flex flex-col md:flex-row gap-5 sm:gap-6 md:gap-8 items-center border border-gray-200/80 shadow-sm transition-all duration-300 hover:shadow-md hover:border-gray-300"
             >
               {/* Text Info Container */}
               <div className="flex-1 flex flex-col justify-between h-full text-left w-full">

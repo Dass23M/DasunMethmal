@@ -98,13 +98,13 @@ export default function RandomTextReveal() {
   }, [mounted, textContent]);
 
   if (!mounted) {
-    return <div className="w-full min-h-[50vh] lg:min-h-screen bg-white" />;
+    return <div className="w-full min-h-[50vh] lg:min-h-screen bg-[#F5F5F7]" />;
   }
 
   return (
     <div
       ref={containerRef}
-      className="w-full min-h-[50vh] py-16 lg:py-0 lg:min-h-screen bg-white flex items-center justify-center select-none relative z-10 border-t border-b border-gray-200"
+      className="w-full min-h-[50vh] py-16 lg:py-0 lg:min-h-screen bg-[#F5F5F7] flex items-center justify-center select-none relative z-10 border-t border-b border-gray-200/60"
     >
       <h3
         ref={textRef}

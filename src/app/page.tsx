@@ -17,6 +17,7 @@ import Contact from '@/components/sections/Contact';
 import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
 import OnCraftOffCraft from '@/components/sections/OnCraftOffCraft';
 import Artifact3DSection from '@/components/sections/Artifact3DSection';
+
 /**
  * Main one-page portfolio — home page.
  * Assembles all sections in order, with fixed footer reveal effect.
@@ -32,11 +33,6 @@ export default function HomePage() {
         {/* Sections */}
         <Hero />
 
-        {/* Lando Norris Style Banner Section - Directly Below Hero */}
-        <div className="scroll-reveal-section">
-          <LandoStyleSection />
-        </div>
-
         <div className="below-hero-reveal">
           {/* 2. Pinned Scrub About Section */}
           <div className="scroll-reveal-section">
@@ -48,12 +44,17 @@ export default function HomePage() {
             <ImageFanShowcase />
           </div>
 
-          {/* ON CRAFT / OFF CRAFT Section — Directly Below ImageFanShowcase */}
+          {/* Lando Norris Style Banner Section - Directly Below ImageFanShowcase */}
+          <div className="scroll-reveal-section">
+            <LandoStyleSection />
+          </div>
+
+          {/* ON CRAFT / OFF CRAFT Section */}
           <div className="scroll-reveal-section">
             <OnCraftOffCraft />
           </div>
 
-          {/* 3D WebGL HUD Generative Artifact Section — Directly Below OnCraftOffCraft */}
+          {/* 3D WebGL HUD Generative Artifact Section */}
           <div className="scroll-reveal-section">
             <Artifact3DSection />
           </div>
@@ -100,13 +101,12 @@ export default function HomePage() {
             <Contact />
           </div>
 
-          <div className="scroll-reveal-section">
-            <FooterMarquee />
-          </div>
+          {/* Dual-band scrolling marquee before footer */}
+          <FooterMarquee />
         </div>
       </div>
 
-      {/* Fixed footer revealed on scroll */}
+      {/* Fixed footer at bottom of viewport */}
       <Footer />
     </>
   );

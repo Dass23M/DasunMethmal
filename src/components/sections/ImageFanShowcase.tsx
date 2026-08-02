@@ -16,7 +16,7 @@ const SERVICES = [
     category: 'WEB ENGINEERING',
     desc: 'Custom Next.js, React, Node.js, and MongoDB platforms. High-performance web applications built for speed, SEO, scalability, and seamless user experiences.',
     accent: '#FF6B00',
-    image: '/images/fullstack.png',
+    image: '/images/post-1.png',
     tags: ['React.js', 'Next.js 14', 'Node.js', 'TypeScript', 'MongoDB'],
   },
   {
@@ -26,7 +26,7 @@ const SERVICES = [
     category: 'GRAPHIC & POST DESIGN',
     desc: 'Creative poster designs, social media post graphics, promotional banners, and visual branding assets crafted to capture attention and communicate strong brand narratives.',
     accent: '#FFA800',
-    image: '/images/poster.png',
+    image: '/images/post-2.png',
     tags: ['Poster Design', 'Social Posts', 'Banner Design', 'Visual Branding', 'Photoshop'],
   },
   {
@@ -36,7 +36,7 @@ const SERVICES = [
     category: 'MARKETING & SEO',
     desc: 'Data-driven growth marketing, technical SEO optimization, ad campaign architecture, and brand identity strategies engineered for maximum ROAS.',
     accent: '#FF8A00',
-    image: '/images/digitalmarketing.png',
+    image: '/images/post-3.png',
     tags: ['Technical SEO', 'Ad Campaigns', 'Conversion Rate', 'Brand Strategy'],
   },
   {
@@ -46,7 +46,7 @@ const SERVICES = [
     category: 'CREATIVE DIRECTION',
     desc: 'Interactive 3D web motion graphics, GSAP animations, custom design systems, and user-centered interface design engineered for high engagement.',
     accent: '#FF6B00',
-    image: '/images/uiux.png',
+    image: '/images/post-4.png',
     tags: ['GSAP 3D', 'Design Systems', 'Interactive Motion', 'Figma'],
   },
 ];
@@ -68,7 +68,6 @@ export default function ImageFanShowcase() {
     const right = rightRef.current;
     const leftItems = gsap.utils.toArray<HTMLElement>(arch.querySelectorAll('.arch__info'));
     const rightWrappers = gsap.utils.toArray<HTMLElement>(right.querySelectorAll('.img-wrapper'));
-    const imgs = gsap.utils.toArray<HTMLImageElement>(right.querySelectorAll('.img-wrapper img'));
 
     const ctx = gsap.context(() => {
       // 1. Mobile vs Desktop Order Interleaving
@@ -94,7 +93,7 @@ export default function ImageFanShowcase() {
       handleMobileLayout();
       window.addEventListener('resize', handleMobileLayout);
 
-      // 2. Desktop Pinned Image Stack Swapping
+      // 2. Desktop Pinned Image Stack Swapping via Smooth Opacity Crossfade
       ScrollTrigger.matchMedia({
         '(min-width: 769px)': function () {
           // Pin the right image container while scrolling through left text cards
@@ -108,16 +107,16 @@ export default function ImageFanShowcase() {
             invalidateOnRefresh: true,
           });
 
-          // Set initial full clip-path for all image wrappers
-          gsap.set(rightWrappers, {
-            clipPath: 'inset(0% 0% 0% 0%)',
+          // Set initial opacity: 1 for the first wrapper, opacity: 0 for all other wrappers
+          rightWrappers.forEach((wrapper, idx) => {
+            gsap.set(wrapper, {
+              opacity: idx === 0 ? 1 : 0,
+              scale: idx === 0 ? 1 : 0.9,
+              yPercent: -50,
+            });
           });
 
-          gsap.set(imgs, {
-            objectPosition: '0px 0%',
-          });
-
-          // Tie each wrapper's clip-path mask reveal directly to its left text card
+          // Tie each wrapper's opacity crossfade directly to its left text card scroll progress
           leftItems.forEach((leftItem, idx) => {
             const currentWrapper = rightWrappers[idx];
             const nextWrapper = rightWrappers[idx + 1];
@@ -126,20 +125,26 @@ export default function ImageFanShowcase() {
               const tl = gsap.timeline({
                 scrollTrigger: {
                   trigger: leftItem,
-                  start: 'bottom 60%',
-                  end: 'bottom 10%',
-                  scrub: 1,
+                  start: 'bottom 55%',
+                  end: 'bottom 15%',
+                  scrub: 0.5,
                 },
               });
 
-              tl.to(currentWrapper, {
-                clipPath: 'inset(0% 0% 100% 0%)',
-                ease: 'power1.inOut',
-              }).to(
-                imgs[idx],
+              tl.to(
+                currentWrapper,
                 {
-                  objectPosition: '0px 60%',
-                  ease: 'none',
+                  opacity: 0,
+                  scale: 0.9,
+                  ease: 'power2.inOut',
+                },
+                0
+              ).to(
+                nextWrapper,
+                {
+                  opacity: 1,
+                  scale: 1,
+                  ease: 'power2.inOut',
                 },
                 0
               );
@@ -147,16 +152,17 @@ export default function ImageFanShowcase() {
           });
         },
         '(max-width: 768px)': function () {
-          imgs.forEach((image) => {
+          rightWrappers.forEach((wrapper) => {
             gsap.fromTo(
-              image,
-              { objectPosition: '0px 20%' },
+              wrapper,
+              { opacity: 0, y: 30 },
               {
-                objectPosition: '0px 70%',
+                opacity: 1,
+                y: 0,
                 scrollTrigger: {
-                  trigger: image,
+                  trigger: wrapper,
                   start: 'top 85%',
-                  end: 'bottom 20%',
+                  end: 'top 50%',
                   scrub: true,
                 },
               }
@@ -250,30 +256,25 @@ export default function ImageFanShowcase() {
             ))}
           </div>
 
-          {/* ── RIGHT COLUMN: PINNED STACKED IMAGE MASK REVEAL ── */}
+          {/* ── RIGHT COLUMN: PINNED ILLUSTATION SHOWCASE (OPACITY CROSSFADE) ── */}
           <div
             ref={rightRef}
             className="arch__right shrink-0 h-auto md:h-screen w-full max-w-full md:max-w-[520px] lg:max-w-[580px] relative flex flex-col justify-center"
           >
-            {SERVICES.map((item) => (
+            {SERVICES.map((item, idx) => (
               <div
                 key={item.id}
                 data-index={item.index}
-                style={{ zIndex: item.index }}
-                className="img-wrapper relative md:absolute top-0 md:top-1/2 left-0 md:-translate-y-1/2 h-[280px] sm:h-[360px] md:h-[440px] w-full rounded-2xl overflow-hidden border border-white/20 shadow-2xl bg-[#14151C]"
+                style={{ zIndex: 10 + idx }}
+                className="img-wrapper relative md:absolute top-0 md:top-1/2 left-0 h-[280px] sm:h-[360px] md:h-[480px] w-full bg-transparent overflow-visible flex items-center justify-center pointer-events-none"
               >
                 <Image
                   src={item.image}
                   alt={item.header}
                   fill
                   sizes="(max-width: 768px) 100vw, 580px"
-                  className="object-cover object-center filter brightness-95 contrast-105"
+                  className="object-contain object-center filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.55)]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white font-mono text-xs z-10">
-                  <span className="font-bold text-[#FF6B00]">{item.header}</span>
-                  <span className="opacity-60">0{5 - item.index} / 04</span>
-                </div>
               </div>
             ))}
           </div>

@@ -2,7 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MouseScroll from "@/components/ui/MouseScroll";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface HeroProps {
   title?: string;
@@ -10,14 +13,14 @@ interface HeroProps {
 }
 
 /**
- * Hero Section — GSAP Powered Reveal
- * Clean, Ultra-Premium Full-Screen Parallax Hero Section.
+ * Hero Section — Apple-Style Parallax & GSAP Powered Reveal
  */
 export default function Hero({
   title = "METH",
   subtitle = "A Fullstack Developer & Digital Marketer",
 }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const heroContentRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -28,9 +31,9 @@ export default function Hero({
     if (!mounted || !containerRef.current) return;
 
     const ctx = gsap.context(() => {
+      // 1. Initial Wipe & Reveal
       const tl = gsap.timeline({ defaults: { ease: "power4.inOut" } });
 
-      // Title cover wipe + reveal
       tl.fromTo(
         ".hero-title-cover",
         { x: "-101%" },
@@ -38,13 +41,28 @@ export default function Hero({
         0.2,
       ).to(".hero-title-text", { opacity: 1, duration: 0.01 }, 0.75);
 
-      // Subtitle cover wipe + reveal
       tl.fromTo(
         ".hero-sub-cover",
         { x: "-101%" },
         { x: "101%", duration: 1.1 },
         0.5,
       ).to(".hero-sub-text", { opacity: 1, duration: 0.01 }, 1.05);
+
+      // 2. Apple-Style Hero Parallax Scroll Effect (scale down & float up on scroll down)
+      if (heroContentRef.current) {
+        gsap.to(heroContentRef.current, {
+          y: -70,
+          scale: 0.92,
+          opacity: 0.2,
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 0.6,
+          },
+        });
+      }
     }, containerRef);
 
     return () => ctx.revert();
@@ -54,12 +72,15 @@ export default function Hero({
     <section
       id="home-section"
       ref={containerRef}
-      className="cover-v1 bg-cover bg-no-repeat w-full lg:bg-fixed hero-cover-mobile"
+      className="cover-v1 bg-cover bg-no-repeat w-full lg:bg-fixed hero-cover-mobile relative overflow-hidden"
       style={{
         backgroundImage: "url('/images/cover_bg_2.png')",
       }}
     >
-      <div className="relative z-[9] max-w-[1140px] mx-auto px-[15px] h-[100svh] min-h-0 lg:h-screen lg:min-h-[650px] flex items-center justify-center">
+      <div
+        ref={heroContentRef}
+        className="relative z-[9] max-w-[1140px] mx-auto px-[15px] h-[100svh] min-h-0 lg:h-screen lg:min-h-[650px] flex items-center justify-center will-change-transform"
+      >
         <div className="text-center max-w-[850px] w-full px-1">
           {/* Title: METH */}
           <h1 className="hero-title-meth font-sora text-[2.5rem] xs:text-[3rem] sm:text-[4rem] lg:text-[5.5rem] font-black text-white mb-[16px] sm:mb-[20px] tracking-tight leading-[1.1]">

@@ -4,15 +4,13 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import LenisBackgroundCanvas from '@/components/ui/LenisBackgroundCanvas';
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Premium Momentum-Based Smooth Scrolling Engine (Lenis).
- * - Enables smooth momentum scrolling on Desktop (≥992px)
- * - Uses native 120Hz/60Hz hardware touch scrolling on Mobile (<992px) for zero lag
- * - Perfectly synchronized with GSAP ScrollTrigger ticker & pins
+ * Premium Apple-Style Momentum Smooth Scrolling Engine (Lenis).
+ * - Delivers buttery-smooth spring physics & inertia on Desktop & Mobile.
+ * - Perfectly synchronized with GSAP ScrollTrigger ticker & pins on all devices.
  */
 export default function SmoothScrollProvider({
   children,
@@ -21,24 +19,17 @@ export default function SmoothScrollProvider({
 }) {
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isTouchMobile = window.matchMedia('(max-width: 991px)').matches;
-
     if (prefersReduced) return;
 
-    // On mobile touch devices, use native hardware touch scrolling for 100% responsiveness & 0 lag
-    if (isTouchMobile) {
-      ScrollTrigger.config({ autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load' });
-      return;
-    }
-
+    // Enable Lenis Smooth Scroll across both Desktop and Mobile with Apple-like spring inertia
     const lenis = new Lenis({
-      duration: 1.1,
+      duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: 1.0,
+      touchMultiplier: 1.4,
     });
 
     (window as any).lenis = lenis;
@@ -46,7 +37,7 @@ export default function SmoothScrollProvider({
     // Synchronize Lenis scroll updates with GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
 
-    // Run Lenis RAF via GSAP ticker for 60/120 FPS lock
+    // Run Lenis RAF via GSAP ticker for 60/120 FPS frame lock
     const updateLenis = (time: number) => {
       lenis.raf(time * 1000);
     };
@@ -60,7 +51,7 @@ export default function SmoothScrollProvider({
     };
     window.addEventListener('resize', onResize);
 
-    // Intercept clicks on anchor links (#section)
+    // Intercept clicks on anchor links (#section) for smooth spring navigation
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchorLink = target.closest('a');
@@ -73,7 +64,7 @@ export default function SmoothScrollProvider({
         if (element) {
           lenis.scrollTo(element, {
             offset: 0,
-            duration: 1.2,
+            duration: 1.3,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           });
         }
@@ -86,7 +77,7 @@ export default function SmoothScrollProvider({
           if (element) {
             lenis.scrollTo(element, {
               offset: 0,
-              duration: 1.2,
+              duration: 1.3,
             });
           }
         }
@@ -100,14 +91,8 @@ export default function SmoothScrollProvider({
       document.removeEventListener('click', handleAnchorClick);
       gsap.ticker.remove(updateLenis);
       lenis.destroy();
-      (window as any).lenis = undefined;
     };
   }, []);
 
-  return (
-    <>
-      <LenisBackgroundCanvas />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }

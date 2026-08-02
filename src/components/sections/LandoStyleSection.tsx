@@ -66,7 +66,7 @@ export default function LandoStyleSection() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full h-[650px] bg-[#0E100D]" />;
+    return <section className="w-full h-[650px] bg-[#000000]" />;
   }
 
   const marqueeText1 = "WE DID IT TOGETHER • CRAFTING DIGITAL DREAMS • DRIVEN BY CODE • SCALING BRANDS WORLDWIDE • ";
@@ -75,7 +75,8 @@ export default function LandoStyleSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[700px] md:min-h-[850px] bg-[#0E100D] text-white overflow-hidden select-none flex flex-col justify-between py-8 md:py-12 border-y border-white/10"
+      id="landostyle-section"
+      className="relative w-full min-h-[700px] md:min-h-[850px] bg-[#000000] text-white overflow-hidden select-none flex flex-col justify-between py-8 md:py-12 border-y border-white/10"
     >
 
       {/* ─── 2. TOP HEADER NAVIGATION BAR ─── */}

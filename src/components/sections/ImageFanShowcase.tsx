@@ -180,14 +180,14 @@ export default function ImageFanShowcase() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full h-screen bg-[#0A0B0E]" />;
+    return <section className="w-full h-screen bg-[#000000]" />;
   }
 
   return (
     <section
       ref={containerRef}
       id="capabilities-section"
-      className="w-full bg-[#0A0B0E] text-white py-14 sm:py-24 select-none relative overflow-hidden font-inter border-y border-white/10"
+      className="w-full bg-[#000000] text-white py-14 sm:py-24 select-none relative overflow-hidden font-inter border-y border-white/10"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
 

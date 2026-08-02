@@ -245,13 +245,13 @@ export default function Artifact3DSection() {
     };
   }, [mounted]);
 
-  if (!mounted) return <section className="w-full h-screen bg-[#0A0B0E]" />;
+  if (!mounted) return <section className="w-full h-screen bg-[#000000]" />;
 
   return (
     <div
       ref={containerRef}
       id="artifact-3d-section"
-      className="relative w-full bg-[#0A0B0E] text-white font-inter select-none"
+      className="relative w-full bg-[#000000] text-white font-inter select-none"
     >
       {/* ── FIXED FULL-SCREEN CANVAS ── */}
       <canvas

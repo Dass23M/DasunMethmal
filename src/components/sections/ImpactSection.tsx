@@ -6,7 +6,7 @@ export default function ImpactSection() {
   return (
     <section
       id="impact-section"
-      className="relative w-full min-h-[580px] lg:min-h-[640px] bg-[#0A0B0E] text-white overflow-hidden select-none py-16 lg:py-24 flex flex-col justify-center"
+      className="relative w-full min-h-[580px] lg:min-h-[640px] bg-[#000000] text-white overflow-hidden select-none py-16 lg:py-24 flex flex-col justify-center"
     >
       {/* ─── MAIN NARRATIVE CONTENT GRID ─── */}
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-16 my-auto">

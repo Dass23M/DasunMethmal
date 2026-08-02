@@ -193,14 +193,14 @@ export default function About() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full h-screen bg-[#0A0B0E]" />;
+    return <section className="w-full h-screen bg-[#000000]" />;
   }
 
   return (
     <section
       id="about-section"
       ref={containerRef}
-      className="w-full bg-[#0A0B0E] text-white select-none relative overflow-hidden py-16 sm:py-24 border-y border-white/10 font-inter"
+      className="w-full bg-[#000000] text-white select-none relative overflow-hidden py-16 sm:py-24 border-y border-white/10 font-inter"
     >
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* ─── 1. TOP EDITORIAL SVG TITLE BANNER ─── */}

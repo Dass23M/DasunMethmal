@@ -71,13 +71,14 @@ export default function FaqSection() {
   };
 
   if (!mounted) {
-    return <section className="w-full min-h-screen bg-[#0d0e10]" />;
+    return <section className="w-full min-h-screen bg-[#000000]" />;
   }
 
   return (
     <section
       ref={sectionRef}
-      className="w-full min-h-screen h-auto py-16 lg:py-24 lg:min-h-screen bg-[#0d0e10] text-white flex items-center justify-center overflow-hidden select-none"
+      id="faq-section"
+      className="w-full min-h-screen h-auto py-16 lg:py-24 lg:min-h-screen bg-[#000000] text-white flex items-center justify-center overflow-hidden select-none"
     >
       <div className="w-full max-w-[1550px] mx-auto px-5 sm:px-10 md:px-16 lg:px-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-20 items-center">

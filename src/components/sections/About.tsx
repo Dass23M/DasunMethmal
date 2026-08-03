@@ -43,7 +43,7 @@ export default function About() {
   const footerCtaRef = useRef<HTMLDivElement>(null);
 
   const [mounted, setMounted] = useState(false);
-  const [emailText, setEmailText] = useState("mail@uxoradesign.com");
+  const [emailText, setEmailText] = useState("methmal.liyanage23@gmail.com");
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -51,11 +51,11 @@ export default function About() {
   }, []);
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText("mail@uxoradesign.com");
+    navigator.clipboard.writeText("methmal.liyanage23@gmail.com");
     setEmailText("email copied to clipboard!");
     setCopied(true);
     setTimeout(() => {
-      setEmailText("mail@uxoradesign.com");
+      setEmailText("methmal.liyanage23@gmail.com");
       setCopied(false);
     }, 2400);
   };

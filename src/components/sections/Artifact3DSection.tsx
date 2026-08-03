@@ -301,13 +301,11 @@ export default function Artifact3DSection() {
         ].map((item) => (
           <div key={item.idx} className="flex items-center gap-3">
             <div
-              className={`h-[1px] transition-all duration-400 ${
-                activeSidebar === item.idx ? 'w-8 bg-[#FF6B00]' : 'w-5 bg-white/20'
-              }`}
+              className={`h-[1px] transition-all duration-400 ${activeSidebar === item.idx ? 'w-8 bg-[#FF6B00]' : 'w-5 bg-white/20'
+                }`}
             />
-            <span className={`font-mono text-[10px] uppercase tracking-widest transition-colors duration-400 ${
-              activeSidebar === item.idx ? 'text-[#FF6B00]' : 'text-white/25'
-            }`}>
+            <span className={`font-mono text-[10px] uppercase tracking-widest transition-colors duration-400 ${activeSidebar === item.idx ? 'text-[#FF6B00]' : 'text-white/25'
+              }`}>
               {item.label}
             </span>
           </div>

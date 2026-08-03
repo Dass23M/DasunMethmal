@@ -9,9 +9,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const MARKETING_METRICS = [
-    { value: '3.5X', label: 'ROAS & Ad Efficiency' },
-    { value: '98%', label: 'Retention Rate' },
-    { value: '$45M+', label: 'Revenue Generated' },
+    { value: '100%', label: 'Dedicated Execution' },
+    { value: 'SEO', label: 'Content Strategy' },
+    { value: 'Growth', label: 'Mindset & Campaign Focus' },
 ];
 
 export default function EditorialShowcase() {
@@ -86,7 +86,6 @@ export default function EditorialShowcase() {
                 }
 
                 // 3. Sequential Mask Reveal + Parallax position for each mosaic image
-                // Image 1 (Top Left)
                 if (img1Ref.current) {
                     tl.to(
                         img1Ref.current,
@@ -102,7 +101,6 @@ export default function EditorialShowcase() {
                     );
                 }
 
-                // Image 2 (Top Right)
                 if (img2Ref.current) {
                     tl.to(
                         img2Ref.current,
@@ -118,7 +116,6 @@ export default function EditorialShowcase() {
                     );
                 }
 
-                // Image 3 (Middle Right Offset)
                 if (img3Ref.current) {
                     tl.to(
                         img3Ref.current,
@@ -134,7 +131,6 @@ export default function EditorialShowcase() {
                     );
                 }
 
-                // Image 4 (Bottom Left Offset)
                 if (img4Ref.current) {
                     tl.to(
                         img4Ref.current,
@@ -206,21 +202,21 @@ export default function EditorialShowcase() {
                                     <span>©2026</span>
                                 </div>
 
-                                {/* Main Paragraph Text */}
+                                {/* Main Paragraph Text tailored for an emerging digital marketing & web specialist */}
                                 <p
                                     ref={textRef}
-                                    className="font-sora text-xl sm:text-2xl md:text-3xl lg:text-[2.1rem] font-medium leading-[1.38] tracking-tight text-black mt-6 will-change-transform"
+                                    className="font-sora text-xl sm:text-2xl md:text-3xl lg:text-[2.05rem] font-medium leading-[1.4] tracking-tight text-black mt-6 will-change-transform"
                                 >
-                                    We build data-driven marketing strategies, high-converting ad campaigns, and brand architectures engineered for growth. Every solution is strategically crafted to scale your customer acquisition, maximize ROAS, and elevate your brand presence.
+                                    As an emerging digital marketer and web developer, I create targeted social media campaigns, SEO-optimized content, and engaging visual assets. I help growing brands establish a strong online presence through clean design, creative storytelling, and data-backed digital strategies.
                                 </p>
 
                                 {/* CTA Button */}
                                 <div className="mt-8">
                                     <Link
-                                        href="#portfolio-section"
+                                        href="#poster-design-section"
                                         className="inline-flex items-center gap-3 bg-black text-white px-7 py-3.5 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 hover:bg-black/85 hover:scale-105 shadow-xl group"
                                     >
-                                        <span>EXPLORE MARKETING CAMPAIGNS</span>
+                                        <span>EXPLORE MARKETING &amp; POST DESIGNS</span>
                                         <span className="text-base transition-transform duration-300 group-hover:translate-x-1 group-hover:rotate-45">⤵</span>
                                     </Link>
                                 </div>
@@ -242,10 +238,10 @@ export default function EditorialShowcase() {
 
                         </div>
 
-                        {/* Right Column: Exact Staggered Mosaic Collage with Mask Reveals */}
+                        {/* Right Column: Staggered Mosaic Collage with Mask Reveals */}
                         <div className="lg:col-span-6 relative w-full h-[400px] sm:h-[500px] md:h-[580px] lg:h-[650px]">
 
-                            {/* Image 1: Top Left - Black & White Hat Shadow Portrait */}
+                            {/* Image 1: Top Left */}
                             <div
                                 ref={img1Ref}
                                 className="absolute top-0 left-0 w-[42%] aspect-[3/4] rounded-lg overflow-hidden shadow-2xl z-10 will-change-[clip-path,transform,opacity]"
@@ -260,35 +256,35 @@ export default function EditorialShowcase() {
                                 />
                             </div>
 
-                            {/* Image 2: Top Right - Blue & Orange Jacket Portrait */}
+                            {/* Image 2: Top Right */}
                             <div
                                 ref={img2Ref}
-                                className="absolute top-0 right-0 w-[40%] aspect-[3/4] rounded-lg overflow-hidden shadow-2xl z-20 will-change-[clip-path,transform,opacity]"
+                                className="absolute top-[8%] right-0 w-[52%] aspect-[4/3] rounded-lg overflow-hidden shadow-2xl z-20 will-change-[clip-path,transform,opacity]"
                             >
                                 <Image
                                     src="/images/editorial_2.png"
                                     alt="Editorial portrait 2"
                                     fill
-                                    sizes="(max-width: 1024px) 45vw, 25vw"
+                                    sizes="(max-width: 1024px) 55vw, 30vw"
                                     className="object-cover"
                                 />
                             </div>
 
-                            {/* Image 3: Middle Right Offset - Bob Cut Portrait */}
+                            {/* Image 3: Middle Right Offset */}
                             <div
                                 ref={img3Ref}
-                                className="absolute top-[38%] right-[10%] w-[42%] aspect-[3/4] rounded-lg overflow-hidden shadow-2xl z-30 will-change-[clip-path,transform,opacity]"
+                                className="absolute bottom-[5%] right-[5%] w-[44%] aspect-[3/4] rounded-lg overflow-hidden shadow-2xl z-30 will-change-[clip-path,transform,opacity]"
                             >
                                 <Image
                                     src="/images/editorial_3.png"
                                     alt="Editorial portrait 3"
                                     fill
-                                    sizes="(max-width: 1024px) 45vw, 25vw"
+                                    sizes="(max-width: 1024px) 48vw, 26vw"
                                     className="object-cover"
                                 />
                             </div>
 
-                            {/* Image 4: Bottom Left Offset - Red Backlit Portrait */}
+                            {/* Image 4: Bottom Left Offset */}
                             <div
                                 ref={img4Ref}
                                 className="absolute bottom-0 left-[8%] w-[40%] aspect-[3/4] rounded-lg overflow-hidden shadow-2xl z-40 will-change-[clip-path,transform,opacity]"

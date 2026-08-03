@@ -21,9 +21,8 @@ export default function SectionHeading({
 
   return (
     <div
-      className={`w-full mb-8 sm:mb-12 border-b pb-3 transition-colors ${
-        isLight ? 'border-black/15 text-black' : 'border-white/15 text-white'
-      } ${className}`}
+      className={`w-full mb-8 sm:mb-12 border-b pb-3 transition-colors ${isLight ? 'border-black/15 text-black' : 'border-white/15 text-white'
+        } ${className}`}
     >
       <div className="flex items-center justify-between text-xs sm:text-sm font-bold tracking-widest uppercase">
         <span className="flex items-center gap-2.5">

@@ -16,7 +16,7 @@ export default function RandomTextReveal() {
   const textRef = useRef<HTMLHeadingElement>(null);
   const [mounted, setMounted] = useState(false);
 
-  const textContent = "Create text animations that will have them hanging off your every word. GSAP's text plugins have your back—bringing words to life has never been this easy!";
+  const textContent = "Engineering high-performance web applications, custom digital platforms, and data-driven growth strategies that transform ambitious brands into industry leaders with speed, precision, and architectural excellence.";
 
   useEffect(() => {
     setMounted(true);
@@ -28,15 +28,31 @@ export default function RandomTextReveal() {
     const textEl = textRef.current;
     if (!textEl) return;
 
-    const chars = textContent.split('').map((char) => {
-      const span = document.createElement('span');
-      span.textContent = char === ' ' ? '\u00A0' : char;
-      span.className = 'inline-block opacity-0';
-      return span;
-    });
-
     textEl.innerHTML = '';
-    chars.forEach((span) => textEl.appendChild(span));
+    const words = textContent.split(' ');
+    const chars: HTMLSpanElement[] = [];
+
+    words.forEach((word, wordIdx) => {
+      const wordSpan = document.createElement('span');
+      wordSpan.className = 'inline-block whitespace-nowrap';
+
+      word.split('').forEach((char) => {
+        const charSpan = document.createElement('span');
+        charSpan.textContent = char;
+        charSpan.className = 'inline-block opacity-0';
+        wordSpan.appendChild(charSpan);
+        chars.push(charSpan);
+      });
+
+      textEl.appendChild(wordSpan);
+
+      if (wordIdx < words.length - 1) {
+        const spaceSpan = document.createElement('span');
+        spaceSpan.textContent = '\u00A0';
+        spaceSpan.className = 'inline-block';
+        textEl.appendChild(spaceSpan);
+      }
+    });
 
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();

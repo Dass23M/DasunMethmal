@@ -73,26 +73,32 @@ function BlogCard({
 }) {
   return (
     <div className="gsap-reveal-blog-card group">
-      <div className="blog-item cursor-pointer rounded-2xl overflow-hidden shadow-xl border border-white/10 transition-all duration-500 hover:scale-[1.03] hover:shadow-2xl hover:border-white/25">
-        <div className="blog-item-inner relative">
-          <div className="blog-overlay">
-            <div className="blog-overlay-content">
-              <h3 className="font-sora font-bold text-lg text-white">{post.title}</h3>
-              <p className="post-meta font-mono text-xs text-[#FF6B00] mt-1">
-                By {post.author} <span>•</span> {post.readTime}
-              </p>
-            </div>
-          </div>
+      <div className="blog-item cursor-pointer rounded-2xl overflow-hidden shadow-xl border border-white/10 bg-[#12131A] transition-all duration-500 hover:scale-[1.02] hover:border-white/25">
+        
+        {/* Poster Image Stage */}
+        <div className="blog-item-inner relative overflow-hidden aspect-[4/3] w-full">
           <Image
             src={post.image}
             alt={post.title}
-            width={600}
-            height={400}
-            loading="lazy"
-            style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
-            className="transition-transform duration-700 ease-out group-hover:scale-105"
+            fill
+            sizes="(max-width: 768px) 100vw, 500px"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
         </div>
+
+        {/* Visible Image Header & Metadata */}
+        <div className="p-4 sm:p-5 border-t border-white/10 bg-[#0A0B0E]">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="font-mono text-[10px] sm:text-xs font-bold text-[#FF6B00] uppercase tracking-widest">
+              {post.readTime}
+            </span>
+            <span className="font-mono text-[10px] text-white/50 uppercase">{post.date}</span>
+          </div>
+          <h3 className="font-sora font-bold text-sm sm:text-base text-white tracking-tight leading-snug group-hover:text-[#FF6B00] transition-colors">
+            {post.title}
+          </h3>
+        </div>
+
       </div>
     </div>
   );

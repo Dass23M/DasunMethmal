@@ -66,48 +66,42 @@ export default function About() {
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
 
-      // 1. Luxury Apple-Style Hero Image Reveal (Clip-path + Scale + Slide on mobile)
+      // 1. Hero Image Scale & Reveal (No CSS blur on mobile for 60fps)
       if (heroImageRef.current) {
         gsap.fromTo(
           heroImageRef.current,
           {
-            scale: isMobile ? 0.92 : 0.85,
-            y: isMobile ? 45 : 0,
+            scale: isMobile ? 0.95 : 0.85,
             opacity: 0,
-            clipPath: isMobile ? "inset(10% 0% 10% 0%)" : "inset(0% 0% 0% 0%)",
             filter: isMobile ? "none" : "blur(8px)",
           },
           {
             scale: 1,
-            y: 0,
             opacity: 1,
-            clipPath: "inset(0% 0% 0% 0%)",
             filter: "none",
-            duration: isMobile ? 1.2 : 1.4,
+            duration: isMobile ? 0.8 : 1.4,
             ease: "power3.out",
             scrollTrigger: {
-              trigger: heroImageRef.current,
-              start: isMobile ? "top 88%" : "top 80%",
-              toggleActions: "play none none reverse",
+              trigger: containerRef.current,
+              start: "top 80%",
             },
           },
         );
       }
 
-      // 2. Editorial About Text Luxury Staggered Slide Up
+      // 2. Editorial About Text Slide Up
       if (aboutTextRef.current) {
         gsap.fromTo(
           aboutTextRef.current,
-          { y: isMobile ? 50 : 35, opacity: 0 },
+          { y: 35, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: isMobile ? 1.2 : 1.0,
+            duration: 1.0,
             ease: "power3.out",
             scrollTrigger: {
               trigger: aboutTextRef.current,
-              start: isMobile ? "top 90%" : "top 85%",
-              toggleActions: "play none none reverse",
+              start: "top 85%",
             },
           },
         );

@@ -8,8 +8,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * GSAP ScrollTrigger section orchestrator.
- * - Desktop (≥992px): Smooth section reveals + parallax covers + hero pin
- * - Mobile (<992px): Luxury smooth entrance transition + scale-reveal
+ * - Desktop-only smooth section reveals + parallax covers + hero pin
+ * - Mobile (<992px): Keeps all sections 100% visible, unblocked & responsive
  */
 export default function GSAPSectionAnimator({
   children,
@@ -93,27 +93,11 @@ export default function GSAPSectionAnimator({
         }
       });
 
-      // ── Mobile (<991px): Luxury smooth entrance transition + scale-reveal ──
+      // ── Mobile (<991px): Ensure all sections below Hero are 100% visible and unblocked ──
       mm.add('(max-width: 991px)', () => {
         const revealSections = gsap.utils.toArray<HTMLElement>('.scroll-reveal-section');
         revealSections.forEach((section) => {
-          gsap.fromTo(
-            section,
-            { opacity: 0.2, y: 40, scale: 0.96 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 1.0,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 88%',
-                toggleActions: 'play none none reverse',
-                invalidateOnRefresh: true,
-              },
-            }
-          );
+          gsap.set(section, { clearProps: 'all', opacity: 1, visibility: 'visible' });
         });
       });
     });

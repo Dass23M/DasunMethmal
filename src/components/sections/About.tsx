@@ -9,27 +9,27 @@ gsap.registerPlugin(ScrollTrigger);
 
 const GALLERY_IMAGES = [
   {
-    src: "/images/fashion1.png",
+    src: "/images/developer-1.png",
     alt: "Mobile App Architecture",
     title: "01 / APP ARCHITECTURE",
   },
   {
-    src: "/images/fashion2.webp",
+    src: "/images/developer-3.png",
     alt: "Fullstack Platform",
     title: "02 / FULLSTACK PLATFORM",
   },
   {
-    src: "/images/fashion3.jpg",
+    src: "/images/developer-6.png",
     alt: "Brand Identity",
     title: "03 / BRAND IDENTITY",
   },
   {
-    src: "/images/fashion4.jpg",
+    src: "/images/developer-4.png",
     alt: "Growth Marketing",
     title: "04 / GROWTH CAMPAIGN",
   },
   {
-    src: "/images/editorial_2.png",
+    src: "/images/developer-7.png",
     alt: "UI/UX Design",
     title: "05 / UI/UX DESIGN",
   },
@@ -315,8 +315,8 @@ export default function About() {
             <p className="font-inter text-xs sm:text-sm md:text-base text-white/80 leading-relaxed max-w-3xl mx-auto">
               When software architecture becomes a labyrinth of choices,
               methodical engineering offers a thread to follow. Through
-              continuous practice—refining Next.js APIs, component composition,
-              and SEO strategies—we create rhythm where there was noise. This
+              continuous practice refining Next.js APIs, component composition,
+              and SEO strategies we create rhythm where there was noise. This
               discipline transforms complex challenges into intuitive
               experiences you can launch, measure, and scale.
             </p>

@@ -46,7 +46,7 @@ export const blogPosts: BlogPost[] = [
     title: 'Minimalist Brand Campaign Posts',
     author: 'Methmal',
     readTime: 'Social Post',
-    image: '/images/poster-3.png',
+    image: '/images/poster-3.jpg',
     date: '2026 Showcase',
     heroImage: '/images/poster-3.png',
   },

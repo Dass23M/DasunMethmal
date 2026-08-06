@@ -611,7 +611,6 @@ export default function GSAPFlipSection() {
         }}
       >
         <span style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.65rem', letterSpacing: '0.25em', color: '#eee8de', opacity: 0.6 }}>
-          DD-2026 / ARTIFACT
         </span>
         <div
           ref={navStatusRef}
@@ -619,7 +618,6 @@ export default function GSAPFlipSection() {
           style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.6rem', letterSpacing: '0.15em', color: '#ff4d00', opacity: 0 }}
         >
           <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#ff4d00', animation: 'gsapflip-blink 1.4s ease-in-out infinite' }} />
-          REALTIME · WEBGL
         </div>
       </nav>
 
@@ -629,29 +627,14 @@ export default function GSAPFlipSection() {
         className="fixed hidden md:flex flex-col gap-6 items-start pointer-events-none"
         style={{ left: '2.5rem', top: '50%', transform: 'translateY(-50%)', zIndex: 100, opacity: 0 }}
       >
-        {[{ label: 'Hero' }, { label: 'Architecture' }, { label: 'Interaction' }].map((item, i) => (
-          <div key={i} className="flex items-center gap-3">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="flex items-center">
             <div style={{
               width: activeSidebar === i ? 32 : 20,
               height: 1,
               background: activeSidebar === i ? '#ff4d00' : 'rgba(255,255,255,0.15)',
               transition: 'width 0.4s, background 0.4s',
             }} />
-            <span
-              className="gsapflip-sidebar-label"
-              style={{
-                fontFamily: '"Courier New", Courier, monospace',
-                fontSize: '0.58rem',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: activeSidebar === i ? '#ff4d00' : 'rgba(255,255,255,0.25)',
-                opacity: 0,
-                transform: 'translateX(-8px)',
-                transition: 'color 0.4s',
-              }}
-            >
-              {item.label}
-            </span>
           </div>
         ))}
       </div>

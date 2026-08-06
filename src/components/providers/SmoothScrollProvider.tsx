@@ -1,16 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
-import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Premium Apple-Style Momentum Smooth Scrolling Engine (Lenis).
- * - Delivers buttery-smooth spring physics & inertia on Desktop & Mobile.
- * - Perfectly synchronized with GSAP ScrollTrigger ticker & pins on all devices.
+ * Native Smooth Scroll Provider (Lenis motion removed).
  */
 export default function SmoothScrollProvider({
   children,
@@ -18,40 +15,7 @@ export default function SmoothScrollProvider({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
-
-    // Enable Lenis Smooth Scroll across both Desktop and Mobile with Apple-like spring inertia
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.4,
-    });
-
-    (window as any).lenis = lenis;
-
-    // Synchronize Lenis scroll updates with GSAP ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update);
-
-    // Run Lenis RAF via GSAP ticker for 60/120 FPS frame lock
-    const updateLenis = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-    gsap.ticker.add(updateLenis);
-    gsap.ticker.lagSmoothing(0);
-
-    // Refresh ScrollTrigger when Lenis resizes
-    const onResize = () => {
-      lenis.resize();
-      ScrollTrigger.refresh();
-    };
-    window.addEventListener('resize', onResize);
-
-    // Intercept clicks on anchor links (#section) for smooth spring navigation
+    // Intercept clicks on anchor links (#section) for clean native smooth navigation
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchorLink = target.closest('a');
@@ -62,11 +26,7 @@ export default function SmoothScrollProvider({
         e.preventDefault();
         const element = document.querySelector(href) as HTMLElement | null;
         if (element) {
-          lenis.scrollTo(element, {
-            offset: 0,
-            duration: 1.3,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          });
+          element.scrollIntoView({ behavior: 'smooth' });
         }
       } else if (href && href.includes('#')) {
         const parts = href.split('#');
@@ -75,24 +35,18 @@ export default function SmoothScrollProvider({
           e.preventDefault();
           const element = document.querySelector(hash) as HTMLElement | null;
           if (element) {
-            lenis.scrollTo(element, {
-              offset: 0,
-              duration: 1.3,
-            });
+            element.scrollIntoView({ behavior: 'smooth' });
           }
         }
       }
     };
 
     document.addEventListener('click', handleAnchorClick);
-
     return () => {
-      window.removeEventListener('resize', onResize);
       document.removeEventListener('click', handleAnchorClick);
-      gsap.ticker.remove(updateLenis);
-      lenis.destroy();
     };
   }, []);
 
   return <>{children}</>;
 }
+

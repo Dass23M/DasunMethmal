@@ -80,7 +80,6 @@ export default function Artifact3DSection() {
   const isSectionVisible = useRef(false);
   const [activeSidebar, setActiveSidebar] = useState(0);
   const [mounted, setMounted] = useState(false);
-  const [mapVisible, setMapVisible] = useState(false);
   const [activeCountry, setActiveCountry] = useState<number | null>(null);
 
   useEffect(() => { setMounted(true); }, []);
@@ -256,11 +255,10 @@ export default function Artifact3DSection() {
         .to('#artifact-section-2 .skill-bars', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2');
 
       // Section 3 reveal
-      gsap.timeline({ scrollTrigger: { trigger: '#artifact-section-3', start: 'top 65%', onEnter: () => setMapVisible(true) } })
+      gsap.timeline({ scrollTrigger: { trigger: '#artifact-section-3', start: 'top 65%' } })
         .to('#artifact-section-3 .sec-num', { opacity: 1, duration: 0.4 })
         .to('#artifact-section-3 .sec-tag', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.1')
         .to('#artifact-section-3 .sec-h2', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.2')
-        .to('#artifact-section-3 .map-reveal', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, '-=0.4')
         .to('#artifact-section-3 .country-card', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.1 }, '-=0.4');
 
       // Sidebar active states
@@ -271,6 +269,20 @@ export default function Artifact3DSection() {
           end: 'bottom center',
           onToggle: (self) => { if (self.isActive) setActiveSidebar(idx); },
         });
+      });
+
+      // Hide 3D Canvas object when reaching Section 3 (Global Reach)
+      ScrollTrigger.create({
+        trigger: '#artifact-section-3',
+        start: 'top 75%',
+        onEnter: () => {
+          gsap.to(canvas, { opacity: 0, duration: 0.4 });
+        },
+        onLeaveBack: () => {
+          if (isSectionVisible.current) {
+            gsap.to(canvas, { opacity: 1, duration: 0.4 });
+          }
+        },
       });
 
       // Hide HUD readout when leaving hero
@@ -335,18 +347,11 @@ export default function Artifact3DSection() {
         ref={sidebarRef}
         className="fixed left-8 top-1/2 -translate-y-1/2 z-[10] opacity-0 flex-col gap-4 hidden lg:flex"
       >
-        {[
-          { label: 'Intro', idx: 0 },
-          { label: 'Skills', idx: 1 },
-          { label: 'Services', idx: 2 },
-        ].map((item) => (
-          <div key={item.idx} className="flex items-center gap-2.5">
+        {[0, 1, 2].map((idx) => (
+          <div key={idx} className="flex items-center">
             <div
-              className={`h-px transition-all duration-400 ${activeSidebar === item.idx ? 'w-7 bg-[#FF8C00]' : 'w-4 bg-white/20'}`}
+              className={`h-px transition-all duration-400 ${activeSidebar === idx ? 'w-7 bg-[#FF8C00]' : 'w-4 bg-white/20'}`}
             />
-            <span className={`font-mono text-[9px] uppercase tracking-widest transition-colors duration-400 ${activeSidebar === item.idx ? 'text-[#FF8C00]' : 'text-white/25'}`}>
-              {item.label}
-            </span>
           </div>
         ))}
       </div>
@@ -364,7 +369,7 @@ export default function Artifact3DSection() {
           <div className="flex flex-col items-center text-center mt-[3vh]">
             {/* eyebrow */}
             <p className="font-mono text-[9px] tracking-[0.45em] uppercase text-[#FF8C00] mb-4">
-              Full-Stack Developer &amp; Digital Marketer · 2026
+              Full-Stack Developer &amp; Digital Marketer
             </p>
 
             <h1 className="art-hero-title font-sora font-extrabold text-[clamp(2.4rem,6.5vw,7rem)] uppercase leading-[0.9] tracking-[-0.025em] text-white opacity-0 translate-y-8">
@@ -530,170 +535,7 @@ export default function Artifact3DSection() {
             </p>
           </div>
 
-          {/* ─ SVG World Map (Hidden on mobile) ──────────────────────── */}
-          <div className="map-reveal hidden sm:block opacity-0 translate-y-8 relative w-full rounded-2xl border border-white/[0.07] bg-white/[0.015] overflow-hidden" style={{ aspectRatio: '1000/440' }}>
 
-            {/* Grid background */}
-            <svg
-              className="absolute inset-0 w-full h-full"
-              viewBox="0 0 1000 440"
-              preserveAspectRatio="xMidYMid meet"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* lat/lon grid */}
-              <defs>
-                <pattern id="map-grid" x="0" y="0" width="55.55" height="44" patternUnits="userSpaceOnUse">
-                  <path d="M 55.55 0 L 0 0 0 44" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="0.6" />
-                </pattern>
-                <radialGradient id="home-glow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#FF8C00" stopOpacity="0.6" />
-                  <stop offset="100%" stopColor="#FF8C00" stopOpacity="0" />
-                </radialGradient>
-                {COUNTRIES.map((c, i) => (
-                  <radialGradient key={i} id={`glow-${i}`} cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor={c.color} stopOpacity="0.45" />
-                    <stop offset="100%" stopColor={c.color} stopOpacity="0" />
-                  </radialGradient>
-                ))}
-              </defs>
-
-              <rect width="1000" height="440" fill="url(#map-grid)" />
-
-              {/* Equator & Prime Meridian */}
-              <line x1="0" y1="220" x2="1000" y2="220" stroke="rgba(255,255,255,0.07)" strokeWidth="0.8" strokeDasharray="4 8" />
-              <line x1="500" y1="0" x2="500" y2="440" stroke="rgba(255,255,255,0.07)" strokeWidth="0.8" strokeDasharray="4 8" />
-
-              {/* Continent silhouettes (simplified dot fills) */}
-              {/* Europe dot-cluster */}
-              {[[460,95],[470,98],[480,92],[490,96],[500,100],[510,94],[520,98],[475,105],[485,108],[495,112],[465,88],[478,85]].map(([dx,dy],i) => (
-                <circle key={`eu${i}`} cx={dx} cy={dy} r="2" fill="rgba(255,255,255,0.07)" />
-              ))}
-              {/* Africa dot-cluster */}
-              {[[505,200],[515,215],[520,230],[510,245],[505,260],[510,275],[520,290],[515,305],[505,318],[500,330],[510,340],[520,320],[530,300],[525,280],[530,265],[520,250],[525,235],[530,220],[535,208],[525,197],[515,188],[505,182],[495,188],[490,200],[490,215],[495,230],[490,245],[490,260],[495,275],[500,285]].map(([dx,dy],i) => (
-                <circle key={`af${i}`} cx={dx} cy={dy} r="2" fill="rgba(255,255,255,0.06)" />
-              ))}
-              {/* South Asia dot-cluster */}
-              {[[680,180],[690,185],[700,190],[710,195],[720,200],[730,190],[740,185],[720,210],[710,215],[700,205],[690,210],[710,220],[720,225],[730,220],[700,225]].map(([dx,dy],i) => (
-                <circle key={`as${i}`} cx={dx} cy={dy} r="2" fill="rgba(255,255,255,0.06)" />
-              ))}
-              {/* Americas outline dots */}
-              {[[200,100],[210,115],[205,130],[215,145],[210,160],[220,175],[215,190],[225,205],[230,220],[235,235],[240,250],[250,265],[255,280],[250,295],[245,310],[240,325],[245,340],[255,355],[250,370],[255,385]].map(([dx,dy],i) => (
-                <circle key={`am${i}`} cx={dx} cy={dy} r="1.5" fill="rgba(255,255,255,0.05)" />
-              ))}
-              {/* Australia dots */}
-              {[[810,310],[825,305],[840,310],[855,315],[840,325],[825,320],[810,325],[820,335],[835,330],[845,335]].map(([dx,dy],i) => (
-                <circle key={`au${i}`} cx={dx} cy={dy} r="2" fill="rgba(255,255,255,0.06)" />
-              ))}
-
-              {/* Animated arcs from HOME to each country */}
-              {mapVisible && COUNTRIES.map((c, i) => {
-                // Arc control point: midpoint pulled toward equator line
-                const mx = (HOME.x + c.x) / 2;
-                const my = Math.min(HOME.y, c.y) - 60 - Math.abs(HOME.x - c.x) * 0.06;
-                const pathD = `M${HOME.x},${HOME.y} Q${mx},${my} ${c.x},${c.y}`;
-                return (
-                  <g key={i}>
-                    {/* glow arc */}
-                    <path
-                      d={pathD}
-                      fill="none"
-                      stroke={c.color}
-                      strokeWidth="0.8"
-                      strokeOpacity="0.18"
-                      strokeDasharray="4 6"
-                    />
-                    {/* bright arc */}
-                    <path
-                      d={pathD}
-                      fill="none"
-                      stroke={c.color}
-                      strokeWidth="1.2"
-                      strokeOpacity="0.55"
-                      strokeLinecap="round"
-                      strokeDasharray="1000"
-                      strokeDashoffset="0"
-                      style={{
-                        animation: `drawArc 1.6s ${0.3 + i * 0.25}s ease-out both`,
-                      }}
-                    />
-                  </g>
-                );
-              })}
-
-              {/* Home base glow */}
-              <ellipse cx={HOME.x} cy={HOME.y} rx="28" ry="28" fill="url(#home-glow)" />
-
-              {/* Country dots + glows */}
-              {COUNTRIES.map((c, i) => (
-                <g key={i}>
-                  <ellipse cx={c.x} cy={c.y} rx="20" ry="20" fill={`url(#glow-${i})`} opacity={activeCountry === i ? 1 : 0.6} />
-                  <circle
-                    cx={c.x} cy={c.y} r="5"
-                    fill={c.color}
-                    opacity={mapVisible ? 1 : 0}
-                    style={{ cursor: 'pointer', transition: 'r 0.2s', filter: activeCountry === i ? `drop-shadow(0 0 6px ${c.color})` : 'none' }}
-                    onMouseEnter={() => setActiveCountry(i)}
-                    onMouseLeave={() => setActiveCountry(null)}
-                  />
-                  <circle cx={c.x} cy={c.y} r="8" fill="none" stroke={c.color} strokeWidth="0.8" strokeOpacity="0.4"
-                    style={{ animation: `ping 2s ${i * 0.4}s ease-out infinite` }}
-                  />
-                  {/* label */}
-                  <text
-                    x={c.x + (c.x > 600 ? -12 : 10)}
-                    y={c.y - 10}
-                    fill={c.color}
-                    fontSize="7"
-                    fontFamily="monospace"
-                    opacity="0.8"
-                    textAnchor={c.x > 600 ? 'end' : 'start'}
-                  >
-                    {c.name.toUpperCase()}
-                  </text>
-                </g>
-              ))}
-
-              {/* Home dot */}
-              <circle cx={HOME.x} cy={HOME.y} r="6" fill="#FF8C00" />
-              <circle cx={HOME.x} cy={HOME.y} r="10" fill="none" stroke="#FF8C00" strokeWidth="1" strokeOpacity="0.5"
-                style={{ animation: 'ping 2s ease-out infinite' }}
-              />
-              <text x={HOME.x + 13} y={HOME.y + 3} fill="#FF8C00" fontSize="7.5" fontFamily="monospace" fontWeight="bold">
-                {HOME.name.toUpperCase()} ● HOME
-              </text>
-            </svg>
-
-            {/* Map legend */}
-            <div className="absolute bottom-3 right-4 flex items-center gap-3">
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#FF8C00] inline-block" />
-                <span className="font-mono text-[7.5px] text-white/35 uppercase tracking-wider">Home Base</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-px bg-[#FFB347] inline-block" style={{ boxShadow: '0 0 4px #FFB347' }} />
-                <span className="font-mono text-[7.5px] text-white/35 uppercase tracking-wider">Client Connection</span>
-              </div>
-            </div>
-
-            {/* Coordinates overlay */}
-            <div className="absolute top-3 left-4 font-mono text-[7.5px] text-white/20 leading-[1.7]">
-              LAT 7.8731° N · LON 80.7718° E<br />
-              ORIGIN: COLOMBO, SRI LANKA
-            </div>
-          </div>
-
-          {/* CSS keyframes for animations */}
-          <style>{`
-            @keyframes drawArc {
-              from { stroke-dashoffset: 1000; }
-              to   { stroke-dashoffset: 0; }
-            }
-            @keyframes ping {
-              0%   { transform-origin: center; transform: scale(1); opacity: 0.6; }
-              70%  { transform: scale(1.8); opacity: 0; }
-              100% { transform: scale(1.8); opacity: 0; }
-            }
-          `}</style>
 
           {/* ─ Flag Strip — Compact Luxury Auto-Scrolling Marquee ─────────────────────── */}
           <style>{`
@@ -773,20 +615,15 @@ export default function Artifact3DSection() {
                             ORIGIN
                           </span>
                         ) : (
-                          <span className="font-mono text-[6.5px] sm:text-[7px] tracking-[0.15em] uppercase text-white/40">
-                            PARTNER
-                          </span>
+                          <span />
                         )}
                         <span className="font-mono text-[6.5px] text-white/30">0{i + 1}</span>
                       </div>
 
                       {/* Bottom Info Text */}
-                      <div className="absolute bottom-2 left-2.5 right-2.5 z-10">
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 z-10">
                         <div className="font-sora font-bold text-[10px] sm:text-[11.5px] text-white leading-tight drop-shadow-sm group-hover:text-[#FF8C00] transition-colors duration-300">
                           {item.name}
-                        </div>
-                        <div className="font-mono text-[6.5px] sm:text-[7.5px] uppercase tracking-[0.15em] text-[#FF8C00]/80 mt-0.5 truncate">
-                          {item.role}
                         </div>
                       </div>
                     </div>
@@ -796,12 +633,7 @@ export default function Artifact3DSection() {
             </div>
           </div>
 
-          {/* Micro hint */}
-          <div className="flex justify-center items-center gap-2 mt-2">
-            <span className="font-mono text-[7px] text-white/25 uppercase tracking-[0.2em]">
-              Auto-sliding · Hover to pause
-            </span>
-          </div>
+
 
           {/* ─ CTA ─────────────────────────────────────────────── */}
           <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">

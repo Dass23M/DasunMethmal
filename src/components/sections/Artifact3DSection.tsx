@@ -530,8 +530,8 @@ export default function Artifact3DSection() {
             </p>
           </div>
 
-          {/* ─ SVG World Map ──────────────────────────────────────── */}
-          <div className="map-reveal opacity-0 translate-y-8 relative w-full rounded-2xl border border-white/[0.07] bg-white/[0.015] overflow-hidden" style={{ aspectRatio: '1000/440' }}>
+          {/* ─ SVG World Map (Hidden on mobile) ──────────────────────── */}
+          <div className="map-reveal hidden sm:block opacity-0 translate-y-8 relative w-full rounded-2xl border border-white/[0.07] bg-white/[0.015] overflow-hidden" style={{ aspectRatio: '1000/440' }}>
 
             {/* Grid background */}
             <svg

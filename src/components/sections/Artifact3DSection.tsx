@@ -695,112 +695,113 @@ export default function Artifact3DSection() {
             }
           `}</style>
 
-          {/* ─ Flag Strip — Luxury Layout ─────────────────────── */}
+          {/* ─ Flag Strip — Compact Luxury Auto-Scrolling Marquee ─────────────────────── */}
           <style>{`
-            .flag-card-inner { transition: transform 0.45s cubic-bezier(0.22,1,0.36,1); }
-            .flag-card:hover .flag-card-inner { transform: scale(1.04); }
-            .flag-overlay { transition: opacity 0.4s ease; }
-            .flag-card:hover .flag-overlay { opacity: 1 !important; }
-            .flag-card:hover .flag-shine { opacity: 0.06; }
-            .flag-shine { transition: opacity 0.4s ease; opacity: 0; }
-            @media (max-width: 639px) {
-              .flag-strip { overflow-x: auto; flex-wrap: nowrap !important; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-              .flag-strip::-webkit-scrollbar { display: none; }
-              .flag-item { flex: 0 0 52vw; scroll-snap-align: start; }
+            .flag-marquee-wrapper {
+              mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+              -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
             }
+            @keyframes flagMarquee {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-33.333333%); }
+            }
+            .flag-marquee-track {
+              display: flex;
+              gap: 12px;
+              width: max-content;
+              animation: flagMarquee 20s linear infinite;
+            }
+            .flag-marquee-wrapper:hover .flag-marquee-track {
+              animation-play-state: paused;
+            }
+            .flag-card-inner { transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); }
+            .flag-card:hover .flag-card-inner { transform: scale(1.06); }
           `}</style>
 
-          {/* Home label */}
-          <div className="mt-8 mb-3 flex items-center gap-3">
-            <span className="font-mono text-[8px] uppercase tracking-[0.28em] text-white/25">Countries I&apos;ve Worked With</span>
-            <span className="flex-1 h-px bg-white/[0.06]" />
-            <span className="font-mono text-[8px] text-[#FF8C00]/60 tracking-[0.2em]">5 COUNTRIES</span>
-          </div>
-
-          {/* Flag strip */}
-          <div className="flag-strip flex flex-wrap sm:flex-nowrap gap-3 sm:gap-4 pb-1">
-
-            {/* Sri Lanka — Home */}
-            <div className="country-card flag-item opacity-0 translate-y-5 flex-1 min-w-0 relative rounded-2xl overflow-hidden cursor-default group flag-card"
-              style={{ aspectRatio: '3/4', minHeight: '180px', maxHeight: '260px' }}>
-              {/* Flag fill */}
-              <div className="flag-card-inner absolute inset-0">
-                <Image src={HOME.flagSrc} alt="Sri Lanka flag" fill className="object-cover" sizes="(max-width:639px) 52vw, 20vw" />
-              </div>
-              {/* Dark base overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              {/* Hover glass overlay */}
-              <div className="flag-overlay absolute inset-0 bg-[#FF8C00]/10 backdrop-blur-[1px] opacity-0" />
-              {/* Shine streak */}
-              <div className="flag-shine absolute inset-0 bg-gradient-to-br from-white via-transparent to-transparent" />
-              {/* HOME badge */}
-              <div className="absolute top-3 left-3">
-                <span className="font-mono text-[7px] tracking-[0.22em] uppercase bg-[#FF8C00] text-black px-2 py-0.5 rounded-full font-bold">
-                  HOME
-                </span>
-              </div>
-              {/* Bottom info */}
-              <div className="absolute bottom-0 left-0 right-0 p-3">
-                <div className="font-sora font-bold text-[11px] text-white leading-tight">{HOME.name}</div>
-                <div className="font-mono text-[7px] uppercase tracking-[0.2em] text-[#FF8C00] mt-0.5">{HOME.role}</div>
-              </div>
+          {/* Header & count */}
+          <div className="mt-8 mb-4 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF8C00] animate-pulse" />
+              <span className="font-mono text-[8.5px] uppercase tracking-[0.25em] text-white/50">Global Work &amp; Partners</span>
             </div>
-
-            {/* Country flags */}
-            {COUNTRIES.map((c, i) => (
-              <div
-                key={i}
-                className="country-card flag-item opacity-0 translate-y-5 flex-1 min-w-0 relative rounded-2xl overflow-hidden cursor-default group flag-card"
-                style={{ aspectRatio: '3/4', minHeight: '180px', maxHeight: '260px' }}
-                onMouseEnter={() => setActiveCountry(i)}
-                onMouseLeave={() => setActiveCountry(null)}
-              >
-                {/* Flag fill */}
-                <div className="flag-card-inner absolute inset-0">
-                  <Image
-                    src={c.flagSrc}
-                    alt={`${c.name} flag`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width:639px) 52vw, 20vw"
-                  />
-                </div>
-                {/* Dark overlay base */}
-                <div
-                  className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/10 transition-all duration-400"
-                  style={{ background: activeCountry === i ? `linear-gradient(to top, ${c.color}99 0%, black55 50%, transparent 100%)` : undefined }}
-                />
-                {/* Hover tint */}
-                <div
-                  className="flag-overlay absolute inset-0 opacity-0"
-                  style={{ background: `linear-gradient(135deg, ${c.color}18 0%, transparent 70%)` }}
-                />
-                {/* Shine streak */}
-                <div className="flag-shine absolute inset-0 bg-gradient-to-br from-white via-transparent to-transparent" />
-                {/* Active glow ring */}
-                {activeCountry === i && (
-                  <div className="absolute inset-0 rounded-2xl ring-1 ring-inset pointer-events-none" style={{ boxShadow: `inset 0 0 0 1px ${c.color}80` }} />
-                )}
-                {/* Bottom info — always visible */}
-                <div className="absolute bottom-0 left-0 right-0 p-3">
-                  <div className="font-sora font-bold text-[11px] text-white leading-tight">{c.name}</div>
-                  <div className="font-mono text-[7px] uppercase tracking-[0.2em] mt-0.5" style={{ color: c.color }}>{c.role}</div>
-                  {/* Detail line fades in on hover */}
-                  <div
-                    className="font-inter text-[8.5px] text-white/50 leading-[1.5] mt-1 overflow-hidden transition-all duration-400"
-                    style={{ maxHeight: activeCountry === i ? '2rem' : '0', opacity: activeCountry === i ? 1 : 0 }}
-                  >
-                    {c.detail}
-                  </div>
-                </div>
-              </div>
-            ))}
+            <span className="font-mono text-[8px] text-[#FF8C00] tracking-[0.2em] bg-[#FF8C00]/10 border border-[#FF8C00]/25 rounded-full px-2.5 py-0.5">
+              5 COUNTRIES
+            </span>
           </div>
 
-          {/* Mobile scroll hint */}
-          <p className="sm:hidden font-mono text-[7.5px] text-white/20 uppercase tracking-[0.2em] mt-2 text-center">
-            ← Swipe to explore →
-          </p>
+          {/* Continuous Auto-Scrolling Marquee Slider */}
+          <div className="flag-marquee-wrapper relative w-full overflow-hidden py-2">
+            <div className="flag-marquee-track">
+              {/* Loop 3 times for seamless infinite scroll */}
+              {[...Array(3)].flatMap((_, loopIdx) =>
+                [HOME, ...COUNTRIES].map((item, i) => {
+                  const isHome = 'flagSrc' in item && item.name === 'Sri Lanka';
+                  const key = `flag-${loopIdx}-${i}`;
+                  return (
+                    <div
+                      key={key}
+                      className="flag-card country-card flex-shrink-0 relative w-[135px] sm:w-[170px] h-[95px] sm:h-[115px] rounded-xl overflow-hidden cursor-pointer group border border-white/10 hover:border-[#FF8C00]/60 transition-all duration-300 shadow-lg bg-black/60"
+                      onMouseEnter={() => !isHome && setActiveCountry(i - 1)}
+                      onMouseLeave={() => setActiveCountry(null)}
+                    >
+                      {/* Flag Image Background */}
+                      <div className="flag-card-inner absolute inset-0">
+                        <Image
+                          src={item.flagSrc}
+                          alt={`${item.name} flag`}
+                          fill
+                          className="object-cover opacity-75 group-hover:opacity-90 transition-opacity duration-300"
+                          sizes="(max-width: 640px) 135px, 170px"
+                        />
+                      </div>
+
+                      {/* Dark Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 group-hover:from-black/95 transition-all duration-300" />
+
+                      {/* Accent glow on hover */}
+                      <div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                        style={{
+                          background: `radial-gradient(circle at bottom, ${item.color}33 0%, transparent 70%)`,
+                        }}
+                      />
+
+                      {/* Top Tag/Badge */}
+                      <div className="absolute top-2 left-2.5 right-2.5 flex items-center justify-between z-10">
+                        {isHome ? (
+                          <span className="font-mono text-[6.5px] sm:text-[7px] tracking-[0.2em] uppercase bg-[#FF8C00] text-black px-1.5 py-0.5 rounded font-extrabold shadow">
+                            ORIGIN
+                          </span>
+                        ) : (
+                          <span className="font-mono text-[6.5px] sm:text-[7px] tracking-[0.15em] uppercase text-white/40">
+                            PARTNER
+                          </span>
+                        )}
+                        <span className="font-mono text-[6.5px] text-white/30">0{i + 1}</span>
+                      </div>
+
+                      {/* Bottom Info Text */}
+                      <div className="absolute bottom-2 left-2.5 right-2.5 z-10">
+                        <div className="font-sora font-bold text-[10px] sm:text-[11.5px] text-white leading-tight drop-shadow-sm group-hover:text-[#FF8C00] transition-colors duration-300">
+                          {item.name}
+                        </div>
+                        <div className="font-mono text-[6.5px] sm:text-[7.5px] uppercase tracking-[0.15em] text-[#FF8C00]/80 mt-0.5 truncate">
+                          {item.role}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+
+          {/* Micro hint */}
+          <div className="flex justify-center items-center gap-2 mt-2">
+            <span className="font-mono text-[7px] text-white/25 uppercase tracking-[0.2em]">
+              Auto-sliding · Hover to pause
+            </span>
+          </div>
 
           {/* ─ CTA ─────────────────────────────────────────────── */}
           <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">

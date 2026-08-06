@@ -40,15 +40,6 @@ const COUNTRIES = [
     color: '#FF8C00',
   },
   {
-    name: 'Netherlands',
-    x: 496,
-    y: 100,
-    flagSrc: '/images/Netherland.png',
-    role: 'Digital Marketing',
-    detail: 'Paid media & SEO campaigns',
-    color: '#FFB347',
-  },
-  {
     name: 'India',
     x: 719,
     y: 193,
@@ -527,10 +518,10 @@ export default function Artifact3DSection() {
             </p>
             <h2 className="sec-h2 font-sora font-bold text-[clamp(2rem,4vw,3.6rem)] leading-[1.0] tracking-[-0.03em] opacity-0 translate-y-6">
               Delivered across<br />
-              <span className="text-[#FF8C00]">5 countries.</span>
+              <span className="text-[#FF8C00]">4 countries.</span>
             </h2>
             <p className="sec-h2 font-inter text-[11px] text-white/45 leading-[1.8] mt-4 max-w-[44ch] opacity-0 translate-y-6">
-              From Sri Lanka to Europe and beyond — I&apos;ve partnered with clients across four
+              From Sri Lanka to Europe and beyond — I&apos;ve partnered with clients across multiple
               continents, delivering web and marketing solutions that drive measurable growth.
             </p>
           </div>
@@ -567,7 +558,7 @@ export default function Artifact3DSection() {
               <span className="font-mono text-[8.5px] uppercase tracking-[0.25em] text-white/50">Global Work &amp; Partners</span>
             </div>
             <span className="font-mono text-[8px] text-[#FF8C00] tracking-[0.2em] bg-[#FF8C00]/10 border border-[#FF8C00]/25 rounded-full px-2.5 py-0.5">
-              5 COUNTRIES
+              4 COUNTRIES
             </span>
           </div>
 

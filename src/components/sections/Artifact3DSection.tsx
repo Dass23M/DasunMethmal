@@ -78,22 +78,46 @@ export default function Artifact3DSection() {
   // Mouse HUD Tracking
   useEffect(() => {
     if (!mounted) return;
+    let winW = window.innerWidth, winH = window.innerHeight;
+    let hudRaf: number | null = null;
+    let clientX = 0, clientY = 0;
+
+    const onResizeWin = () => {
+      winW = window.innerWidth;
+      winH = window.innerHeight;
+    };
+    window.addEventListener('resize', onResizeWin, { passive: true });
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!isSectionVisible.current) return;
-      const x = ((e.clientX / window.innerWidth) * 2 - 1).toFixed(3);
-      const y = (-(e.clientY / window.innerHeight) * 2 + 1).toFixed(3);
-      if (hudReadoutRef.current) {
-        hudReadoutRef.current.innerHTML =
-          `X: ${Number(x) > 0 ? '+' : ''}${x}<br />Y: ${Number(y) > 0 ? '+' : ''}${y}<br />Z: +7.000`;
-      }
-      const phi = ((e.clientX / window.innerWidth) * 360).toFixed(2).padStart(6, '0');
-      const theta = ((e.clientY / window.innerHeight) * 180).toFixed(2).padStart(6, '0');
-      if (heroCoordsRef.current) {
-        heroCoordsRef.current.innerHTML = `φ ${phi}° · θ ${theta}°<br />NODES: 2500+ · CELLS: 50×50`;
+      clientX = e.clientX;
+      clientY = e.clientY;
+
+      if (hudRaf === null) {
+        hudRaf = requestAnimationFrame(() => {
+          hudRaf = null;
+          const w = winW || 1;
+          const h = winH || 1;
+          const x = ((clientX / w) * 2 - 1).toFixed(3);
+          const y = (-(clientY / h) * 2 + 1).toFixed(3);
+          if (hudReadoutRef.current) {
+            hudReadoutRef.current.innerHTML =
+              `X: ${Number(x) > 0 ? '+' : ''}${x}<br />Y: ${Number(y) > 0 ? '+' : ''}${y}<br />Z: +7.000`;
+          }
+          const phi = ((clientX / w) * 360).toFixed(2).padStart(6, '0');
+          const theta = ((clientY / h) * 180).toFixed(2).padStart(6, '0');
+          if (heroCoordsRef.current) {
+            heroCoordsRef.current.innerHTML = `φ ${phi}° · θ ${theta}°<br />NODES: 2500+ · CELLS: 50×50`;
+          }
+        });
       }
     };
+
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('resize', onResizeWin);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, [mounted]);
 
   // 3D Canvas + GSAP ScrollTrigger

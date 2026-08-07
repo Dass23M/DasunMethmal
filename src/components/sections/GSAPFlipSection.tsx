@@ -76,8 +76,18 @@ export default function GSAPFlipSection() {
     }
 
     // ── HUD readout update ──────────────────────────────────────
+    let clientX = 0, clientY = 0;
+    let winW = typeof window !== 'undefined' ? window.innerWidth : 1000;
+    let winH = typeof window !== 'undefined' ? window.innerHeight : 800;
+    let hudRaf: number | null = null;
+
+    const onResizeWin = () => {
+      winW = window.innerWidth;
+      winH = window.innerHeight;
+    };
+    window.addEventListener('resize', onResizeWin, { passive: true });
+
     const updateHUD = (e: MouseEvent | TouchEvent) => {
-      let clientX = 0, clientY = 0;
       if ('touches' in e && e.touches.length > 0) {
         clientX = e.touches[0].clientX;
         clientY = e.touches[0].clientY;
@@ -86,16 +96,23 @@ export default function GSAPFlipSection() {
         clientY = (e as MouseEvent).clientY;
       }
 
-      const x = ((clientX / window.innerWidth) * 2 - 1).toFixed(3);
-      const y = (-(clientY / window.innerHeight) * 2 + 1).toFixed(3);
-      if (hudReadoutRef.current) {
-        hudReadoutRef.current.innerHTML =
-          `X: ${Number(x) > 0 ? '+' : ''}${x}<br />Y: ${Number(y) > 0 ? '+' : ''}${y}<br />Z: +7.000`;
-      }
-      const phi = ((clientX / window.innerWidth) * 360).toFixed(2).padStart(6, '0');
-      const theta = ((clientY / window.innerHeight) * 180).toFixed(2).padStart(6, '0');
-      if (heroCoordsRef.current) {
-        heroCoordsRef.current.innerHTML = `φ ${phi}° · θ ${theta}°<br />FRAGMENTS: ${isMobile ? '350+' : '1500+'}`;
+      if (hudRaf === null) {
+        hudRaf = requestAnimationFrame(() => {
+          hudRaf = null;
+          const w = winW || 1;
+          const h = winH || 1;
+          const x = ((clientX / w) * 2 - 1).toFixed(3);
+          const y = (-(clientY / h) * 2 + 1).toFixed(3);
+          if (hudReadoutRef.current) {
+            hudReadoutRef.current.innerHTML =
+              `X: ${Number(x) > 0 ? '+' : ''}${x}<br />Y: ${Number(y) > 0 ? '+' : ''}${y}<br />Z: +7.000`;
+          }
+          const phi = ((clientX / w) * 360).toFixed(2).padStart(6, '0');
+          const theta = ((clientY / h) * 180).toFixed(2).padStart(6, '0');
+          if (heroCoordsRef.current) {
+            heroCoordsRef.current.innerHTML = `φ ${phi}° · θ ${theta}°<br />FRAGMENTS: ${isMobile ? '350+' : '1500+'}`;
+          }
+        });
       }
     };
 
@@ -354,7 +371,7 @@ export default function GSAPFlipSection() {
       window.addEventListener('touchmove', onTouchMoveThree, { passive: true });
 
       const fragParams = { hoverRadius: isMobile ? 1.0 : 0.85, liftDist: 0.28, liftSpeedUp: 0.2, liftSpeedDown: 0.08 };
-      const clock = new THREE.Clock();
+      const startTime = performance.now();
       let lastTime = 0;
       const hover = { point: new THREE.Vector3(), active: 0 };
       const _localHover = new THREE.Vector3();
@@ -371,7 +388,7 @@ export default function GSAPFlipSection() {
           animFrameId = requestAnimationFrame(tick);
           return;
         }
-        const elapsed = clock.getElapsedTime();
+        const elapsed = (performance.now() - startTime) / 1000;
         const delta = Math.min(elapsed - lastTime, 0.05);
         lastTime = elapsed;
 
@@ -471,9 +488,13 @@ export default function GSAPFlipSection() {
 
     // ── GSAP HUD & Content Entrance Animations ───────────────
     const gsapCtx = gsap.context(() => {
-      gsap.to(navStatusRef.current, { opacity: 1, duration: 1, delay: 1.2 });
+      if (navStatusRef.current) gsap.to(navStatusRef.current, { opacity: 1, duration: 1, delay: 1.2 });
       gsap.to([hudTLRef.current, hudBRRef.current].filter(Boolean), { opacity: 1, duration: 1, delay: 1.0, stagger: 0.2 });
-      gsap.to('.gsapflip-sidebar-label', { opacity: 1, x: 0, duration: 0.6, delay: 1.2, stagger: 0.1 });
+
+      const sidebarLabels = document.querySelectorAll('.gsapflip-sidebar-label');
+      if (sidebarLabels.length > 0) {
+        gsap.to(sidebarLabels, { opacity: 1, x: 0, duration: 0.6, delay: 1.2, stagger: 0.1 });
+      }
 
       gsap.timeline({ delay: 0.3 })
         .to('.gsapflip-hero-title', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' })

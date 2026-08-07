@@ -7,6 +7,7 @@ export interface PosterItem {
   author: string;
   readTime: string;
   image: string;
+  heroImage: string;
   date: string;
   tools: string[];
   description: string;
@@ -22,6 +23,7 @@ export const posterItems: PosterItem[] = [
     author: 'Methmal',
     readTime: 'Poster Design',
     image: '/images/poster-5.png',
+    heroImage: '/images/poster-5.png',
     date: '2026 Showcase',
     tools: ['Adobe Photoshop', 'Illustrator'],
     description: 'High-impact brand poster engineered with bold typography and cinematic lighting.',
@@ -35,6 +37,7 @@ export const posterItems: PosterItem[] = [
     author: 'Methmal',
     readTime: 'Social Post',
     image: '/images/poster-1.png',
+    heroImage: '/images/poster-1.png',
     date: '2026 Showcase',
     tools: ['Photoshop', 'Figma'],
     description: 'Vibrant social media promotional post crafted for maximum feed engagement.',
@@ -48,6 +51,7 @@ export const posterItems: PosterItem[] = [
     author: 'Methmal',
     readTime: 'Poster Design',
     image: '/images/poster-2.png',
+    heroImage: '/images/poster-2.png',
     date: '2026 Showcase',
     tools: ['Adobe Illustrator', 'InDesign'],
     description: 'Experimental typographic poster balancing minimalism with geometric composition.',
@@ -61,6 +65,7 @@ export const posterItems: PosterItem[] = [
     author: 'Methmal',
     readTime: 'Campaign Post',
     image: '/images/poster-3.jpg',
+    heroImage: '/images/poster-3.jpg',
     date: '2026 Showcase',
     tools: ['Photoshop', 'Lightroom'],
     description: 'Sleek luxury campaign artwork featuring subtle color gradients and crisp lines.',
@@ -74,6 +79,7 @@ export const posterItems: PosterItem[] = [
     author: 'Methmal',
     readTime: 'Social Post',
     image: '/images/poster-4.png',
+    heroImage: '/images/poster-4.png',
     date: '2026 Showcase',
     tools: ['Photoshop', 'Cinema 4D'],
     description: 'Dynamic product reveal graphics engineered for cross-platform social campaigns.',
@@ -87,6 +93,7 @@ export const posterItems: PosterItem[] = [
     author: 'Methmal',
     readTime: 'Ad Design',
     image: '/images/post-1.png',
+    heroImage: '/images/post-1.png',
     date: '2026 Showcase',
     tools: ['Photoshop', 'Canva Pro'],
     description: 'Conversion-optimized ad banner designed for high click-through rates.',
@@ -94,3 +101,4 @@ export const posterItems: PosterItem[] = [
 ];
 
 export const blogPosts = posterItems;
+export type BlogPost = PosterItem;

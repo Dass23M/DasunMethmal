@@ -47,7 +47,7 @@ export default function BlogSinglePage({ params }: Props) {
         <div
           className="cover-v1 overlay page-cover-fixed"
           style={{
-            backgroundImage: `url('${post.heroImage}')`,
+            backgroundImage: `url('${post.heroImage || post.image}')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}

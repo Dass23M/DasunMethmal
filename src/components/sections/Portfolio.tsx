@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lightbox from 'yet-another-react-lightbox';
@@ -14,6 +15,7 @@ import { portfolioItems, PortfolioItem } from '@/data/portfolio';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Portfolio() {
+  const router = useRouter();
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
@@ -21,12 +23,10 @@ export default function Portfolio() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  // ── Step 1: mark mounted (prevents SSR hydration mismatch) ──────────────
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // ── Step 2: GSAP runs ONLY after mount so elements exist in the DOM ──────
   useEffect(() => {
     if (!mounted) return;
 
@@ -36,7 +36,6 @@ export default function Portfolio() {
     if (!section || !heading || !grid) return;
 
     const ctx = gsap.context(() => {
-
       // 1. Heading: slide up + fade in
       gsap.fromTo(
         heading,
@@ -79,10 +78,8 @@ export default function Portfolio() {
         const cover = card.querySelector<HTMLDivElement>('.pf-cover');
         const img   = card.querySelector<HTMLImageElement>('img');
 
-        // Alternate entry: odd cards from left, even from right
         const xFrom = i % 2 === 0 ? -40 : 40;
 
-        // Card lifts in from below
         gsap.fromTo(
           card,
           { y: 70, x: xFrom, opacity: 0 },
@@ -98,25 +95,23 @@ export default function Portfolio() {
           }
         );
 
-        // Orange cover wipes RIGHT (starts covering image, slides away)
         if (cover) {
           gsap.fromTo(
             cover,
-            { x: '0%' },           // starts ON TOP of image
+            { x: '0%' },
             {
-              x: '102%',            // slides off to the right, revealing image
+              x: '102%',
               ease: 'power2.inOut',
               scrollTrigger: {
                 trigger: card,
                 start: 'top 85%',
-                end: 'top 20%',
+                end: 'top 30%',
                 scrub: 1.4,
               },
             }
           );
         }
 
-        // Image zooms from 1.3 → 1 as cover slides away
         if (img) {
           gsap.fromTo(
             img,
@@ -127,7 +122,7 @@ export default function Portfolio() {
               scrollTrigger: {
                 trigger: card,
                 start: 'top 85%',
-                end: 'top 20%',
+                end: 'top 30%',
                 scrub: 1.6,
               },
             }
@@ -138,9 +133,8 @@ export default function Portfolio() {
     }, section);
 
     return () => ctx.revert();
-  }, [mounted]); // re-run when mounted becomes true
+  }, [mounted]);
 
-  // Lightbox data
   const lightboxSlides = portfolioItems
     .filter((item) => item.type === 'lightbox' || item.type === 'video')
     .map((item) => {
@@ -161,20 +155,21 @@ export default function Portfolio() {
     return lbItems.findIndex((i) => i.id === item.id);
   };
 
-  const handleItemClick = (e: React.MouseEvent, item: PortfolioItem) => {
+  const handleCardClick = (e: React.MouseEvent, item: PortfolioItem) => {
     if (item.type === 'lightbox' || item.type === 'video') {
       e.preventDefault();
       setLightboxIndex(getLightboxSlideIndex(item));
       setLightboxOpen(true);
+    } else {
+      e.preventDefault();
+      router.push(item.href);
     }
   };
 
-  // ── SSR placeholder — must exactly match what server outputs ─────────────
   if (!mounted) {
     return <section id="portfolio-section" className="unslate-section" />;
   }
 
-  // ── Full client render ───────────────────────────────────────────────────
   return (
     <section
       id="portfolio-section"
@@ -184,7 +179,6 @@ export default function Portfolio() {
       <style>{`
         .pf-section { position: relative; overflow: hidden; }
 
-        /* Heading */
         .pf-heading-wrap {
           margin-bottom: 3.5rem;
           display: inline-block;
@@ -200,23 +194,21 @@ export default function Portfolio() {
           transform-origin: left center;
         }
 
-        /* Card wrapper */
         .pf-card {
           position: relative;
           will-change: transform, opacity;
           overflow: hidden;
+          cursor: pointer;
         }
 
-        /* Orange wipe cover — sits ON TOP of the image, z-index above img */
         .pf-cover {
           position: absolute;
           inset: 0;
           background: #FF6B00;
           z-index: 5;
-          pointer-events: none;
+          pointer-events: none !important;
         }
 
-        /* Numbered badge */
         .pf-count {
           position: absolute;
           top: 12px;
@@ -228,55 +220,36 @@ export default function Portfolio() {
           background: rgba(0,0,0,0.88);
           padding: 3px 8px;
           border-radius: 3px;
-          z-index: 10;
+          z-index: 15;
           font-family: 'Sora', sans-serif;
           text-transform: uppercase;
+          pointer-events: none !important;
         }
 
-        /* Overlay */
-        .portfolio-item .portfolio-overlay {
-          opacity: 0;
-          transition: opacity 0.35s ease;
-        }
-        .portfolio-item:hover .portfolio-overlay { opacity: 1; }
-
-        /* Image hover */
-        .portfolio-item img {
-          transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94) !important;
-          transform-origin: center center;
-        }
-        .portfolio-item:hover img { transform: scale(1.06) !important; }
-
-        /* Touch / mobile: always show titles (no hover) */
-        @media (hover: none), (max-width: 991px) {
-          .portfolio-item .portfolio-overlay {
-            opacity: 1;
-            background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.2) 55%, transparent 100%);
-          }
-          .portfolio-item:hover img { transform: none !important; }
-        }
-
-        .pf-portrait {
-          height: min(500px, 72vw);
-        }
-        .pf-portrait img {
-          height: 100% !important;
+        .portfolio-item {
+          position: relative;
+          z-index: 10;
+          display: block;
           width: 100%;
-          object-fit: cover;
+          height: 100%;
+          cursor: pointer;
         }
-        @media (min-width: 992px) {
-          .pf-portrait { height: 500px; }
+
+        .portfolio-overlay {
+          pointer-events: none !important;
+        }
+
+        .portfolio-item img {
+          pointer-events: none !important;
         }
       `}</style>
 
       <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 15px' }}>
 
-        {/* Section Heading matching EditorialShowcase style */}
         <div ref={headingRef}>
           <SectionHeading title="WEB DEVELOPMENT WORKS" theme="dark" />
         </div>
 
-        {/* Grid */}
         <div className="portfolio-grid" ref={gridRef}>
           {portfolioItems.map((item, idx) => (
             <div key={item.id} className="pf-card">
@@ -287,22 +260,14 @@ export default function Portfolio() {
               {/* Count badge */}
               <span className="pf-count">{String(idx + 1).padStart(2, '0')}</span>
 
-              {item.type === 'page' ? (
-                <Link href={item.href} className="portfolio-item">
-                  <PortfolioOverlay item={item} />
-                  <PortfolioImage item={item} />
-                </Link>
-              ) : (
-                <a
-                  href={item.href}
-                  className="portfolio-item"
-                  onClick={(e) => handleItemClick(e, item)}
-                  rel="noreferrer"
-                >
-                  <PortfolioOverlay item={item} isMedia />
-                  <PortfolioImage item={item} />
-                </a>
-              )}
+              <Link
+                href={item.href}
+                className="portfolio-item"
+                onClick={(e) => handleCardClick(e, item)}
+              >
+                <PortfolioOverlay item={item} />
+                <PortfolioImage item={item} />
+              </Link>
             </div>
           ))}
         </div>

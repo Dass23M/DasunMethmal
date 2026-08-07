@@ -19,19 +19,9 @@ const GALLERY_IMAGES = [
     title: "02 / FULLSTACK PLATFORM",
   },
   {
-    src: "/images/developer-6.png",
-    alt: "Brand Identity",
-    title: "03 / BRAND IDENTITY",
-  },
-  {
-    src: "/images/developer-4.png",
-    alt: "Growth Marketing",
-    title: "04 / GROWTH CAMPAIGN",
-  },
-  {
     src: "/images/developer-7.png",
-    alt: "UI/UX Design",
-    title: "05 / UI/UX DESIGN",
+    alt: "UI/UX & Brand Identity",
+    title: "03 / UI/UX & BRANDING",
   },
 ];
 
@@ -286,7 +276,7 @@ export default function About() {
           </div>
 
           {/* Horizontal Gallery Wrapper */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto mb-10">
             {GALLERY_IMAGES.map((item, idx) => (
               <div
                 key={idx}

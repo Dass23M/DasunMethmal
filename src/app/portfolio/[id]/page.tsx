@@ -6,6 +6,7 @@ import FooterMarquee from '@/components/sections/FooterMarquee';
 import MouseScroll from '@/components/ui/MouseScroll';
 import { portfolioSingles } from '@/data/portfolio';
 import PortfolioSliderClient from './PortfolioSliderClient';
+import BackButtonClient from './BackButtonClient';
 
 interface Props {
   params: { id: string };
@@ -59,23 +60,7 @@ export default function PortfolioSinglePage({ params }: Props) {
 
             {/* Back button */}
             <div style={{ textAlign: 'right', marginBottom: '40px' }}>
-              <Link
-                href="/#portfolio-section"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '10px 24px',
-                  background: '#212121',
-                  borderRadius: '30px',
-                  color: '#fff',
-                  fontSize: '14px',
-                  border: '2px solid transparent',
-                  transition: 'border-color 0.3s',
-                }}
-              >
-                ← Back to Portfolio
-              </Link>
+              <BackButtonClient />
             </div>
 
             <h2 className="heading-portfolio-single">{project.title}</h2>

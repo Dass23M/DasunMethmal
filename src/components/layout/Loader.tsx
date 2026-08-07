@@ -15,6 +15,10 @@ export default function Loader() {
 
   // ── 1. GSAP Exit Animation after 1.8 seconds ──
   useEffect(() => {
+    if (typeof window !== 'undefined' && !window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+
     const timer = setTimeout(() => {
       if (!overlayRef.current) return;
 
@@ -26,8 +30,8 @@ export default function Loader() {
         // Fade out name & canvas
         tl.to([canvasRef.current, nameRef.current], {
           opacity: 0,
-          scale: 0.92,
-          duration: 0.5,
+          scale: 0.94,
+          duration: 0.35,
           ease: 'power2.in',
         });
 
@@ -36,15 +40,15 @@ export default function Loader() {
           overlayRef.current,
           {
             yPercent: -100,
-            duration: 0.8,
+            duration: 0.55,
             ease: 'power4.inOut',
           },
-          '-=0.15'
+          '-=0.1'
         );
       }, overlayRef);
 
       return () => ctx.revert();
-    }, 1800);
+    }, 650);
 
     return () => clearTimeout(timer);
   }, []);

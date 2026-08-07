@@ -173,6 +173,7 @@ export default function Contact() {
                                                 type="text"
                                                 id="name"
                                                 name="name"
+                                                autoComplete="name"
                                                 placeholder="Emily Johnson"
                                                 value={formData.name}
                                                 onChange={(e) => handleInput('name', e.target.value)}
@@ -194,6 +195,7 @@ export default function Contact() {
                                                 type="email"
                                                 id="email"
                                                 name="email"
+                                                autoComplete="email"
                                                 placeholder="emilyjohnson@gamil.com"
                                                 value={formData.email}
                                                 onChange={(e) => handleInput('email', e.target.value)}
@@ -214,6 +216,7 @@ export default function Contact() {
                                             <textarea
                                                 id="message"
                                                 name="message"
+                                                autoComplete="off"
                                                 rows={3}
                                                 placeholder="Your message"
                                                 value={formData.message}

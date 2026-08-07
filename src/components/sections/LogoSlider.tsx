@@ -166,6 +166,8 @@ export default function LogoSlider() {
                   width={110}
                   height={38}
                   style={{
+                    width: 'auto',
+                    height: 'auto',
                     objectFit: 'contain',
                     filter: 'brightness(0) invert(1)',
                   }}

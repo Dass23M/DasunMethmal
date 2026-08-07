@@ -18,7 +18,18 @@
 }
 
 html {
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hardware-accelerated GPU layer promotion for silky 60FPS scrolling */
+.unslate_co--site-wrap,
+.scroll-reveal-section,
+.site-inner {
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 body {
@@ -659,6 +670,7 @@ body.offcanvas .site-mobile-menu {
   height: auto;
   display: block;
   transform: scale(1);
+  pointer-events: none;
 }
 
 .portfolio-item:hover img {
@@ -681,6 +693,7 @@ body.offcanvas .site-mobile-menu {
   visibility: hidden;
   transition: 0.3s all ease;
   z-index: 8;
+  pointer-events: none;
 }
 
 .portfolio-overlay::before {

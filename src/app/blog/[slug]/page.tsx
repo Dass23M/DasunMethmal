@@ -217,19 +217,19 @@ export default function BlogSinglePage({ params }: Props) {
                 <form className="form-outline" action="#">
                   <div className="form-group" style={{ position: 'relative', marginBottom: '50px' }}>
                     <label htmlFor="comment-name">Name *</label>
-                    <input type="text" id="comment-name" className="form-control" />
+                    <input type="text" id="comment-name" name="name" autoComplete="name" className="form-control" />
                   </div>
                   <div className="form-group" style={{ position: 'relative', marginBottom: '50px' }}>
                     <label htmlFor="comment-email">Email *</label>
-                    <input type="email" id="comment-email" className="form-control" />
+                    <input type="email" id="comment-email" name="email" autoComplete="email" className="form-control" />
                   </div>
                   <div className="form-group" style={{ position: 'relative', marginBottom: '50px' }}>
                     <label htmlFor="comment-website">Website</label>
-                    <input type="url" id="comment-website" className="form-control" />
+                    <input type="url" id="comment-website" name="website" autoComplete="url" className="form-control" />
                   </div>
                   <div className="form-group" style={{ position: 'relative', marginBottom: '50px' }}>
                     <label htmlFor="comment-message">Message</label>
-                    <textarea id="comment-message" rows={5} className="form-control" />
+                    <textarea id="comment-message" name="message" autoComplete="off" rows={5} className="form-control" />
                   </div>
                   <div>
                     <button type="submit" className="btn-outline-pill">

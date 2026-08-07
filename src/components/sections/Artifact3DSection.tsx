@@ -203,27 +203,27 @@ export default function Artifact3DSection() {
         end: 'bottom top',
         onEnter: () => {
           isSectionVisible.current = true;
-          gsap.to([canvas, scanlinesRef.current], { opacity: 1, duration: 0.5 });
-          gsap.to([hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current], {
+          gsap.to([canvas, scanlinesRef.current].filter(Boolean), { opacity: 1, duration: 0.5 });
+          gsap.to([hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current].filter(Boolean), {
             opacity: 1, duration: 0.5, stagger: 0.1,
           });
         },
         onLeave: () => {
           isSectionVisible.current = false;
-          gsap.to([canvas, scanlinesRef.current, hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current], {
+          gsap.to([canvas, scanlinesRef.current, hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current].filter(Boolean), {
             opacity: 0, duration: 0.3,
           });
         },
         onEnterBack: () => {
           isSectionVisible.current = true;
-          gsap.to([canvas, scanlinesRef.current], { opacity: 1, duration: 0.4 });
-          gsap.to([hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current], {
+          gsap.to([canvas, scanlinesRef.current].filter(Boolean), { opacity: 1, duration: 0.4 });
+          gsap.to([hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current].filter(Boolean), {
             opacity: 1, duration: 0.4,
           });
         },
         onLeaveBack: () => {
           isSectionVisible.current = false;
-          gsap.to([canvas, scanlinesRef.current, hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current], {
+          gsap.to([canvas, scanlinesRef.current, hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current].filter(Boolean), {
             opacity: 0, duration: 0.3,
           });
         },
@@ -336,7 +336,7 @@ export default function Artifact3DSection() {
       {/* ── SIDEBAR PROGRESS ── */}
       <div
         ref={sidebarRef}
-        className="fixed left-8 top-1/2 -translate-y-1/2 z-[10] opacity-0 flex-col gap-4 hidden lg:flex"
+        className="fixed left-8 top-1/2 -translate-y-1/2 z-[10] opacity-0 flex-col gap-4 hidden lg:flex pointer-events-none"
       >
         {[0, 1, 2].map((idx) => (
           <div key={idx} className="flex items-center">

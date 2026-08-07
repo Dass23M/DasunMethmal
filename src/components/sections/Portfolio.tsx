@@ -4,167 +4,69 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lightbox from 'yet-another-react-lightbox';
-import 'yet-another-react-lightbox/styles.css';
-import Video from 'yet-another-react-lightbox/plugins/video';
 import SectionHeading from '@/components/ui/SectionHeading';
-import { portfolioItems, PortfolioItem } from '@/data/portfolio';
+import { portfolioItems } from '@/data/portfolio';
 
-gsap.registerPlugin(ScrollTrigger);
-
+/* ─────────────────────────────────────────────
+   Portfolio grid – 6 clickable project cards.
+   Each card navigates to /portfolio/[id].
+   No external lightbox dependency.
+───────────────────────────────────────────── */
 export default function Portfolio() {
   const router = useRouter();
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
   const [mounted, setMounted] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+
+  const handleCardClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
+      e.preventDefault();
+      router.push(href);
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  /* Lazy-load GSAP only for the reveal animation so the
+     component never crashes if gsap vendor chunk is missing. */
   useEffect(() => {
     if (!mounted) return;
+    let ctx: { revert: () => void } | null = null;
 
-    const section = sectionRef.current;
-    const heading = headingRef.current;
-    const grid = gridRef.current;
-    if (!section || !heading || !grid) return;
+    import('gsap').then(({ default: gsap }) =>
+      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+        gsap.registerPlugin(ScrollTrigger);
 
-    const ctx = gsap.context(() => {
-      // 1. Heading: slide up + fade in
-      gsap.fromTo(
-        heading,
-        { y: 50, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: heading,
-            start: 'top 90%',
-            end: 'top 50%',
-            scrub: 1,
-          },
-        }
-      );
+        const section = sectionRef.current;
+        if (!section) return;
 
-      // 2. Heading underline scale-in
-      const line = section.querySelector<HTMLSpanElement>('.pf-heading-line');
-      if (line) {
-        gsap.fromTo(
-          line,
-          { scaleX: 0 },
-          {
-            scaleX: 1,
-            ease: 'power2.inOut',
-            scrollTrigger: {
-              trigger: heading,
-              start: 'top 80%',
-              end: 'top 40%',
-              scrub: 1.2,
-            },
-          }
-        );
-      }
-
-      // 3. Per-card animations
-      const cards = grid.querySelectorAll<HTMLDivElement>('.pf-card');
-      cards.forEach((card, i) => {
-        const cover = card.querySelector<HTMLDivElement>('.pf-cover');
-        const img   = card.querySelector<HTMLImageElement>('img');
-
-        const xFrom = i % 2 === 0 ? -40 : 40;
-
-        gsap.fromTo(
-          card,
-          { y: 70, x: xFrom, opacity: 0 },
-          {
-            y: 0, x: 0, opacity: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 92%',
-              end: 'top 55%',
-              scrub: 1,
-            },
-          }
-        );
-
-        if (cover) {
-          gsap.fromTo(
-            cover,
-            { x: '0%' },
-            {
-              x: '102%',
-              ease: 'power2.inOut',
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 85%',
-                end: 'top 30%',
-                scrub: 1.4,
-              },
-            }
-          );
-        }
-
-        if (img) {
-          gsap.fromTo(
-            img,
-            { scale: 1.3 },
-            {
-              scale: 1,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 85%',
-                end: 'top 30%',
-                scrub: 1.6,
-              },
-            }
-          );
-        }
-      });
-
-    }, section);
-
-    return () => ctx.revert();
-  }, [mounted]);
-
-  const lightboxSlides = portfolioItems
-    .filter((item) => item.type === 'lightbox' || item.type === 'video')
-    .map((item) => {
-      if (item.type === 'video') {
-        return {
-          type: 'video' as const,
-          sources: [{ src: item.href, type: 'video/mp4' }],
-          poster: item.image,
-        };
-      }
-      return { src: item.href };
-    });
-
-  const getLightboxSlideIndex = (item: PortfolioItem) => {
-    const lbItems = portfolioItems.filter(
-      (i) => i.type === 'lightbox' || i.type === 'video'
+        ctx = gsap.context(() => {
+          const cards = section.querySelectorAll<HTMLElement>('.pf-card');
+          cards.forEach((card, i) => {
+            gsap.fromTo(
+              card,
+              { y: 50, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: 'power3.out',
+                scrollTrigger: {
+                  trigger: card,
+                  start: 'top 88%',
+                  toggleActions: 'play none none reverse',
+                },
+                delay: i * 0.06,
+              }
+            );
+          });
+        }, section);
+      })
     );
-    return lbItems.findIndex((i) => i.id === item.id);
-  };
 
-  const handleCardClick = (e: React.MouseEvent, item: PortfolioItem) => {
-    if (item.type === 'lightbox' || item.type === 'video') {
-      e.preventDefault();
-      setLightboxIndex(getLightboxSlideIndex(item));
-      setLightboxOpen(true);
-    } else {
-      e.preventDefault();
-      router.push(item.href);
-    }
-  };
+    return () => ctx?.revert();
+  }, [mounted]);
 
   if (!mounted) {
     return <section id="portfolio-section" className="unslate-section" />;
@@ -174,161 +76,180 @@ export default function Portfolio() {
     <section
       id="portfolio-section"
       ref={sectionRef}
-      className="unslate-section pf-section"
+      className="unslate-section"
+      style={{ background: '#111' }}
     >
       <style>{`
-        .pf-section { position: relative; overflow: hidden; }
-
-        .pf-heading-wrap {
-          margin-bottom: 3.5rem;
-          display: inline-block;
-          position: relative;
-        }
-        .pf-heading-wrap h2 { margin-bottom: 0.4rem; }
-        .pf-heading-line {
-          display: block;
-          height: 3px;
-          width: 100%;
-          background: #FF6B00;
-          border-radius: 2px;
-          transform-origin: left center;
+        /* ── Portfolio grid ───────────────────── */
+        .pf-section-inner {
+          max-width: 1140px;
+          margin: 0 auto;
+          padding: 0 15px;
         }
 
+        .pf-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+        @media (max-width: 900px)  { .pf-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px)  { .pf-grid { grid-template-columns: 1fr; } }
+
+        /* ── Individual card ──────────────────── */
         .pf-card {
           position: relative;
-          will-change: transform, opacity;
+          display: block;
           overflow: hidden;
-          cursor: pointer;
+          cursor: pointer !important;
+          text-decoration: none;
+          color: inherit;
+          border-radius: 4px;
+          will-change: transform, opacity;
+          transform: translateZ(0);
         }
 
-        .pf-cover {
+        .pf-card-img-wrap {
+          position: relative;
+          overflow: hidden;
+          line-height: 0;
+        }
+
+        .pf-card-img-wrap img {
+          width: 100%;
+          height: auto;
+          display: block;
+          transition: transform 0.45s ease;
+          pointer-events: none;
+        }
+
+        .pf-card:hover .pf-card-img-wrap img {
+          transform: scale(1.07);
+        }
+
+        /* ── Hover overlay ───────────────────────
+           pointer-events: none → NEVER blocks clicks */
+        .pf-overlay {
           position: absolute;
           inset: 0;
-          background: #FF6B00;
-          z-index: 5;
-          pointer-events: none !important;
+          background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.18) 55%, transparent 100%);
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding: 20px 20px 16px;
+          opacity: 0;
+          transition: opacity 0.35s ease;
+          pointer-events: none;
         }
 
-        .pf-count {
+        .pf-card:hover .pf-overlay {
+          opacity: 1;
+        }
+
+        .pf-overlay-title {
+          color: #fff;
+          font-size: 15px;
+          font-weight: 700;
+          margin: 0 0 3px;
+          font-family: 'Sora', sans-serif;
+          line-height: 1.3;
+        }
+
+        .pf-overlay-cat {
+          color: rgba(255, 255, 255, 0.55);
+          font-size: 11px;
+          font-family: 'Inter', sans-serif;
+          margin: 0 0 12px;
+          text-transform: capitalize;
+          letter-spacing: 0.04em;
+        }
+
+        /* ── "View Project" button inside overlay ── */
+        .pf-view-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: #FF6B00;
+          color: #fff;
+          font-size: 11px;
+          font-weight: 700;
+          font-family: 'Sora', sans-serif;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          padding: 6px 14px;
+          border-radius: 20px;
+          width: fit-content;
+          transform: translateY(6px);
+          transition: transform 0.3s ease, background 0.2s ease;
+        }
+
+        .pf-card:hover .pf-view-btn {
+          transform: translateY(0);
+        }
+
+        .pf-view-btn:hover {
+          background: #e55e00;
+        }
+
+        /* ── Count badge ──────────────────────── */
+        .pf-badge {
           position: absolute;
           top: 12px;
           left: 12px;
+          background: rgba(0, 0, 0, 0.85);
+          color: #FF6B00;
           font-size: 0.68rem;
           font-weight: 700;
-          letter-spacing: 0.14em;
-          color: #FF6B00;
-          background: rgba(0,0,0,0.88);
+          letter-spacing: 0.12em;
           padding: 3px 8px;
           border-radius: 3px;
-          z-index: 15;
           font-family: 'Sora', sans-serif;
-          text-transform: uppercase;
-          pointer-events: none !important;
-        }
-
-        .portfolio-item {
-          position: relative;
-          z-index: 10;
-          display: block;
-          width: 100%;
-          height: 100%;
-          cursor: pointer;
-        }
-
-        .portfolio-overlay {
-          pointer-events: none !important;
-        }
-
-        .portfolio-item img {
-          pointer-events: none !important;
+          pointer-events: none;
+          z-index: 2;
         }
       `}</style>
 
-      <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 15px' }}>
+      <div className="pf-section-inner">
+        <SectionHeading title="WEB DEVELOPMENT WORKS" theme="dark" />
 
-        <div ref={headingRef}>
-          <SectionHeading title="WEB DEVELOPMENT WORKS" theme="dark" />
-        </div>
-
-        <div className="portfolio-grid" ref={gridRef}>
+        <div className="pf-grid">
           {portfolioItems.map((item, idx) => (
-            <div key={item.id} className="pf-card">
+            <Link
+              key={item.id}
+              href={item.href}
+              className="pf-card"
+              prefetch={false}
+              onClick={(e) => handleCardClick(e, item.href)}
+            >
+              {/* Number badge */}
+              <span className="pf-badge">{String(idx + 1).padStart(2, '0')}</span>
 
-              {/* Orange wipe cover */}
-              <div className="pf-cover" />
+              {/* Image */}
+              <div className="pf-card-img-wrap">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  width={760}
+                  height={520}
+                  style={{ width: '100%', height: 'auto' }}
+                  priority={idx < 3}
+                />
 
-              {/* Count badge */}
-              <span className="pf-count">{String(idx + 1).padStart(2, '0')}</span>
-
-              <Link
-                href={item.href}
-                className="portfolio-item"
-                onClick={(e) => handleCardClick(e, item)}
-              >
-                <PortfolioOverlay item={item} />
-                <PortfolioImage item={item} />
-              </Link>
-            </div>
+                {/* Hover overlay — pointer-events:none so link click always fires */}
+                <div className="pf-overlay">
+                  <h3 className="pf-overlay-title">{item.title}</h3>
+                  <p className="pf-overlay-cat">{item.categories}</p>
+                  <span className="pf-view-btn">
+                    View Project
+                    <svg width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path d="M7 17L17 7M7 7h10v10" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
-
-      <Lightbox
-        open={lightboxOpen}
-        close={() => setLightboxOpen(false)}
-        slides={lightboxSlides}
-        index={lightboxIndex}
-        plugins={[Video]}
-      />
     </section>
-  );
-}
-
-function PortfolioImage({ item }: { item: PortfolioItem }) {
-  return (
-    <div
-      className={item.isPortrait ? 'pf-portrait' : undefined}
-      style={{ position: 'relative', overflow: 'hidden', lineHeight: 0 }}
-    >
-      <Image
-        src={item.image}
-        alt={item.title}
-        width={800}
-        height={item.isPortrait ? 1000 : 600}
-        style={{
-          width: '100%',
-          height: item.isPortrait ? '100%' : 'auto',
-          objectFit: item.isPortrait ? 'cover' : 'unset',
-          display: 'block',
-        }}
-      />
-    </div>
-  );
-}
-
-function PortfolioOverlay({ item, isMedia }: { item: PortfolioItem; isMedia?: boolean }) {
-  return (
-    <div className="portfolio-overlay">
-      <div className="portfolio-overlay-icon">
-        {isMedia ? (
-          item.type === 'video' ? (
-            <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-          ) : (
-            <svg width="24" height="24" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
-              <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" />
-            </svg>
-          )
-        ) : (
-          <svg width="20" height="20" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
-            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
-            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
-          </svg>
-        )}
-      </div>
-      <div className="portfolio-overlay-content">
-        <h3>{item.title}</h3>
-        <p>{item.categories}</p>
-      </div>
-    </div>
   );
 }

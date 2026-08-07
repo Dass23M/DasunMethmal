@@ -28,6 +28,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://methmal.dev'),
   title: 'Methmal — Fullstack Developer & Digital Marketer Portfolio',
   description:
     'Methmal is a Fullstack Developer, AI Engineer & Tech Strategist building modern web applications, scalable platforms, and high-impact digital products.',

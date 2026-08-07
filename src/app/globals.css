@@ -18,18 +18,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Hardware-accelerated GPU layer promotion for silky 60FPS scrolling */
-.unslate_co--site-wrap,
-.scroll-reveal-section,
-.site-inner {
-  transform: translateZ(0);
-  will-change: transform;
+  scroll-behavior: auto;
 }
 
 body {

@@ -138,7 +138,7 @@ export default function GSAPFlipSection() {
       // Post-processing setup (Optimized for Mobile)
       const composer = new EffectComposer(renderer);
       composer.addPass(new RenderPass(scene, camera));
-      
+
       // Lighter Bloom settings on desktop; lightweight bloom on mobile
       const bloomPass = new UnrealBloomPass(
         new THREE.Vector2(
@@ -354,7 +354,7 @@ export default function GSAPFlipSection() {
       window.addEventListener('touchmove', onTouchMoveThree, { passive: true });
 
       const fragParams = { hoverRadius: isMobile ? 1.0 : 0.85, liftDist: 0.28, liftSpeedUp: 0.2, liftSpeedDown: 0.08 };
-      const startTime = performance.now();
+      const clock = new THREE.Clock();
       let lastTime = 0;
       const hover = { point: new THREE.Vector3(), active: 0 };
       const _localHover = new THREE.Vector3();
@@ -371,7 +371,7 @@ export default function GSAPFlipSection() {
           animFrameId = requestAnimationFrame(tick);
           return;
         }
-        const elapsed = (performance.now() - startTime) / 1000;
+        const elapsed = clock.getElapsedTime();
         const delta = Math.min(elapsed - lastTime, 0.05);
         lastTime = elapsed;
 
@@ -399,7 +399,7 @@ export default function GSAPFlipSection() {
             const speed = target > frag.userData.lift ? fragParams.liftSpeedUp : fragParams.liftSpeedDown;
             frag.userData.lift = THREE.MathUtils.lerp(frag.userData.lift, target, speed);
             const lift = frag.userData.lift;
-            
+
             if (lift > 0.001 || target > 0) {
               frag.position.copy(cellCenter).addScaledVector(cellNormal, 0.015 + lift * fragParams.liftDist);
               frag.quaternion.setFromAxisAngle(rotAxis, lift * maxAngle);
@@ -471,26 +471,16 @@ export default function GSAPFlipSection() {
 
     // ── GSAP HUD & Content Entrance Animations ───────────────
     const gsapCtx = gsap.context(() => {
-      if (navStatusRef.current) gsap.to(navStatusRef.current, { opacity: 1, duration: 1, delay: 1.2 });
+      gsap.to(navStatusRef.current, { opacity: 1, duration: 1, delay: 1.2 });
       gsap.to([hudTLRef.current, hudBRRef.current].filter(Boolean), { opacity: 1, duration: 1, delay: 1.0, stagger: 0.2 });
+      gsap.to('.gsapflip-sidebar-label', { opacity: 1, x: 0, duration: 0.6, delay: 1.2, stagger: 0.1 });
 
-      const sidebarLabels = document.querySelectorAll('.gsapflip-sidebar-label');
-      if (sidebarLabels.length > 0) {
-        gsap.to(sidebarLabels, { opacity: 1, x: 0, duration: 0.6, delay: 1.2, stagger: 0.1 });
-      }
-
-      const heroTitle = document.querySelectorAll('.gsapflip-hero-title');
-      const heroMeta = document.querySelectorAll('.gsapflip-hero-meta');
-      const heroCta = document.querySelectorAll('.gsapflip-hero-cta');
-      const heroCoords = document.querySelectorAll('.gsapflip-hero-coords');
-      const hoverHint = document.querySelectorAll('.gsapflip-hover-hint');
-
-      const tl = gsap.timeline({ delay: 0.3 });
-      if (heroTitle.length > 0) tl.to(heroTitle, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' });
-      if (heroMeta.length > 0) tl.to(heroMeta, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4');
-      if (heroCta.length > 0) tl.to(heroCta, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3');
-      if (heroCoords.length > 0) tl.to(heroCoords, { opacity: 1, duration: 0.4 }, '-=0.2');
-      if (hoverHint.length > 0) tl.to(hoverHint, { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.1');
+      gsap.timeline({ delay: 0.3 })
+        .to('.gsapflip-hero-title', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' })
+        .to('.gsapflip-hero-meta', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4')
+        .to('.gsapflip-hero-cta', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.3')
+        .to('.gsapflip-hero-coords', { opacity: 1, duration: 0.4 }, '-=0.2')
+        .to('.gsapflip-hover-hint', { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.1');
 
       gsap.timeline({ scrollTrigger: { trigger: '#gsapflip-section-2', start: 'top 75%' } })
         .to('#gsapflip-section-2 .sec-num', { opacity: 1, duration: 0.4 })

@@ -51,18 +51,20 @@ export default function GSAPSectionAnimator({
             revealSections.forEach((section) => {
               gsap.fromTo(
                 section,
-                { autoAlpha: 0, y: 25 },
+                { autoAlpha: 0, y: 35 },
                 {
                   autoAlpha: 1,
                   y: 0,
-                  duration: 0.65,
-                  ease: 'power3.out',
+                  duration: 0.8,
+                  ease: 'power2.out',
                   scrollTrigger: {
                     trigger: section,
-                    start: 'top 94%',
+                    start: 'top 92%',
                     toggleActions: 'play none none reverse',
-                    fastScrollEnd: true,
                     invalidateOnRefresh: true,
+                    onLeave: () => {
+                      gsap.set(section, { clearProps: 'transform,opacity,visibility' });
+                    },
                   },
                 }
               );

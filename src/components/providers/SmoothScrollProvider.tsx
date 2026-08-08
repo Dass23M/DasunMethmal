@@ -15,30 +15,15 @@ export default function SmoothScrollProvider({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    // ── 1. Disable browser scroll restoration so refresh ALWAYS starts at top (0,0) ──
+    // ── 1. Disable browser scroll restoration & force refresh to ALWAYS start at top (0,0) ──
     if (typeof window !== 'undefined') {
       if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'manual';
       }
-      if (window.location.hash) {
-        const hash = window.location.hash;
-        const scrollToHashTarget = () => {
-          const element = document.querySelector(hash) as HTMLElement | null;
-          if (element) {
-            const absoluteTop = element.getBoundingClientRect().top + window.pageYOffset - 40;
-            window.scrollTo({
-              top: Math.max(0, absoluteTop),
-              behavior: 'smooth',
-            });
-          }
-        };
-
-        scrollToHashTarget();
-        setTimeout(scrollToHashTarget, 200);
-        setTimeout(scrollToHashTarget, 600);
-      } else {
+      window.scrollTo(0, 0);
+      requestAnimationFrame(() => {
         window.scrollTo(0, 0);
-      }
+      });
     }
 
     // Intercept clicks on anchor links (#section) for clean native smooth navigation

@@ -15,7 +15,7 @@ export default function Loader() {
 
   // ── 1. GSAP Exit Animation after 1.8 seconds ──
   useEffect(() => {
-    if (typeof window !== 'undefined' && !window.location.hash) {
+    if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
     }
 

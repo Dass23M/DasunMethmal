@@ -27,21 +27,7 @@ export default function GSAPSectionAnimator({
         gsap.registerPlugin(ScrollTrigger);
 
         ctx = gsap.context(() => {
-          if (!window.location.hash) {
-            window.scrollTo(0, 0);
-          } else {
-            const hash = window.location.hash;
-            setTimeout(() => {
-              const element = document.querySelector(hash) as HTMLElement | null;
-              if (element) {
-                const absoluteTop = element.getBoundingClientRect().top + window.pageYOffset - 40;
-                window.scrollTo({
-                  top: Math.max(0, absoluteTop),
-                  behavior: 'smooth',
-                });
-              }
-            }, 450);
-          }
+          window.scrollTo(0, 0);
           const mm = gsap.matchMedia();
 
           // ── Desktop (≥992px): Smooth section reveal + parallax + hero pin ──

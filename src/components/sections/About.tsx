@@ -264,15 +264,20 @@ export default function About() {
           </div>
         </div>
 
-        {/* ─── 3. GALLERY MOSAIC SECTION WITH VERTICAL CLIP-PATH REVEAL ─── */}
+        {/* ─── 3. GALLERY MOSAIC SECTION: ENGINEERING DISCIPLINE & CRAFT ─── */}
         <div ref={galleryRef} className="mb-24 sm:mb-36">
-          <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-8">
-            <span className="font-sora font-bold text-xs sm:text-sm text-white tracking-widest uppercase">
-              SELECTED WORKS &amp; CRAFT MOSAIC
-            </span>
-            <span className="font-mono text-xs text-[#FF6B00]">
-              02 / SHOWCASE
-            </span>
+          <div className="w-full mb-8 sm:mb-10 border-b border-white/10 pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-3">
+                <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse shrink-0" />
+                <h2 className="font-sora font-bold text-xs sm:text-sm text-white tracking-widest uppercase">
+                  ENGINEERING DISCIPLINE &amp; VISUAL CRAFT
+                </h2>
+              </div>
+              <span className="font-mono text-xs font-semibold text-[#FF6B00] tracking-widest uppercase">
+                002 / CAPABILITIES &amp; ARCHITECTURE
+              </span>
+            </div>
           </div>
 
           {/* Horizontal Gallery Wrapper - 3 Images Small & Centered on Mobile */}

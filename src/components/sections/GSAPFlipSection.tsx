@@ -714,11 +714,11 @@ export default function GSAPFlipSection() {
               className="gsapflip-hero-meta text-center mt-6 md:mt-8"
               style={{ opacity: 0, transform: 'translateY(20px)' }}
             >
-              <span style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.62rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: '#ff4d00', display: 'block', marginBottom: '0.6rem' }}>
-                Generative 3D · 2026
+              <span style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.68rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: '#ff4d00', display: 'block', marginBottom: '0.8rem' }}>
+                Fullstack &amp; Web Development
               </span>
-              <span className="text-xs md:text-sm text-[#eee8de]/40 max-w-[36ch] md:max-w-[40ch] leading-relaxed mx-auto block">
-                Procedural stone shell.<br />Wireframe core.<br />Touch to break open.
+              <span className="text-base sm:text-lg md:text-xl text-white/90 font-normal max-w-[38ch] md:max-w-[42ch] leading-relaxed mx-auto block">
+                Crafting modern web applications, high-converting platforms, and seamless digital solutions.
               </span>
             </div>
           </div>
@@ -779,20 +779,20 @@ export default function GSAPFlipSection() {
             <div className="sec-num" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)', marginBottom: '2rem', opacity: 0 }}>
               02 / 03
             </div>
-            <p className="sec-tag" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#ff4d00', marginBottom: '1.2rem', opacity: 0, transform: 'translateY(15px)' }}>
-              {"// Architecture"}
+            <p className="sec-tag" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#ff4d00', marginBottom: '1.2rem', opacity: 0, transform: 'translateY(15px)' }}>
+              {"// Development Approach"}
             </p>
-            <h2 className="sec-h2 text-[clamp(2rem,4vw,3.8rem)] font-extrabold leading-[1.05] tracking-tight mb-6" style={{ opacity: 0, transform: 'translateY(25px)' }}>
-              Two layers.<br />One truth.
+            <h2 className="sec-h2 text-[clamp(2rem,4vw,3.8rem)] font-extrabold leading-[1.05] tracking-tight mb-6 text-white" style={{ opacity: 0, transform: 'translateY(25px)' }}>
+              Clean Code.<br />Seamless Performance.
             </h2>
-            <p className="sec-body text-sm leading-relaxed text-[#eee8de]/50 max-w-[38ch] mb-8" style={{ opacity: 0, transform: 'translateY(15px)' }}>
-              Hundreds of independent Voronoi fragments form the stone shell — each a real mesh with PBR material. Beneath it, a barycentric GLSL shader traces every triangle edge in fire.
+            <p className="sec-body text-base sm:text-lg leading-relaxed text-white/90 max-w-[42ch] mb-8 font-normal" style={{ opacity: 0, transform: 'translateY(15px)' }}>
+              Every project is engineered for speed, responsiveness, and business growth. I combine clean Next.js architecture with modern UI interactions to turn your vision into a production-ready web application.
             </p>
             <div className="stats grid grid-cols-3 border-t border-white/10 pt-6" style={{ opacity: 0, transform: 'translateY(15px)' }}>
-              {[{ n: isMobileDevice ? '350+' : '1500+', l: 'Fragments' }, { n: '60fps', l: 'Realtime' }, { n: '0', l: 'Assets' }].map((s) => (
+              {[{ n: '100%', l: 'Responsive' }, { n: '<1s', l: 'Fast Load' }, { n: 'SEO', l: 'Optimized' }].map((s) => (
                 <div key={s.l}>
                   <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#ff4d00] leading-none">{s.n}</div>
-                  <div style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginTop: '0.4rem' }}>{s.l}</div>
+                  <div style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginTop: '0.4rem' }}>{s.l}</div>
                 </div>
               ))}
             </div>
@@ -811,23 +811,23 @@ export default function GSAPFlipSection() {
             <div className="sec-num" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)', marginBottom: '2rem', opacity: 0 }}>
               03 / 03
             </div>
-            <p className="sec-tag" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#ff4d00', marginBottom: '1.2rem', opacity: 0, transform: 'translateY(15px)' }}>
-              {"// Interaction"}
+            <p className="sec-tag" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#ff4d00', marginBottom: '1.2rem', opacity: 0, transform: 'translateY(15px)' }}>
+              {"// Services & Value"}
             </p>
-            <h2 className="sec-h2 text-[clamp(2rem,4vw,3.8rem)] font-extrabold leading-[1.05] tracking-tight mb-6" style={{ opacity: 0, transform: 'translateY(25px)' }}>
-              Touch it.<br />Break it open.
+            <h2 className="sec-h2 text-[clamp(2rem,4vw,3.8rem)] font-extrabold leading-[1.05] tracking-tight mb-6 text-white" style={{ opacity: 0, transform: 'translateY(25px)' }}>
+              Custom Web Solutions.<br />Built For Growth.
             </h2>
-            <p className="sec-body text-sm leading-relaxed text-[#eee8de]/50 max-w-[38ch] mb-8" style={{ opacity: 0, transform: 'translateY(15px)' }}>
-              Move your cursor across the surface. Each fragment responds independently — lifting away on a random hinge axis, exposing the luminous wireframe within.
+            <p className="sec-body text-base sm:text-lg leading-relaxed text-white/90 max-w-[42ch] mb-8 font-normal" style={{ opacity: 0, transform: 'translateY(15px)' }}>
+              Whether you need a modern business website, custom web application, or high-converting landing page, I deliver scalable digital solutions crafted to attract and convert new clients.
             </p>
             <ul className="feat-list flex flex-col border-t border-white/10" style={{ opacity: 0, transform: 'translateY(15px)' }}>
               {[
-                'Voronoi decomposition · GLSL + JS',
-                'Barycentric wireframe · UnrealBloom',
-                'PBR stone · normal + roughness maps',
-                'GSAP ScrollTrigger · spring animation',
+                'Fullstack Web Apps · Next.js & React',
+                'Responsive & Mobile-First UI/UX Design',
+                'SEO Optimization & High Performance',
+                'Fast Turnaround & Dedicated Support',
               ].map((feat, i) => (
-                <li key={i} className="flex items-center gap-3 py-3 border-b border-white/5 text-xs text-[#eee8de]/50" style={{ fontFamily: '"Courier New", Courier, monospace', letterSpacing: '0.05em' }}>
+                <li key={i} className="flex items-center gap-3 py-3.5 border-b border-white/10 text-sm sm:text-base text-white/90 font-medium" style={{ fontFamily: '"Courier New", Courier, monospace', letterSpacing: '0.05em' }}>
                   <span style={{ color: '#ff4d00' }}>→</span>
                   {feat}
                 </li>

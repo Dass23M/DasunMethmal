@@ -16,7 +16,6 @@ const POSTER_ITEMS = [
 
 export default function PosterDesign() {
   const sectionRef = useRef<HTMLElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
   const [activeIdx, setActiveIdx] = useState(0);
 
@@ -33,31 +32,25 @@ export default function PosterDesign() {
         if (!sectionRef.current) return;
 
         ctx = gsap.context(() => {
-          // Headline word-by-word reveal
-          const heading = sectionRef.current?.querySelector<HTMLElement>('.pd-headline');
-          if (heading) {
-            gsap.fromTo(heading, { autoAlpha: 0, y: 40 }, {
-              autoAlpha: 1, y: 0, duration: 1.1, ease: 'power3.out',
-              scrollTrigger: { trigger: heading, start: 'top 88%' },
-            });
-          }
-
-          const sub = sectionRef.current?.querySelector<HTMLElement>('.pd-sub');
-          if (sub) {
-            gsap.fromTo(sub, { autoAlpha: 0, y: 24 }, {
-              autoAlpha: 1, y: 0, duration: 0.85, delay: 0.2, ease: 'power3.out',
-              scrollTrigger: { trigger: sub, start: 'top 90%' },
-            });
-          }
-
-          // Cards stagger reveal
           const cards = sectionRef.current?.querySelectorAll<HTMLElement>('.pd-card');
           cards?.forEach((card, i) => {
-            gsap.fromTo(card, { autoAlpha: 0, y: 55, scale: 0.96 }, {
-              autoAlpha: 1, y: 0, scale: 1, duration: 0.9,
-              delay: i * 0.1, ease: 'power3.out',
-              scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none reverse' },
-            });
+            gsap.fromTo(
+              card,
+              { autoAlpha: 0, y: 40, scale: 0.96 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.8,
+                delay: (i % 3) * 0.08,
+                ease: 'power3.out',
+                scrollTrigger: {
+                  trigger: card,
+                  start: 'top 90%',
+                  toggleActions: 'play none none reverse',
+                },
+              }
+            );
           });
         }, sectionRef);
       });
@@ -67,183 +60,99 @@ export default function PosterDesign() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section id="poster-design-section" style={{ minHeight: '100vh', background: '#000' }} />;
+    return <section id="poster-design-section" className="min-h-screen bg-black" />;
   }
 
   return (
     <section
       id="poster-design-section"
       ref={sectionRef}
-      style={{ background: '#000', padding: '72px 0 90px', overflow: 'hidden' }}
+      className="bg-black py-16 sm:py-24 overflow-hidden select-none"
     >
-      {/* ── Header ─────────────────────────────────────────────────── */}
-      <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 24px' }}>
-        <SectionHeading title="POSTER &amp; SOCIAL POST DESIGN" theme="dark" />
+      {/* ── Section Header ─────────────────────────────────────────── */}
+      <div className="w-full max-w-[1040px] mx-auto px-4 sm:px-6">
+        <SectionHeading title="POSTER & SOCIAL POST DESIGN" theme="dark" />
       </div>
 
-      {/* ── Featured Large Card ─────────────────────────────────────── */}
-      <div style={{ maxWidth: '1040px', margin: '0 auto', padding: '0 24px' }}>
-        <div className="pd-card" style={{
-          position: 'relative',
-          borderRadius: '22px',
-          overflow: 'hidden',
-          marginBottom: '16px',
-          cursor: 'pointer',
-          opacity: 0,
-        }}>
+      {/* ── Card Showcase Grid ─────────────────────────────────────── */}
+      <div className="w-full max-w-[1040px] mx-auto px-4 sm:px-6 space-y-4 sm:space-y-5">
+        {/* 1. Featured Top Banner */}
+        <div className="pd-card relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 bg-[#12131A] cursor-pointer group shadow-2xl">
           <FeaturedCard post={POSTER_ITEMS[0]} />
         </div>
 
-        {/* ── Two-Column Row ─────────────────────────────────────────────────── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+        {/* 2. Middle 2-Column Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
           {POSTER_ITEMS.slice(1, 3).map((post) => (
-            <div key={post.id} className="pd-card" style={{ borderRadius: '18px', overflow: 'hidden', cursor: 'pointer', opacity: 0 }}>
+            <div
+              key={post.id}
+              className="pd-card relative rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 bg-[#12131A] cursor-pointer group shadow-xl"
+            >
               <MediumCard post={post} />
             </div>
           ))}
         </div>
 
-        {/* ── Three-Column Row ────────────────────────────────────────────────── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
+        {/* 3. Bottom 3-Column Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
           {POSTER_ITEMS.slice(3, 6).map((post) => (
-            <div key={post.id} className="pd-card" style={{ borderRadius: '16px', overflow: 'hidden', cursor: 'pointer', opacity: 0 }}>
+            <div
+              key={post.id}
+              className="pd-card relative rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 bg-[#12131A] cursor-pointer group shadow-xl"
+            >
               <SmallCard post={post} />
             </div>
           ))}
         </div>
       </div>
 
-      {/* ── Navigation dots ────────────────────────────────────────── */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '60px' }}>
+      {/* ── Navigation Dots ────────────────────────────────────────── */}
+      <div className="flex justify-center items-center gap-2 mt-10 sm:mt-14">
         {POSTER_ITEMS.map((_, i) => (
           <button
             key={i}
             onClick={() => setActiveIdx(i)}
-            style={{
-              width: i === activeIdx ? '24px' : '7px',
-              height: '7px',
-              borderRadius: '4px',
-              background: i === activeIdx ? '#FF6B00' : 'rgba(255,255,255,0.25)',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'all 0.35s cubic-bezier(.4,0,.2,1)',
-              padding: 0,
-            }}
-            aria-label={`View poster ${i + 1}`}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              i === activeIdx ? 'w-6 bg-[#FF6B00]' : 'w-2 bg-white/20 hover:bg-white/40'
+            }`}
+            aria-label={`View poster slide ${i + 1}`}
           />
         ))}
       </div>
-
-      <style>{`
-        #poster-design-section .pd-card:hover .pd-card-img {
-          transform: scale(1.05);
-        }
-        #poster-design-section .pd-card:hover .pd-overlay {
-          opacity: 1 !important;
-        }
-        #poster-design-section .pd-card:hover .pd-tag {
-          transform: translateY(0);
-          opacity: 1 !important;
-        }
-        @media (max-width: 767px) {
-          #poster-design-section > div:last-of-type > div:nth-child(2) {
-            grid-template-columns: 1fr !important;
-          }
-          #poster-design-section > div:last-of-type > div:nth-child(3) {
-            grid-template-columns: 1fr 1fr !important;
-          }
-        }
-        @media (max-width: 540px) {
-          #poster-design-section > div:last-of-type > div:nth-child(3) {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }
 
-// ── Card Variants ──────────────────────────────────────────────────────────────
+// ── Shared Card Components with Clean Sora & Mono Typography ──────────────────
 
 function FeaturedCard({ post }: { post: typeof POSTER_ITEMS[0] }) {
   return (
-    <div style={{ position: 'relative', aspectRatio: '21/8', width: '100%' }}>
+    <div className="relative w-full aspect-[16/10] sm:aspect-[21/8]">
       <Image
         src={post.image}
         alt={post.title}
         fill
-        sizes="100vw"
-        className="pd-card-img"
-        style={{ objectFit: 'cover', transition: 'transform 0.7s cubic-bezier(.4,0,.2,1)' }}
+        sizes="(max-width: 768px) 100vw, 1040px"
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         priority
       />
-      {/* Deep gradient overlay */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: 'linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.15) 55%, transparent 100%)',
-      }} />
-      {/* Hover overlay */}
-      <div
-        className="pd-overlay"
-        style={{
-          position: 'absolute', inset: 0,
-          background: 'rgba(255,107,0,0.06)',
-          opacity: 0,
-          transition: 'opacity 0.4s ease',
-        }}
-      />
-      {/* Content */}
-      <div style={{
-        position: 'absolute', left: 0, right: 0, bottom: 0,
-        padding: '40px 44px',
-        display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
-      }}>
-        <div>
-          <span
-            className="pd-tag"
-            style={{
-              display: 'inline-block',
-              fontFamily: '-apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif',
-              fontSize: '10px',
-              fontWeight: 700,
-              letterSpacing: '0.16em',
-              textTransform: 'uppercase',
-              color: '#FF6B00',
-              background: 'rgba(255,107,0,0.12)',
-              border: '1px solid rgba(255,107,0,0.3)',
-              borderRadius: '40px',
-              padding: '5px 14px',
-              marginBottom: '14px',
-              opacity: 0.9,
-              transform: 'translateY(6px)',
-              transition: 'all 0.35s ease',
-            }}
-          >
+      {/* Dark overlay gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-[#FF6B00]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      {/* Card Content */}
+      <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div className="space-y-1.5 sm:space-y-2">
+          <span className="inline-block font-mono text-[10px] sm:text-xs font-bold text-[#FF6B00] uppercase tracking-widest bg-[#FF6B00]/10 border border-[#FF6B00]/30 px-3 py-1 rounded-full">
             {post.categoryLabel}
           </span>
-          <h3 style={{
-            fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, Helvetica Neue, sans-serif',
-            fontSize: 'clamp(1.4rem, 3vw, 2.4rem)',
-            fontWeight: 700,
-            letterSpacing: '-0.02em',
-            color: '#fff',
-            margin: 0,
-            lineHeight: 1.1,
-          }}>
+          <h3 className="font-sora font-bold text-base sm:text-2xl md:text-3xl text-white tracking-tight leading-tight group-hover:text-[#FF6B00] transition-colors">
             {post.title}
           </h3>
         </div>
-        <div style={{
-          fontFamily: '-apple-system, BlinkMacSystemFont, Helvetica Neue, sans-serif',
-          fontSize: '12px',
-          color: 'rgba(255,255,255,0.5)',
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-          whiteSpace: 'nowrap',
-          paddingLeft: '24px',
-        }}>
+        <span className="font-mono text-[10px] sm:text-xs text-white/50 uppercase tracking-wider shrink-0">
           {post.date}
-        </div>
+        </span>
       </div>
     </div>
   );
@@ -251,54 +160,22 @@ function FeaturedCard({ post }: { post: typeof POSTER_ITEMS[0] }) {
 
 function MediumCard({ post }: { post: typeof POSTER_ITEMS[0] }) {
   return (
-    <div style={{ position: 'relative', aspectRatio: '3/2' }}>
+    <div className="relative w-full aspect-[4/3] sm:aspect-[3/2]">
       <Image
         src={post.image}
         alt={post.title}
         fill
-        sizes="(max-width: 768px) 100vw, 50vw"
-        className="pd-card-img"
-        style={{ objectFit: 'cover', transition: 'transform 0.7s cubic-bezier(.4,0,.2,1)' }}
+        sizes="(max-width: 768px) 100vw, 500px"
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: 'linear-gradient(to top, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.10) 60%, transparent 100%)',
-      }} />
-      <div
-        className="pd-overlay"
-        style={{ position: 'absolute', inset: 0, background: 'rgba(255,107,0,0.06)', opacity: 0, transition: 'opacity 0.4s ease' }}
-      />
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0,
-        padding: '28px 30px',
-      }}>
-        <span
-          className="pd-tag"
-          style={{
-            display: 'inline-block',
-            fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-            fontSize: '9px',
-            fontWeight: 700,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: '#FF8C00',
-            marginBottom: '10px',
-            opacity: 0.85,
-            transform: 'translateY(5px)',
-            transition: 'all 0.35s ease',
-          }}
-        >
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
+      <div className="absolute inset-0 bg-[#FF6B00]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 space-y-1 sm:space-y-1.5">
+        <span className="block font-mono text-[10px] sm:text-xs font-semibold text-[#FF6B00] uppercase tracking-widest">
           {post.readTime}
         </span>
-        <h3 style={{
-          fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
-          fontSize: 'clamp(1rem, 1.8vw, 1.35rem)',
-          fontWeight: 700,
-          letterSpacing: '-0.018em',
-          color: '#fff',
-          margin: 0,
-          lineHeight: 1.2,
-        }}>
+        <h3 className="font-sora font-bold text-sm sm:text-lg text-white tracking-tight leading-snug group-hover:text-[#FF6B00] transition-colors">
           {post.title}
         </h3>
       </div>
@@ -308,69 +185,29 @@ function MediumCard({ post }: { post: typeof POSTER_ITEMS[0] }) {
 
 function SmallCard({ post }: { post: typeof POSTER_ITEMS[0] }) {
   return (
-    <div style={{ position: 'relative', aspectRatio: '4/5' }}>
+    <div className="relative w-full aspect-[4/3] sm:aspect-[4/5]">
       <Image
         src={post.image}
         alt={post.title}
         fill
-        sizes="(max-width: 768px) 50vw, 33vw"
-        className="pd-card-img"
-        style={{ objectFit: 'cover', transition: 'transform 0.7s cubic-bezier(.4,0,.2,1)' }}
+        sizes="(max-width: 768px) 100vw, 340px"
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.08) 60%, transparent 100%)',
-      }} />
-      <div
-        className="pd-overlay"
-        style={{ position: 'absolute', inset: 0, background: 'rgba(255,107,0,0.06)', opacity: 0, transition: 'opacity 0.4s ease' }}
-      />
-      {/* Top badge */}
-      <div style={{
-        position: 'absolute', top: '16px', left: '16px',
-        background: 'rgba(0,0,0,0.55)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        borderRadius: '20px',
-        border: '1px solid rgba(255,255,255,0.12)',
-        padding: '4px 12px',
-        fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-        fontSize: '9px',
-        fontWeight: 700,
-        letterSpacing: '0.13em',
-        textTransform: 'uppercase',
-        color: 'rgba(255,255,255,0.7)',
-      }}>
-        {post.categoryLabel}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+      <div className="absolute inset-0 bg-[#FF6B00]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      {/* Top Category Badge */}
+      <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md border border-white/10 px-2.5 py-0.5 rounded-full">
+        <span className="font-mono text-[9px] font-bold text-white/70 uppercase tracking-widest">
+          {post.categoryLabel}
+        </span>
       </div>
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '22px 22px' }}>
-        <span
-          className="pd-tag"
-          style={{
-            display: 'block',
-            fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-            fontSize: '8.5px',
-            fontWeight: 700,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: '#FF8C00',
-            marginBottom: '8px',
-            opacity: 0.85,
-            transform: 'translateY(5px)',
-            transition: 'all 0.35s ease',
-          }}
-        >
+
+      <div className="absolute inset-x-0 bottom-0 p-4 space-y-1">
+        <span className="block font-mono text-[10px] text-[#FF6B00] uppercase tracking-wider">
           {post.date}
         </span>
-        <h3 style={{
-          fontFamily: 'SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif',
-          fontSize: 'clamp(0.85rem, 1.5vw, 1.05rem)',
-          fontWeight: 700,
-          letterSpacing: '-0.015em',
-          color: '#fff',
-          margin: 0,
-          lineHeight: 1.25,
-        }}>
+        <h3 className="font-sora font-bold text-sm sm:text-base text-white tracking-tight leading-snug group-hover:text-[#FF6B00] transition-colors">
           {post.title}
         </h3>
       </div>

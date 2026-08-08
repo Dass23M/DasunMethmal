@@ -133,7 +133,7 @@ export default function PortfolioSinglePage({ params }: Props) {
               {/* Left Column: Overview Header & Highlight Quote */}
               <div className="lg:col-span-5 space-y-6">
                 <span className="font-mono text-xs font-bold text-[#FF6B00] uppercase tracking-widest block">
-                  // OVERVIEW &amp; ENGINEERING STORY
+                  {"// OVERVIEW & ENGINEERING STORY"}
                 </span>
 
                 <h2 className="font-sora font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight leading-tight">
@@ -142,7 +142,7 @@ export default function PortfolioSinglePage({ params }: Props) {
 
                 <div className="border-l-2 border-[#FF6B00] pl-5 py-1">
                   <p className="font-sora font-bold text-base sm:text-lg text-white/95 leading-relaxed">
-                    "{project.subtitle}"
+                    &ldquo;{project.subtitle}&rdquo;
                   </p>
                 </div>
               </div>

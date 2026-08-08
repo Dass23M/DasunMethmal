@@ -17,22 +17,22 @@ export interface PortfolioItem {
 export const portfolioItems: PortfolioItem[] = [
   {
     id: 1,
-    title: 'Thyroid Cancer Risk Prediction',
-    categories: 'machine learning, healthcare',
+    title: 'ThyroTrack – Thyroid Cancer Risk Prediction',
+    categories: 'AI, healthcare, full-stack',
     image: '/images/work_1_md.jpg',
     href: '/portfolio/1',
   },
   {
     id: 2,
-    title: 'CareerAI',
-    categories: 'machine learning, web app',
+    title: 'AI Career Path Recommendation System',
+    categories: 'AI, machine learning, web app',
     image: '/images/work_2_md.jpg',
     href: '/portfolio/2',
   },
   {
     id: 3,
-    title: 'Lost & Found Platform',
-    categories: 'web, full-stack',
+    title: 'Lost & Found Community Platform',
+    categories: 'web, full-stack, Next.js',
     image: '/images/work_3_md.jpg',
     href: '/portfolio/3',
   },
@@ -72,6 +72,8 @@ export interface PortfolioSingle {
   role: string;
   client: string;
   visitUrl: string;
+  githubUrl: string;
+  techStack: string[];
   description1: string;
   description2: string;
 }
@@ -79,48 +81,54 @@ export interface PortfolioSingle {
 export const portfolioSingles: PortfolioSingle[] = [
   {
     id: '1',
-    title: 'Thyroid Cancer Risk Prediction',
+    title: 'ThyroTrack – Thyroid Cancer Risk Prediction',
     subtitle:
-      'A machine learning system that predicts thyroid cancer risk from clinical and diagnostic data.',
+      'A full-stack AI-based healthcare platform for thyroid cancer risk prediction and patient management.',
     images: ['/images/work_1_full.jpg', '/images/work_1_a_full.jpg'],
     date: '2025',
-    role: 'Machine Learning Engineer, Full-Stack Developer',
+    role: 'Full-Stack Developer & ML Engineer',
     client: 'Academic Project',
     visitUrl: 'https://github.com/Dass23M',
+    githubUrl: 'https://github.com/Dass23M',
+    techStack: ['React.js', 'Express.js', 'Flask', 'MySQL', 'Random Forest', 'SHAP'],
     description1:
-      'Built an end-to-end ML pipeline to assess thyroid cancer risk from patient clinical and diagnostic features. The workflow covers EDA, feature engineering, class-imbalance handling, and training multiple classifiers to identify the best-performing model for risk prediction.',
+      'Developed a full-stack AI-based healthcare platform for thyroid cancer risk prediction and patient management. Integrated a Random Forest model with SHAP-based explainability, providing transparent and interpretable predictions from clinical and diagnostic patient data.',
     description2:
-      'The trained model was wrapped in a clean web application so predictions can be generated from a simple input form, making the tool accessible to non-technical users while keeping evaluation rigorous and well-documented.',
+      'The platform includes patient record management, progress tracking, and automated report generation. Built with React.js, Express.js, Flask, and MySQL to deliver a production-grade clinical decision support tool accessible to both healthcare professionals and non-technical users.',
   },
   {
     id: '2',
-    title: 'CareerAI',
+    title: 'AI Career Path Recommendation System',
     subtitle:
-      'A student career recommendation system that matches learners to suitable career paths.',
+      'An AI-powered web application that recommends career paths using machine learning deployed through a Flask microservice.',
     images: ['/images/work_2_full.jpg', '/images/work_2_a_full.jpg'],
     date: '2025',
-    role: 'Machine Learning Engineer, Full-Stack Developer',
+    role: 'Full-Stack Developer & ML Engineer',
     client: 'Personal Project',
-    visitUrl: 'https://github.com/Dass23M',
+    visitUrl: 'https://ai-career-path-recommendation-syste.vercel.app',
+    githubUrl: 'https://github.com/Dass23M',
+    techStack: ['Next.js', 'Express.js', 'Flask', 'MongoDB', 'Machine Learning'],
     description1:
-      'CareerAI recommends suitable career paths to students based on academic performance, skills, and interests. The system processes student input and applies a trained recommendation model to surface the most relevant career options, ranked by fit.',
+      'Built an AI-powered web application that recommends personalized career paths to students based on academic performance, skills, and interests. The machine learning model is deployed through a Flask microservice, ensuring scalable and real-time predictions.',
     description2:
-      'Paired with a clean, easy-to-navigate web interface so students can explore results, understand why a path was suggested, and refine inputs to see updated recommendations in real time.',
+      'Implemented secure user authentication and user-based data tracking for personalized recommendations. Built with Next.js, Express.js, Flask, and MongoDB for a modern, responsive, and fast user experience across all devices.',
   },
   {
     id: '3',
-    title: 'Lost & Found Platform',
+    title: 'Lost & Found Community Platform',
     subtitle:
-      'A full-stack platform for reporting, searching, and reuniting lost items with their owners.',
+      'A full-stack community platform for reporting, searching, and reuniting lost items with their owners.',
     images: ['/images/work_3_full.jpg', '/images/work_3_a_full.jpg'],
     date: '2025',
     role: 'Full-Stack Developer',
     client: 'Personal Project',
-    visitUrl: 'https://github.com/Dass23M',
+    visitUrl: 'https://lost-and-found-frontend-phi.vercel.app',
+    githubUrl: 'https://github.com/Dass23M/lost-and-found-frontend',
+    techStack: ['Next.js', 'Express.js', 'MongoDB Atlas', 'Node.js', 'JWT', 'Cloudinary', 'Nodemailer'],
     description1:
-      'A full-stack web application that lets users report lost items or post found items, then search and filter listings to find matches. Includes user accounts, item categorization, and status tracking from "lost" to "reunited."',
+      'A full-stack community platform for reporting, searching, and reuniting lost items with their owners. Key features include JWT authentication, Cloudinary image storage, claims management system, admin dashboard, Nodemailer email alerts, and a fully mobile-responsive UI.',
     description2:
-      'Designed with a focus on straightforward, fast reporting and search, so users can quickly post an item or check for matches without unnecessary friction.',
+      'Built with Next.js, Express.js, MongoDB Atlas, and Node.js. Deployed on Vercel (frontend) and Railway (backend) for reliable, scalable production hosting. Designed for fast reporting and intuitive search so users can quickly post items or find matches.',
   },
   {
     id: '4',
@@ -131,6 +139,8 @@ export const portfolioSingles: PortfolioSingle[] = [
     role: 'Full-Stack Developer',
     client: 'Personal Project',
     visitUrl: 'https://github.com/Dass23M',
+    githubUrl: 'https://github.com/Dass23M',
+    techStack: ['Next.js', 'Node.js', 'Express.js', 'MongoDB'],
     description1:
       'A full-stack talent discovery and portfolio showcase platform for creators, developers, and professionals to highlight work, connect with recruiters, and manage project inquiries.',
     description2:
@@ -146,6 +156,8 @@ export const portfolioSingles: PortfolioSingle[] = [
     role: 'Full-Stack Lead Developer',
     client: 'Healthcare System (Ongoing)',
     visitUrl: 'https://github.com/Dass23M',
+    githubUrl: 'https://github.com/Dass23M',
+    techStack: ['Next.js', 'Express.js', 'MongoDB', 'Node.js', 'RBAC'],
     description1:
       'Developing an end-to-end medical center platform to streamline clinical operations, EHR, and patient management. Enables real-time doctor appointment booking, patient history tracking, and automated prescription workflow generation.',
     description2:
@@ -161,6 +173,8 @@ export const portfolioSingles: PortfolioSingle[] = [
     role: 'Full-Stack Developer & Growth Marketer',
     client: 'SaaS Client Project',
     visitUrl: 'https://github.com/Dass23M',
+    githubUrl: 'https://github.com/Dass23M',
+    techStack: ['Next.js', 'React.js', 'Chart.js', 'Node.js', 'SEO'],
     description1:
       'Engineered a modern web platform integrating dynamic marketing landing pages with a real-time analytics dashboard to monitor conversion funnels, ad performance, and user engagement metrics.',
     description2:

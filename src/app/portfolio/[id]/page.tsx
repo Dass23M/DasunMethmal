@@ -19,90 +19,177 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props) {
   const project = portfolioSingles.find((p) => p.id === params.id);
   return {
-    title: project ? `${project.title} — Unfold Portfolio` : 'Portfolio — Unfold',
+    title: project ? `${project.title} — Methmal Portfolio` : 'Portfolio — Methmal',
   };
 }
 
-/**
- * Portfolio single page.
- * Full-screen hero, image slider, project details, and description.
- */
 export default function PortfolioSinglePage({ params }: Props) {
   const project = portfolioSingles.find((p) => p.id === params.id);
   if (!project) notFound();
 
+  const currentIndex = portfolioSingles.findIndex((p) => p.id === params.id);
+  const prevProject = portfolioSingles[(currentIndex - 1 + portfolioSingles.length) % portfolioSingles.length];
+  const nextProject = portfolioSingles[(currentIndex + 1) % portfolioSingles.length];
+
   return (
     <>
-      <div className="site-inner">
+      <div className="site-inner bg-black text-white select-none">
         <Navbar />
 
-        {/* Hero */}
+        {/* ── 1. Hero Cover Header Stage ── */}
         <div
-          className="cover-v1 gradient-bottom-black page-cover-fixed"
+          className="cover-v1 gradient-bottom-black page-cover-fixed relative flex items-center justify-center min-h-[75vh] sm:min-h-[85vh]"
           style={{
             backgroundImage: `url('${project.images[0]}')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         >
-          <div className="page-cover-inner">
-            <div style={{ textAlign: 'center', maxWidth: '800px' }}>
-              <h1 className="heading">{project.title}</h1>
-              <h2 className="subheading">{project.subtitle}</h2>
+          {/* Dark luxury gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30 z-0" />
+
+          <div className="page-cover-inner relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-8 text-center pt-24 pb-16">
+            <div className="max-w-4xl mx-auto space-y-4">
+              <span className="inline-block font-mono text-xs font-bold text-[#FF6B00] uppercase tracking-widest bg-[#FF6B00]/10 border border-[#FF6B00]/30 px-4 py-1.5 rounded-full mb-2">
+                {"// CASE STUDY SHOWCASE"}
+              </span>
+
+              <h1 className="font-sora font-black text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-white tracking-tight leading-[1.08]">
+                {project.title}
+              </h1>
+
+              <p className="font-inter font-normal text-base sm:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed pt-2">
+                {project.subtitle}
+              </p>
             </div>
           </div>
-          <MouseScroll targetId="portfolio-single-section" />
+
+          <MouseScroll targetId="portfolio-detail-content" />
         </div>
 
-        {/* Portfolio content */}
-        <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 15px' }}>
-          <div id="portfolio-single-section" className="unslate-section">
-
-            {/* Back button */}
-            <div style={{ textAlign: 'right', marginBottom: '40px' }}>
+        {/* ── 2. Main Portfolio Detail Content ── */}
+        <div id="portfolio-detail-content" className="w-full bg-black py-12 sm:py-20">
+          <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-8">
+            
+            {/* Top Navigation Bar */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-8 border-b border-white/10 mb-10 sm:mb-14">
               <BackButtonClient />
+              <div className="font-mono text-xs text-[#FF6B00] uppercase tracking-widest">
+                <span>01 / CASE STUDY DETAILS</span>
+              </div>
             </div>
 
-            <h2 className="heading-portfolio-single">{project.title}</h2>
+            {/* 4-Column Metadata Cards Grid */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-12 sm:mb-16">
+              <div className="bg-[#12131A] border border-white/10 rounded-2xl p-4 sm:p-6 space-y-1">
+                <span className="font-mono text-[10px] sm:text-xs font-bold text-[#FF6B00] uppercase tracking-widest block">
+                  ROLE
+                </span>
+                <span className="font-sora font-bold text-xs sm:text-base text-white block truncate">
+                  {project.role}
+                </span>
+              </div>
 
-            {/* Image slider */}
+              <div className="bg-[#12131A] border border-white/10 rounded-2xl p-4 sm:p-6 space-y-1">
+                <span className="font-mono text-[10px] sm:text-xs font-bold text-[#FF6B00] uppercase tracking-widest block">
+                  CLIENT
+                </span>
+                <span className="font-sora font-bold text-xs sm:text-base text-white block truncate">
+                  {project.client}
+                </span>
+              </div>
+
+              <div className="bg-[#12131A] border border-white/10 rounded-2xl p-4 sm:p-6 space-y-1">
+                <span className="font-mono text-[10px] sm:text-xs font-bold text-[#FF6B00] uppercase tracking-widest block">
+                  YEAR
+                </span>
+                <span className="font-sora font-bold text-xs sm:text-base text-white block">
+                  {project.date}
+                </span>
+              </div>
+
+              <div className="bg-[#12131A] border border-white/10 rounded-2xl p-4 sm:p-6 space-y-1 flex flex-col justify-center">
+                <span className="font-mono text-[10px] sm:text-xs font-bold text-[#FF6B00] uppercase tracking-widest block">
+                  PROJECT LINK
+                </span>
+                <a
+                  href={project.visitUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-sora font-bold text-xs sm:text-base text-[#FF6B00] hover:text-white transition-colors inline-flex items-center gap-1.5 group"
+                >
+                  <span>VISIT LIVE SITE</span>
+                  <span className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Featured Image Slider Showcase */}
             <PortfolioSliderClient images={project.images} />
 
-            {/* Project metadata */}
-            <div className="portfolio-single-details">
-              {[
-                { label: 'Project Date', value: project.date, isLink: false },
-                { label: 'Role', value: project.role, isLink: false },
-                { label: 'Client', value: project.client, isLink: false },
-                { label: 'Visit', value: project.visitUrl, isLink: true },
-              ].map((detail) => (
-                <div key={detail.label}>
-                  <span className="detail-label">{detail.label}</span>
-                  {detail.isLink ? (
-                    <a href={detail.value} className="detail-val" style={{ display: 'block' }}>
-                      {detail.value}
-                    </a>
-                  ) : (
-                    <span className="detail-val" style={{ display: 'block' }}>{detail.value}</span>
-                  )}
+            {/* Editorial Narrative & Description */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 pt-8 border-t border-white/10 mb-16 sm:mb-24">
+              
+              {/* Left Column: Overview Header & Highlight Quote */}
+              <div className="lg:col-span-5 space-y-6">
+                <span className="font-mono text-xs font-bold text-[#FF6B00] uppercase tracking-widest block">
+                  // OVERVIEW &amp; ENGINEERING STORY
+                </span>
+
+                <h2 className="font-sora font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight leading-tight">
+                  High-Impact Architecture &amp; Execution.
+                </h2>
+
+                <div className="border-l-2 border-[#FF6B00] pl-5 py-1">
+                  <p className="font-sora font-bold text-base sm:text-lg text-white/95 leading-relaxed">
+                    "{project.subtitle}"
+                  </p>
                 </div>
-              ))}
+              </div>
+
+              {/* Right Column: Detailed Narrative Paragraphs */}
+              <div className="lg:col-span-7 space-y-6">
+                <p className="font-inter font-normal text-base sm:text-lg text-white/80 leading-relaxed">
+                  {project.description1}
+                </p>
+                <p className="font-inter font-normal text-base sm:text-lg text-white/80 leading-relaxed">
+                  {project.description2}
+                </p>
+              </div>
+
             </div>
 
-            {/* Description columns */}
-            <div className="portfolio-single-desc">
-              <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.8' }}>
-                {project.description1}
-              </p>
-              <p style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.8' }}>
-                {project.description2}
-              </p>
+            {/* Bottom Next / Previous Project Pagination Bar */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-10 border-t border-white/10">
+              <Link
+                href={`/portfolio/${prevProject.id}`}
+                className="group bg-[#12131A] hover:bg-[#FF6B00] border border-white/10 hover:border-[#FF6B00] p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between"
+              >
+                <span className="font-mono text-[10px] font-bold text-white/50 group-hover:text-black uppercase tracking-widest block mb-2">
+                  ← PREVIOUS PROJECT
+                </span>
+                <span className="font-sora font-bold text-lg text-white group-hover:text-black transition-colors block">
+                  {prevProject.title}
+                </span>
+              </Link>
+
+              <Link
+                href={`/portfolio/${nextProject.id}`}
+                className="group bg-[#12131A] hover:bg-[#FF6B00] border border-white/10 hover:border-[#FF6B00] p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between text-left sm:text-right"
+              >
+                <span className="font-mono text-[10px] font-bold text-white/50 group-hover:text-black uppercase tracking-widest block mb-2">
+                  NEXT PROJECT →
+                </span>
+                <span className="font-sora font-bold text-lg text-white group-hover:text-black transition-colors block">
+                  {nextProject.title}
+                </span>
+              </Link>
             </div>
 
           </div>
         </div>
 
-        {/* Dual-band animated marquee above footer */}
+        {/* Footer Marquee & Footer */}
         <FooterMarquee />
       </div>
 

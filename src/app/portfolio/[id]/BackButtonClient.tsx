@@ -14,20 +14,10 @@ export default function BackButtonClient() {
     <Link
       href="/#portfolio-section"
       onClick={handleBackClick}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '8px',
-        padding: '10px 24px',
-        background: '#212121',
-        borderRadius: '30px',
-        color: '#fff',
-        fontSize: '14px',
-        border: '2px solid transparent',
-        transition: 'border-color 0.3s',
-      }}
+      className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/10 hover:bg-[#FF6B00] border border-white/20 hover:border-[#FF6B00] text-white hover:text-black font-mono text-xs font-bold tracking-widest uppercase transition-all duration-300 shadow-lg hover:scale-105"
     >
-      ← Back to Portfolio
+      <span>←</span>
+      <span>BACK TO PORTFOLIO</span>
     </Link>
   );
 }

@@ -247,8 +247,8 @@ export default function EditorialShowcase() {
                                 className="absolute top-0 left-0 w-[42%] aspect-[3/4] rounded-lg overflow-hidden shadow-2xl z-10 will-change-[clip-path,transform,opacity]"
                             >
                                 <Image
-                                    src="/images/editorial_1.png"
-                                    alt="Editorial portrait 1"
+                                    src="/images/digital-4.png"
+                                    alt="Digital Marketing Campaign Visual 1"
                                     fill
                                     priority
                                     sizes="(max-width: 1024px) 45vw, 25vw"
@@ -262,8 +262,8 @@ export default function EditorialShowcase() {
                                 className="absolute top-[8%] right-0 w-[52%] aspect-[4/3] rounded-lg overflow-hidden shadow-2xl z-20 will-change-[clip-path,transform,opacity]"
                             >
                                 <Image
-                                    src="/images/editorial_2.png"
-                                    alt="Editorial portrait 2"
+                                    src="/images/digital-2.png"
+                                    alt="Digital Marketing Campaign Visual 2"
                                     fill
                                     sizes="(max-width: 1024px) 55vw, 30vw"
                                     className="object-cover"
@@ -276,27 +276,14 @@ export default function EditorialShowcase() {
                                 className="absolute bottom-[5%] right-[5%] w-[44%] aspect-[3/4] rounded-lg overflow-hidden shadow-2xl z-30 will-change-[clip-path,transform,opacity]"
                             >
                                 <Image
-                                    src="/images/editorial_3.png"
-                                    alt="Editorial portrait 3"
+                                    src="/images/digital-3.png"
+                                    alt="Digital Marketing Campaign Visual 3"
                                     fill
                                     sizes="(max-width: 1024px) 48vw, 26vw"
                                     className="object-cover"
                                 />
                             </div>
 
-                            {/* Image 4: Bottom Left Offset */}
-                            <div
-                                ref={img4Ref}
-                                className="absolute bottom-0 left-[8%] w-[40%] aspect-[3/4] rounded-lg overflow-hidden shadow-2xl z-40 will-change-[clip-path,transform,opacity]"
-                            >
-                                <Image
-                                    src="/images/editorial_4.png"
-                                    alt="Editorial portrait 4"
-                                    fill
-                                    sizes="(max-width: 1024px) 45vw, 25vw"
-                                    className="object-cover"
-                                />
-                            </div>
 
                         </div>
 

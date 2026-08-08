@@ -219,7 +219,7 @@ export default function About() {
           <div className="lg:col-span-5">
             <div
               ref={heroImageRef}
-              className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden border border-white/15 shadow-2xl bg-[#14151C] group"
+              className="relative w-full max-w-sm lg:max-w-none mx-auto aspect-[4/5] rounded-2xl overflow-hidden border border-white/15 shadow-2xl bg-[#14151C] group"
             >
               <Image
                 src="/images/methmal2.png"
@@ -275,24 +275,24 @@ export default function About() {
             </span>
           </div>
 
-          {/* Horizontal Gallery Wrapper */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto mb-10">
+          {/* Horizontal Gallery Wrapper - 3 Images Small & Centered on Mobile */}
+          <div className="grid grid-cols-3 gap-2 sm:gap-6 w-full max-w-[340px] sm:max-w-3xl mx-auto mb-8 sm:mb-10 justify-center items-center">
             {GALLERY_IMAGES.map((item, idx) => (
               <div
                 key={idx}
-                className="relative aspect-[3/4] rounded-xl overflow-hidden border border-white/15 bg-[#14151C] group"
+                className="relative aspect-[3/4] rounded-lg sm:rounded-xl overflow-hidden border border-white/15 bg-[#14151C] group"
               >
                 <div className="gallery-item-img relative w-full h-full">
                   <Image
                     src={item.src}
                     alt={item.alt}
                     fill
-                    sizes="(max-width: 640px) 50vw, 20vw"
+                    sizes="(max-width: 640px) 33vw, 20vw"
                     className="object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
                   />
                 </div>
-                <div className="absolute inset-x-0 bottom-0 p-2.5 bg-gradient-to-t from-black/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="font-mono text-[10px] text-[#FF6B00] block truncate">
+                <div className="absolute inset-x-0 bottom-0 p-1.5 sm:p-2.5 bg-gradient-to-t from-black/90 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="font-mono text-[8px] sm:text-[10px] text-[#FF6B00] block truncate text-center sm:text-left">
                     {item.title}
                   </span>
                 </div>

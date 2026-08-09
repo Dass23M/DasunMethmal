@@ -181,6 +181,62 @@ export default function PortfolioSinglePage({ params }: Props) {
 
             </div>
 
+            {/* Project Highlights Stat Grid */}
+            {project.highlights && project.highlights.length > 0 && (
+              <div className="mb-16 sm:mb-24 pt-8 border-t border-white/10">
+                <span className="font-mono text-xs font-bold text-[#FF6B00] uppercase tracking-widest block mb-6">
+                  {"// PROJECT HIGHLIGHTS"}
+                </span>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                  {project.highlights.map((item, idx) => (
+                    <div key={idx} className="bg-[#12131A] border border-white/10 rounded-xl p-4 flex flex-col justify-between hover:border-[#FF6B00]/40 transition-colors">
+                      <span className="font-mono text-xl font-extrabold text-[#FF6B00] block mb-2">{item.number}</span>
+                      <span className="font-sora font-semibold text-xs text-white/90 leading-snug">{item.title}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* My Contributions & Key Features Grid */}
+            {(project.myContributions || project.keyFeatures) && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 sm:mb-24 pt-8 border-t border-white/10">
+                {project.myContributions && project.myContributions.length > 0 && (
+                  <div className="bg-[#12131A] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6">
+                    <div className="flex items-center gap-3">
+                      <span className="w-2 h-6 bg-[#FF6B00] rounded-full" />
+                      <h3 className="font-sora font-extrabold text-xl text-white tracking-tight">My Contributions</h3>
+                    </div>
+                    <ul className="space-y-3.5">
+                      {project.myContributions.map((contrib, idx) => (
+                        <li key={idx} className="flex items-start gap-3 text-sm text-white/80 font-inter leading-relaxed">
+                          <span className="text-[#FF6B00] font-bold mt-0.5">✓</span>
+                          <span>{contrib}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {project.keyFeatures && project.keyFeatures.length > 0 && (
+                  <div className="bg-[#12131A] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6">
+                    <div className="flex items-center gap-3">
+                      <span className="w-2 h-6 bg-[#FF6B00] rounded-full" />
+                      <h3 className="font-sora font-extrabold text-xl text-white tracking-tight">Key Features</h3>
+                    </div>
+                    <ul className="space-y-3.5">
+                      {project.keyFeatures.map((feat, idx) => (
+                        <li key={idx} className="flex items-start gap-3 text-sm text-white/80 font-inter leading-relaxed">
+                          <span className="text-[#FF6B00] font-bold mt-0.5">•</span>
+                          <span>{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Bottom Next / Previous Project Pagination Bar */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-8 border-t border-white/10">
               <Link

@@ -38,16 +38,16 @@ export const portfolioItems: PortfolioItem[] = [
     },
     {
         id: 4,
-        title: 'Talent Discovery Platform',
-        categories: 'web, full-stack',
-        image: '/images/work_4_full.jpg',
+        title: 'Talent Card – Digital Talent Management Platform',
+        categories: 'web, full-stack, React, Node.js',
+        image: '/images/talentcard.png',
         href: '/portfolio/4',
     },
     {
         id: 5,
-        title: 'Medical Center Management System',
-        categories: 'web app, healthcare, full-stack',
-        image: '/images/work_5_md.jpg',
+        title: 'Clinic & Pharmacy Management System',
+        categories: 'web app, healthcare, enterprise, full-stack',
+        image: '/images/paramacy.png',
         href: '/portfolio/5',
     },
     {
@@ -76,6 +76,9 @@ export interface PortfolioSingle {
     techStack: string[];
     description1: string;
     description2: string;
+    myContributions?: string[];
+    keyFeatures?: string[];
+    highlights?: { number: string; title: string }[];
 }
 
 export const portfolioSingles: PortfolioSingle[] = [
@@ -132,36 +135,110 @@ export const portfolioSingles: PortfolioSingle[] = [
     },
     {
         id: '4',
-        title: 'Talent Discovery Platform',
-        subtitle: 'A platform for discovering, showcasing, and connecting with talent.',
+        title: 'Talent Card – Digital Talent Management Platform',
+        subtitle:
+            'A full-stack talent management and onboarding platform with role-based administration, employee management, multi-step onboarding, and document verification workflows.',
         images: ['/images/work_4_full.jpg', '/images/work_4_full.jpg'],
         date: '2025',
-        role: 'Full-Stack Developer',
-        client: 'Personal Project',
+        role: 'Software Engineering Intern',
+        client: 'Professional / Team Project (India)',
         visitUrl: 'https://github.com/Dass23M',
         githubUrl: 'https://github.com/Dass23M',
-        techStack: ['Next.js', 'Node.js', 'Express.js', 'MongoDB'],
+        techStack: [
+            'React.js',
+            'Node.js',
+            'Express.js',
+            'PostgreSQL',
+            'TanStack Query',
+            'Tailwind CSS',
+            'Material UI',
+            'JWT',
+            'REST API',
+            'GitFlow',
+        ],
         description1:
-            'A full-stack talent discovery and portfolio showcase platform for creators, developers, and professionals to highlight work, connect with recruiters, and manage project inquiries.',
+            'Talent Card is a web-based digital talent management platform designed to streamline employee and candidate onboarding, document verification, talent-card management, administration, and role-based workflows. The system provides role-tailored dashboards and secure workflows for administrators, super admins, sales executives, and organizational roles.',
         description2:
-            'Features structured profile pages, project galleries, skill tags, and direct messaging workflows built with clean component architecture for a seamless user experience.',
+            'Worked as part of a development team on the Talent Card platform, contributing to the React-based frontend and administrative workflows. Developed multi-step Sales Executive onboarding forms, implemented and reviewed Super Admin workflows, performed responsive UI testing, and worked on document-verification functionality. Collaborated with the development team using Git/GitFlow and PostgreSQL while integrating frontend components with backend APIs.',
+        myContributions: [
+            'Developed multi-step Sales Executive onboarding forms with dynamic data validation',
+            'Implemented and reviewed Super Admin workflows and system-level administrative controls',
+            'Built document verification submission flows and status tracking features',
+            'Executed responsive UI implementation and testing across mobile and desktop layouts',
+            'Integrated frontend React components with backend Express REST APIs using TanStack Query & Axios',
+            'Configured PostgreSQL database environment and supported data structure setup',
+        ],
+        keyFeatures: [
+            'JWT-based Authentication & Protected Dashboard Routes',
+            'Role-Based Access Control (RBAC) for Admins, Super Admins & Employees',
+            'Multi-step Sales Executive registration & onboarding forms',
+            'Document submission, verification status tracking & admin approval pipeline',
+            'User & Candidate Profile Management with administrative controls',
+            'Mobile-responsive dashboards and consistent UI styling with Tailwind CSS & Material UI',
+        ],
+        highlights: [
+            { number: '01', title: 'Multi-step onboarding' },
+            { number: '02', title: 'Document verification' },
+            { number: '03', title: 'Role-based administration' },
+            { number: '04', title: 'Responsive dashboard' },
+            { number: '05', title: 'REST API integration' },
+            { number: '06', title: 'PostgreSQL database' },
+        ],
     },
     {
         id: '5',
-        title: 'Medical Center Management System',
+        title: 'Clinic & Pharmacy Management System',
         subtitle:
-            'An ongoing comprehensive healthcare management system for patient records, appointments, and prescriptions.',
+            'An enterprise software solution engineered for Serunuwara Medical Center to digitize patient care, pharmacy POS, laboratory workflows, smart billing, and financial analytics.',
         images: ['/images/work_5_md.jpg', '/images/work_5_md.jpg'],
-        date: '2025 – Ongoing',
-        role: 'Full-Stack Lead Developer',
-        client: 'Healthcare System (Ongoing)',
+        date: 'August 2026 – Ongoing',
+        role: 'Full-Stack Software Engineer',
+        client: 'Serunuwara Medical Center (ASI PVT Limited)',
         visitUrl: 'https://github.com/Dass23M',
         githubUrl: 'https://github.com/Dass23M',
-        techStack: ['Next.js', 'Express.js', 'MongoDB', 'Node.js', 'RBAC'],
+        techStack: [
+            'Next.js',
+            'React.js',
+            'Node.js',
+            'Express.js',
+            'MongoDB',
+            'REST API',
+            'RBAC',
+            'Tailwind CSS',
+            'PDF Generation',
+            'Chart.js',
+        ],
         description1:
-            'Developing an end-to-end medical center platform to streamline clinical operations, EHR, and patient management. Enables real-time doctor appointment booking, patient history tracking, and automated prescription workflow generation.',
+            'The Clinic & Pharmacy Management System is a unified, cloud-ready enterprise healthcare platform designed for Serunuwara Medical Center by ASI PVT Limited. The system digitizes every clinical and administrative workflow from patient registration, live token queue management, and electronic prescriptions to pharmacy POS, laboratory diagnostics, and financial reporting.',
         description2:
-            'Built with role-based access control (Admin, Doctor, Receptionist, Patient), ensuring HIPAA-compliant data security, fast query execution, and an intuitive dashboard interface for healthcare staff.',
+            'Built with robust enterprise security featuring granular Role-Based Access Control (RBAC) across 6 distinct organizational roles (Super Admin, Doctor, Pharmacy, Receptionist, Lab Staff, Accounts). Features automated activity logging, session timeout controls, encrypted passwords, and daily automated backups to deliver operational excellence and 99.9% uptime reliability.',
+        myContributions: [
+            'Architected full-stack enterprise healthcare solution for Serunuwara Medical Center (ASI PVT Limited)',
+            'Implemented Granular Role-Based Security (RBAC) across Super Admin, Doctors, Pharmacy, Reception, Lab & Accounts staff',
+            'Developed Doctor Consultation workspace with digital prescriptions, diagnosis notes, and lab investigation requests',
+            'Engineered Pharmacy & POS system supporting barcode scanning, batch tracking, expiry alerts, and GST/VAT tax breakdown',
+            'Built Laboratory module managing blood, urine, X-Ray, ECG, ultrasound, MRI, CT scan tracking and PDF result uploads',
+            'Created Smart Billing engine supporting multi-charge invoices (Doctor + Medicine + Lab + Misc) with reprint & refund flows',
+            'Implemented Real-Time Financial Analytics dashboard featuring gross/net profit tracking and Excel/PDF export capabilities',
+        ],
+        keyFeatures: [
+            'Patient Management: Auto patient numbering, medical history, allergies, visit tracking & NIC integration',
+            'Appointment & Queue: Live token generation, doctor assignment & real-time queue status tracking',
+            'Doctor Consultation: Digital prescription writing, diagnosis notes & lab investigation requests',
+            'Pharmacy & POS: Barcode support, batch tracking, expiry alerts, inventory adjustments & supplier returns',
+            'Laboratory Module: Test result uploads (PDF), technician assignment & electronic report distribution',
+            'Billing & Financials: Multi-charge billing, tax/discounts, daily/weekly/monthly profit analysis & reports',
+            'Staff & HR Management: Employee records, attendance, salary, leave tracking & role permissions',
+            'Audit & Security: Session timeout, activity logs, encrypted passwords & automated daily backups',
+        ],
+        highlights: [
+            { number: '01', title: 'Role-Based Security' },
+            { number: '02', title: 'Real-Time Analytics' },
+            { number: '03', title: 'Cloud Architecture' },
+            { number: '04', title: 'Smart Billing & POS' },
+            { number: '05', title: 'Laboratory Diagnostics' },
+            { number: '06', title: 'Pharmacy & Inventory' },
+        ],
     },
     {
         id: '6',

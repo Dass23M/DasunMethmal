@@ -114,11 +114,11 @@ export default function Contact() {
     }
 
     return (
-        <section id="contact-section" ref={sectionRef} className="w-full bg-[#F5F5F7] py-12 md:py-20 overflow-hidden">
+        <section id="contact-section" ref={sectionRef} className="w-full bg-[#F5F5F7] py-16 md:py-24 overflow-hidden">
             <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-8 md:px-12">
 
                 {/* Main Hero Card Container with Artistic Sunset Gradient Background */}
-                <div className="relative w-full rounded-[24px] sm:rounded-[36px] md:rounded-[44px] overflow-hidden p-5 sm:p-10 md:p-14 lg:p-16 flex items-center justify-between min-h-[640px] md:min-h-[720px] shadow-2xl border border-white/10">
+                <div className="relative w-full rounded-[24px] sm:rounded-[32px] md:rounded-[48px] overflow-hidden p-4 sm:p-8 md:p-16 flex items-center justify-between min-h-[640px] md:min-h-[720px] shadow-2xl border border-white/10">
 
                     {/* Background Sunset Graphic */}
                     <div className="absolute inset-0 z-0">
@@ -135,11 +135,11 @@ export default function Contact() {
                     </div>
 
                     {/* Grid Layout inside Sunset Banner */}
-                    <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+                    <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
 
                         {/* Left Column: Floating White Contact Form Card */}
                         <div ref={cardRef} className="lg:col-span-5 w-full flex justify-center lg:justify-start order-2 lg:order-1">
-                            <div className="bg-white text-black rounded-[24px] shadow-2xl p-5 sm:p-7 w-full max-w-[430px] border border-white/20 select-none">
+                            <div className="bg-white text-black rounded-[24px] shadow-2xl p-4 sm:p-8 w-full max-w-[430px] border border-white/20 select-none">
 
                                 {/* Embedded Header Banner Block */}
                                 <div className="relative h-[95px] rounded-[16px] overflow-hidden flex items-center justify-center shadow-md">
@@ -156,7 +156,7 @@ export default function Contact() {
                                 </div>
 
                                 {/* Card Title */}
-                                <h3 className="font-sora font-bold text-center text-xl text-black mt-5 mb-5 tracking-tight">
+                                <h3 className="font-sora font-bold text-center text-xl text-black mt-4 mb-4 tracking-tight">
                                     Reach Out to Me
                                 </h3>
 
@@ -166,7 +166,7 @@ export default function Contact() {
 
                                         {/* Name Input */}
                                         <div>
-                                            <label htmlFor="name" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                                            <label htmlFor="name" className="block text-xs font-semibold text-gray-700 mb-2">
                                                 Name
                                             </label>
                                             <input
@@ -188,7 +188,7 @@ export default function Contact() {
 
                                         {/* Email Input */}
                                         <div>
-                                            <label htmlFor="email" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                                            <label htmlFor="email" className="block text-xs font-semibold text-gray-700 mb-2">
                                                 E-mail*
                                             </label>
                                             <input
@@ -210,7 +210,7 @@ export default function Contact() {
 
                                         {/* Message Input */}
                                         <div>
-                                            <label htmlFor="message" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                                            <label htmlFor="message" className="block text-xs font-semibold text-gray-700 mb-2">
                                                 Message*
                                             </label>
                                             <textarea
@@ -263,7 +263,7 @@ export default function Contact() {
 
                             <div>
                                 {/* Top Pill Badge */}
-                                <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md text-black px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase shadow-md mb-6">
+                                <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md text-black px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase shadow-md mb-8">
                                     <span className="text-[#FF6B00] text-sm">❇</span>
                                     <span>CONTACT ME</span>
                                 </div>
@@ -276,10 +276,10 @@ export default function Contact() {
                             </div>
 
                             {/* Bottom Right Sub-section */}
-                            <div className="flex items-start gap-3.5 max-w-[440px] pt-4">
+                            <div className="flex items-start gap-4 max-w-[440px] pt-4">
                                 <span className="text-[#FF6B00] text-xl mt-1 flex-shrink-0 animate-pulse">✦</span>
                                 <div>
-                                    <h4 className="font-sora font-bold uppercase text-white tracking-wider text-sm sm:text-base mb-1.5">
+                                    <h4 className="font-sora font-bold uppercase text-white tracking-wider text-sm sm:text-base mb-2">
                                         RESULTS-DRIVEN SOLUTIONS
                                     </h4>
                                     <p className="text-white/85 text-xs sm:text-sm leading-relaxed font-normal">

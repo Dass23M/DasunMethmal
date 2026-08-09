@@ -13,17 +13,17 @@ export default function ImpactSection() {
         <div className="max-w-[920px]">
 
           {/* LARGE BOLD DISPLAY HEADLINE */}
-          <h2 className="font-sora font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-[4rem] text-white tracking-tight leading-[1.08] mb-6 sm:mb-8">
+          <h2 className="font-sora font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-[4rem] text-white tracking-tight leading-[1.08] mb-8">
             Every line of code crafted with purpose. So your vision scales without limits.
           </h2>
 
           {/* MAIN NARRATIVE JOURNEY PARAGRAPH */}
-          <p className="font-inter text-sm sm:text-base md:text-lg text-white/80 leading-relaxed font-normal max-w-[780px] mb-10">
+          <p className="font-inter text-sm sm:text-base md:text-lg text-white/80 leading-relaxed font-normal max-w-[780px] mb-8">
             My journey began 2+ years ago with a single goal: bridging the gap between high-performance software engineering and data-driven growth marketing. Hundreds of architectural decisions, component patterns, API structures, and SEO optimizations—built once and refined continuously. Not a quick starter template, but production-grade digital craft engineered to deliver measurable impact.
           </p>
 
           {/* BOTTOM 2-SUBCOLUMN GRID WITH INDEX HEADINGS */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 pt-6 items-end">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-16 pt-8 items-end">
             
             {/* SUBCOLUMN 1: 001 / MY JOURNEY */}
             <div>

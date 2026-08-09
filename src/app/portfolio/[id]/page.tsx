@@ -68,11 +68,11 @@ export default function PortfolioSinglePage({ params }: Props) {
         </div>
 
         {/* ── 2. Main Portfolio Detail Content ── */}
-        <div id="portfolio-detail-content" className="w-full bg-black py-12 sm:py-20">
+        <div id="portfolio-detail-content" className="w-full bg-black py-16 sm:py-24">
           <div className="w-full max-w-[1280px] mx-auto px-4 sm:px-8">
             
             {/* Top Navigation Bar */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-8 border-b border-white/10 mb-10 sm:mb-14">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-8 border-b border-white/10 mb-8 sm:mb-16">
               <BackButtonClient />
               <div className="font-mono text-xs text-[#FF6B00] uppercase tracking-widest">
                 <span>01 / CASE STUDY DETAILS</span>
@@ -80,7 +80,7 @@ export default function PortfolioSinglePage({ params }: Props) {
             </div>
 
             {/* 4-Column Metadata Cards Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 mb-8">
               <div className="bg-[#12131A] border border-white/10 rounded-2xl p-4 sm:p-6 space-y-1">
                 <span className="font-mono text-[10px] sm:text-xs font-bold text-[#FF6B00] uppercase tracking-widest block">
                   ROLE
@@ -135,7 +135,7 @@ export default function PortfolioSinglePage({ params }: Props) {
             </div>
 
             {/* Tech Stack Tags */}
-            <div className="flex flex-wrap gap-2 sm:gap-3 mb-12 sm:mb-16">
+            <div className="flex flex-wrap gap-2 sm:gap-4 mb-16">
               {project.techStack.map((tech, idx) => (
                 <span
                   key={idx}
@@ -182,7 +182,7 @@ export default function PortfolioSinglePage({ params }: Props) {
             </div>
 
             {/* Bottom Next / Previous Project Pagination Bar */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-10 border-t border-white/10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-8 border-t border-white/10">
               <Link
                 href={`/portfolio/${prevProject.id}`}
                 className="group bg-[#12131A] hover:bg-[#FF6B00] border border-white/10 hover:border-[#FF6B00] p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between"

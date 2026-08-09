@@ -80,8 +80,8 @@ export default function FaqSection() {
       id="faq-section"
       className="w-full min-h-screen h-auto py-16 lg:py-24 lg:min-h-screen bg-[#000000] text-white flex items-center justify-center overflow-hidden select-none"
     >
-      <div className="w-full max-w-[1550px] mx-auto px-5 sm:px-10 md:px-16 lg:px-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-20 items-center">
+      <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-8 md:px-16 lg:px-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 xl:gap-24 items-center">
           
           {/* Left Column: Stacked Display Title perfectly constrained within 5 columns */}
           <div className="lg:col-span-5 flex flex-col justify-center">
@@ -102,7 +102,7 @@ export default function FaqSection() {
               return (
                 <div
                   key={idx}
-                  className="border-b border-white/12 py-3.5 sm:py-4.5 transition-colors duration-300"
+                  className="border-b border-white/12 py-4 sm:py-6 transition-colors duration-300"
                 >
                   {/* Header Clickable Row */}
                   <button
@@ -120,7 +120,7 @@ export default function FaqSection() {
 
                     {/* Circular Action Toggle Button */}
                     <span
-                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0 transition-all duration-300 shadow-sm ${
+                      className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0 transition-all duration-300 shadow-sm ${
                         isOpen
                           ? 'bg-[#FF6B00] text-white rotate-45'
                           : 'bg-white text-black group-hover:bg-[#FF6B00] group-hover:text-white'
@@ -134,7 +134,7 @@ export default function FaqSection() {
                   <div
                     className={`grid transition-all duration-300 ease-in-out ${
                       isOpen
-                        ? 'grid-rows-[1fr] opacity-100 mt-3'
+                        ? 'grid-rows-[1fr] opacity-100 mt-4'
                         : 'grid-rows-[0fr] opacity-0 mt-0 pointer-events-none'
                     }`}
                   >

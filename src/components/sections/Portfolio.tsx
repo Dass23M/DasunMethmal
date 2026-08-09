@@ -84,7 +84,7 @@ export default function Portfolio() {
         .pf-section-inner {
           max-width: 1140px;
           margin: 0 auto;
-          padding: 0 15px;
+          padding: 0 16px;
         }
 
         .pf-grid {
@@ -135,7 +135,7 @@ export default function Portfolio() {
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          padding: 20px 20px 16px;
+          padding: 24px 24px 16px;
           opacity: 0;
           transition: opacity 0.35s ease;
           pointer-events: none;
@@ -149,7 +149,7 @@ export default function Portfolio() {
           color: #fff;
           font-size: 15px;
           font-weight: 700;
-          margin: 0 0 3px;
+          margin: 0 0 4px;
           font-family: 'Sora', sans-serif;
           line-height: 1.3;
         }
@@ -158,7 +158,7 @@ export default function Portfolio() {
           color: rgba(255, 255, 255, 0.55);
           font-size: 11px;
           font-family: 'Inter', sans-serif;
-          margin: 0 0 12px;
+          margin: 0 0 16px;
           text-transform: capitalize;
           letter-spacing: 0.04em;
         }
@@ -167,7 +167,7 @@ export default function Portfolio() {
         .pf-view-btn {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
+          gap: 8px;
           background: #FF6B00;
           color: #fff;
           font-size: 11px;
@@ -175,10 +175,10 @@ export default function Portfolio() {
           font-family: 'Sora', sans-serif;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          padding: 6px 14px;
+          padding: 8px 16px;
           border-radius: 20px;
           width: fit-content;
-          transform: translateY(6px);
+          transform: translateY(8px);
           transition: transform 0.3s ease, background 0.2s ease;
         }
 
@@ -193,15 +193,15 @@ export default function Portfolio() {
         /* ── Count badge ──────────────────────── */
         .pf-badge {
           position: absolute;
-          top: 12px;
-          left: 12px;
+          top: 16px;
+          left: 16px;
           background: rgba(0, 0, 0, 0.85);
           color: #FF6B00;
           font-size: 0.68rem;
           font-weight: 700;
           letter-spacing: 0.12em;
-          padding: 3px 8px;
-          border-radius: 3px;
+          padding: 4px 8px;
+          border-radius: 4px;
           font-family: 'Sora', sans-serif;
           pointer-events: none;
           z-index: 2;

@@ -127,7 +127,7 @@ export default function LogoSlider() {
           letterSpacing: '0.22em',
           textTransform: 'uppercase',
           color: 'rgba(255,255,255,0.3)',
-          marginBottom: '2.5rem',
+          marginBottom: '40px',
         }}
       >
         Technologies &amp; Partners
@@ -140,7 +140,7 @@ export default function LogoSlider() {
       >
         <div
           ref={trackRef}
-          className="flex items-center gap-[60px] md:gap-[80px] w-max"
+          className="flex items-center gap-16 md:gap-20 w-max"
         >
           {marqueeItems.map((logo, index) => (
             <div

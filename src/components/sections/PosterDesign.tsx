@@ -183,10 +183,12 @@ export default function PosterDesign() {
             const sphere = document.createElement('div');
             sphere.className = isSmallType ? 'pd-mini-globe-sphere pd-globe-small' : 'pd-mini-globe-sphere pd-globe-medium';
 
-            const total = GALLERY_ITEMS.length;
+            // On mobile, use 12 cards for ultra-smooth 60fps mobile GPU rendering
+            const items = isMobile ? GALLERY_ITEMS.slice(0, 12) : GALLERY_ITEMS;
+            const total = items.length;
             const miniCards: HTMLDivElement[] = [];
 
-            GALLERY_ITEMS.forEach((src, i) => {
+            items.forEach((src, i) => {
               const card = document.createElement('div');
               card.className = 'pd-mini-clay-card';
 
@@ -214,37 +216,41 @@ export default function PosterDesign() {
             });
 
             container.appendChild(sphere);
-            return { sphere, miniCards };
+            return { sphere, miniCards, total };
           };
 
-          const totalItems = GALLERY_ITEMS.length;
+          const scrubLeft = isMobile ? 0.3 : 1.1;
+          const scrubMiddle = isMobile ? 0.35 : 1.3;
+          const scrubRight = isMobile ? 0.4 : 1.5;
 
-          // 1. Left Miniature Globe (Medium Size - larger than middle)
+          // 1. Left Miniature Globe (Medium Size - coming UP from bottom layer of section)
           if (orbLeftRef.current) {
-            const leftRadius = isMobile ? 55 : 110;
+            const leftRadius = isMobile ? 42 : 95;
             const leftGlobe = buildMiniGlobe(orbLeftRef.current, leftRadius, false);
 
             gsap.fromTo(
               orbLeftRef.current,
-              { y: '85vh', scale: isMobile ? 0.75 : 0.85 },
+              { y: '160vh', scale: isMobile ? 0.75 : 0.85 },
               {
-                y: '-95vh',
+                y: '-140vh',
                 scale: isMobile ? 0.95 : 1.08,
                 ease: 'none',
                 scrollTrigger: {
                   trigger: galleryRef.current,
-                  start: 'top 85%',
+                  start: 'top bottom',
                   end: 'bottom top',
-                  scrub: 1.1,
+                  scrub: scrubLeft,
+                  fastScrollEnd: true,
+                  preventOverlaps: true,
                   onUpdate: (self) => {
                     const p = self.progress;
                     let alpha = 1;
-                    if (p < 0.15) alpha = p / 0.15;
-                    else if (p > 0.85) alpha = (1 - p) / 0.15;
+                    if (p < 0.1) alpha = p / 0.1;
+                    else if (p > 0.9) alpha = (1 - p) / 0.1;
                     if (orbLeftRef.current) {
                       orbLeftRef.current.style.opacity = String(Math.max(0, Math.min(1, alpha)));
                     }
-                    const focusIndex = Math.floor(p * totalItems);
+                    const focusIndex = Math.floor(p * leftGlobe.total);
                     leftGlobe.miniCards.forEach((card, idx) => {
                       if (Math.abs(idx - focusIndex) < 2) card.classList.add('active-card');
                       else card.classList.remove('active-card');
@@ -261,39 +267,43 @@ export default function PosterDesign() {
               ease: 'none',
               scrollTrigger: {
                 trigger: galleryRef.current,
-                start: 'top 85%',
+                start: 'top bottom',
                 end: 'bottom top',
-                scrub: 1.1,
+                scrub: scrubLeft,
+                fastScrollEnd: true,
+                preventOverlaps: true,
               },
             });
           }
 
-          // 2. Middle Miniature Globe (Small Size - smaller than left & right)
+          // 2. Middle Miniature Globe (Small Size - coming UP from bottom layer with depth gap behind main globe)
           if (orbMiddleRef.current) {
-            const middleRadius = isMobile ? 42 : 72;
+            const middleRadius = isMobile ? 30 : 60;
             const middleGlobe = buildMiniGlobe(orbMiddleRef.current, middleRadius, true);
 
             gsap.fromTo(
               orbMiddleRef.current,
-              { y: '95vh', scale: isMobile ? 0.7 : 0.8 },
+              { y: '190vh', scale: isMobile ? 0.7 : 0.8 },
               {
-                y: '-105vh',
+                y: '-165vh',
                 scale: isMobile ? 0.9 : 1.05,
                 ease: 'none',
                 scrollTrigger: {
                   trigger: galleryRef.current,
-                  start: 'top 80%',
+                  start: 'top bottom',
                   end: 'bottom top',
-                  scrub: 1.3,
+                  scrub: scrubMiddle,
+                  fastScrollEnd: true,
+                  preventOverlaps: true,
                   onUpdate: (self) => {
                     const p = self.progress;
                     let alpha = 1;
-                    if (p < 0.15) alpha = p / 0.15;
-                    else if (p > 0.85) alpha = (1 - p) / 0.15;
+                    if (p < 0.1) alpha = p / 0.1;
+                    else if (p > 0.9) alpha = (1 - p) / 0.1;
                     if (orbMiddleRef.current) {
                       orbMiddleRef.current.style.opacity = String(Math.max(0, Math.min(1, alpha)));
                     }
-                    const focusIndex = Math.floor(p * totalItems);
+                    const focusIndex = Math.floor(p * middleGlobe.total);
                     middleGlobe.miniCards.forEach((card, idx) => {
                       if (Math.abs(idx - focusIndex) < 2) card.classList.add('active-card');
                       else card.classList.remove('active-card');
@@ -310,39 +320,43 @@ export default function PosterDesign() {
               ease: 'none',
               scrollTrigger: {
                 trigger: galleryRef.current,
-                start: 'top 80%',
+                start: 'top bottom',
                 end: 'bottom top',
-                scrub: 1.3,
+                scrub: scrubMiddle,
+                fastScrollEnd: true,
+                preventOverlaps: true,
               },
             });
           }
 
-          // 3. Right Miniature Globe (Medium Size - larger than middle)
+          // 3. Right Miniature Globe (Medium Size - coming UP from bottom layer of section)
           if (orbRightRef.current) {
-            const rightRadius = isMobile ? 52 : 105;
+            const rightRadius = isMobile ? 42 : 95;
             const rightGlobe = buildMiniGlobe(orbRightRef.current, rightRadius, false);
 
             gsap.fromTo(
               orbRightRef.current,
-              { y: '90vh', scale: isMobile ? 0.72 : 0.82 },
+              { y: '175vh', scale: isMobile ? 0.72 : 0.82 },
               {
-                y: '-100vh',
+                y: '-150vh',
                 scale: isMobile ? 0.92 : 1.1,
                 ease: 'none',
                 scrollTrigger: {
                   trigger: galleryRef.current,
-                  start: 'top 82%',
+                  start: 'top bottom',
                   end: 'bottom top',
-                  scrub: 1.5,
+                  scrub: scrubRight,
+                  fastScrollEnd: true,
+                  preventOverlaps: true,
                   onUpdate: (self) => {
                     const p = self.progress;
                     let alpha = 1;
-                    if (p < 0.15) alpha = p / 0.15;
-                    else if (p > 0.85) alpha = (1 - p) / 0.15;
+                    if (p < 0.1) alpha = p / 0.1;
+                    else if (p > 0.9) alpha = (1 - p) / 0.1;
                     if (orbRightRef.current) {
                       orbRightRef.current.style.opacity = String(Math.max(0, Math.min(1, alpha)));
                     }
-                    const focusIndex = Math.floor(p * totalItems);
+                    const focusIndex = Math.floor(p * rightGlobe.total);
                     rightGlobe.miniCards.forEach((card, idx) => {
                       if (Math.abs(idx - focusIndex) < 2) card.classList.add('active-card');
                       else card.classList.remove('active-card');
@@ -359,9 +373,11 @@ export default function PosterDesign() {
               ease: 'none',
               scrollTrigger: {
                 trigger: galleryRef.current,
-                start: 'top 82%',
+                start: 'top bottom',
                 end: 'bottom top',
-                scrub: 1.5,
+                scrub: scrubRight,
+                fastScrollEnd: true,
+                preventOverlaps: true,
               },
             });
           }
@@ -483,7 +499,7 @@ export default function PosterDesign() {
           pointer-events: none;
         }
 
-        /* ── 3 Satellite Miniature 3D Photo Globes ── */
+        /* ── 3 Satellite Miniature 3D Photo Globes (Ultra-Smooth Hardware Accelerated) ── */
         .pd-mini-sphere-wrap {
           position: absolute;
           top: 50%;
@@ -493,20 +509,22 @@ export default function PosterDesign() {
           pointer-events: none;
           perspective: 1100px;
           will-change: transform, opacity;
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
           opacity: 0;
         }
 
         .pd-mini-orb-left {
-          left: 8%;
+          left: 4%;
         }
 
         .pd-mini-orb-middle {
           left: 50%;
-          transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%) translateZ(-200px);
         }
 
         .pd-mini-orb-right {
-          right: 8%;
+          right: 4%;
         }
 
         .pd-mini-globe-sphere {
@@ -514,42 +532,47 @@ export default function PosterDesign() {
           width: 0;
           height: 0;
           transform-style: preserve-3d;
+          will-change: transform;
         }
 
-        /* Medium Globe Cards (Left & Right) */
+        /* Medium Globe Cards (Left & Right - larger than middle) */
         .pd-globe-medium .pd-mini-clay-card {
           position: absolute;
-          width: 44px;
-          height: 62px;
-          left: -22px;
-          top: -31px;
+          width: 40px;
+          height: 56px;
+          left: -20px;
+          top: -28px;
           background: #12131A;
-          border-radius: 7px;
-          padding: 3px;
+          border-radius: 6px;
+          padding: 2.5px;
           transform-style: preserve-3d;
-          backface-visibility: visible;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
           border: 1px solid rgba(255, 255, 255, 0.08);
           box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.9),
                       inset 1px 1px 2px rgba(255, 255, 255, 0.05);
-          transition: filter 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+          transition: filter 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+          will-change: transform, filter;
         }
 
-        /* Small Globe Cards (Middle) */
+        /* Small Globe Cards (Middle - smaller than left & right) */
         .pd-globe-small .pd-mini-clay-card {
           position: absolute;
-          width: 32px;
-          height: 44px;
-          left: -16px;
-          top: -22px;
+          width: 28px;
+          height: 38px;
+          left: -14px;
+          top: -19px;
           background: #12131A;
           border-radius: 5px;
           padding: 2px;
           transform-style: preserve-3d;
-          backface-visibility: visible;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
           border: 1px solid rgba(255, 255, 255, 0.08);
           box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.9),
                       inset 1px 1px 2px rgba(255, 255, 255, 0.05);
-          transition: filter 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+          transition: filter 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+          will-change: transform, filter;
         }
 
         .pd-mini-clay-card img {
@@ -558,13 +581,13 @@ export default function PosterDesign() {
           object-fit: cover;
           border-radius: 4px;
           filter: grayscale(80%) brightness(0.55);
-          transition: all 0.3s ease;
+          transition: all 0.25s ease;
         }
 
         .pd-mini-clay-card.active-card {
           border-color: rgba(255, 107, 0, 0.7);
-          filter: drop-shadow(0 0 14px rgba(255, 107, 0, 0.5));
-          box-shadow: 0 0 16px rgba(255, 107, 0, 0.35);
+          filter: drop-shadow(0 0 12px rgba(255, 107, 0, 0.5));
+          box-shadow: 0 0 14px rgba(255, 107, 0, 0.35);
         }
 
         .pd-mini-clay-card.active-card img {
@@ -573,10 +596,10 @@ export default function PosterDesign() {
 
         @media (max-width: 1200px) {
           .pd-mini-orb-left {
-            left: 4%;
+            left: 2%;
           }
           .pd-mini-orb-right {
-            right: 4%;
+            right: 2%;
           }
         }
 
@@ -597,23 +620,26 @@ export default function PosterDesign() {
             top: -75px;
           }
           .pd-mini-orb-left {
-            left: 2.5%;
+            left: 1%;
           }
           .pd-mini-orb-right {
-            right: 2.5%;
+            right: 1%;
+          }
+          .pd-mini-orb-middle {
+            transform: translate(-50%, -50%) translateZ(-130px);
           }
           .pd-globe-medium .pd-mini-clay-card {
-            width: 28px;
-            height: 38px;
-            left: -14px;
-            top: -19px;
+            width: 24px;
+            height: 34px;
+            left: -12px;
+            top: -17px;
             padding: 1.5px;
           }
           .pd-globe-small .pd-mini-clay-card {
-            width: 20px;
-            height: 28px;
-            left: -10px;
-            top: -14px;
+            width: 18px;
+            height: 25px;
+            left: -9px;
+            top: -12.5px;
             padding: 1px;
           }
         }

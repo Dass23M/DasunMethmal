@@ -47,7 +47,7 @@ export const portfolioItems: PortfolioItem[] = [
         id: 5,
         title: 'Clinic & Pharmacy Management System',
         categories: 'web app, healthcare, enterprise, full-stack',
-        image: '/images/paramacy.png',
+        image: '/images/pharcamy.png',
         href: '/portfolio/5',
     },
     {

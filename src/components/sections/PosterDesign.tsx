@@ -787,7 +787,7 @@ export default function PosterDesign() {
         {/* Central Journey Card */}
         <div className="pd-journey-content space-y-5">
           <span className="inline-block font-mono text-xs font-bold text-[#FF6B00] uppercase tracking-widest bg-[#FF6B00]/10 border border-[#FF6B00]/30 px-4 py-1.5 rounded-full">
-            // COLLABORATION & CREATIVE VISION
+            {'// COLLABORATION & CREATIVE VISION'}
           </span>
 
           <h2 className="font-sora font-extrabold text-3xl sm:text-5xl text-white tracking-tight leading-tight">

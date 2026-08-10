@@ -231,7 +231,7 @@ export default function Portfolio() {
                   width={760}
                   height={520}
                   style={{ width: '100%', height: 'auto' }}
-                  priority={idx < 3}
+                  loading="lazy"
                 />
 
                 {/* Hover overlay — pointer-events:none so link click always fires */}

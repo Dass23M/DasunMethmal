@@ -191,9 +191,9 @@ export default function Footer() {
 
                 {/* Giant Bottom Typography */}
                 <div className="w-full text-center mt-10 md:mt-14 overflow-hidden px-2">
-                    <h1 className="font-sora font-black text-white text-[15vw] sm:text-[17vw] lg:text-[18vw] leading-none tracking-tighter uppercase select-none opacity-95">
+                    <div className="font-sora font-black text-white text-[15vw] sm:text-[17vw] lg:text-[18vw] leading-none tracking-tighter uppercase select-none opacity-95">
                         METHMAL
-                    </h1>
+                    </div>
                 </div>
 
                 {/* Bottom Copyright Row */}

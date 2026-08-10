@@ -1,28 +1,29 @@
 import type { Metadata } from 'next';
 import { Sora, Inter, JetBrains_Mono } from 'next/font/google';
+import dynamic from 'next/dynamic';
 import './globals.css';
-import Loader from '@/components/layout/Loader';
-import MobileMenu from '@/components/layout/MobileMenu';
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
-import GSAPSectionAnimator from '@/components/providers/GSAPSectionAnimator';
+import MobileMenu from '@/components/layout/MobileMenu';
+
+// Dynamically import GSAP-dependent components to keep them out of the critical layout bundle
+const Loader = dynamic(() => import('@/components/layout/Loader'), { ssr: false });
+const GSAPSectionAnimator = dynamic(() => import('@/components/providers/GSAPSectionAnimator'), { ssr: false });
 
 const sora = Sora({
   subsets: ['latin'],
-  weight: ['300', '400', '600', '700', '800'],
   variable: '--font-sora',
   display: 'swap',
 });
 
 const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
   variable: '--font-inter',
   display: 'swap',
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '700'],
+  weight: ['400', '700'],
   variable: '--font-mono',
   display: 'swap',
 });
@@ -74,6 +75,10 @@ export const metadata: Metadata = {
       },
     ],
   },
+  alternates: {
+    canonical: '/',
+  },
+  themeColor: '#FF6B00',
   twitter: {
     card: 'summary_large_image',
     title: 'Methmal — Fullstack Developer & Digital Marketer',
@@ -111,7 +116,6 @@ export default function RootLayout({
       <head>
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preload" as="image" href="/images/cover_bg_2.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

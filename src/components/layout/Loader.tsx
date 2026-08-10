@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
 
 /**
  * Ultra-Minimalist Apple Luxury Preloader.
@@ -13,44 +12,50 @@ export default function Loader() {
   const nameRef = useRef<HTMLHeadingElement>(null);
   const [hidden, setHidden] = useState(false);
 
-  // ── 1. GSAP Exit Animation after 1.8 seconds ──
+  // ── 1. GSAP Exit Animation after 450ms (GSAP dynamically loaded) ──
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
     }
 
+    // Fast-track exit animation to allow immediate hero content LCP paint
     const timer = setTimeout(() => {
       if (!overlayRef.current) return;
 
-      const ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          onComplete: () => setHidden(true),
-        });
+      import('gsap').then(({ default: gsap }) => {
+        const ctx = gsap.context(() => {
+          const tl = gsap.timeline({
+            onComplete: () => setHidden(true),
+          });
 
-        // Fade out name & canvas
-        tl.to([canvasRef.current, nameRef.current], {
-          opacity: 0,
-          scale: 0.94,
-          duration: 0.35,
-          ease: 'power2.in',
-        });
+          // Swift fade & slide up black preloader curtain seamlessly
+          tl.to([canvasRef.current, nameRef.current], {
+            opacity: 0,
+            scale: 0.96,
+            duration: 0.15,
+            ease: 'power2.in',
+          });
 
-        // Slide up black preloader curtain seamlessly
-        tl.to(
-          overlayRef.current,
-          {
-            yPercent: -100,
-            duration: 0.55,
-            ease: 'power4.inOut',
-          },
-          '-=0.1'
-        );
-      }, overlayRef);
+          tl.to(
+            overlayRef.current,
+            {
+              opacity: 0,
+              yPercent: -100,
+              duration: 0.25,
+              ease: 'power3.inOut',
+            },
+            '-=0.05'
+          );
+        }, overlayRef);
 
-      return () => ctx.revert();
-    }, 650);
+        (overlayRef as any)._gsapCtx = ctx;
+      });
+    }, 60);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      (overlayRef as any)?._gsapCtx?.revert();
+    };
   }, []);
 
   // ── 2. 3D Golden Torus Ring Render Loop ──
@@ -211,12 +216,12 @@ export default function Loader() {
         />
 
         {/* Minimalist Name Only */}
-        <h1
+        <div
           ref={nameRef}
           className="font-sora font-black text-2xl sm:text-3xl tracking-[0.3em] uppercase text-white mt-4 drop-shadow-md"
         >
           Methmal
-        </h1>
+        </div>
       </div>
     </div>
   );

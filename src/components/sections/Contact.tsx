@@ -147,6 +147,7 @@ export default function Contact() {
                                         src="/images/contact_bg_sunset.png"
                                         alt="Header Banner background"
                                         fill
+                                        sizes="(max-width: 768px) 100vw, 430px"
                                         className="object-cover"
                                     />
                                     <div className="absolute inset-0 bg-black/30" />

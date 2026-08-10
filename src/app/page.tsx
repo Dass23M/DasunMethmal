@@ -1,22 +1,25 @@
+import dynamic from 'next/dynamic';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import FooterMarquee from '@/components/sections/FooterMarquee';
 import Hero from '@/components/sections/Hero';
-import LandoStyleSection from '@/components/sections/LandoStyleSection';
-import Portfolio from '@/components/sections/Portfolio';
-import GSAPFlipSection from '@/components/sections/GSAPFlipSection';
-import EditorialShowcase from '@/components/sections/EditorialShowcase';
-import LogoSlider from '@/components/sections/LogoSlider';
-import About from '@/components/sections/About';
-import RandomTextReveal from '@/components/sections/RandomTextReveal';
-import ScrollRevealGrid from '@/components/sections/ScrollRevealGrid';
-import Testimonials from '@/components/sections/Testimonials';
-import PosterDesign from '@/components/sections/PosterDesign';
-import FaqSection from '@/components/sections/FaqSection';
-import Contact from '@/components/sections/Contact';
-import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
-import OnCraftOffCraft from '@/components/sections/OnCraftOffCraft';
-import Artifact3DSection from '@/components/sections/Artifact3DSection';
+const FooterMarquee = dynamic(() => import('@/components/sections/FooterMarquee'));
+
+// Below-the-fold dynamic code-splitting to eliminate initial thread blocking
+const About = dynamic(() => import('@/components/sections/About'));
+const Portfolio = dynamic(() => import('@/components/sections/Portfolio'));
+const ImageFanShowcase = dynamic(() => import('@/components/sections/ImageFanShowcase'));
+const LandoStyleSection = dynamic(() => import('@/components/sections/LandoStyleSection'));
+const OnCraftOffCraft = dynamic(() => import('@/components/sections/OnCraftOffCraft'));
+const Artifact3DSection = dynamic(() => import('@/components/sections/Artifact3DSection'), { ssr: false });
+const GSAPFlipSection = dynamic(() => import('@/components/sections/GSAPFlipSection'), { ssr: false });
+const EditorialShowcase = dynamic(() => import('@/components/sections/EditorialShowcase'));
+const LogoSlider = dynamic(() => import('@/components/sections/LogoSlider'));
+const RandomTextReveal = dynamic(() => import('@/components/sections/RandomTextReveal'));
+const ScrollRevealGrid = dynamic(() => import('@/components/sections/ScrollRevealGrid'));
+const Testimonials = dynamic(() => import('@/components/sections/Testimonials'));
+const PosterDesign = dynamic(() => import('@/components/sections/PosterDesign'), { ssr: false });
+const FaqSection = dynamic(() => import('@/components/sections/FaqSection'));
+const Contact = dynamic(() => import('@/components/sections/Contact'));
 
 /**
  * Main one-page portfolio — home page.
@@ -25,8 +28,8 @@ import Artifact3DSection from '@/components/sections/Artifact3DSection';
 export default function HomePage() {
   return (
     <>
-      {/* Site inner — margin-bottom pushes content up to reveal fixed footer */}
-      <div className="site-inner">
+      {/* Main content landmark — margin-bottom pushes content up to reveal fixed footer */}
+      <main id="main-content" className="site-inner">
         {/* Navigation */}
         <Navbar />
 
@@ -104,7 +107,7 @@ export default function HomePage() {
           {/* Dual-band scrolling marquee before footer */}
           <FooterMarquee />
         </div>
-      </div>
+      </main>
 
       {/* Fixed footer at bottom of viewport */}
       <Footer />

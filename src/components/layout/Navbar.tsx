@@ -14,7 +14,9 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState('home-section');
   const lastScrollTop = useRef(0);
 
-  const handleScroll = useCallback(() => {
+  const scrollTicking = useRef(false);
+
+  const updateScrollState = useCallback(() => {
     const st = window.scrollY;
 
     if (st > 150) {
@@ -40,7 +42,7 @@ export default function Navbar() {
 
     lastScrollTop.current = st;
 
-    // Track active section for navbar underline indicator
+    // Track active section using window scroll position without triggering forced reflow
     const sections = [
       'home-section',
       'portfolio-section',
@@ -56,14 +58,22 @@ export default function Navbar() {
       const el = document.getElementById(sec);
       if (el) {
         const top = el.offsetTop - 200;
-        const height = el.offsetHeight;
+        const height = el.clientHeight || 500;
         if (st >= top && st < top + height) {
           setActiveSection(sec);
           break;
         }
       }
     }
+    scrollTicking.current = false;
   }, []);
+
+  const handleScroll = useCallback(() => {
+    if (!scrollTicking.current) {
+      scrollTicking.current = true;
+      requestAnimationFrame(updateScrollState);
+    }
+  }, [updateScrollState]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });

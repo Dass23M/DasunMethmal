@@ -2,10 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const GALLERY_IMAGES = [
   {
@@ -53,7 +49,13 @@ export default function About() {
   useEffect(() => {
     if (!mounted || !containerRef.current) return;
 
-    const ctx = gsap.context(() => {
+    let ctx: { revert: () => void } | null = null;
+
+    Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
+      ([{ default: gsap }, { ScrollTrigger }]) => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
 
       // 1. Luxury Apple-Style Hero Portrait Reveal on Scroll Down
@@ -184,9 +186,10 @@ export default function About() {
         }
       }
     }, containerRef);
+  });
 
-    return () => ctx.revert();
-  }, [mounted]);
+  return () => ctx?.revert();
+}, [mounted]);
 
   if (!mounted) {
     return <section className="w-full h-screen bg-[#000000]" />;
@@ -207,9 +210,9 @@ export default function About() {
           </div>
 
           <div className="relative w-full overflow-hidden">
-            <h1 className="font-sora font-black text-4xl sm:text-7xl md:text-8xl lg:text-[7.5rem] uppercase tracking-tight text-white leading-none">
-              ARTISTRY<span className="text-[#FF6B00]">.</span>
-            </h1>
+            <h2 className="font-sora font-black text-4xl sm:text-7xl md:text-8xl lg:text-[7.5rem] uppercase tracking-tight text-white leading-none">
+              METHMAL<span className="text-[#FF6B00]">.</span>
+            </h2>
           </div>
         </div>
 

@@ -162,11 +162,14 @@ export default function Artifact3DSection() {
       return { px: width / 2 + x1 * scale, py: height / 2 + y2 * scale, scale };
     };
 
+    let isLoopActive = false;
+
     const render = () => {
       if (!isSectionVisible.current) {
-        animationFrameId = requestAnimationFrame(render);
+        isLoopActive = false;
         return;
       }
+      isLoopActive = true;
       ctx.clearRect(0, 0, width, height);
       rotY += 0.006;
 
@@ -218,7 +221,11 @@ export default function Artifact3DSection() {
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    const startArtifactLoop = () => {
+      if (!isLoopActive) {
+        render();
+      }
+    };
 
     const ctxGSAP = gsap.context(() => {
       ScrollTrigger.create({
@@ -227,6 +234,7 @@ export default function Artifact3DSection() {
         end: 'bottom top',
         onEnter: () => {
           isSectionVisible.current = true;
+          startArtifactLoop();
           gsap.to([canvas, scanlinesRef.current].filter(Boolean), { opacity: 1, duration: 0.5 });
           gsap.to([hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current].filter(Boolean), {
             opacity: 1, duration: 0.5, stagger: 0.1,
@@ -240,6 +248,7 @@ export default function Artifact3DSection() {
         },
         onEnterBack: () => {
           isSectionVisible.current = true;
+          startArtifactLoop();
           gsap.to([canvas, scanlinesRef.current].filter(Boolean), { opacity: 1, duration: 0.4 });
           gsap.to([hudCornerTLRef.current, hudCornerBRRef.current, sidebarRef.current].filter(Boolean), {
             opacity: 1, duration: 0.4,
@@ -387,10 +396,10 @@ export default function Artifact3DSection() {
               Full-Stack Developer &amp; Digital Marketer
             </p>
 
-            <h1 className="art-hero-title font-sora font-extrabold text-[clamp(2.4rem,6.5vw,7rem)] uppercase leading-[0.9] tracking-[-0.025em] text-white opacity-0 translate-y-8">
+            <h2 className="art-hero-title font-sora font-extrabold text-[clamp(2.4rem,6.5vw,7rem)] uppercase leading-[0.9] tracking-[-0.025em] text-white opacity-0 translate-y-8">
               Craft.&nbsp;Code.<br />
               <span className="text-[#FF8C00]">Convert.</span>
-            </h1>
+            </h2>
 
             <div className="art-hero-meta text-center opacity-0 translate-y-5 mt-6 max-w-[42ch] mx-auto">
               <p className="font-inter text-[11px] text-white/55 leading-[1.75]">

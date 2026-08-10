@@ -131,13 +131,13 @@ export default function ScrollRevealGrid() {
                         <div className="bento-card bg-white border border-gray-150 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-sm flex items-center justify-between">
                             <div className="flex items-center -space-x-3">
                                 <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-white shadow-sm">
-                                    <Image src="/images/person_man_1.jpg" alt="Developer profile 1" fill className="object-cover" />
+                                    <Image src="/images/person_man_1.jpg" alt="Developer profile 1" fill sizes="44px" className="object-cover" />
                                 </div>
                                 <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-white shadow-sm">
-                                    <Image src="/images/person_man_2.jpg" alt="Developer profile 2" fill className="object-cover" />
+                                    <Image src="/images/person_man_2.jpg" alt="Developer profile 2" fill sizes="44px" className="object-cover" />
                                 </div>
                                 <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-white shadow-sm">
-                                    <Image src="/images/person_man_3.jpg" alt="Developer profile 3" fill className="object-cover" />
+                                    <Image src="/images/person_man_3.jpg" alt="Developer profile 3" fill sizes="44px" className="object-cover" />
                                 </div>
                             </div>
                             <span className="font-sora text-xs sm:text-sm font-semibold text-gray-700 tracking-tight">

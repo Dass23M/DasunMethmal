@@ -1,13 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Native Smooth Scroll Provider (Lenis motion removed).
+ * No longer imports GSAP — anchor-link interception is pure DOM.
  */
 export default function SmoothScrollProvider({
   children,
@@ -60,4 +57,3 @@ export default function SmoothScrollProvider({
 
   return <>{children}</>;
 }
-

@@ -382,12 +382,21 @@ export default function GSAPFlipSection() {
       }
 
       let isRunning = true;
+      let isLoopActive = false;
+
       const tick = () => {
-        if (!isRunning) return;
-        if (!isSectionVisible.current) {
-          animFrameId = requestAnimationFrame(tick);
+        if (!isRunning) {
+          isLoopActive = false;
           return;
         }
+
+        // Completely stop requestAnimationFrame when section is not visible
+        if (!isSectionVisible.current) {
+          isLoopActive = false;
+          return;
+        }
+
+        isLoopActive = true;
         const elapsed = (performance.now() - startTime) / 1000;
         const delta = Math.min(elapsed - lastTime, 0.05);
         lastTime = elapsed;
@@ -427,7 +436,13 @@ export default function GSAPFlipSection() {
         composer.render();
         animFrameId = requestAnimationFrame(tick);
       };
-      tick();
+
+      // Expose function to trigger RAF loop when scrolled into view
+      (containerRef as any)._startFlipLoop = () => {
+        if (!isLoopActive && isRunning) {
+          tick();
+        }
+      };
 
       // ── GSAP scroll animations ──────────────────────────────
       gsap.set(scrollGroup.position, { x: 0, y: 0, z: 0 });
@@ -550,6 +565,7 @@ export default function GSAPFlipSection() {
         end: 'bottom top',
         onEnter: () => {
           isSectionVisible.current = true;
+          (containerRef.current as any)?._startFlipLoop?.();
           gsap.to([canvasRef.current, scanlinesRef.current].filter(Boolean), { opacity: 1, duration: 0.4 });
         },
         onLeave: () => {
@@ -558,6 +574,7 @@ export default function GSAPFlipSection() {
         },
         onEnterBack: () => {
           isSectionVisible.current = true;
+          (containerRef.current as any)?._startFlipLoop?.();
           gsap.to([canvasRef.current, scanlinesRef.current].filter(Boolean), { opacity: 1, duration: 0.3 });
         },
         onLeaveBack: () => {
@@ -703,12 +720,12 @@ export default function GSAPFlipSection() {
           className="min-h-screen mb-[30vh] md:mb-[60vh] flex flex-col justify-between px-5 sm:px-8 md:px-12 pt-24 md:pt-32 pb-12 relative"
         >
           <div className="flex flex-col items-center pt-4 md:pt-[4vh]">
-            <h1
+            <h2
               className="gsapflip-hero-title text-[clamp(2.5rem,8vw,7.5rem)] font-extrabold leading-[0.95] tracking-tight text-center uppercase"
               style={{ opacity: 0, transform: 'translateY(30px)' }}
             >
               The future<br />is <span style={{ color: '#ff4d00' }}>fracture.</span>
-            </h1>
+            </h2>
 
             <div
               className="gsapflip-hero-meta text-center mt-6 md:mt-8"

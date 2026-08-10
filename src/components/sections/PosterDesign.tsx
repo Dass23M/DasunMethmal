@@ -159,15 +159,18 @@ export default function PosterDesign() {
                   });
                 }
 
-                // Highlight cards closest to the front
+                // Highlight cards closest to the front only when focusIndex changes
                 const focusIndex = Math.floor(progress * total);
-                cards.forEach((card, idx) => {
-                  if (Math.abs(idx - focusIndex) < 2) {
-                    card.classList.add('active-card');
-                  } else {
-                    card.classList.remove('active-card');
-                  }
-                });
+                if ((cards as any)._lastFocus !== focusIndex) {
+                  (cards as any)._lastFocus = focusIndex;
+                  cards.forEach((card, idx) => {
+                    if (Math.abs(idx - focusIndex) < 2) {
+                      card.classList.add('active-card');
+                    } else {
+                      card.classList.remove('active-card');
+                    }
+                  });
+                }
               },
             },
           });
@@ -247,14 +250,19 @@ export default function PosterDesign() {
                     let alpha = 1;
                     if (p < 0.1) alpha = p / 0.1;
                     else if (p > 0.9) alpha = (1 - p) / 0.1;
-                    if (orbLeftRef.current) {
-                      orbLeftRef.current.style.opacity = String(Math.max(0, Math.min(1, alpha)));
+                    const cleanAlpha = Math.max(0, Math.min(1, alpha));
+                    if (orbLeftRef.current && (orbLeftRef as any)._lastAlpha !== cleanAlpha) {
+                      (orbLeftRef as any)._lastAlpha = cleanAlpha;
+                      orbLeftRef.current.style.opacity = String(cleanAlpha);
                     }
                     const focusIndex = Math.floor(p * leftGlobe.total);
-                    leftGlobe.miniCards.forEach((card, idx) => {
-                      if (Math.abs(idx - focusIndex) < 2) card.classList.add('active-card');
-                      else card.classList.remove('active-card');
-                    });
+                    if ((leftGlobe as any)._lastFocus !== focusIndex) {
+                      (leftGlobe as any)._lastFocus = focusIndex;
+                      leftGlobe.miniCards.forEach((card, idx) => {
+                        if (Math.abs(idx - focusIndex) < 2) card.classList.add('active-card');
+                        else card.classList.remove('active-card');
+                      });
+                    }
                   },
                 },
               }
@@ -300,14 +308,19 @@ export default function PosterDesign() {
                     let alpha = 1;
                     if (p < 0.1) alpha = p / 0.1;
                     else if (p > 0.9) alpha = (1 - p) / 0.1;
-                    if (orbMiddleRef.current) {
-                      orbMiddleRef.current.style.opacity = String(Math.max(0, Math.min(1, alpha)));
+                    const cleanAlpha = Math.max(0, Math.min(1, alpha));
+                    if (orbMiddleRef.current && (orbMiddleRef as any)._lastAlpha !== cleanAlpha) {
+                      (orbMiddleRef as any)._lastAlpha = cleanAlpha;
+                      orbMiddleRef.current.style.opacity = String(cleanAlpha);
                     }
                     const focusIndex = Math.floor(p * middleGlobe.total);
-                    middleGlobe.miniCards.forEach((card, idx) => {
-                      if (Math.abs(idx - focusIndex) < 2) card.classList.add('active-card');
-                      else card.classList.remove('active-card');
-                    });
+                    if ((middleGlobe as any)._lastFocus !== focusIndex) {
+                      (middleGlobe as any)._lastFocus = focusIndex;
+                      middleGlobe.miniCards.forEach((card, idx) => {
+                        if (Math.abs(idx - focusIndex) < 2) card.classList.add('active-card');
+                        else card.classList.remove('active-card');
+                      });
+                    }
                   },
                 },
               }
@@ -353,14 +366,19 @@ export default function PosterDesign() {
                     let alpha = 1;
                     if (p < 0.1) alpha = p / 0.1;
                     else if (p > 0.9) alpha = (1 - p) / 0.1;
-                    if (orbRightRef.current) {
-                      orbRightRef.current.style.opacity = String(Math.max(0, Math.min(1, alpha)));
+                    const cleanAlpha = Math.max(0, Math.min(1, alpha));
+                    if (orbRightRef.current && (orbRightRef as any)._lastAlpha !== cleanAlpha) {
+                      (orbRightRef as any)._lastAlpha = cleanAlpha;
+                      orbRightRef.current.style.opacity = String(cleanAlpha);
                     }
                     const focusIndex = Math.floor(p * rightGlobe.total);
-                    rightGlobe.miniCards.forEach((card, idx) => {
-                      if (Math.abs(idx - focusIndex) < 2) card.classList.add('active-card');
-                      else card.classList.remove('active-card');
-                    });
+                    if ((rightGlobe as any)._lastFocus !== focusIndex) {
+                      (rightGlobe as any)._lastFocus = focusIndex;
+                      rightGlobe.miniCards.forEach((card, idx) => {
+                        if (Math.abs(idx - focusIndex) < 2) card.classList.add('active-card');
+                        else card.classList.remove('active-card');
+                      });
+                    }
                   },
                 },
               }

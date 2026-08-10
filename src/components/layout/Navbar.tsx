@@ -16,33 +16,7 @@ export default function Navbar() {
 
   const scrollTicking = useRef(false);
 
-  const updateScrollState = useCallback(() => {
-    const st = window.scrollY;
-
-    if (st > 150) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-      setAwake(false);
-      setSleep(false);
-    }
-
-    if (st > 350) {
-      if (st > lastScrollTop.current) {
-        setAwake(false);
-        setSleep(true);
-      } else {
-        setAwake(true);
-        setSleep(false);
-      }
-    } else {
-      setAwake(false);
-      setSleep(true);
-    }
-
-    lastScrollTop.current = st;
-
-    // Track active section using window scroll position without triggering forced reflow
+  useEffect(() => {
     const sections = [
       'home-section',
       'portfolio-section',
@@ -54,26 +28,60 @@ export default function Navbar() {
       'contact-section',
     ];
 
-    for (const sec of sections) {
-      const el = document.getElementById(sec);
-      if (el) {
-        const top = el.offsetTop - 200;
-        const height = el.clientHeight || 500;
-        if (st >= top && st < top + height) {
-          setActiveSection(sec);
-          break;
-        }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: '-20% 0px -40% 0px',
+        threshold: 0.1,
       }
-    }
-    scrollTicking.current = false;
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   const handleScroll = useCallback(() => {
     if (!scrollTicking.current) {
       scrollTicking.current = true;
-      requestAnimationFrame(updateScrollState);
+      requestAnimationFrame(() => {
+        const st = window.scrollY;
+
+        if (st > 150) {
+          setScrolled(true);
+        } else {
+          setScrolled(false);
+          setAwake(false);
+          setSleep(false);
+        }
+
+        if (st > 350) {
+          if (st > lastScrollTop.current) {
+            setAwake(false);
+            setSleep(true);
+          } else {
+            setAwake(true);
+            setSleep(false);
+          }
+        } else {
+          setAwake(false);
+          setSleep(true);
+        }
+
+        lastScrollTop.current = st;
+        scrollTicking.current = false;
+      });
     }
-  }, [updateScrollState]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });

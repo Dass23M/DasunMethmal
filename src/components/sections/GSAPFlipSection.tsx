@@ -67,10 +67,8 @@ export default function GSAPFlipSection() {
       (function loopCursor() {
         rx += (mx - rx) * 0.15;
         ry += (my - ry) * 0.15;
-        cur.style.left = mx + 'px';
-        cur.style.top = my + 'px';
-        ring.style.left = rx + 'px';
-        ring.style.top = ry + 'px';
+        cur.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
+        ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`;
         cursorAF = requestAnimationFrame(loopCursor);
       })();
     }
@@ -358,8 +356,8 @@ export default function GSAPFlipSection() {
       const mouse = new THREE.Vector2(-999, -999);
 
       const updateMousePos = (clientX: number, clientY: number) => {
-        mouse.x = (clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+        mouse.x = (clientX / (winW || 1)) * 2 - 1;
+        mouse.y = -(clientY / (winH || 1)) * 2 + 1;
       };
 
       const onMouseMoveThree = (e: MouseEvent) => updateMousePos(e.clientX, e.clientY);

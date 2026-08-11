@@ -109,7 +109,13 @@ const jsonLd = {
       name: 'Dasun Methmal',
       jobTitle: 'Fullstack Developer & AI Engineer',
       url: 'https://dasunmethmal.com',
-      sameAs: ['https://github.com/Dass23M'],
+      sameAs: [
+        'https://www.linkedin.com/in/dasun-methmal-607333230',
+        'https://www.facebook.com/share/19NZDkGEqc',
+        'https://www.instagram.com/_dase23_',
+        'https://www.tiktok.com/@dcode33',
+        'https://github.com/Dass23M',
+      ],
       knowsAbout: [
         'Web Development',
         'Machine Learning',

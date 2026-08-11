@@ -52,10 +52,10 @@ const siteUrl =
 const siteName = 'Dasun Methmal';
 
 const siteTitle =
-  'Dasun Methmal | Software Engineer & Full-Stack Developer';
+  'Dasun Methmal | Full-Stack Developer & Digital Marketer';
 
 const siteDescription =
-  'Dasun Methmal is a Software Engineering graduate from Cardiff Metropolitan University, UK, specializing in Full-Stack Development, AI, Machine Learning, and modern web technologies.';
+  'Dasun Methmal is a Software Engineering graduate from Cardiff Metropolitan University, UK, specializing in Full-Stack Development, Digital Marketing, SEO, AI, Machine Learning, and modern web technologies.';
 
 // -----------------------------------------------------------------------------
 // Viewport
@@ -84,10 +84,16 @@ export const metadata: Metadata = {
   keywords: [
     'Dasun Methmal',
     'Dasun Methmal Portfolio',
-    'Dasun Methmal Software Engineer',
-    'Software Engineer',
+    'Dasun Methmal Full Stack Developer',
+    'Dasun Methmal Digital Marketer',
     'Full-Stack Developer',
     'Full Stack Developer',
+    'Digital Marketer',
+    'Digital Marketing',
+    'SEO Specialist',
+    'SEO',
+    'Web Developer',
+    'Software Engineer',
     'Software Engineering Graduate',
     'Cardiff Metropolitan University',
     'React Developer',
@@ -96,10 +102,14 @@ export const metadata: Metadata = {
     'Java Developer',
     'Spring Boot Developer',
     'TypeScript Developer',
+    'JavaScript Developer',
     'AI Engineer',
     'Machine Learning Engineer',
-    'Web Developer',
     'Web Development',
+    'Modern Web Applications',
+    'Search Engine Optimization',
+    'Social Media Marketing',
+    'Digital Products',
   ],
 
   authors: [
@@ -135,8 +145,13 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
 
+  // ---------------------------------------------------------------------------
+  // Open Graph
+  // ---------------------------------------------------------------------------
+
   openGraph: {
     type: 'website',
+
     locale: 'en_US',
 
     url: siteUrl,
@@ -146,17 +161,21 @@ export const metadata: Metadata = {
     title: siteTitle,
 
     description:
-      'Official portfolio of Dasun Methmal, a Software Engineering graduate and Full-Stack Developer building modern web applications, AI solutions, and scalable digital products.',
+      'Official portfolio of Dasun Methmal, a Full-Stack Developer and Digital Marketer specializing in modern web applications, SEO, digital marketing, AI, and scalable digital products.',
 
     images: [
       {
         url: '/images/cover_bg_2.png',
         width: 1200,
         height: 630,
-        alt: 'Dasun Methmal — Software Engineer & Full-Stack Developer',
+        alt: 'Dasun Methmal — Full-Stack Developer & Digital Marketer',
       },
     ],
   },
+
+  // ---------------------------------------------------------------------------
+  // Twitter / X
+  // ---------------------------------------------------------------------------
 
   twitter: {
     card: 'summary_large_image',
@@ -164,10 +183,14 @@ export const metadata: Metadata = {
     title: siteTitle,
 
     description:
-      'Portfolio of Dasun Methmal, Software Engineering graduate and Full-Stack Developer specializing in modern web technologies, AI, and machine learning.',
+      'Portfolio of Dasun Methmal, Full-Stack Developer and Digital Marketer specializing in web development, SEO, digital marketing, AI, and modern digital products.',
 
     images: ['/images/cover_bg_2.png'],
   },
+
+  // ---------------------------------------------------------------------------
+  // Icons
+  // ---------------------------------------------------------------------------
 
   icons: {
     icon: '/favicon.ico',
@@ -196,7 +219,7 @@ const jsonLd = {
       name: siteName,
 
       description:
-        'Official portfolio website of Dasun Methmal, Software Engineer and Full-Stack Developer.',
+        'Official portfolio website of Dasun Methmal, Full-Stack Developer and Digital Marketer.',
 
       inLanguage: 'en-US',
 
@@ -217,10 +240,10 @@ const jsonLd = {
 
       url: siteUrl,
 
-      jobTitle: 'Software Engineer & Full-Stack Developer',
+      jobTitle: 'Full-Stack Developer & Digital Marketer',
 
       description:
-        'Dasun Methmal is a Software Engineering graduate from Cardiff Metropolitan University, UK, specializing in Full-Stack Development, AI, Machine Learning, and modern web technologies.',
+        'Dasun Methmal is a Software Engineering graduate from Cardiff Metropolitan University, UK, specializing in Full-Stack Development, Digital Marketing, SEO, AI, Machine Learning, and modern web technologies.',
 
       alumniOf: {
         '@type': 'CollegeOrUniversity',
@@ -236,9 +259,14 @@ const jsonLd = {
       ],
 
       knowsAbout: [
-        'Software Engineering',
         'Full-Stack Development',
         'Web Development',
+        'Software Engineering',
+        'Digital Marketing',
+        'Search Engine Optimization',
+        'SEO',
+        'Social Media Marketing',
+        'Digital Products',
         'React',
         'Next.js',
         'TypeScript',
@@ -252,7 +280,6 @@ const jsonLd = {
         'PostgreSQL',
         'MySQL',
         'MongoDB',
-        'Digital Products',
       ],
     },
   ],

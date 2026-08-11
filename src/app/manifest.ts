@@ -2,12 +2,12 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Dasun Methmal | Software Engineer & Full-Stack Developer",
+    name: "Dasun Methmal | Full-Stack Developer & Digital Marketer",
 
     short_name: "Dasun Methmal",
 
     description:
-      "Official portfolio of Dasun Methmal, a Software Engineering graduate and Full-Stack Developer specializing in modern web applications, AI, and machine learning.",
+      "Official portfolio of Dasun Methmal, a Software Engineering graduate, Full-Stack Developer, and Digital Marketer specializing in modern web applications, digital marketing, SEO, and AI-powered solutions.",
 
     start_url: "/",
 

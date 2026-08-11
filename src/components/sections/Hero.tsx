@@ -93,13 +93,12 @@ export default function Hero({
         className="relative z-[9] max-w-[1140px] mx-auto px-4 h-[100svh] min-h-0 lg:h-screen lg:min-h-[650px] flex items-center justify-center will-change-transform"
       >
         <div className="text-center max-w-[850px] w-full px-2">
-          {/* Title: METH with accessible search headline */}
-          <h1 className="hero-title-meth font-sora text-[2.5rem] xs:text-[3rem] sm:text-[4rem] lg:text-[5.5rem] font-black text-white mb-4 sm:mb-6 tracking-tight leading-[1.1]">
-            <span className="sr-only">Methmal — Fullstack Developer, AI Engineer &amp; Digital Strategist Portfolio</span>
-            <span className="relative inline-block overflow-hidden align-top" aria-hidden="true">
+          {/* Title: DASUN METHMAL */}
+          <h1 className="hero-title-meth font-sora text-[2.2rem] xs:text-[2.8rem] sm:text-[3.8rem] lg:text-[5rem] font-black text-white mb-4 sm:mb-6 tracking-tight leading-[1.1]">
+            <span className="relative inline-block overflow-hidden align-top">
               <span className="hero-title-cover absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%]" />
               <span className="hero-title-text inline-block opacity-100">
-                {title}
+                DASUN METHMAL
               </span>
             </span>
           </h1>

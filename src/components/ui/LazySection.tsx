@@ -1,54 +1,33 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 interface LazySectionProps {
   children: React.ReactNode;
   minHeight?: string;
-  rootMargin?: string;
+  className?: string;
 }
 
 /**
- * Lightweight viewport observer wrapper.
- * Defers mounting heavy React/WebGL sections until user scrolls near them.
- * Reduces initial JavaScript execution time from 19.6s to < 0.3s on mobile.
+ * SEO-Friendly Viewport Deferred Section.
+ * Emits full SSR HTML text copy for search engine indexers (>3,000 words for Googlebot),
+ * while utilizing CSS `content-visibility: auto` to defer layout and rendering work off-screen.
  */
 export default function LazySection({
   children,
   minHeight = '300px',
-  rootMargin = '400px 0px',
+  className = '',
 }: LazySectionProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    // If IntersectionObserver is not supported, mount immediately
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-      setIsVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin }
-    );
-
-    observer.observe(el);
-
-    return () => observer.disconnect();
-  }, [rootMargin]);
-
   return (
-    <div ref={containerRef} style={{ minHeight: isVisible ? 'auto' : minHeight }}>
-      {isVisible ? children : null}
+    <div
+      className={`lazy-section-wrapper ${className}`}
+      style={{
+        contentVisibility: 'auto',
+        containIntrinsicSize: `1px ${minHeight}`,
+        minHeight,
+      }}
+    >
+      {children}
     </div>
   );
 }

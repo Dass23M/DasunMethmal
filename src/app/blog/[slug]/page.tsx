@@ -17,23 +17,23 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const post = blogPosts.find((p) => p.slug === params.slug);
-  const title = post ? `${post.title} — Methmal Journal` : 'Journal — Methmal';
+  const title = post ? `${post.title} — Journal by Dasun Methmal` : 'Journal — Dasun Methmal';
   const description = post
     ? `${post.title} by ${post.author}. ${post.description}`
-    : 'Methmal Fullstack Developer & AI Engineer design journal.';
-  const url = `/blog/${params.slug}`;
+    : 'Dasun Methmal Fullstack Developer & AI Engineer design journal.';
+  const canonicalUrl = `https://dasunmethmal.com/blog/${params.slug}`;
   const image = post?.heroImage || post?.image || '/images/cover_bg_2.png';
 
   return {
     title,
     description,
     alternates: {
-      canonical: url,
+      canonical: canonicalUrl,
     },
     openGraph: {
       title,
       description,
-      url,
+      url: canonicalUrl,
       type: 'article',
       images: [
         {

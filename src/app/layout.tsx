@@ -33,13 +33,14 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://methmal.dev'),
-  title: 'Methmal — Fullstack Developer & Digital Marketer Portfolio',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dasunmethmal.com'),
+  title: 'Dasun Methmal — Fullstack Developer & Digital Marketer Portfolio',
   description:
-    'Methmal is a Fullstack Developer, AI Engineer & Tech Strategist building modern web applications, scalable platforms, and high-impact digital products.',
+    'Dasun Methmal is a Fullstack Developer, AI Engineer & Tech Strategist building modern web applications, scalable platforms, and high-impact digital products.',
   keywords: [
+    'Dasun Methmal',
+    'Dasun Methmal Portfolio',
     'Methmal',
-    'Methmal Portfolio',
     'Fullstack Developer',
     'AI Engineer',
     'Machine Learning Engineer',
@@ -48,9 +49,9 @@ export const metadata: Metadata = {
     'Digital Marketer',
     'Web Development Portfolio',
   ],
-  authors: [{ name: 'Methmal', url: 'https://github.com/Dass23M' }],
-  creator: 'Methmal',
-  publisher: 'Methmal',
+  authors: [{ name: 'Dasun Methmal', url: 'https://github.com/Dass23M' }],
+  creator: 'Dasun Methmal',
+  publisher: 'Dasun Methmal',
   robots: {
     index: true,
     follow: true,
@@ -65,26 +66,26 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://methmal.dev',
-    title: 'Methmal — Fullstack Developer & Digital Marketer Portfolio',
+    url: 'https://dasunmethmal.com',
+    title: 'Dasun Methmal — Fullstack Developer & Digital Marketer Portfolio',
     description:
-      'Explore Methmal’s engineering portfolio featuring Web Development, Machine Learning, AI Applications, and High-Performance Web Architecture.',
-    siteName: 'Methmal Portfolio',
+      'Explore Dasun Methmal’s engineering portfolio featuring Web Development, Machine Learning, AI Applications, and High-Performance Web Architecture.',
+    siteName: 'Dasun Methmal Portfolio',
     images: [
       {
         url: '/images/cover_bg_2.png',
         width: 1200,
         height: 630,
-        alt: 'Methmal Fullstack Portfolio',
+        alt: 'Dasun Methmal Fullstack Portfolio',
       },
     ],
   },
   alternates: {
-    canonical: '/',
+    canonical: 'https://dasunmethmal.com',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Methmal — Fullstack Developer & Digital Marketer',
+    title: 'Dasun Methmal — Fullstack Developer & Digital Marketer',
     description:
       'Fullstack Developer & AI Engineer portfolio showcasing web apps, predictive models, and growth solutions.',
     images: ['/images/cover_bg_2.png'],
@@ -96,18 +97,18 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'WebSite',
-      '@id': 'https://methmal.dev/#website',
-      url: 'https://methmal.dev',
-      name: 'Methmal Portfolio',
-      description: 'Methmal — Fullstack Developer & AI Engineer Portfolio',
+      '@id': 'https://dasunmethmal.com/#website',
+      url: 'https://dasunmethmal.com',
+      name: 'Dasun Methmal Portfolio',
+      description: 'Dasun Methmal — Fullstack Developer & AI Engineer Portfolio',
       inLanguage: 'en-US',
     },
     {
       '@type': 'Person',
-      '@id': 'https://methmal.dev/#person',
-      name: 'Methmal',
+      '@id': 'https://dasunmethmal.com/#person',
+      name: 'Dasun Methmal',
       jobTitle: 'Fullstack Developer & AI Engineer',
-      url: 'https://methmal.dev',
+      url: 'https://dasunmethmal.com',
       sameAs: ['https://github.com/Dass23M'],
       knowsAbout: [
         'Web Development',

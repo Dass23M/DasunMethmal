@@ -18,23 +18,23 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const project = portfolioSingles.find((p) => p.id === params.id);
-  const title = project ? `${project.title} — Case Study by Methmal` : 'Portfolio Case Study — Methmal';
+  const title = project ? `${project.title} — Case Study by Dasun Methmal` : 'Portfolio Case Study — Dasun Methmal';
   const description = project
     ? project.subtitle || project.description1
-    : 'Methmal Fullstack Developer & AI Engineer portfolio case study.';
-  const url = `/portfolio/${params.id}`;
+    : 'Dasun Methmal Fullstack Developer & AI Engineer portfolio case study.';
+  const canonicalUrl = `https://dasunmethmal.com/portfolio/${params.id}`;
   const image = project?.images[0] || '/images/cover_bg_2.png';
 
   return {
     title,
     description,
     alternates: {
-      canonical: url,
+      canonical: canonicalUrl,
     },
     openGraph: {
       title,
       description,
-      url,
+      url: canonicalUrl,
       type: 'article',
       images: [
         {

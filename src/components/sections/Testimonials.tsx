@@ -127,9 +127,9 @@ export default function Testimonials() {
 
                 {/* Author Info */}
                 <div>
-                  <h4 className="font-sora font-bold text-sm sm:text-base md:text-lg text-black leading-tight">
+                  <h3 className="font-sora font-bold text-sm sm:text-base md:text-lg text-black leading-tight">
                     {card.name}
-                  </h4>
+                  </h3>
                   <p className="font-inter text-[11px] sm:text-sm text-gray-500 font-medium mt-0.5">
                     {card.position}
                   </p>

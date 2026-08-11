@@ -177,17 +177,23 @@ export default function GSAPFlipSection() {
       dirLight.position.set(3, 4, 5);
       scene.add(dirLight);
 
-      // Textures
-      const textureLoader = new THREE.TextureLoader();
-      const loadTex = (url: string) => textureLoader.load(url);
-      const diffuse = loadTex('https://raw.githubusercontent.com/danielyl123/person/refs/heads/main/diffuse.jpg');
-      const normalTex = loadTex('https://raw.githubusercontent.com/danielyl123/person/refs/heads/main/normal.jpg');
-      const arm = loadTex('https://raw.githubusercontent.com/danielyl123/person/refs/heads/main/arm.jpg');
-      [diffuse, normalTex, arm].forEach((tex) => {
-        tex.repeat.set(2, 2);
-        tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-      });
-      diffuse.colorSpace = THREE.SRGBColorSpace;
+      // Textures - conditionally loaded only on desktop to eliminate 15MB payload on mobile
+      let diffuse: THREE.Texture | null = null;
+      let normalTex: THREE.Texture | null = null;
+      let arm: THREE.Texture | null = null;
+
+      if (!isMobile) {
+        const textureLoader = new THREE.TextureLoader();
+        const loadTex = (url: string) => textureLoader.load(url);
+        diffuse = loadTex('https://raw.githubusercontent.com/danielyl123/person/refs/heads/main/diffuse.jpg');
+        normalTex = loadTex('https://raw.githubusercontent.com/danielyl123/person/refs/heads/main/normal.jpg');
+        arm = loadTex('https://raw.githubusercontent.com/danielyl123/person/refs/heads/main/arm.jpg');
+        [diffuse, normalTex, arm].forEach((tex) => {
+          tex.repeat.set(2, 2);
+          tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+        });
+        diffuse.colorSpace = THREE.SRGBColorSpace;
+      }
 
       // Barycentric wireframe inner torus
       function addBarycentricCoords(geo: THREE.BufferGeometry) {

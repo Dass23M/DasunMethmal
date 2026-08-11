@@ -1,25 +1,23 @@
-import dynamic from 'next/dynamic';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Hero from '@/components/sections/Hero';
-const FooterMarquee = dynamic(() => import('@/components/sections/FooterMarquee'));
-
-// Below-the-fold dynamic code-splitting to eliminate initial thread blocking
-const About = dynamic(() => import('@/components/sections/About'));
-const Portfolio = dynamic(() => import('@/components/sections/Portfolio'));
-const ImageFanShowcase = dynamic(() => import('@/components/sections/ImageFanShowcase'));
-const LandoStyleSection = dynamic(() => import('@/components/sections/LandoStyleSection'));
-const OnCraftOffCraft = dynamic(() => import('@/components/sections/OnCraftOffCraft'));
-const Artifact3DSection = dynamic(() => import('@/components/sections/Artifact3DSection'), { ssr: false });
-const GSAPFlipSection = dynamic(() => import('@/components/sections/GSAPFlipSection'), { ssr: false });
-const EditorialShowcase = dynamic(() => import('@/components/sections/EditorialShowcase'));
-const LogoSlider = dynamic(() => import('@/components/sections/LogoSlider'));
-const RandomTextReveal = dynamic(() => import('@/components/sections/RandomTextReveal'));
-const ScrollRevealGrid = dynamic(() => import('@/components/sections/ScrollRevealGrid'));
-const Testimonials = dynamic(() => import('@/components/sections/Testimonials'));
-const PosterDesign = dynamic(() => import('@/components/sections/PosterDesign'), { ssr: false });
-const FaqSection = dynamic(() => import('@/components/sections/FaqSection'));
-const Contact = dynamic(() => import('@/components/sections/Contact'));
+import LazySection from '@/components/ui/LazySection';
+import About from '@/components/sections/About';
+import Portfolio from '@/components/sections/Portfolio';
+import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
+import LandoStyleSection from '@/components/sections/LandoStyleSection';
+import OnCraftOffCraft from '@/components/sections/OnCraftOffCraft';
+import Artifact3DSection from '@/components/sections/Artifact3DSection';
+import GSAPFlipSection from '@/components/sections/GSAPFlipSection';
+import EditorialShowcase from '@/components/sections/EditorialShowcase';
+import LogoSlider from '@/components/sections/LogoSlider';
+import RandomTextReveal from '@/components/sections/RandomTextReveal';
+import ScrollRevealGrid from '@/components/sections/ScrollRevealGrid';
+import Testimonials from '@/components/sections/Testimonials';
+import PosterDesign from '@/components/sections/PosterDesign';
+import FaqSection from '@/components/sections/FaqSection';
+import Contact from '@/components/sections/Contact';
+import FooterMarquee from '@/components/sections/FooterMarquee';
 
 /**
  * Main one-page portfolio — home page.
@@ -44,64 +42,92 @@ export default function HomePage() {
 
           {/* 3. Image Fan Showcase */}
           <div className="scroll-reveal-section">
-            <ImageFanShowcase />
+            <LazySection minHeight="400px">
+              <ImageFanShowcase />
+            </LazySection>
           </div>
 
-          {/* Lando Norris Style Banner Section - Directly Below ImageFanShowcase */}
+          {/* Lando Norris Style Banner Section */}
           <div className="scroll-reveal-section">
-            <LandoStyleSection />
+            <LazySection minHeight="300px">
+              <LandoStyleSection />
+            </LazySection>
           </div>
 
           {/* ON CRAFT / OFF CRAFT Section */}
           <div className="scroll-reveal-section">
-            <OnCraftOffCraft />
+            <LazySection minHeight="400px">
+              <OnCraftOffCraft />
+            </LazySection>
           </div>
 
           {/* 3D WebGL HUD Generative Artifact Section */}
           <div className="scroll-reveal-section">
-            <Artifact3DSection />
+            <LazySection minHeight="600px">
+              <Artifact3DSection />
+            </LazySection>
           </div>
 
           <div className="scroll-reveal-section">
-            <Portfolio />
+            <LazySection minHeight="400px">
+              <Portfolio />
+            </LazySection>
           </div>
 
           {/* Pin + Flip */}
           <div className="scroll-reveal-section">
-            <GSAPFlipSection />
+            <LazySection minHeight="600px">
+              <GSAPFlipSection />
+            </LazySection>
           </div>
 
           {/* Pinned Editorial Showcase */}
           <div className="scroll-reveal-section">
-            <EditorialShowcase />
+            <LazySection minHeight="500px">
+              <EditorialShowcase />
+            </LazySection>
           </div>
 
           <div className="scroll-reveal-section">
-            <LogoSlider />
+            <LazySection minHeight="200px">
+              <LogoSlider />
+            </LazySection>
           </div>
 
           <div className="scroll-reveal-section">
-            <RandomTextReveal />
+            <LazySection minHeight="200px">
+              <RandomTextReveal />
+            </LazySection>
           </div>
 
           <div className="scroll-reveal-section">
-            <ScrollRevealGrid />
+            <LazySection minHeight="400px">
+              <ScrollRevealGrid />
+            </LazySection>
           </div>
 
           <div className="scroll-reveal-section">
-            <Testimonials />
+            <LazySection minHeight="400px">
+              <Testimonials />
+            </LazySection>
           </div>
 
           <div className="scroll-reveal-section">
-            <PosterDesign />
+            <LazySection minHeight="600px">
+              <PosterDesign />
+            </LazySection>
           </div>
 
           <div className="scroll-reveal-section">
-            <FaqSection />
+            <LazySection minHeight="300px">
+              <FaqSection />
+            </LazySection>
           </div>
 
           <div className="scroll-reveal-section">
-            <Contact />
+            <LazySection minHeight="400px">
+              <Contact />
+            </LazySection>
           </div>
 
           {/* Dual-band scrolling marquee before footer */}

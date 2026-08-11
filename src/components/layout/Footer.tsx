@@ -13,9 +13,9 @@ export default function Footer() {
 
                     {/* Column 1: Pages */}
                     <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                        <h4 className="font-sora font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
+                        <h3 className="font-sora font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
                             Pages
-                        </h4>
+                        </h3>
                         <ul className="space-y-3 font-inter text-sm text-gray-700 font-medium">
                             <li>
                                 <Link href="/" className="hover:text-[#FF6B00] transition-colors">
@@ -42,9 +42,9 @@ export default function Footer() {
 
                     {/* Column 2: Follow Us */}
                     <div className="flex flex-col items-center text-center">
-                        <h4 className="font-sora font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
+                        <h3 className="font-sora font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
                             Follow Us
-                        </h4>
+                        </h3>
                         <p className="font-inter text-sm text-gray-700 font-medium mb-1">
                             <a href="mailto:methmal.liyanage23@gmail.com" className="hover:text-[#FF6B00] transition-colors">
                                 methmal.liyanage23@gmail.com
@@ -103,9 +103,9 @@ export default function Footer() {
 
                     {/* Column 3: Address */}
                     <div className="flex flex-col items-center md:items-end text-center md:text-right">
-                        <h4 className="font-sora font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
+                        <h3 className="font-sora font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
                             Address
-                        </h4>
+                        </h3>
                         <address className="not-italic font-inter text-sm text-gray-700 font-medium space-y-1">
                             <p>Colombo,</p>
                             <p>Sri Lanka</p>

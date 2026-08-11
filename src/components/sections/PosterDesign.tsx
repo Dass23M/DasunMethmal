@@ -222,12 +222,12 @@ export default function PosterDesign() {
             return { sphere, miniCards, total };
           };
 
-          const scrubLeft = isMobile ? 0.3 : 1.1;
-          const scrubMiddle = isMobile ? 0.35 : 1.3;
-          const scrubRight = isMobile ? 0.4 : 1.5;
+          const scrubLeft = 1.1;
+          const scrubMiddle = 1.3;
+          const scrubRight = 1.5;
 
-          // 1. Left Miniature Globe (Medium Size - coming UP from bottom layer of section)
-          if (orbLeftRef.current) {
+          // 1. Left Miniature Globe (Desktop only to prevent mobile DOM & network bloat)
+          if (!isMobile && orbLeftRef.current) {
             const leftRadius = isMobile ? 42 : 95;
             const leftGlobe = buildMiniGlobe(orbLeftRef.current, leftRadius, false);
 
@@ -284,17 +284,17 @@ export default function PosterDesign() {
             });
           }
 
-          // 2. Middle Miniature Globe (Small Size - coming UP from bottom layer with depth gap behind main globe)
-          if (orbMiddleRef.current) {
-            const middleRadius = isMobile ? 30 : 60;
+          // 2. Middle Miniature Globe (Desktop only)
+          if (!isMobile && orbMiddleRef.current) {
+            const middleRadius = 60;
             const middleGlobe = buildMiniGlobe(orbMiddleRef.current, middleRadius, true);
 
             gsap.fromTo(
               orbMiddleRef.current,
-              { y: '190vh', scale: isMobile ? 0.7 : 0.8 },
+              { y: '190vh', scale: 0.8 },
               {
                 y: '-165vh',
-                scale: isMobile ? 0.9 : 1.05,
+                scale: 1.05,
                 ease: 'none',
                 scrollTrigger: {
                   trigger: galleryRef.current,
@@ -342,8 +342,8 @@ export default function PosterDesign() {
             });
           }
 
-          // 3. Right Miniature Globe (Medium Size - coming UP from bottom layer of section)
-          if (orbRightRef.current) {
+          // 3. Right Miniature Globe (Desktop only)
+          if (!isMobile && orbRightRef.current) {
             const rightRadius = isMobile ? 42 : 95;
             const rightGlobe = buildMiniGlobe(orbRightRef.current, rightRadius, false);
 

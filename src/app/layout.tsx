@@ -93,19 +93,32 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'Methmal',
-  jobTitle: 'Fullstack Developer & AI Engineer',
-  url: 'https://methmal.dev',
-  sameAs: ['https://github.com/Dass23M'],
-  knowsAbout: [
-    'Web Development',
-    'Machine Learning',
-    'Next.js',
-    'TypeScript',
-    'React',
-    'Python',
-    'Digital Marketing',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://methmal.dev/#website',
+      url: 'https://methmal.dev',
+      name: 'Methmal Portfolio',
+      description: 'Methmal — Fullstack Developer & AI Engineer Portfolio',
+      inLanguage: 'en-US',
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://methmal.dev/#person',
+      name: 'Methmal',
+      jobTitle: 'Fullstack Developer & AI Engineer',
+      url: 'https://methmal.dev',
+      sameAs: ['https://github.com/Dass23M'],
+      knowsAbout: [
+        'Web Development',
+        'Machine Learning',
+        'Next.js',
+        'TypeScript',
+        'React',
+        'Python',
+        'Digital Marketing',
+      ],
+    },
   ],
 };
 

@@ -17,9 +17,37 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const post = blogPosts.find((p) => p.slug === params.slug);
+  const title = post ? `${post.title} — Methmal Journal` : 'Journal — Methmal';
+  const description = post
+    ? `${post.title} by ${post.author}. ${post.description}`
+    : 'Methmal Fullstack Developer & AI Engineer design journal.';
+  const url = `/blog/${params.slug}`;
+  const image = post?.heroImage || post?.image || '/images/cover_bg_2.png';
+
   return {
-    title: post ? `${post.title} — Unfold Journal` : 'Journal — Unfold',
-    description: post ? `${post.title} by ${post.author}` : '',
+    title,
+    description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'article',
+      images: [
+        {
+          url: image,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image],
+    },
   };
 }
 

@@ -18,8 +18,37 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const project = portfolioSingles.find((p) => p.id === params.id);
+  const title = project ? `${project.title} — Case Study by Methmal` : 'Portfolio Case Study — Methmal';
+  const description = project
+    ? project.subtitle || project.description1
+    : 'Methmal Fullstack Developer & AI Engineer portfolio case study.';
+  const url = `/portfolio/${params.id}`;
+  const image = project?.images[0] || '/images/cover_bg_2.png';
+
   return {
-    title: project ? `${project.title} — Methmal Portfolio` : 'Portfolio — Methmal',
+    title,
+    description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'article',
+      images: [
+        {
+          url: image,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image],
+    },
   };
 }
 

@@ -25,15 +25,22 @@ function copyRecursiveSync(src, dest) {
 
 copyRecursiveSync(srcDir, destDir);
 
-// Copy favicon to public/favicon.ico and src/app/favicon.ico
+// Copy favicon to all Googlebot Search Favicon target paths
 const favSrc = path.resolve('./public/images/favicon.ico.jpeg');
-const favDest = path.resolve('./public/favicon.ico');
-const favDestApp = path.resolve('./src/app/favicon.ico');
+const targets = [
+  './public/favicon.ico',
+  './public/icon-192.png',
+  './public/icon-512.png',
+  './public/apple-touch-icon.png',
+  './public/favicon-32x32.png',
+  './src/app/favicon.ico',
+];
 
 if (fs.existsSync(favSrc)) {
-  fs.copyFileSync(favSrc, favDest);
-  fs.copyFileSync(favSrc, favDestApp);
-  console.log('Successfully copied favicon.ico');
+  targets.forEach((targetPath) => {
+    fs.copyFileSync(favSrc, path.resolve(targetPath));
+  });
+  console.log('Successfully generated all Googlebot Search Favicon target files!');
 }
 
 console.log('Successfully copied images to public/images');

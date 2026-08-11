@@ -24,4 +24,16 @@ function copyRecursiveSync(src, dest) {
 }
 
 copyRecursiveSync(srcDir, destDir);
+
+// Copy favicon to public/favicon.ico and src/app/favicon.ico
+const favSrc = path.resolve('./public/images/favicon.ico.jpeg');
+const favDest = path.resolve('./public/favicon.ico');
+const favDestApp = path.resolve('./src/app/favicon.ico');
+
+if (fs.existsSync(favSrc)) {
+  fs.copyFileSync(favSrc, favDest);
+  fs.copyFileSync(favSrc, favDestApp);
+  console.log('Successfully copied favicon.ico');
+}
+
 console.log('Successfully copied images to public/images');

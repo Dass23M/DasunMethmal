@@ -145,6 +145,12 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
 
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
+
   // ---------------------------------------------------------------------------
   // Open Graph
   // ---------------------------------------------------------------------------
@@ -186,15 +192,6 @@ export const metadata: Metadata = {
       'Portfolio of Dasun Methmal, Full-Stack Developer and Digital Marketer specializing in web development, SEO, digital marketing, AI, and modern digital products.',
 
     images: ['/images/cover_bg_2.png'],
-  },
-
-  // ---------------------------------------------------------------------------
-  // Icons
-  // ---------------------------------------------------------------------------
-
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
   },
 };
 
@@ -308,6 +305,12 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+
+        {/* Favicon icon tags */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/favicon.ico.jpeg" type="image/jpeg" />
 
         {/* JSON-LD Structured Data */}
         <script

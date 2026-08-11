@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
     const year = new Date().getFullYear();
@@ -201,8 +202,26 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom Copyright Row */}
-                <div className="max-w-[1440px] mx-auto px-6 mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-white/50 gap-4">
+                <div className="max-w-[1440px] mx-auto px-6 mt-8 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between text-xs text-white/50 gap-4">
                     <p>© {year} Dasun Methmal. All rights reserved.</p>
+                    
+                    {/* Website Launches Verified Badge */}
+                    <a
+                        href="https://websitelaunches.com/site/dasunmethmal.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block opacity-90 hover:opacity-100 transition-opacity my-2 md:my-0"
+                    >
+                        <Image
+                            src="https://websitelaunches.com/badge/dasunmethmal.com.svg"
+                            alt="Established online - Public launch record"
+                            width={255}
+                            height={55}
+                            unoptimized
+                            className="h-10 w-auto"
+                        />
+                    </a>
+
                     <p>Designed with passion &amp; excellence.</p>
                 </div>
 

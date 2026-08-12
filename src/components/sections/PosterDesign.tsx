@@ -87,64 +87,63 @@ const SCENE_DATA = [
   },
 ];
 
+// Rotation stops for each scene face
 const STOPS = [
-  { rx: 90, ry: 0 },      // Top
-  { rx: 0, ry: 0 },       // Front
-  { rx: 0, ry: -90 },     // Right
-  { rx: 0, ry: -180 },    // Back
-  { rx: 0, ry: -270 },    // Left
-  { rx: -90, ry: -360 },  // Bottom
+  { rx: 90,  ry: 0 },      // Top
+  { rx: 0,   ry: 0 },      // Front
+  { rx: 0,   ry: -90 },    // Right
+  { rx: 0,   ry: -180 },   // Back
+  { rx: 0,   ry: -270 },   // Left
+  { rx: -90, ry: -360 },   // Bottom
 ];
 
-// Easing function for smooth rotation interpolation between stops
 const easeIO = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
 
 export default function PosterDesign() {
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted]         = useState(false);
   const [activeTheme, setActiveTheme] = useState<'dark' | 'light'>('dark');
   const [activeSceneIdx, setActiveSceneIdx] = useState(0);
   const [progressPct, setProgressPct] = useState(0);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cubeRef = useRef<HTMLDivElement>(null);
-  const triggerInstanceRef = useRef<any>(null);
+  // outerRef  → the full scrollable section wrapper (trigger + pin target)
+  // stageRef  → the 100 vh visual stage that gets pinned by GSAP
+  // cubeRef   → the 3-D cube element that GSAP rotates
+  const outerRef   = useRef<HTMLDivElement>(null);
+  const stageRef   = useRef<HTMLDivElement>(null);
+  const cubeRef    = useRef<HTMLDivElement>(null);
+  const textCardRef = useRef<HTMLDivElement>(null);
+  const stInstance = useRef<ScrollTrigger | null>(null);
 
+  useEffect(() => { setMounted(true); }, []);
+
+  // ── GSAP: pin the stage, drive cube rotation + HUD on scroll ──
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (!mounted || !outerRef.current || !stageRef.current || !cubeRef.current) return;
 
-  // Theme toggle helper
-  const toggleTheme = () => {
-    setActiveTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  };
-
-  // GSAP ScrollTrigger Pinned Scrub Animation Setup
-  useEffect(() => {
-    if (!mounted || !containerRef.current || !cubeRef.current) return;
+    const totalScenes = SCENE_DATA.length;
+    // Each section occupies one viewport height of scroll
+    const scrollLength = window.innerHeight * (totalScenes - 1);
 
     const ctx = gsap.context(() => {
-      const totalScenes = SCENE_DATA.length;
-
-      // Pinned ScrollTrigger driving 3D Cube rotation & HUD progress
-      triggerInstanceRef.current = ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: 'top top',
-        end: () => `+=${window.innerHeight * 4}`, // 400vh scroll height for smooth pacing
-        pin: true,
-        scrub: 0.6,
+      stInstance.current = ScrollTrigger.create({
+        trigger: outerRef.current,
+        start:   'top top',
+        end:     `+=${scrollLength}`,
+        pin:     stageRef.current,   // only pin the visual stage, not the heading
+        pinSpacing: true,
+        scrub:   0.6,
         onUpdate: (self) => {
-          const p = self.progress;
+          const p   = self.progress;
           const pct = Math.round(p * 100);
           setProgressPct(pct);
 
-          // Calculate interpolated rotation angles (rx, ry)
+          // Interpolate rotation between adjacent stops
           const t = p * (totalScenes - 1);
           const i = Math.min(Math.floor(t), totalScenes - 2);
           const f = easeIO(t - i);
 
-          const a = STOPS[i];
-          const b = STOPS[i + 1];
-
+          const a  = STOPS[i];
+          const b  = STOPS[i + 1];
           const rx = a.rx + (b.rx - a.rx) * f;
           const ry = a.ry + (b.ry - a.ry) * f;
 
@@ -152,31 +151,35 @@ export default function PosterDesign() {
             cubeRef.current.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
           }
 
-          // Update active scene index
-          const currentIdx = Math.min(
-            Math.floor(p * totalScenes + 0.1),
-            totalScenes - 1
-          );
-          setActiveSceneIdx(currentIdx);
+          // Scene index — slight offset so text updates just before face is centred
+          const idx = Math.min(Math.round(p * (totalScenes - 1)), totalScenes - 1);
+          setActiveSceneIdx(idx);
         },
       });
-    }, containerRef);
+    }, outerRef);
 
     return () => ctx.revert();
   }, [mounted]);
 
-  // Smooth scroll to specific scene index within pinned container
+  // ── Navigate to a specific scene by scrolling ──
   const scrollToScene = (idx: number) => {
-    if (!triggerInstanceRef.current) return;
-    const st = triggerInstanceRef.current;
+    if (!stInstance.current) return;
+    const st            = stInstance.current;
     const targetProgress = idx / (SCENE_DATA.length - 1);
-    const targetY = st.start + targetProgress * (st.end - st.start);
-
-    window.scrollTo({
-      top: targetY,
-      behavior: 'smooth',
-    });
+    // st.start / st.end are scroll-y pixel values
+    const targetY        = st.start + targetProgress * (st.end - st.start);
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
   };
+
+  // GSAP text card cross-fade when scene changes
+  useEffect(() => {
+    if (!textCardRef.current) return;
+    gsap.fromTo(
+      textCardRef.current,
+      { opacity: 0, y: 16 },
+      { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }
+    );
+  }, [activeSceneIdx]);
 
   if (!mounted) {
     return <section id="poster-design-section" className="min-h-screen bg-[#1c1814]" />;
@@ -187,59 +190,73 @@ export default function PosterDesign() {
   return (
     <div
       id="poster-design-section"
-      className="poster-cube-gallery-wrapper relative text-[#ede8df] select-none font-mono"
+      ref={outerRef}
+      className="pcg-wrapper relative font-mono select-none"
       data-theme={activeTheme}
     >
       <style>{`
-        /* ── Design System & CSS Variables ── */
-        .poster-cube-gallery-wrapper {
-          --dark-bg: #1c1814;
-          --dark-fg: #ede8df;
-          --dark-muted: #8a7b6e;
-          --light-bg: #f0ece3;
-          --light-fg: #0d0d14;
+        /* ── Design Tokens ── */
+        .pcg-wrapper {
+          --dark-bg:     #1c1814;
+          --dark-fg:     #ede8df;
+          --dark-muted:  #8a7b6e;
+          --light-bg:    #f0ece3;
+          --light-fg:    #0d0d14;
           --light-muted: #9a9aaa;
           --accent-dark: #FF6B00;
-          --accent-light: #d95a00;
+          --accent-lt:   #d95a00;
 
-          --bg: var(--dark-bg);
-          --fg: var(--dark-fg);
-          --muted: var(--dark-muted);
+          --bg:     var(--dark-bg);
+          --fg:     var(--dark-fg);
+          --muted:  var(--dark-muted);
           --accent: var(--accent-dark);
 
-          --font-display: 'Bebas Neue', sans-serif, system-ui;
-          --font-mono: 'DM Mono', monospace, sans-serif;
-          --hairline: 1px;
-          --ui-inset: 2rem;
-          --card-bg: rgba(28, 24, 20, 0.86);
-          --card-border: rgba(255, 107, 0, 0.25);
+          --font-display: 'Bebas Neue', sans-serif;
+          --font-mono:    'DM Mono', monospace;
+          --ui-inset:     2rem;
+          --card-bg:      rgba(28, 24, 20, 0.88);
+          --card-border:  rgba(255, 107, 0, 0.28);
           --z-ui: 20;
-          
+
           background-color: var(--bg);
-          color: var(--fg);
+          color:            var(--fg);
           transition: background-color 0.4s ease, color 0.4s ease;
         }
-
-        .poster-cube-gallery-wrapper[data-theme="light"] {
-          --bg: var(--light-bg);
-          --fg: var(--light-fg);
-          --muted: var(--light-muted);
-          --accent: var(--accent-light);
-          --card-bg: rgba(240, 236, 227, 0.92);
+        .pcg-wrapper[data-theme="light"] {
+          --bg:          var(--light-bg);
+          --fg:          var(--light-fg);
+          --muted:       var(--light-muted);
+          --accent:      var(--accent-lt);
+          --card-bg:     rgba(240, 236, 227, 0.94);
           --card-border: rgba(217, 90, 0, 0.22);
         }
 
-        /* ── 3D Scene Viewport ── */
-        .pcg-pinned-stage {
+        /* ── Section header row ── */
+        .pcg-header {
+          position: relative;
+          z-index: 30;
+          padding: 3rem 0 1rem;
+          width: 100%;
+          max-width: 1140px;
+          margin: 0 auto;
+          padding-left: clamp(1rem, 4vw, 2rem);
+          padding-right: clamp(1rem, 4vw, 2rem);
+          background: var(--bg);   /* ensure header is NOT transparent over cube */
+        }
+
+        /* ── Pinned visual stage ── */
+        .pcg-stage {
           position: relative;
           width: 100%;
           height: 100vh;
           overflow: hidden;
+          background: var(--bg);
           display: flex;
           align-items: center;
           justify-content: center;
         }
 
+        /* ── 3-D perspective layer (fills stage, pointer-events off) ── */
         .pcg-scene {
           position: absolute;
           inset: 0;
@@ -251,16 +268,15 @@ export default function PosterDesign() {
           pointer-events: none;
         }
 
-        /* ── 3D Cube Element ── */
+        /* ── Cube ── */
         .pcg-cube {
-          --s: min(68vw, 68vh, 480px);
-          width: var(--s);
+          --s: min(62vw, 62vh, 460px);
+          width:  var(--s);
           height: var(--s);
           position: relative;
           transform-style: preserve-3d;
           transform: rotateX(90deg) rotateY(0deg);
           will-change: transform;
-          transition: transform 0.1s linear;
         }
 
         .pcg-face {
@@ -269,43 +285,19 @@ export default function PosterDesign() {
           overflow: hidden;
           backface-visibility: hidden;
           border-radius: 12px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          background: repeating-linear-gradient(
-              0deg,
-              rgba(255, 255, 255, 0.02) 0,
-              rgba(255, 255, 255, 0.02) 1px,
-              transparent 1px,
-              transparent 48px
-            ),
-            repeating-linear-gradient(
-              90deg,
-              rgba(255, 255, 255, 0.02) 0,
-              rgba(255, 255, 255, 0.02) 1px,
-              transparent 1px,
-              transparent 48px
-            ),
+          border: 1px solid rgba(255,255,255,0.08);
+          background:
+            repeating-linear-gradient(0deg,   rgba(255,255,255,.02) 0, rgba(255,255,255,.02) 1px, transparent 1px, transparent 48px),
+            repeating-linear-gradient(90deg,  rgba(255,255,255,.02) 0, rgba(255,255,255,.02) 1px, transparent 1px, transparent 48px),
             #14100d;
-          box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
+          box-shadow: inset 0 0 30px rgba(0,0,0,.6);
         }
-
-        .poster-cube-gallery-wrapper[data-theme="light"] .pcg-face {
-          background: repeating-linear-gradient(
-              0deg,
-              rgba(0, 0, 0, 0.04) 0,
-              rgba(0, 0, 0, 0.04) 1px,
-              transparent 1px,
-              transparent 48px
-            ),
-            repeating-linear-gradient(
-              90deg,
-              rgba(0, 0, 0, 0.04) 0,
-              rgba(0, 0, 0, 0.04) 1px,
-              transparent 1px,
-              transparent 48px
-            ),
+        .pcg-wrapper[data-theme="light"] .pcg-face {
+          background:
+            repeating-linear-gradient(0deg,  rgba(0,0,0,.04) 0, rgba(0,0,0,.04) 1px, transparent 1px, transparent 48px),
+            repeating-linear-gradient(90deg, rgba(0,0,0,.04) 0, rgba(0,0,0,.04) 1px, transparent 1px, transparent 48px),
             #ddd8cf;
         }
-
         .pcg-face img {
           position: absolute;
           inset: 0;
@@ -314,46 +306,52 @@ export default function PosterDesign() {
           object-fit: cover;
           display: block;
         }
-
         .pcg-face-ph {
           position: absolute;
           bottom: 1.5rem;
           left: 1.75rem;
           font-family: var(--font-display);
           font-size: clamp(2rem, 8vw, 5rem);
-          letter-spacing: 0.04em;
-          color: rgba(255, 255, 255, 0.12);
+          letter-spacing: .04em;
+          color: rgba(255,255,255,.1);
           pointer-events: none;
           user-select: none;
         }
+        .pcg-wrapper[data-theme="light"] .pcg-face-ph {
+          color: rgba(0,0,0,.1);
+        }
+        /* Face transforms */
+        .pcg-face[data-face="front"]  { transform: translateZ(calc(var(--s)/2)); }
+        .pcg-face[data-face="back"]   { transform: rotateY(180deg)  translateZ(calc(var(--s)/2)); }
+        .pcg-face[data-face="right"]  { transform: rotateY(90deg)   translateZ(calc(var(--s)/2)); }
+        .pcg-face[data-face="left"]   { transform: rotateY(-90deg)  translateZ(calc(var(--s)/2)); }
+        .pcg-face[data-face="top"]    { transform: rotateX(-90deg)  translateZ(calc(var(--s)/2)); }
+        .pcg-face[data-face="bottom"] { transform: rotateX(90deg)   translateZ(calc(var(--s)/2)); }
 
-        .poster-cube-gallery-wrapper[data-theme="light"] .pcg-face-ph {
-          color: rgba(0, 0, 0, 0.12);
+        /* ── Text card — absolutely positioned over the cube ── */
+        .pcg-ui-layer {
+          position: absolute;
+          inset: 0;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+          padding: 0 clamp(1rem, 5vw, 3rem);
+          pointer-events: none;
         }
 
-        .pcg-face[data-face="front"]  { transform: translateZ(calc(var(--s) / 2)); }
-        .pcg-face[data-face="back"]   { transform: rotateY(180deg) translateZ(calc(var(--s) / 2)); }
-        .pcg-face[data-face="right"]  { transform: rotateY(90deg) translateZ(calc(var(--s) / 2)); }
-        .pcg-face[data-face="left"]   { transform: rotateY(-90deg) translateZ(calc(var(--s) / 2)); }
-        .pcg-face[data-face="top"]    { transform: rotateX(-90deg) translateZ(calc(var(--s) / 2)); }
-        .pcg-face[data-face="bottom"] { transform: rotateX(90deg) translateZ(calc(var(--s) / 2)); }
-
-        /* ── Floating Text Cards ── */
         .pcg-text-card {
-          position: relative;
-          z-index: 10;
-          max-width: 25rem;
+          max-width: 24rem;
           width: 100%;
           padding: 2.25rem 2rem;
           background: var(--card-bg);
           border-left: 2px solid var(--accent);
-          backdrop-filter: blur(12px) saturate(130%);
-          -webkit-backdrop-filter: blur(12px) saturate(130%);
+          backdrop-filter: blur(14px) saturate(140%);
+          -webkit-backdrop-filter: blur(14px) saturate(140%);
           border-radius: 4px;
-          box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-          transition: background 0.3s ease, border-color 0.3s ease;
+          box-shadow: 0 24px 48px rgba(0,0,0,.45);
+          pointer-events: all;
+          transition: background .3s ease, border-color .3s ease;
         }
-
         .pcg-text-card.right {
           margin-inline-start: auto;
           border-left: none;
@@ -362,157 +360,109 @@ export default function PosterDesign() {
         }
 
         .pcg-tag {
-          font-size: 0.65rem;
-          letter-spacing: 0.25em;
+          font-size: .65rem;
+          letter-spacing: .25em;
           text-transform: uppercase;
           color: var(--accent);
-          margin-bottom: 1.1rem;
+          margin-bottom: 1rem;
           font-weight: 700;
         }
-
         .pcg-title {
           font-family: var(--font-display);
           font-weight: 400;
-          letter-spacing: 0.03em;
-          line-height: 0.92;
+          letter-spacing: .03em;
+          line-height: .92;
           font-size: clamp(2.5rem, 6vw, 4.8rem);
           margin-bottom: 1rem;
         }
-
         .pcg-body {
-          font-size: 0.8rem;
+          font-size: .8rem;
           line-height: 1.75;
-          color: color-mix(in srgb, var(--fg) 80%, transparent);
-          margin-top: 1rem;
+          color: color-mix(in srgb, var(--fg) 75%, transparent);
+          margin-top: .75rem;
         }
-
         .pcg-stat-row {
           display: flex;
           gap: 2rem;
           margin-top: 1.5rem;
           flex-wrap: wrap;
         }
+        .pcg-text-card.right .pcg-stat-row { justify-content: flex-end; }
+        .pcg-stat        { display: flex; flex-direction: column; gap: .15rem; }
+        .pcg-stat-num    { font-family: var(--font-display); font-size: 2rem; color: var(--accent); line-height: 1; }
+        .pcg-stat-label  { font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
 
-        .pcg-text-card.right .pcg-stat-row {
-          justify-content: flex-end;
-        }
-
-        .pcg-stat {
-          display: flex;
-          flex-direction: column;
-          gap: 0.15rem;
-        }
-
-        .pcg-stat-num {
-          font-family: var(--font-display);
-          font-size: 2rem;
-          color: var(--accent);
-          line-height: 1;
-        }
-
-        .pcg-stat-label {
-          font-size: 0.58rem;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: var(--muted);
-        }
-
-        .pcg-cta-row {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          margin-top: 1.75rem;
-        }
-
-        .pcg-text-card.right .pcg-cta-row {
-          justify-content: flex-end;
-        }
+        .pcg-cta-row { display: flex; align-items: center; gap: .75rem; margin-top: 1.75rem; }
+        .pcg-text-card.right .pcg-cta-row { justify-content: flex-end; }
 
         .pcg-cta {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.6rem;
-          padding: 0.65rem 1.35rem;
+          display: inline-flex; align-items: center; gap: .6rem;
+          padding: .65rem 1.35rem;
           border: 1px solid var(--accent);
           color: var(--accent);
           font-family: var(--font-mono);
-          font-size: 0.65rem;
-          letter-spacing: 0.18em;
+          font-size: .65rem;
+          letter-spacing: .18em;
           text-transform: uppercase;
           background: transparent;
           cursor: pointer;
           border-radius: 2px;
-          transition: background 0.2s, color 0.2s, transform 0.2s;
+          transition: background .2s, color .2s, transform .2s;
         }
-
-        .pcg-cta:hover {
-          background: var(--accent);
-          color: #ffffff;
-          transform: translateY(-1px);
-        }
+        .pcg-cta:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
 
         .pcg-cta-back {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.6rem;
-          padding: 0.65rem 1.35rem;
+          display: inline-flex; align-items: center; gap: .6rem;
+          padding: .65rem 1.35rem;
           border: 1px solid color-mix(in srgb, var(--muted) 45%, transparent);
           color: var(--muted);
           font-family: var(--font-mono);
-          font-size: 0.65rem;
-          letter-spacing: 0.18em;
+          font-size: .65rem;
+          letter-spacing: .18em;
           text-transform: uppercase;
           background: transparent;
           cursor: pointer;
           border-radius: 2px;
-          transition: background 0.2s, color 0.2s, border-color 0.2s;
+          transition: background .2s, color .2s, border-color .2s;
         }
-
         .pcg-cta-back:hover {
           background: color-mix(in srgb, var(--muted) 15%, transparent);
           border-color: var(--muted);
           color: var(--fg);
         }
 
-        /* ── HUD Overlay Elements ── */
+        /* ── HUD ── */
         .pcg-hud {
           position: absolute;
           top: var(--ui-inset);
           right: var(--ui-inset);
           z-index: var(--z-ui);
           text-align: right;
-          font-size: 0.68rem;
-          letter-spacing: 0.15em;
+          font-size: .68rem;
+          letter-spacing: .15em;
           color: var(--muted);
           text-transform: uppercase;
+          pointer-events: none;
         }
-
         .pcg-progress-bar {
           width: 7.5rem;
           height: 2px;
-          background: color-mix(in srgb, var(--muted) 30%, transparent);
-          margin-top: 0.5rem;
+          background: color-mix(in srgb, var(--muted) 28%, transparent);
+          margin-top: .5rem;
           margin-left: auto;
           position: relative;
           overflow: hidden;
         }
-
         .pcg-progress-fill {
           position: absolute;
           inset: 0;
-          width: 0%;
           background: var(--accent);
-          transition: width 0.1s linear;
+          transition: width .1s linear;
         }
+        .pcg-scene-label { font-size: .65rem; color: var(--accent); margin-top: .4rem; font-weight: 700; }
 
-        .pcg-scene-label {
-          font-size: 0.65rem;
-          color: var(--accent);
-          margin-top: 0.4rem;
-          font-weight: 700;
-        }
-
-        .pcg-scene-strip {
+        /* ── Dot nav strip ── */
+        .pcg-dot-strip {
           position: absolute;
           left: var(--ui-inset);
           top: 50%;
@@ -520,47 +470,37 @@ export default function PosterDesign() {
           z-index: var(--z-ui);
           display: flex;
           flex-direction: column;
-          gap: 0.85rem;
+          gap: .85rem;
+          pointer-events: all;
         }
-
-        .pcg-scene-dot {
-          width: 0.35rem;
-          height: 0.35rem;
+        .pcg-dot {
+          width: .35rem; height: .35rem;
           border-radius: 50%;
           background: var(--muted);
-          transition: background 0.3s, transform 0.3s;
+          border: none; padding: 0;
           cursor: pointer;
-          border: none;
-          padding: 0;
+          transition: background .3s, transform .3s;
         }
+        .pcg-dot.active { background: var(--accent); transform: scale(1.9); }
 
-        .pcg-scene-dot.active {
-          background: var(--accent);
-          transform: scale(1.8);
-        }
-
-        .pcg-theme-toggle {
+        /* ── Theme toggle ── */
+        .pcg-theme-btn {
           position: absolute;
           bottom: var(--ui-inset);
           left: var(--ui-inset);
           z-index: var(--z-ui);
-          width: 2.5rem;
-          height: 2.5rem;
+          width: 2.5rem; height: 2.5rem;
           border: 1px solid color-mix(in srgb, var(--muted) 35%, transparent);
           background: color-mix(in srgb, var(--muted) 15%, transparent);
           border-radius: 50%;
           cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: background 0.3s, border-color 0.3s;
+          display: flex; align-items: center; justify-content: center;
+          transition: background .3s, border-color .3s;
           color: var(--accent);
         }
+        .pcg-theme-btn:hover { background: color-mix(in srgb, var(--muted) 30%, transparent); }
 
-        .pcg-theme-toggle:hover {
-          background: color-mix(in srgb, var(--muted) 30%, transparent);
-        }
-
+        /* ── Bottom face caption ── */
         .pcg-face-caption {
           position: absolute;
           bottom: var(--ui-inset);
@@ -571,25 +511,10 @@ export default function PosterDesign() {
           pointer-events: none;
           user-select: none;
         }
+        .pcg-caption-num  { font-size: .6rem; letter-spacing: .28em; color: var(--accent); text-transform: uppercase; margin-bottom: .15rem; font-weight: 700; }
+        .pcg-caption-name { font-family: var(--font-display); font-size: clamp(1.8rem, 5vw, 3.2rem); letter-spacing: .08em; color: var(--muted); opacity: .55; line-height: 1; }
 
-        .pcg-face-caption-num {
-          font-size: 0.6rem;
-          letter-spacing: 0.28em;
-          color: var(--accent);
-          text-transform: uppercase;
-          margin-bottom: 0.15rem;
-          font-weight: 700;
-        }
-
-        .pcg-face-caption-name {
-          font-family: var(--font-display);
-          font-size: clamp(1.8rem, 5vw, 3.5rem);
-          letter-spacing: 0.08em;
-          color: var(--muted);
-          opacity: 0.6;
-          line-height: 1;
-        }
-
+        /* ── Credit ── */
         .pcg-credit {
           position: absolute;
           right: var(--ui-inset);
@@ -597,142 +522,118 @@ export default function PosterDesign() {
           transform: translateY(-50%) rotate(-90deg);
           transform-origin: right center;
           z-index: var(--z-ui);
-          font-size: 0.65rem;
-          letter-spacing: 0.15em;
+          font-size: .65rem;
+          letter-spacing: .15em;
           text-transform: uppercase;
+          pointer-events: all;
         }
+        .pcg-credit a { color: var(--muted); text-decoration: none; transition: color .2s; }
+        .pcg-credit a:hover { color: var(--accent); }
 
-        .pcg-credit a {
+        /* ── Scroll hint ── */
+        .pcg-scroll-hint {
+          position: absolute;
+          bottom: calc(var(--ui-inset) * 1.5);
+          right: var(--ui-inset);
+          z-index: var(--z-ui);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: .4rem;
+          pointer-events: none;
+          opacity: 0.55;
+        }
+        .pcg-scroll-hint span {
+          font-size: .55rem;
+          letter-spacing: .22em;
+          text-transform: uppercase;
           color: var(--muted);
-          text-decoration: none;
-          transition: color 0.2s;
+          writing-mode: vertical-rl;
+        }
+        .pcg-scroll-line {
+          width: 1px;
+          height: 2.5rem;
+          background: linear-gradient(to bottom, var(--accent), transparent);
+          animation: scrollDrop 1.6s ease-in-out infinite;
+        }
+        @keyframes scrollDrop {
+          0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+          50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+          100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
         }
 
-        .pcg-credit a:hover {
-          color: var(--accent);
-        }
-
+        /* ── Responsive ── */
         @media (max-width: 900px) {
-          .pcg-scene-strip {
-            display: none;
-          }
-          .pcg-credit {
-            display: none;
-          }
-          .pcg-text-card {
-            max-width: 100%;
-            padding: 1.5rem 1.25rem;
-          }
+          .pcg-dot-strip  { display: none; }
+          .pcg-credit     { display: none; }
+          .pcg-scroll-hint { display: none; }
+          .pcg-text-card  { max-width: 90vw; padding: 1.5rem 1.25rem; }
+          .pcg-ui-layer   { padding: 0 1rem; }
+        }
+        @media (max-width: 500px) {
+          .pcg-hud        { top: 1rem; right: 1rem; }
+          .pcg-theme-btn  { bottom: 1rem; left: 1rem; }
+          .pcg-face-caption { bottom: 1rem; }
         }
       `}</style>
 
-      {/* Section Header */}
-      <div className="pt-12 pb-4 w-full max-w-[1140px] mx-auto px-4 sm:px-6 relative z-20">
+      {/* ── Section heading (above the pinned stage, scrolls away naturally) ── */}
+      <div className="pcg-header">
         <SectionHeading title="POSTER & VISUAL DESIGN" theme="dark" />
       </div>
 
-      {/* Main Pinned Container */}
-      <div ref={containerRef} className="pcg-pinned-stage">
-        {/* HUD Stats & Progress Bar */}
-        <div className="pcg-hud">
-          <div>{String(progressPct).padStart(3, '0')}%</div>
-          <div className="pcg-progress-bar">
-            <div
-              className="pcg-progress-fill"
-              style={{ width: `${progressPct}%` }}
-            />
-          </div>
-          <div className="pcg-scene-label">{currentScene.faceName}</div>
-        </div>
+      {/* ── Pinned visual stage ── */}
+      <div ref={stageRef} className="pcg-stage">
 
-        {/* Vertical Dot Navigation Strip */}
-        <div className="pcg-scene-strip">
-          {SCENE_DATA.map((scene, idx) => (
-            <button
-              key={scene.id}
-              onClick={() => scrollToScene(idx)}
-              aria-label={`Jump to scene ${idx + 1}`}
-              className={`pcg-scene-dot ${activeSceneIdx === idx ? 'active' : ''}`}
-            />
-          ))}
-        </div>
-
-        {/* Theme Toggle Button */}
-        <button
-          onClick={toggleTheme}
-          className="pcg-theme-toggle"
-          aria-label="Toggle light/dark mode"
-        >
-          {activeTheme === 'dark' ? (
-            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-[1.5]">
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-            </svg>
-          ) : (
-            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current stroke-[1.5]">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
-            </svg>
-          )}
-        </button>
-
-        {/* Central 3D Cube Scene */}
+        {/* 3-D Cube */}
         <div className="pcg-scene">
           <div ref={cubeRef} className="pcg-cube">
-            {/* Top Face (0) */}
             <div className="pcg-face" data-face="top">
-              <img src={POSTER_IMAGES[0]} alt="Top Face Poster" />
+              <img src={POSTER_IMAGES[0]} alt="Top face poster" />
               <span className="pcg-face-ph">TOP</span>
             </div>
-            {/* Front Face (1) */}
             <div className="pcg-face" data-face="front">
-              <img src={POSTER_IMAGES[1]} alt="Front Face Poster" />
+              <img src={POSTER_IMAGES[1]} alt="Front face poster" />
               <span className="pcg-face-ph">FRONT</span>
             </div>
-            {/* Right Face (2) */}
             <div className="pcg-face" data-face="right">
-              <img src={POSTER_IMAGES[2]} alt="Right Face Poster" />
+              <img src={POSTER_IMAGES[2]} alt="Right face poster" />
               <span className="pcg-face-ph">RIGHT</span>
             </div>
-            {/* Back Face (3) */}
             <div className="pcg-face" data-face="back">
-              <img src={POSTER_IMAGES[3]} alt="Back Face Poster" />
+              <img src={POSTER_IMAGES[3]} alt="Back face poster" />
               <span className="pcg-face-ph">BACK</span>
             </div>
-            {/* Left Face (4) */}
             <div className="pcg-face" data-face="left">
-              <img src={POSTER_IMAGES[4]} alt="Left Face Poster" />
+              <img src={POSTER_IMAGES[4]} alt="Left face poster" />
               <span className="pcg-face-ph">LEFT</span>
             </div>
-            {/* Bottom Face (5) */}
             <div className="pcg-face" data-face="bottom">
-              <img src={POSTER_IMAGES[5]} alt="Bottom Face Poster" />
+              <img src={POSTER_IMAGES[5]} alt="Bottom face poster" />
               <span className="pcg-face-ph">BOTTOM</span>
             </div>
           </div>
         </div>
 
-        {/* Dynamic Floating Text Card */}
-        <div className="w-full max-w-[1140px] mx-auto px-4 sm:px-6 relative z-10">
+        {/* UI overlay — text card floats above the cube */}
+        <div className="pcg-ui-layer">
           <div
-            className={`pcg-text-card ${
-              currentScene.align === 'right' ? 'right' : ''
-            }`}
+            ref={textCardRef}
+            className={`pcg-text-card ${currentScene.align === 'right' ? 'right' : ''}`}
           >
             <div className="pcg-tag">{currentScene.tag}</div>
 
             <h2 className="pcg-title">
               {currentScene.title.map((line, i) => (
-                <span key={i} className="block">
-                  {line}
-                </span>
+                <span key={i} className="block">{line}</span>
               ))}
             </h2>
 
             <p className="pcg-body">{currentScene.body}</p>
 
-            {currentScene.stats && (
+            {'stats' in currentScene && currentScene.stats && (
               <div className="pcg-stat-row">
-                {currentScene.stats.map((stat, i) => (
+                {(currentScene.stats as { num: string; label: string }[]).map((stat, i) => (
                   <div key={i} className="pcg-stat">
                     <span className="pcg-stat-num">{stat.num}</span>
                     <span className="pcg-stat-label">{stat.label}</span>
@@ -747,32 +648,19 @@ export default function PosterDesign() {
                   onClick={() => scrollToScene(currentScene.ctaBack!.targetIdx)}
                   className="pcg-cta-back"
                 >
-                  <svg
-                    className="w-3 h-3"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
+                  <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <path d="M11 6H1M6 11L1 6l5-5" />
                   </svg>
                   {currentScene.ctaBack.label}
                 </button>
               )}
-
               {currentScene.ctaNext && (
                 <button
                   onClick={() => scrollToScene(currentScene.ctaNext!.targetIdx)}
                   className="pcg-cta"
                 >
                   {currentScene.ctaNext.label}
-                  <svg
-                    className="w-3 h-3"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
+                  <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <path d="M1 6h10M6 1l5 5-5 5" />
                   </svg>
                 </button>
@@ -781,15 +669,60 @@ export default function PosterDesign() {
           </div>
         </div>
 
-        {/* Bottom Face Caption */}
-        <div className="pcg-face-caption">
-          <div className="pcg-face-caption-num">
-            {String(activeSceneIdx + 1).padStart(2, '0')}
+        {/* HUD — progress + scene label */}
+        <div className="pcg-hud">
+          <div>{String(progressPct).padStart(3, '0')}%</div>
+          <div className="pcg-progress-bar">
+            <div className="pcg-progress-fill" style={{ width: `${progressPct}%` }} />
           </div>
-          <div className="pcg-face-caption-name">{currentScene.faceName}</div>
+          <div className="pcg-scene-label">{currentScene.faceName}</div>
         </div>
 
-        {/* Credit Link */}
+        {/* Dot navigation strip */}
+        <div className="pcg-dot-strip">
+          {SCENE_DATA.map((scene, idx) => (
+            <button
+              key={scene.id}
+              onClick={() => scrollToScene(idx)}
+              aria-label={`Jump to scene ${idx + 1}`}
+              className={`pcg-dot ${activeSceneIdx === idx ? 'active' : ''}`}
+            />
+          ))}
+        </div>
+
+        {/* Theme toggle */}
+        <button
+          onClick={() => setActiveTheme(p => p === 'dark' ? 'light' : 'dark')}
+          className="pcg-theme-btn"
+          aria-label="Toggle light/dark mode"
+        >
+          {activeTheme === 'dark' ? (
+            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" strokeWidth="1.5">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" strokeWidth="1.5">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
+            </svg>
+          )}
+        </button>
+
+        {/* Bottom face caption */}
+        <div className="pcg-face-caption">
+          <div className="pcg-caption-num">{String(activeSceneIdx + 1).padStart(2, '0')}</div>
+          <div className="pcg-caption-name">{currentScene.faceName}</div>
+        </div>
+
+        {/* Scroll hint (visible on first scene) */}
+        {activeSceneIdx === 0 && (
+          <div className="pcg-scroll-hint">
+            <span>Scroll</span>
+            <div className="pcg-scroll-line" />
+          </div>
+        )}
+
+        {/* Rotated credit link */}
         <div className="pcg-credit">
           <a
             href="https://www.linkedin.com/posts/luis-martinez-lr_ai-creativity-reversecreativity-activity-7366853269517651970-zeUD"
@@ -799,7 +732,8 @@ export default function PosterDesign() {
             Reverse Creativity
           </a>
         </div>
-      </div>
+
+      </div>{/* end .pcg-stage */}
     </div>
   );
 }

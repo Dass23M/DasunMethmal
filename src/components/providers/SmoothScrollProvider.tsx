@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
+import Lenis from 'lenis';
 
 /**
- * Native Smooth Scroll Provider (Lenis motion removed).
- * No longer imports GSAP — anchor-link interception is pure DOM.
+ * Lenis Smooth Scroll Provider.
+ * Provides smooth inertia scrolling, connects to window.lenis,
+ * and synchronizes with GSAP ScrollTrigger.
  */
 export default function SmoothScrollProvider({
   children,
@@ -12,18 +14,51 @@ export default function SmoothScrollProvider({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    // ── 1. Disable browser scroll restoration & force refresh to ALWAYS start at top (0,0) ──
+    // Disable browser default scroll restoration & force start at top (0,0)
     if (typeof window !== 'undefined') {
       if ('scrollRestoration' in window.history) {
         window.history.scrollRestoration = 'manual';
       }
       window.scrollTo(0, 0);
-      requestAnimationFrame(() => {
-        window.scrollTo(0, 0);
-      });
     }
 
-    // Intercept clicks on anchor links (#section) for clean native smooth navigation
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    // Initialize Lenis
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+    });
+
+    (window as any).lenis = lenis;
+
+    // Synchronize Lenis with GSAP ScrollTrigger if available
+    let cleanupGsapSync: (() => void) | null = null;
+    import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+      const handleScroll = () => {
+        ScrollTrigger.update();
+      };
+      lenis.on('scroll', handleScroll);
+      cleanupGsapSync = () => {
+        lenis.off('scroll', handleScroll);
+      };
+    }).catch(() => {});
+
+    // Animation Frame Loop
+    let animationFrameId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      animationFrameId = requestAnimationFrame(raf);
+    }
+    animationFrameId = requestAnimationFrame(raf);
+
+    // Anchor smooth click interceptor
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchorLink = target.closest('a');
@@ -34,7 +69,7 @@ export default function SmoothScrollProvider({
         e.preventDefault();
         const element = document.querySelector(href) as HTMLElement | null;
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
+          lenis.scrollTo(element, { offset: 0, duration: 1.2 });
         }
       } else if (href && href.includes('#')) {
         const parts = href.split('#');
@@ -43,17 +78,23 @@ export default function SmoothScrollProvider({
           e.preventDefault();
           const element = document.querySelector(hash) as HTMLElement | null;
           if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            lenis.scrollTo(element, { offset: 0, duration: 1.2 });
           }
         }
       }
     };
 
     document.addEventListener('click', handleAnchorClick);
+
     return () => {
       document.removeEventListener('click', handleAnchorClick);
+      if (cleanupGsapSync) cleanupGsapSync();
+      cancelAnimationFrame(animationFrameId);
+      lenis.destroy();
+      delete (window as any).lenis;
     };
   }, []);
 
   return <>{children}</>;
 }
+

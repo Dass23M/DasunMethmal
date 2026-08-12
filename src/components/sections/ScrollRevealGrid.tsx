@@ -118,7 +118,7 @@ export default function ScrollRevealGrid() {
     }
 
     return (
-        <section ref={sectionRef} className="w-full bg-[#F5F5F7] py-12 sm:py-20 overflow-hidden select-none">
+        <section id="skills-section" ref={sectionRef} className="w-full bg-[#F5F5F7] py-12 sm:py-20 overflow-hidden select-none">
             <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
 
                 {/* 3-Column Bento Metric Layout with Software Development Focus */}

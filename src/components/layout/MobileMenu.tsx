@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import Link from 'next/link';
 
 /**
  * Slide-out mobile menu panel.
@@ -55,16 +54,16 @@ export default function MobileMenu() {
 
       <ul className="mobile-nav-ul">
         <li>
-          <Link href="/" onClick={closeMenu}>Home</Link>
-        </li>
-        <li>
-          <a href="#portfolio-section" onClick={(e) => handleSectionClick(e, 'portfolio-section')}>
-            Portfolio
-          </a>
+          <a href="#home-section" onClick={(e) => handleSectionClick(e, 'home-section')}>Home</a>
         </li>
         <li>
           <a href="#about-section" onClick={(e) => handleSectionClick(e, 'about-section')}>
             About
+          </a>
+        </li>
+        <li>
+          <a href="#portfolio-section" onClick={(e) => handleSectionClick(e, 'portfolio-section')}>
+            Portfolio
           </a>
         </li>
         <li>

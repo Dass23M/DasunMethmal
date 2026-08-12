@@ -19,6 +19,13 @@ const GSAPSectionAnimator = dynamic(
   }
 );
 
+const LenisBackgroundCanvas = dynamic(
+  () => import('@/components/ui/LenisBackgroundCanvas'),
+  {
+    ssr: false,
+  }
+);
+
 // -----------------------------------------------------------------------------
 // Fonts
 // -----------------------------------------------------------------------------
@@ -327,6 +334,7 @@ export default function RootLayout({
         className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable}`}
       >
         <SmoothScrollProvider>
+          <LenisBackgroundCanvas />
           <GSAPSectionAnimator>
             {/* Page loader */}
             <Loader />

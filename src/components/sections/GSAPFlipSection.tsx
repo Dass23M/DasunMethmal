@@ -604,7 +604,7 @@ export default function GSAPFlipSection() {
   return (
     <div
       ref={containerRef}
-      id="gsapflip-section"
+      id="services-section"
       className="relative w-full overflow-hidden"
       style={{ background: '#080808', color: '#eee8de', fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
     >

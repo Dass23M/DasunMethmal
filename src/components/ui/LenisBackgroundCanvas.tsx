@@ -40,7 +40,7 @@ export default function LenisBackgroundCanvas() {
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // Track scroll velocity
+    // Track scroll velocity via Lenis or standard window scroll
     const updateScrollVelocity = () => {
       const currentScrollY = window.scrollY;
       scrollVelocity = (currentScrollY - lastScrollY) * 0.1;
@@ -48,6 +48,16 @@ export default function LenisBackgroundCanvas() {
     };
 
     window.addEventListener('scroll', updateScrollVelocity, { passive: true });
+
+    let lenisScrollHandler: ((e: any) => void) | null = null;
+    if ((window as any).lenis) {
+      lenisScrollHandler = (e: any) => {
+        if (typeof e.velocity === 'number') {
+          scrollVelocity = e.velocity * 0.15;
+        }
+      };
+      (window as any).lenis.on('scroll', lenisScrollHandler);
+    }
 
     // Handle Resize
     const handleResize = () => {
@@ -132,6 +142,9 @@ export default function LenisBackgroundCanvas() {
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('scroll', updateScrollVelocity);
+      if (lenisScrollHandler && (window as any).lenis) {
+        (window as any).lenis.off('scroll', lenisScrollHandler);
+      }
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animationFrameId);

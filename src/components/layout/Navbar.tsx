@@ -19,8 +19,8 @@ export default function Navbar() {
   useEffect(() => {
     const sections = [
       'home-section',
-      'portfolio-section',
       'about-section',
+      'portfolio-section',
       'services-section',
       'skills-section',
       'testimonial-section',
@@ -121,8 +121,8 @@ export default function Navbar() {
 
   const leftLinks = [
     { label: 'Home', id: 'home-section' },
-    { label: 'Portfolio', id: 'portfolio-section' },
     { label: 'About', id: 'about-section' },
+    { label: 'Portfolio', id: 'portfolio-section' },
     { label: 'Services', id: 'services-section' },
   ];
 

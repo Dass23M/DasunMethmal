@@ -2,18 +2,24 @@ import os
 from PIL import Image
 
 src_path = r"c:\Users\DELL\Desktop\unfold-master\methmal\public\images\favicon.ico.jpeg"
-pub_dest = r"c:\Users\DELL\Desktop\unfold-master\methmal\public\favicon.ico"
-app_dest = r"c:\Users\DELL\Desktop\unfold-master\methmal\src\app\favicon.ico"
-png_dest = r"c:\Users\DELL\Desktop\unfold-master\methmal\public\favicon.png"
+pub_dir = r"c:\Users\DELL\Desktop\unfold-master\methmal\public"
+app_dir = r"c:\Users\DELL\Desktop\unfold-master\methmal\src\app"
 
 if os.path.exists(src_path):
     try:
         im = Image.open(src_path)
-        # Save as ICO (containing 16x16, 32x32, 48x48, 64x64 sizes)
-        im.save(pub_dest, format='ICO', sizes=[(16, 16), (32, 32), (48, 48), (64, 64)])
-        im.save(app_dest, format='ICO', sizes=[(16, 16), (32, 32), (48, 48), (64, 64)])
-        im.save(png_dest, format='PNG')
-        print("Successfully generated public/favicon.ico, src/app/favicon.ico, and public/favicon.png!")
+        
+        # 1. Save ICO files
+        im.save(os.path.join(pub_dir, "favicon.ico"), format='ICO', sizes=[(16, 16), (32, 32), (48, 48), (64, 64)])
+        im.save(os.path.join(app_dir, "favicon.ico"), format='ICO', sizes=[(16, 16), (32, 32), (48, 48), (64, 64)])
+        
+        # 2. Save PNG icon sizes expected by browser and Next.js manifest
+        im.resize((32, 32), Image.Resampling.LANCZOS).save(os.path.join(pub_dir, "favicon-32x32.png"), format='PNG')
+        im.resize((192, 192), Image.Resampling.LANCZOS).save(os.path.join(pub_dir, "icon-192.png"), format='PNG')
+        im.resize((512, 512), Image.Resampling.LANCZOS).save(os.path.join(pub_dir, "icon-512.png"), format='PNG')
+        im.resize((180, 180), Image.Resampling.LANCZOS).save(os.path.join(pub_dir, "apple-touch-icon.png"), format='PNG')
+        
+        print("Successfully generated all icons in public/ and src/app/!")
     except Exception as e:
         print(f"Error converting favicon: {e}")
 else:

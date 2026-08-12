@@ -28,6 +28,8 @@ try {
     copyRecursiveSync(srcDir, destDir);
     console.log('[Unfold Next.js] Synced images from ./images to ./public/images');
   }
+
+
 } catch (err) {
   console.error('[Unfold Next.js] Failed to auto-copy images:', err);
 }

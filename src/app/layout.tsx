@@ -1,30 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import { Sora, Inter, JetBrains_Mono } from 'next/font/google';
-import dynamic from 'next/dynamic';
 import './globals.css';
 
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
 import MobileMenu from '@/components/layout/MobileMenu';
-
-// Dynamically import GSAP-dependent components
-// to keep them out of the critical layout bundle.
-const Loader = dynamic(() => import('@/components/layout/Loader'), {
-  ssr: false,
-});
-
-const GSAPSectionAnimator = dynamic(
-  () => import('@/components/providers/GSAPSectionAnimator'),
-  {
-    ssr: false,
-  }
-);
-
-const LenisBackgroundCanvas = dynamic(
-  () => import('@/components/ui/LenisBackgroundCanvas'),
-  {
-    ssr: false,
-  }
-);
+import Loader from '@/components/layout/Loader';
+import GSAPSectionAnimator from '@/components/providers/GSAPSectionAnimator';
+import LenisBackgroundCanvas from '@/components/ui/LenisBackgroundCanvas';
 
 // -----------------------------------------------------------------------------
 // Fonts
@@ -152,11 +134,7 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
 
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
-  },
+
 
   // ---------------------------------------------------------------------------
   // Open Graph
@@ -313,13 +291,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-        {/* Google Search Central Favicon Tags */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.webmanifest" />
+
 
         {/* JSON-LD Structured Data */}
         <script

@@ -1,12 +1,15 @@
 'use client';
 
 import { useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /**
  * GSAP ScrollTrigger section orchestrator.
- * Uses dynamic import so GSAP is never part of the SSR/layout bundle,
- * preventing ChunkLoadError when the vendor chunk is missing or stale.
- *
  * - Desktop-only smooth section reveals + parallax covers + hero pin
  * - Mobile (<992px): Keeps all sections 100% visible, unblocked & responsive
  */
@@ -19,16 +22,9 @@ export default function GSAPSectionAnimator({
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
 
-    let ctx: { revert: () => void } | null = null;
-
-    // Dynamic import – GSAP is loaded client-side only, never bundled into layout.js
-    import('gsap').then(({ default: gsap }) =>
-      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
-        gsap.registerPlugin(ScrollTrigger);
-
-        ctx = gsap.context(() => {
-          window.scrollTo(0, 0);
-          const mm = gsap.matchMedia();
+    const ctx = gsap.context(() => {
+      window.scrollTo(0, 0);
+      const mm = gsap.matchMedia();
 
           // ── Desktop (≥992px): Smooth section reveal + parallax + hero pin ──
           mm.add('(min-width: 992px)', () => {
@@ -108,10 +104,8 @@ export default function GSAPSectionAnimator({
             });
           });
         });
-      })
-    );
 
-    return () => ctx?.revert();
+    return () => ctx.revert();
   }, []);
 
   return <>{children}</>;

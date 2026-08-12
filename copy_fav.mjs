@@ -2,15 +2,24 @@ import fs from 'fs';
 import path from 'path';
 
 const src = path.resolve('public/images/favicon.ico.jpeg');
-const destPub = path.resolve('public/favicon.ico');
-const destApp = path.resolve('src/app/favicon.ico');
-const destPng = path.resolve('public/favicon.png');
+
+const targets = [
+  'public/favicon.ico',
+  'src/app/favicon.ico',
+  'public/favicon.png',
+  'public/favicon-32x32.png',
+  'public/icon-192.png',
+  'public/icon-512.png',
+  'public/apple-touch-icon.png'
+];
 
 if (fs.existsSync(src)) {
-  fs.copyFileSync(src, destPub);
-  fs.copyFileSync(src, destApp);
-  fs.copyFileSync(src, destPng);
-  console.log('SUCCESSFULLY COPIED FAVICON TO public/favicon.ico AND src/app/favicon.ico!');
+  targets.forEach((targetPath) => {
+    const fullDest = path.resolve(targetPath);
+    fs.mkdirSync(path.dirname(fullDest), { recursive: true });
+    fs.copyFileSync(src, fullDest);
+  });
+  console.log('SUCCESSFULLY GENERATED ALL FAVICONS AND ICONS IN PUBLIC!');
 } else {
   console.error('Source file not found at:', src);
 }

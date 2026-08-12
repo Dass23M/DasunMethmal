@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
 
 /**
  * Ultra-Minimalist Apple Luxury Preloader.
@@ -12,7 +13,7 @@ export default function Loader() {
   const nameRef = useRef<HTMLHeadingElement>(null);
   const [hidden, setHidden] = useState(false);
 
-  // ── 1. GSAP Exit Animation after 450ms (GSAP dynamically loaded) ──
+  // ── 1. GSAP Exit Animation after 450ms ──
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
@@ -22,34 +23,32 @@ export default function Loader() {
     const timer = setTimeout(() => {
       if (!overlayRef.current) return;
 
-      import('gsap').then(({ default: gsap }) => {
-        const ctx = gsap.context(() => {
-          const tl = gsap.timeline({
-            onComplete: () => setHidden(true),
-          });
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          onComplete: () => setHidden(true),
+        });
 
-          // Swift fade & slide up black preloader curtain seamlessly
-          tl.to([canvasRef.current, nameRef.current], {
+        // Swift fade & slide up black preloader curtain seamlessly
+        tl.to([canvasRef.current, nameRef.current], {
+          opacity: 0,
+          scale: 0.96,
+          duration: 0.15,
+          ease: 'power2.in',
+        });
+
+        tl.to(
+          overlayRef.current,
+          {
             opacity: 0,
-            scale: 0.96,
-            duration: 0.15,
-            ease: 'power2.in',
-          });
+            yPercent: -100,
+            duration: 0.25,
+            ease: 'power3.inOut',
+          },
+          '-=0.05'
+        );
+      }, overlayRef);
 
-          tl.to(
-            overlayRef.current,
-            {
-              opacity: 0,
-              yPercent: -100,
-              duration: 0.25,
-              ease: 'power3.inOut',
-            },
-            '-=0.05'
-          );
-        }, overlayRef);
-
-        (overlayRef as any)._gsapCtx = ctx;
-      });
+      (overlayRef as any)._gsapCtx = ctx;
     }, 60);
 
     return () => {

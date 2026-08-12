@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import SectionHeading from '@/components/ui/SectionHeading';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 // High-resolution local poster & editorial artwork images
 const POSTER_IMAGES = [
@@ -116,55 +122,47 @@ export default function PosterDesign() {
   useEffect(() => {
     if (!mounted || !containerRef.current || !cubeRef.current) return;
 
-    let ctx: { revert: () => void } | null = null;
+    const ctx = gsap.context(() => {
+      const totalScenes = SCENE_DATA.length;
 
-    import('gsap').then(({ default: gsap }) => {
-      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
-        gsap.registerPlugin(ScrollTrigger);
+      // Pinned ScrollTrigger driving 3D Cube rotation & HUD progress
+      triggerInstanceRef.current = ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: 'top top',
+        end: () => `+=${window.innerHeight * 4}`, // 400vh scroll height for smooth pacing
+        pin: true,
+        scrub: 0.6,
+        onUpdate: (self) => {
+          const p = self.progress;
+          const pct = Math.round(p * 100);
+          setProgressPct(pct);
 
-        ctx = gsap.context(() => {
-          const totalScenes = SCENE_DATA.length;
+          // Calculate interpolated rotation angles (rx, ry)
+          const t = p * (totalScenes - 1);
+          const i = Math.min(Math.floor(t), totalScenes - 2);
+          const f = easeIO(t - i);
 
-          // Pinned ScrollTrigger driving 3D Cube rotation & HUD progress
-          triggerInstanceRef.current = ScrollTrigger.create({
-            trigger: containerRef.current,
-            start: 'top top',
-            end: () => `+=${window.innerHeight * 4}`, // 400vh scroll height for smooth pacing
-            pin: true,
-            scrub: 0.6,
-            onUpdate: (self) => {
-              const p = self.progress;
-              const pct = Math.round(p * 100);
-              setProgressPct(pct);
+          const a = STOPS[i];
+          const b = STOPS[i + 1];
 
-              // Calculate interpolated rotation angles (rx, ry)
-              const t = p * (totalScenes - 1);
-              const i = Math.min(Math.floor(t), totalScenes - 2);
-              const f = easeIO(t - i);
+          const rx = a.rx + (b.rx - a.rx) * f;
+          const ry = a.ry + (b.ry - a.ry) * f;
 
-              const a = STOPS[i];
-              const b = STOPS[i + 1];
+          if (cubeRef.current) {
+            cubeRef.current.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+          }
 
-              const rx = a.rx + (b.rx - a.rx) * f;
-              const ry = a.ry + (b.ry - a.ry) * f;
-
-              if (cubeRef.current) {
-                cubeRef.current.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-              }
-
-              // Update active scene index
-              const currentIdx = Math.min(
-                Math.floor(p * totalScenes + 0.1),
-                totalScenes - 1
-              );
-              setActiveSceneIdx(currentIdx);
-            },
-          });
-        }, containerRef);
+          // Update active scene index
+          const currentIdx = Math.min(
+            Math.floor(p * totalScenes + 0.1),
+            totalScenes - 1
+          );
+          setActiveSceneIdx(currentIdx);
+        },
       });
-    });
+    }, containerRef);
 
-    return () => ctx?.revert();
+    return () => ctx.revert();
   }, [mounted]);
 
   // Smooth scroll to specific scene index within pinned container

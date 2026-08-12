@@ -6,6 +6,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { portfolioItems } from '@/data/portfolio';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /* ─────────────────────────────────────────────
    Portfolio grid – 6 clickable project cards.
@@ -28,44 +34,35 @@ export default function Portfolio() {
     setMounted(true);
   }, []);
 
-  /* Lazy-load GSAP only for the reveal animation so the
-     component never crashes if gsap vendor chunk is missing. */
+  /* Reveal animation for cards */
   useEffect(() => {
     if (!mounted) return;
-    let ctx: { revert: () => void } | null = null;
+    const section = sectionRef.current;
+    if (!section) return;
 
-    import('gsap').then(({ default: gsap }) =>
-      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
-        gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      const cards = section.querySelectorAll<HTMLElement>('.pf-card');
+      cards.forEach((card, i) => {
+        gsap.fromTo(
+          card,
+          { y: 50, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 88%',
+              toggleActions: 'play none none reverse',
+            },
+            delay: i * 0.06,
+          }
+        );
+      });
+    }, section);
 
-        const section = sectionRef.current;
-        if (!section) return;
-
-        ctx = gsap.context(() => {
-          const cards = section.querySelectorAll<HTMLElement>('.pf-card');
-          cards.forEach((card, i) => {
-            gsap.fromTo(
-              card,
-              { y: 50, opacity: 0 },
-              {
-                y: 0,
-                opacity: 1,
-                duration: 0.7,
-                ease: 'power3.out',
-                scrollTrigger: {
-                  trigger: card,
-                  start: 'top 88%',
-                  toggleActions: 'play none none reverse',
-                },
-                delay: i * 0.06,
-              }
-            );
-          });
-        }, section);
-      })
-    );
-
-    return () => ctx?.revert();
+    return () => ctx.revert();
   }, [mounted]);
 
   if (!mounted) {

@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Hero from '@/components/sections/Hero';
@@ -13,14 +12,12 @@ import Testimonials from '@/components/sections/Testimonials';
 import FaqSection from '@/components/sections/FaqSection';
 import Contact from '@/components/sections/Contact';
 import FooterMarquee from '@/components/sections/FooterMarquee';
-
-// Dynamically import heavy WebGL / GSAP interactive sections for fast initial page load
-const ImageFanShowcase = dynamic(() => import('@/components/sections/ImageFanShowcase'), { ssr: false });
-const LandoStyleSection = dynamic(() => import('@/components/sections/LandoStyleSection'), { ssr: false });
-const Artifact3DSection = dynamic(() => import('@/components/sections/Artifact3DSection'), { ssr: false });
-const GSAPFlipSection = dynamic(() => import('@/components/sections/GSAPFlipSection'), { ssr: false });
-const EditorialShowcase = dynamic(() => import('@/components/sections/EditorialShowcase'), { ssr: false });
-const PosterDesign = dynamic(() => import('@/components/sections/PosterDesign'), { ssr: false });
+import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
+import LandoStyleSection from '@/components/sections/LandoStyleSection';
+import Artifact3DSection from '@/components/sections/Artifact3DSection';
+import GSAPFlipSection from '@/components/sections/GSAPFlipSection';
+import EditorialShowcase from '@/components/sections/EditorialShowcase';
+import PosterDesign from '@/components/sections/PosterDesign';
 
 /**
  * Main one-page portfolio — home page.

@@ -17,7 +17,7 @@ const POSTER_IMAGES = [
 
 const FACE_ORDER = ['top', 'front', 'right', 'back', 'left', 'bottom'] as const;
 
-const FACE_NAMES = ['DESCENT', 'REBELLION', 'MOO WALK', 'BAD ART', 'NO RULES', 'SUPER'];
+const FACE_NAMES = ['STRATEGY', 'BRANDING', 'CAMPAIGNS', 'PERFORMANCE', 'GROWTH', 'CONVERSION'];
 
 // Cube rotation stops — one per scene
 const STOPS = [
@@ -51,41 +51,41 @@ interface Scene {
 const SCENES: Scene[] = [
   {
     id: 's0',
-    tag: 'Cube Gallery — Bad Art',
-    heading: ['WORK', 'AGAINST', 'THE MODEL'],
+    tag: 'Digital Marketing — Visual Strategy',
+    heading: ['STRATEGIC', 'DIGITAL', 'MARKETING'],
     isH1: true,
-    body: 'What happens when you ask AI to do the opposite of what it was built for? Break proportion. Flip symmetry. Leave the mistakes in place. Scroll to find out.',
-    ctaNext: { label: 'Enter', idx: 1 },
+    body: 'High-converting ad creatives, viral social visuals, and data-driven brand campaigns. Combining high-impact visual design with targeted growth strategies to maximize reach, engagement, and ROI.',
+    ctaNext: { label: 'Explore', idx: 1 },
     ctaBack: null,
     align: 'left',
   },
   {
     id: 's1',
-    tag: '01 — Art Rebellion',
-    heading: ['FLIP', 'THE', 'PROMPT'],
-    body: 'A cow walking a monster instead of a monster walking a cow. That inversion is enough to break template thinking. The cape ends up on the wrong body.',
+    tag: '01 — Brand & Identity',
+    heading: ['DISTINCT', 'VISUAL', 'IDENTITY'],
+    body: 'Building unforgettable visual assets that command attention across channels. From social media posters to display ads, every graphic aligns with brand positioning and audience psychology.',
     ctaNext: { label: 'Turn', idx: 2 },
     ctaBack: { label: 'Back', idx: 0 },
     align: 'right',
   },
   {
     id: 's2',
-    tag: '02 — Moo Walk',
-    heading: ['NEITHER', 'LEADS'],
-    body: 'Clashing colors. No balance. A dance with no choreography. When the model works against itself something more genuine surfaces.',
+    tag: '02 — Campaign Visuals',
+    heading: ['MULTI-CHANNEL', 'CAMPAIGNS'],
+    body: 'Targeted ad banners, promotional posters, and performance creatives crafted for Meta, Google, and LinkedIn ads. Engineered to capture attention and stop the scroll instantly.',
     ctaNext: { label: 'Turn', idx: 3 },
     ctaBack: { label: 'Back', idx: 1 },
     align: 'left',
   },
   {
     id: 's3',
-    tag: '03 — Bad Art',
-    heading: ['REVERSE', 'CREATIVITY'],
-    body: 'AI is trained to polish and regularize. The harder direction is unlearning that. A television for a head is not an error. It is the point.',
+    tag: '03 — Performance Marketing',
+    heading: ['DATA-DRIVEN', 'CREATIVITY'],
+    body: 'Combining creative storytelling with real-time analytics and audience targeting. Visual designs optimized for maximum click-through rates (CTR) and customer acquisition cost (CAC) efficiency.',
     stats: [
-      { num: '6', label: 'Works' },
-      { num: '360', label: 'Degrees' },
-      { num: '1', label: 'Object' },
+      { num: '3.5x', label: 'Avg ROAS' },
+      { num: '45%', label: 'Higher CTR' },
+      { num: '100+', label: 'Campaigns' },
     ],
     ctaNext: { label: 'Turn', idx: 4 },
     ctaBack: { label: 'Back', idx: 2 },
@@ -93,18 +93,18 @@ const SCENES: Scene[] = [
   },
   {
     id: 's4',
-    tag: '04 — No Rules',
-    heading: ['NONSENSE', 'AT THE', 'CENTER'],
-    body: 'Dada and the surrealists knew this. Put the absurd at the center and the edges stop pretending. Nine heads in the branches. The sun has a face and it approves.',
+    tag: '04 — Social Media Growth',
+    heading: ['CONTENT', 'THAT', 'ENGAGES'],
+    body: 'Carousel ads, visual infographics, and promotional key visuals tailored for modern social algorithms. Transforming casual viewers into engaged followers and loyal brand advocates.',
     ctaNext: { label: 'Turn', idx: 5 },
     ctaBack: { label: 'Back', idx: 3 },
     align: 'left',
   },
   {
     id: 's5',
-    tag: '05 — Super Monsters',
-    heading: ['RAW', 'NOT', 'POLISHED'],
-    body: 'Forward creativity takes a sketch and makes it real. This goes the other way. Imperfection left in place is closer to something honest.',
+    tag: '05 — Conversion Optimization',
+    heading: ['DESIGNED', 'FOR', 'REVENUE'],
+    body: 'Every layout, color palette, and call-to-action is structured to drive user conversions. Turning creative poster visuals into scalable digital revenue for your business.',
     ctaNext: { label: 'Begin again', idx: 0 },
     ctaBack: { label: 'Back', idx: 4 },
     align: 'right',
@@ -262,7 +262,7 @@ export default function PosterDesign() {
 
       {/* ── Section heading (scrolls away before cube sticks) ───────────── */}
       <div className="pcg-header">
-        <SectionHeading title="POSTER & VISUAL DESIGN" theme="dark" />
+        <SectionHeading title="DIGITAL MARKETING & POSTER DESIGN" theme="dark" />
       </div>
 
       {/* ── Scroll area ─────────────────────────────────────────────────── */}
@@ -361,11 +361,9 @@ export default function PosterDesign() {
           {/* Credit — right-center (rotated) */}
           <div className="pcg-credit">
             <a
-              href="https://www.linkedin.com/posts/luis-martinez-lr_ai-creativity-reversecreativity-activity-7366853269517651970-zeUD"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#contact-section"
             >
-              Reverse Creativity
+              Digital Marketing &amp; Strategy
             </a>
           </div>
 

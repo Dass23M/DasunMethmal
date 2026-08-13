@@ -109,7 +109,7 @@ export default function LogoSlider() {
   return (
     <div
       style={{
-        padding: '5rem 0',
+        padding: '2.5rem 0',
         overflow: 'hidden',
         background: 'transparent',
         borderTop: '1px solid rgba(255,255,255,0.07)',

@@ -97,9 +97,7 @@ export default function HomePage() {
           </div>
 
           <div className="scroll-reveal-section">
-            <LazySection minHeight="200px">
-              <RandomTextReveal />
-            </LazySection>
+            <RandomTextReveal />
           </div>
 
           <div className="scroll-reveal-section">

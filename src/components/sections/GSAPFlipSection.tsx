@@ -116,10 +116,10 @@ export default function GSAPFlipSection() {
     (() => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
+      const ctx2d = canvas.getContext('2d');
+      if (!ctx2d) return;
 
-      let animFrameId: number;
+      let ringAnimFrameId: number;
       let width = (canvas.width = window.innerWidth);
       let height = (canvas.height = window.innerHeight);
       let rotX = 0.45;
@@ -127,13 +127,12 @@ export default function GSAPFlipSection() {
       let scrollRotY = 0;
       let isRunning = true;
 
-      const handleResize = () => {
+      const handleCanvasResize = () => {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
       };
-      window.addEventListener('resize', handleResize);
+      window.addEventListener('resize', handleCanvasResize);
 
-      const isMobile = window.innerWidth < 768;
       // Slightly smaller scale for GSAPFlipSection
       const R = Math.min(width, height) * (isMobile ? 0.14 : 0.17);
       const r = Math.min(width, height) * (isMobile ? 0.045 : 0.06);
@@ -157,47 +156,47 @@ export default function GSAPFlipSection() {
 
       let isLoopActive = false;
 
-      const render = () => {
+      const renderRing = () => {
         if (!isRunning || !isSectionVisible.current) {
           isLoopActive = false;
           return;
         }
         isLoopActive = true;
-        ctx.clearRect(0, 0, width, height);
+        ctx2d.clearRect(0, 0, width, height);
         rotY += 0.005;
 
         // Major torus rings — Brand Orange (#FF6B00)
         for (let i = 0; i < segMajor; i++) {
           const u = (i / segMajor) * Math.PI * 2;
-          ctx.beginPath();
+          ctx2d.beginPath();
           for (let j = 0; j <= segMinor; j++) {
             const v = (j / segMinor) * Math.PI * 2;
             const x = (R + r * Math.cos(v)) * Math.cos(u);
             const y = (R + r * Math.cos(v)) * Math.sin(u);
             const z = r * Math.sin(v);
             const { px, py } = project3D(x, y, z);
-            j === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+            j === 0 ? ctx2d.moveTo(px, py) : ctx2d.lineTo(px, py);
           }
-          ctx.strokeStyle = i % 2 === 0 ? 'rgba(255,107,0,0.42)' : 'rgba(255,140,0,0.24)';
-          ctx.lineWidth = i % 2 === 0 ? 1.2 : 0.8;
-          ctx.stroke();
+          ctx2d.strokeStyle = i % 2 === 0 ? 'rgba(255,107,0,0.42)' : 'rgba(255,140,0,0.24)';
+          ctx2d.lineWidth = i % 2 === 0 ? 1.2 : 0.8;
+          ctx2d.stroke();
         }
 
         // Minor cross-section rings — Warm Orange Glow
         for (let j = 0; j < segMinor; j += 2) {
           const v = (j / segMinor) * Math.PI * 2;
-          ctx.beginPath();
+          ctx2d.beginPath();
           for (let i = 0; i <= segMajor; i++) {
             const u = (i / segMajor) * Math.PI * 2;
             const x = (R + r * Math.cos(v)) * Math.cos(u);
             const y = (R + r * Math.cos(v)) * Math.sin(u);
             const z = r * Math.sin(v);
             const { px, py } = project3D(x, y, z);
-            i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+            i === 0 ? ctx2d.moveTo(px, py) : ctx2d.lineTo(px, py);
           }
-          ctx.strokeStyle = 'rgba(255,170,40,0.22)';
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
+          ctx2d.strokeStyle = 'rgba(255,170,40,0.22)';
+          ctx2d.lineWidth = 0.8;
+          ctx2d.stroke();
         }
 
         // Orbiting orange node dots
@@ -208,31 +207,30 @@ export default function GSAPFlipSection() {
           const cy = R * 0.45 * Math.sin(angle);
           const cz = Math.sin(angle * 3) * 18;
           const { px, py, scale } = project3D(cx, cy, cz);
-          ctx.beginPath();
-          ctx.arc(px, py, Math.max(1, 2.8 * scale), 0, Math.PI * 2);
-          ctx.fillStyle = '#FF6B00';
-          ctx.fill();
+          ctx2d.beginPath();
+          ctx2d.arc(px, py, Math.max(1, 2.8 * scale), 0, Math.PI * 2);
+          ctx2d.fillStyle = '#FF6B00';
+          ctx2d.fill();
         }
 
-        animFrameId = requestAnimationFrame(render);
+        ringAnimFrameId = requestAnimationFrame(renderRing);
       };
 
-      render();
+      // Expose start function for the visibility trigger to use
+      (containerRef as any)._startFlipLoop = () => {
+        if (!isLoopActive && isRunning) {
+          renderRing();
+        }
+      };
+
+      // Start immediately
+      renderRing();
 
       // GSAP ScrollTrigger for smooth scroll rotation
       const scrollTriggerObj = ScrollTrigger.create({
         trigger: containerRef.current,
         start: 'top bottom',
         end: 'bottom top',
-        onToggle: (self) => {
-          isSectionVisible.current = self.isActive;
-          if (canvasRef.current) {
-            canvasRef.current.style.opacity = self.isActive ? '1' : '0';
-          }
-          if (self.isActive && !isLoopActive) {
-            render();
-          }
-        },
         onUpdate: (self) => {
           scrollRotY = self.progress * Math.PI * 2;
         },
@@ -240,8 +238,8 @@ export default function GSAPFlipSection() {
 
       threeCleanup = () => {
         isRunning = false;
-        cancelAnimationFrame(animFrameId);
-        window.removeEventListener('resize', handleResize);
+        cancelAnimationFrame(ringAnimFrameId);
+        window.removeEventListener('resize', handleCanvasResize);
         scrollTriggerObj.kill();
       };
     })();
@@ -303,7 +301,7 @@ export default function GSAPFlipSection() {
         },
       });
 
-      // Overlay visibility trigger
+      // Overlay visibility trigger — controls ring loop + canvas + HUD visibility
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: 'top bottom',
@@ -311,20 +309,20 @@ export default function GSAPFlipSection() {
         onEnter: () => {
           isSectionVisible.current = true;
           (containerRef.current as any)?._startFlipLoop?.();
-          gsap.to([canvasRef.current, scanlinesRef.current].filter(Boolean), { opacity: 1, duration: 0.4 });
+          gsap.to([canvasRef.current].filter(Boolean), { opacity: 1, duration: 0.4 });
         },
         onLeave: () => {
           isSectionVisible.current = false;
-          gsap.to([canvasRef.current, scanlinesRef.current, navStatusRef.current, hudTLRef.current, hudBRRef.current, sidebarRef.current].filter(Boolean), { opacity: 0, duration: 0.3 });
+          gsap.to([canvasRef.current, navStatusRef.current, hudTLRef.current, hudBRRef.current, sidebarRef.current].filter(Boolean), { opacity: 0, duration: 0.3 });
         },
         onEnterBack: () => {
           isSectionVisible.current = true;
           (containerRef.current as any)?._startFlipLoop?.();
-          gsap.to([canvasRef.current, scanlinesRef.current].filter(Boolean), { opacity: 1, duration: 0.3 });
+          gsap.to([canvasRef.current].filter(Boolean), { opacity: 1, duration: 0.3 });
         },
         onLeaveBack: () => {
           isSectionVisible.current = false;
-          gsap.to([canvasRef.current, scanlinesRef.current, navStatusRef.current, hudTLRef.current, hudBRRef.current, sidebarRef.current].filter(Boolean), { opacity: 0, duration: 0.3 });
+          gsap.to([canvasRef.current, navStatusRef.current, hudTLRef.current, hudBRRef.current, sidebarRef.current].filter(Boolean), { opacity: 0, duration: 0.3 });
         },
       });
     }, containerRef);
@@ -349,11 +347,11 @@ export default function GSAPFlipSection() {
       className="relative w-full overflow-hidden"
       style={{ background: '#080808', color: '#eee8de', fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
     >
-      {/* ── WebGL Canvas Background ─────────────────────────────── */}
+      {/* ── 3D Ring Canvas Background (fixed to viewport) ───── */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none z-0"
-        style={{ opacity: 1 }}
+        className="fixed top-0 left-0 pointer-events-none"
+        style={{ width: '100vw', height: '100vh', zIndex: 0, opacity: 0 }}
       />
 
       {/* ── Scanlines (Disabled for clean layout) ── */}

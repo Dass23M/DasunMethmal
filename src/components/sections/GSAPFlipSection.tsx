@@ -3,11 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -117,407 +112,137 @@ export default function GSAPFlipSection() {
     window.addEventListener('mousemove', updateHUD, { passive: true });
     window.addEventListener('touchmove', updateHUD, { passive: true });
 
-    // ── THREE.JS HIGH PERFORMANCE SCENE ───────────────────────
+    // ── 3D GEOMETRIC RING BACKGROUND RENDERER (from Artifact3DSection) ──
     (() => {
       const canvas = canvasRef.current;
       if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
 
-      // Scene
-      const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x080808);
-      const scrollGroup = new THREE.Group();
-      scene.add(scrollGroup);
-      const torusGroup = new THREE.Group();
-      scrollGroup.add(torusGroup);
-
-      // Camera - adjusted FOV and position for mobile
-      const camera = new THREE.PerspectiveCamera(
-        45,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-      );
-      camera.position.z = isMobile ? 8.5 : 7;
-
-      // Renderer - cap pixel ratio at 1.0 for mobile to get 60 FPS
-      const renderer = new THREE.WebGLRenderer({
-        canvas,
-        antialias: !isMobile,
-        powerPreference: 'high-performance',
-      });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 1.5));
-      renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.0;
-
-      // Post-processing setup (Optimized for Mobile)
-      const composer = new EffectComposer(renderer);
-      composer.addPass(new RenderPass(scene, camera));
-
-      // Lighter Bloom settings on desktop; lightweight bloom on mobile
-      const bloomPass = new UnrealBloomPass(
-        new THREE.Vector2(
-          isMobile ? window.innerWidth / 2 : window.innerWidth,
-          isMobile ? window.innerHeight / 2 : window.innerHeight
-        ),
-        isMobile ? 0.4 : 0.65,
-        0.4,
-        0.65
-      );
-      composer.addPass(bloomPass);
-
-      // Controls
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controls.enabled = false;
-
-      // Lights - Brand Orange Theme (#FF6B00)
-      scene.add(new THREE.AmbientLight(0x221100, 1.2));
-      const dirLight = new THREE.DirectionalLight(0xFF8C00, 3.5);
-      dirLight.position.set(3, 4, 5);
-      scene.add(dirLight);
-
-      const pointLight = new THREE.PointLight(0xFF4500, 4.5, 25);
-      pointLight.position.set(-2, -2, 4);
-      scene.add(pointLight);
-
-      // Textures - conditionally loaded only on desktop to eliminate 15MB payload on mobile
-      let diffuse: THREE.Texture | null = null;
-      let normalTex: THREE.Texture | null = null;
-      let arm: THREE.Texture | null = null;
-
-      if (!isMobile) {
-        const textureLoader = new THREE.TextureLoader();
-        const loadTex = (url: string) => textureLoader.load(url);
-        diffuse = loadTex('https://raw.githubusercontent.com/danielyl123/person/refs/heads/main/diffuse.jpg');
-        normalTex = loadTex('https://raw.githubusercontent.com/danielyl123/person/refs/heads/main/normal.jpg');
-        arm = loadTex('https://raw.githubusercontent.com/danielyl123/person/refs/heads/main/arm.jpg');
-        [diffuse, normalTex, arm].forEach((tex) => {
-          tex.repeat.set(2, 2);
-          tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-        });
-        diffuse.colorSpace = THREE.SRGBColorSpace;
-      }
-
-      // Barycentric wireframe inner torus
-      function addBarycentricCoords(geo: THREE.BufferGeometry) {
-        const g = geo.toNonIndexed();
-        const count = g.attributes.position.count;
-        const bary = new Float32Array(count * 3);
-        for (let i = 0; i < count; i += 3) {
-          bary[i * 3] = 1; bary[i * 3 + 1] = 0; bary[i * 3 + 2] = 0;
-          bary[(i + 1) * 3] = 0; bary[(i + 1) * 3 + 1] = 1; bary[(i + 1) * 3 + 2] = 0;
-          bary[(i + 2) * 3] = 0; bary[(i + 2) * 3 + 1] = 0; bary[(i + 2) * 3 + 2] = 1;
-        }
-        g.setAttribute('barycentric', new THREE.BufferAttribute(bary, 3));
-        return g;
-      }
-
-      const wireMaterial = new THREE.ShaderMaterial({
-        vertexShader: `
-          attribute vec3 barycentric;
-          varying vec3 vBary;
-          void main() {
-            vBary = barycentric;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vBary;
-          float wireMask(vec3 b, float t) {
-            vec3 d = fwidth(b);
-            vec3 a = smoothstep(vec3(0.0), d * t, b);
-            return 1.0 - min(a.x, min(a.y, a.z));
-          }
-          void main() {
-            float wf = wireMask(vBary, 1.6);
-            vec3 baseCol = vec3(0.09, 0.02, 0.0);
-            vec3 orangeGlow = vec3(1.0, 0.42, 0.0);
-            vec3 col = mix(baseCol, orangeGlow, wf);
-            col = mix(col, vec3(1.0, 0.6, 0.0) * 2.5, wf * 0.65);
-            gl_FragColor = vec4(col, 1.0);
-          }
-        `,
-        side: THREE.DoubleSide,
-      });
-
-      // Segment resolution optimized for device capability & smaller ring scale
-      const torusSegs = isMobile ? 40 : 70;
-      const TORUS_R = 1.55, TORUS_r = 0.32;
-
-      torusGroup.add(
-        new THREE.Mesh(
-          addBarycentricCoords(new THREE.TorusGeometry(TORUS_R, TORUS_r, torusSegs, torusSegs)),
-          wireMaterial
-        )
-      );
-
-      // Voronoi fragment count optimized for smooth 60fps
-      const FRAG_SCALE = isMobile ? 22 : 40;
-
-      function hash2(px: number, py: number): [number, number] {
-        const a = Math.sin(px * 127.1 + py * 311.7) * 43758.5453;
-        const b = Math.sin(px * 269.5 + py * 183.3) * 43758.5453;
-        return [a - Math.floor(a), b - Math.floor(b)];
-      }
-
-      function cellSeed(u: number, v: number): [number, number] {
-        const n = [Math.floor(u * FRAG_SCALE), Math.floor(v * FRAG_SCALE)];
-        const f = [u * FRAG_SCALE - n[0], v * FRAG_SCALE - n[1]];
-        let md = Infinity;
-        let best = [...n];
-        for (let j = -1; j <= 1; j++) {
-          for (let i = -1; i <= 1; i++) {
-            const o = hash2(n[0] + i, n[1] + j);
-            const r = [i + o[0] - f[0], j + o[1] - f[1]];
-            const d = r[0] * r[0] + r[1] * r[1];
-            if (d < md) { md = d; best = [n[0] + i + o[0], n[1] + j + o[1]]; }
-          }
-        }
-        return [best[0] / FRAG_SCALE, best[1] / FRAG_SCALE];
-      }
-
-      const fragments = (() => {
-        const baseGeo = new THREE.TorusGeometry(TORUS_R, TORUS_r, torusSegs, torusSegs);
-        const nonIndexed = baseGeo.toNonIndexed();
-        baseGeo.dispose();
-        const pos = nonIndexed.attributes.position.array as Float32Array;
-        const nrm = nonIndexed.attributes.normal.array as Float32Array;
-        const uvData = nonIndexed.attributes.uv.array as Float32Array;
-        const tris = pos.length / 9;
-
-        const cellMap = new Map<string, { s: [number, number]; t: number[] }>();
-        for (let t = 0; t < tris; t++) {
-          const uc = (uvData[t * 6] + uvData[t * 6 + 2] + uvData[t * 6 + 4]) / 3;
-          const vc = (uvData[t * 6 + 1] + uvData[t * 6 + 3] + uvData[t * 6 + 5]) / 3;
-          const s = cellSeed(uc, vc);
-          const k = `${s[0].toFixed(5)}_${s[1].toFixed(5)}`;
-          if (!cellMap.has(k)) cellMap.set(k, { s, t: [] });
-          cellMap.get(k)!.t.push(t);
-        }
-
-        const mat = new THREE.MeshStandardMaterial({
-          color: new THREE.Color(0xFF6B00),
-          map: diffuse, normalMap: normalTex, roughnessMap: arm,
-          roughness: 0.45, metalness: 0.5, side: THREE.DoubleSide,
-        });
-
-        const list: THREE.Mesh[] = [];
-        const TWO_PI = Math.PI * 2;
-
-        for (const { s: seed, t: triList } of Array.from(cellMap.values())) {
-          if (!triList.length) continue;
-          const vertCount = triList.length * 3;
-          const pArr = new Float32Array(vertCount * 3), nArr = new Float32Array(vertCount * 3), uvArr = new Float32Array(vertCount * 2);
-          let vi = 0;
-          for (const tri of triList) {
-            for (let v = 0; v < 3; v++) {
-              const sv = tri * 3 + v;
-              pArr[vi * 3] = pos[sv * 3]; pArr[vi * 3 + 1] = pos[sv * 3 + 1]; pArr[vi * 3 + 2] = pos[sv * 3 + 2];
-              nArr[vi * 3] = nrm[sv * 3]; nArr[vi * 3 + 1] = nrm[sv * 3 + 1]; nArr[vi * 3 + 2] = nrm[sv * 3 + 2];
-              uvArr[vi * 2] = uvData[sv * 2]; uvArr[vi * 2 + 1] = uvData[sv * 2 + 1];
-              vi++;
-            }
-          }
-
-          const phi = seed[0] * TWO_PI, theta = seed[1] * TWO_PI;
-          const cx = (TORUS_R + TORUS_r * Math.cos(theta)) * Math.cos(phi);
-          const cy = (TORUS_R + TORUS_r * Math.cos(theta)) * Math.sin(phi);
-          const cz = TORUS_r * Math.sin(theta);
-          const cellCenter = new THREE.Vector3(cx, cy, cz);
-          const majorPt = new THREE.Vector3(TORUS_R * Math.cos(phi), TORUS_R * Math.sin(phi), 0);
-          const cellNormal = cellCenter.clone().sub(majorPt).normalize();
-
-          const SHRINK = 0.96;
-          for (let i = 0; i < pArr.length; i += 3) {
-            pArr[i] = (pArr[i] - cx) * SHRINK;
-            pArr[i + 1] = (pArr[i + 1] - cy) * SHRINK;
-            pArr[i + 2] = (pArr[i + 2] - cz) * SHRINK;
-          }
-
-          const geo = new THREE.BufferGeometry();
-          geo.setAttribute('position', new THREE.BufferAttribute(pArr, 3));
-          geo.setAttribute('normal', new THREE.BufferAttribute(nArr, 3));
-          geo.setAttribute('uv', new THREE.BufferAttribute(uvArr, 2));
-
-          const rnd = hash2(seed[0] * 137.53, seed[1] * 137.53);
-          const up = Math.abs(cellNormal.z) < 0.9 ? new THREE.Vector3(0, 0, 1) : new THREE.Vector3(0, 1, 0);
-          const tang = new THREE.Vector3().crossVectors(cellNormal, up).normalize();
-          const bitang = new THREE.Vector3().crossVectors(cellNormal, tang);
-          const aa = rnd[0] * TWO_PI;
-          const rotAxis = tang.clone().multiplyScalar(Math.cos(aa)).addScaledVector(bitang, Math.sin(aa)).normalize();
-
-          const mesh = new THREE.Mesh(geo, mat);
-          mesh.position.copy(cellCenter).addScaledVector(cellNormal, 0.015);
-          mesh.userData = { cellCenter, cellNormal, rotAxis, maxAngle: 0.7 + rnd[1] * 0.9, lift: 0 };
-          torusGroup.add(mesh);
-          list.push(mesh);
-        }
-
-        nonIndexed.dispose();
-        return list;
-      })();
-
-      // Raycaster mesh
-      const rcMesh = new THREE.Mesh(
-        new THREE.TorusGeometry(TORUS_R, TORUS_r, torusSegs, torusSegs),
-        new THREE.MeshBasicMaterial({ visible: false })
-      );
-      torusGroup.add(rcMesh);
-
-      const raycaster = new THREE.Raycaster();
-      const mouse = new THREE.Vector2(-999, -999);
-
-      const updateMousePos = (clientX: number, clientY: number) => {
-        mouse.x = (clientX / (winW || 1)) * 2 - 1;
-        mouse.y = -(clientY / (winH || 1)) * 2 + 1;
-      };
-
-      const onMouseMoveThree = (e: MouseEvent) => updateMousePos(e.clientX, e.clientY);
-      const onTouchMoveThree = (e: TouchEvent) => {
-        if (e.touches.length > 0) updateMousePos(e.touches[0].clientX, e.touches[0].clientY);
-      };
-
-      window.addEventListener('mousemove', onMouseMoveThree, { passive: true });
-      window.addEventListener('touchmove', onTouchMoveThree, { passive: true });
-
-      const fragParams = { hoverRadius: isMobile ? 1.0 : 0.85, liftDist: 0.28, liftSpeedUp: 0.2, liftSpeedDown: 0.08 };
-      const startTime = performance.now();
-      let lastTime = 0;
-      const hover = { point: new THREE.Vector3(), active: 0 };
-      const _localHover = new THREE.Vector3();
-
-      function smoothstepFn(min: number, max: number, v: number) {
-        const t = Math.max(0, Math.min(1, (v - min) / (max - min)));
-        return t * t * (3 - 2 * t);
-      }
-
+      let animFrameId: number;
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+      let rotX = 0.45;
+      let rotY = 0;
+      let scrollRotY = 0;
       let isRunning = true;
+
+      const handleResize = () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      };
+      window.addEventListener('resize', handleResize);
+
+      const isMobile = window.innerWidth < 768;
+      // Slightly smaller scale for GSAPFlipSection
+      const R = Math.min(width, height) * (isMobile ? 0.14 : 0.17);
+      const r = Math.min(width, height) * (isMobile ? 0.045 : 0.06);
+      const segMajor = isMobile ? 22 : 36;
+      const segMinor = isMobile ? 12 : 18;
+
+      const project3D = (x: number, y: number, z: number) => {
+        const cosY = Math.cos(rotY + scrollRotY);
+        const sinY = Math.sin(rotY + scrollRotY);
+        const x1 = x * cosY - z * sinY;
+        const z1 = x * sinY + z * cosY;
+        const cosX = Math.cos(rotX);
+        const sinX = Math.sin(rotX);
+        const y2 = y * cosX - z1 * sinX;
+        const z2 = y * sinX + z1 * cosX;
+        const fov = 480;
+        const dist = 620;
+        const scale = fov / (dist + z2);
+        return { px: width / 2 + x1 * scale, py: height / 2 + y2 * scale, scale };
+      };
+
       let isLoopActive = false;
 
-      const tick = () => {
-        if (!isRunning) {
+      const render = () => {
+        if (!isRunning || !isSectionVisible.current) {
           isLoopActive = false;
           return;
         }
-
-        // Completely stop requestAnimationFrame when section is not visible
-        if (!isSectionVisible.current) {
-          isLoopActive = false;
-          return;
-        }
-
         isLoopActive = true;
-        const elapsed = (performance.now() - startTime) / 1000;
-        const delta = Math.min(elapsed - lastTime, 0.05);
-        lastTime = elapsed;
+        ctx.clearRect(0, 0, width, height);
+        rotY += 0.005;
 
-        if (isPointerActive) {
-          raycaster.setFromCamera(mouse, camera);
-          const hits = raycaster.intersectObject(rcMesh);
-          if (hits.length > 0) {
-            torusGroup.worldToLocal(_localHover.copy(hits[0].point));
-            hover.point.copy(_localHover);
-            hover.active = Math.min(hover.active + delta * 6, 1);
-          } else {
-            hover.active = Math.max(hover.active - delta * 3, 0);
+        // Major torus rings — Brand Orange (#FF6B00)
+        for (let i = 0; i < segMajor; i++) {
+          const u = (i / segMajor) * Math.PI * 2;
+          ctx.beginPath();
+          for (let j = 0; j <= segMinor; j++) {
+            const v = (j / segMinor) * Math.PI * 2;
+            const x = (R + r * Math.cos(v)) * Math.cos(u);
+            const y = (R + r * Math.cos(v)) * Math.sin(u);
+            const z = r * Math.sin(v);
+            const { px, py } = project3D(x, y, z);
+            j === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
           }
+          ctx.strokeStyle = i % 2 === 0 ? 'rgba(255,107,0,0.42)' : 'rgba(255,140,0,0.24)';
+          ctx.lineWidth = i % 2 === 0 ? 1.2 : 0.8;
+          ctx.stroke();
         }
 
-        if (hover.active > 0.001 || isPointerActive) {
-          for (let i = 0; i < fragments.length; i++) {
-            const frag = fragments[i];
-            const { cellCenter, cellNormal, rotAxis, maxAngle } = frag.userData;
-            let target = 0;
-            if (hover.active > 0.01) {
-              const dist = cellCenter.distanceTo(hover.point);
-              target = (1 - smoothstepFn(0.3, fragParams.hoverRadius, dist)) * hover.active;
-            }
-            const speed = target > frag.userData.lift ? fragParams.liftSpeedUp : fragParams.liftSpeedDown;
-            frag.userData.lift = THREE.MathUtils.lerp(frag.userData.lift, target, speed);
-            const lift = frag.userData.lift;
-
-            if (lift > 0.001 || target > 0) {
-              frag.position.copy(cellCenter).addScaledVector(cellNormal, 0.015 + lift * fragParams.liftDist);
-              frag.quaternion.setFromAxisAngle(rotAxis, lift * maxAngle);
-            }
+        // Minor cross-section rings — Warm Orange Glow
+        for (let j = 0; j < segMinor; j += 2) {
+          const v = (j / segMinor) * Math.PI * 2;
+          ctx.beginPath();
+          for (let i = 0; i <= segMajor; i++) {
+            const u = (i / segMajor) * Math.PI * 2;
+            const x = (R + r * Math.cos(v)) * Math.cos(u);
+            const y = (R + r * Math.cos(v)) * Math.sin(u);
+            const z = r * Math.sin(v);
+            const { px, py } = project3D(x, y, z);
+            i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
           }
+          ctx.strokeStyle = 'rgba(255,170,40,0.22)';
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
         }
 
-        composer.render();
-        animFrameId = requestAnimationFrame(tick);
+        // Orbiting orange node dots
+        const nodeCount = isMobile ? 12 : 22;
+        for (let k = 0; k < nodeCount; k++) {
+          const angle = (k / nodeCount) * Math.PI * 2 + rotY * 1.2;
+          const cx = R * 0.45 * Math.cos(angle);
+          const cy = R * 0.45 * Math.sin(angle);
+          const cz = Math.sin(angle * 3) * 18;
+          const { px, py, scale } = project3D(cx, cy, cz);
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(1, 2.8 * scale), 0, Math.PI * 2);
+          ctx.fillStyle = '#FF6B00';
+          ctx.fill();
+        }
+
+        animFrameId = requestAnimationFrame(render);
       };
 
-      // Expose function to trigger RAF loop when scrolled into view
-      (containerRef as any)._startFlipLoop = () => {
-        if (!isLoopActive && isRunning) {
-          tick();
-        }
-      };
+      render();
 
-      // ── GSAP scroll animations ──────────────────────────────
-      gsap.set(scrollGroup.position, { x: 0, y: 0, z: 0 });
-      gsap.set(scrollGroup.rotation, { x: 0.15, y: 0, z: 0 });
-      gsap.from(scrollGroup.rotation, { y: Math.PI, duration: 2.0, ease: 'power3.out' });
-      gsap.from(scrollGroup.position, { y: -2, duration: 2.0, ease: 'power3.out' });
-
-      const idleTween = gsap.to(torusGroup.rotation, {
-        y: Math.PI * 2, duration: 24, ease: 'none', repeat: -1, paused: true,
-      });
-      gsap.delayedCall(2.0, () => idleTween.play());
-
-      const scrollShiftX = isMobile ? 0 : 2.2;
-
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: isMobile ? 1.0 : 2.5, // Faster, smoother touch scroll scrub on mobile
-          onToggle: (self) => {
-            isSectionVisible.current = self.isActive;
-            if (canvasRef.current) {
-              canvasRef.current.style.opacity = self.isActive ? '1' : '0';
-            }
-            if (self.isActive && !isLoopActive && isRunning) {
-              tick();
-            }
-          },
-          onUpdate: (self) => {
-            if (self.progress > 0.02) idleTween.pause();
-            else idleTween.resume();
-          },
+      // GSAP ScrollTrigger for smooth scroll rotation
+      const scrollTriggerObj = ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        onToggle: (self) => {
+          isSectionVisible.current = self.isActive;
+          if (canvasRef.current) {
+            canvasRef.current.style.opacity = self.isActive ? '1' : '0';
+          }
+          if (self.isActive && !isLoopActive) {
+            render();
+          }
+        },
+        onUpdate: (self) => {
+          scrollRotY = self.progress * Math.PI * 2;
         },
       });
-
-      scrollTl
-        .to(scrollGroup.position, { x: -scrollShiftX, y: isMobile ? -0.5 : 0, z: 0, duration: 1, ease: 'power1.inOut' }, 0)
-        .to(scrollGroup.rotation, { x: Math.PI * 0.5, y: -Math.PI * 0.6, z: Math.PI * 0.25, duration: 1, ease: 'power1.inOut' }, 0)
-        .to(scrollGroup.position, { x: scrollShiftX, y: isMobile ? 0.5 : 0, z: 0, duration: 1, ease: 'power1.inOut' }, 1)
-        .to(scrollGroup.rotation, { x: -Math.PI * 0.5, y: Math.PI * 0.6, z: -Math.PI * 0.25, duration: 1, ease: 'power1.inOut' }, 1);
-
-      // Resize handler
-      const onResize = () => {
-        const mobile = window.innerWidth < 768;
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.position.z = mobile ? 8.5 : 7;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(mobile ? 1.0 : Math.min(window.devicePixelRatio, 1.5));
-        composer.setSize(window.innerWidth, window.innerHeight);
-      };
-
-      window.addEventListener('resize', onResize);
 
       threeCleanup = () => {
         isRunning = false;
         cancelAnimationFrame(animFrameId);
-        window.removeEventListener('mousemove', onMouseMoveThree);
-        window.removeEventListener('touchmove', onTouchMoveThree);
-        window.removeEventListener('resize', onResize);
-        renderer.dispose();
-        composer.dispose();
+        window.removeEventListener('resize', handleResize);
+        scrollTriggerObj.kill();
       };
     })();
 

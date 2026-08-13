@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+// Type-only import — resolved at compile time only, zero runtime bundle impact
+import type * as THREE from 'three';
+
 
 // ─── Gallery media – uses the site's own poster + editorial images ─────────────
 const MEDIA = [

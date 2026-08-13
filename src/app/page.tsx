@@ -14,7 +14,7 @@ import Contact from '@/components/sections/Contact';
 import FooterMarquee from '@/components/sections/FooterMarquee';
 import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
 import LandoStyleSection from '@/components/sections/LandoStyleSection';
-import Artifact3DSection from '@/components/sections/Artifact3DSection';
+
 import GSAPFlipSection from '@/components/sections/GSAPFlipSection';
 import EditorialShowcase from '@/components/sections/EditorialShowcase';
 import PosterDesign from '@/components/sections/PosterDesign';
@@ -62,12 +62,7 @@ export default function HomePage() {
             </LazySection>
           </div>
 
-          {/* 3D WebGL HUD Generative Artifact Section */}
-          <div className="scroll-reveal-section">
-            <LazySection minHeight="600px">
-              <Artifact3DSection />
-            </LazySection>
-          </div>
+
 
           <div className="scroll-reveal-section">
             <LazySection minHeight="400px">

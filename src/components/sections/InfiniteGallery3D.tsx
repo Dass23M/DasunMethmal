@@ -414,22 +414,32 @@ export default function InfiniteGallery3D() {
       `;
       container.appendChild(ui);
 
-      const counterEl   = ui.querySelector('#ig-n')           as HTMLElement;
-      const cardEl      = ui.querySelector('#ig-card')        as HTMLElement;
-      const cardTitle   = ui.querySelector('#ig-card-title')  as HTMLElement;
-      const cardMeta    = ui.querySelector('#ig-card-meta')   as HTMLElement;
+      const counterEl  = ui.querySelector('#ig-n')          as HTMLElement;
+      const cardEl     = ui.querySelector('#ig-card')       as HTMLElement;
+      const cardTitle  = ui.querySelector('#ig-card-title') as HTMLElement;
+      const cardMeta   = ui.querySelector('#ig-card-meta')  as HTMLElement;
 
-      // ── Camera travel state ────────────────────────────────────────────────
+      // ── Add ESC hint to card ────────────────────────────────────────────────
+      const escHint = document.createElement('div');
+      escHint.style.cssText = 'margin-top:0.55rem;font-size:0.48rem;letter-spacing:0.24em;opacity:0.38;color:#e8eef8;';
+      escHint.textContent   = 'CLICK · ESC  ·  CLOSE';
+      cardEl.appendChild(escHint);
+
+      // ── Camera state ───────────────────────────────────────────────────────
+      type Panel = typeof panels[0];
       const state = {
-        t:          0,
-        speedMul:   1,
-        mouse:      new THREE.Vector2(-2, -2),
-        aim:        new THREE.Vector2(0, 0),
-        aimTarget:  new THREE.Vector2(0, 0),
-        hovered:    null as typeof panels[0] | null,
+        t:        0,
+        speedMul: 1,
+        focusMix: 0,       // 0 = flying, 1 = locked on panel
+        focus:    null as Panel | null,
+        mouse:    new THREE.Vector2(-2, -2),
+        aim:      new THREE.Vector2(0, 0),
+        aimTarget:new THREE.Vector2(0, 0),
+        hovered:  null as Panel | null,
         currentIdx: -1,
       };
 
+      // Travel camera (continuous fly-through)
       const travelPos  = new THREE.Vector3();
       const travelQuat = new THREE.Quaternion();
       const lookTarget = new THREE.Vector3();
@@ -439,8 +449,13 @@ export default function InfiniteGallery3D() {
       const aimEuler   = new THREE.Euler();
       const rawQuat    = new THREE.Quaternion();
       const smoothQuat = new THREE.Quaternion();
-      let quatReady    = false;
-      let smoothRoll   = 0;
+      let   quatReady  = false;
+      let   smoothRoll = 0;
+
+      // Focus camera (locked on clicked panel)
+      const focusPos  = new THREE.Vector3();
+      const focusQuat = new THREE.Quaternion();
+      const focusLookMatrix = new THREE.Matrix4();
 
       function normalAt(t: number, out: THREE.Vector3) {
         const f  = ((t % 1) + 1) * SEG;
@@ -453,8 +468,19 @@ export default function InfiniteGallery3D() {
         return ((Math.round(t * SEG) % SEG) + SEG) % SEG;
       }
 
+      // Compute ideal camera position/orientation facing a panel
+      function focusTargets(panel: Panel) {
+        // Stand in front of the panel, far enough to see it clearly
+        const dist = Math.max(panel.w / camera.aspect, panel.h) * 1.35;
+        focusPos.copy(panel.center).addScaledVector(panel.inward, dist);
+        focusLookMatrix.lookAt(focusPos, panel.center, panel.up);
+        focusQuat.setFromRotationMatrix(focusLookMatrix);
+      }
+
       function updateTravel(dt: number) {
-        state.t = (state.t + SPEED * state.speedMul * dt) % 1;
+        // Keep advancing time only when not fully focused (tunnel still ticks for smooth return)
+        if (!state.focus)
+          state.t = (state.t + SPEED * state.speedMul * dt) % 1;
         const t = state.t;
         travelPos.copy(curve.getPointAt(t));
         lookTarget.copy(curve.getPointAt((t + 0.022) % 1));
@@ -465,60 +491,104 @@ export default function InfiniteGallery3D() {
         else             smoothQuat.slerp(rawQuat, 1 - Math.exp(-2.6 * dt));
         travelQuat.copy(smoothQuat);
 
-        const tangent0 = frames.tangents[frameIdxAt(t)];
-        const tangent1 = frames.tangents[frameIdxAt((t + 0.02) % 1)];
-        const rollAxis = new THREE.Vector3().copy(tangent0).cross(tangent1);
-        const targetRoll = THREE.MathUtils.clamp(rollAxis.dot(mUp) * 3.5, -0.1, 0.1);
-        smoothRoll += (targetRoll - smoothRoll) * (1 - Math.exp(-1.8 * dt));
+        const t0   = frames.tangents[frameIdxAt(t)];
+        const t1   = frames.tangents[frameIdxAt((t + 0.02) % 1)];
+        const roll = new THREE.Vector3().copy(t0).cross(t1);
+        const tRoll = THREE.MathUtils.clamp(roll.dot(mUp) * 3.5, -0.1, 0.1);
+        smoothRoll += (tRoll - smoothRoll) * (1 - Math.exp(-1.8 * dt));
 
         aimEuler.set(state.aim.y, state.aim.x, smoothRoll, 'YXZ');
         aimQuat.setFromEuler(aimEuler);
         travelQuat.multiply(aimQuat);
       }
 
-      // ── Hover / raycast ────────────────────────────────────────────────────
+      // ── Open / Close panel ─────────────────────────────────────────────────
+      function openPanel(panel: Panel) {
+        state.focus = panel;
+        // Kill any running focusMix tweens
+        gsap.killTweensOf(state, 'focusMix');
+        gsap.killTweensOf(state, 'speedMul');
+        gsap.to(state, { focusMix: 1,    duration: 1.6, ease: 'power3.inOut' });
+        gsap.to(state, { speedMul: 0,    duration: 1.0, ease: 'power2.out'   });
+        // Highlight panel
+        gsap.to(panel.material.uniforms.uHover, { value: 1, duration: 0.4, ease: 'power2.out' });
+        // Show card info
+        cardTitle.textContent = panel.media.title;
+        cardMeta.textContent  = panel.media.meta;
+        gsap.delayedCall(0.7, () => {
+          if (state.focus === panel) {
+            cardEl.style.opacity   = '1';
+            cardEl.style.transform = 'translate(-50%, 0)';
+          }
+        });
+        canvas.style.cursor = 'default';
+      }
+
+      function closePanel() {
+        if (!state.focus) return;
+        const prev = state.focus;
+        gsap.killTweensOf(state, 'focusMix');
+        gsap.killTweensOf(state, 'speedMul');
+        gsap.to(state, {
+          focusMix: 0, duration: 1.5, ease: 'power3.inOut',
+          onComplete: () => { if (state.focus === prev) state.focus = null; },
+        });
+        gsap.to(state, { speedMul: 1, duration: 1.8, ease: 'sine.inOut', delay: 0.4 });
+        // Dim panel halo
+        gsap.to(prev.material.uniforms.uHover, { value: 0, duration: 0.5, ease: 'power2.out' });
+        // Hide card
+        cardEl.style.opacity   = '0';
+        cardEl.style.transform = 'translate(-50%, 1.2rem)';
+        canvas.style.cursor    = 'crosshair';
+      }
+
+      // ── Hover + raycast ────────────────────────────────────────────────────
       const raycaster = new THREE.Raycaster();
       const AHEAD  = 0.09;
       const BEHIND = 0.012;
 
       function updatePanelVis() {
+        // While focused, always show focused panel + visible neighbours
         let best = -1, bestD = Infinity;
         panels.forEach(p => {
           let d = p.t - state.t;
           if (d < 0) d += 1;
-          const near = d < AHEAD || d > 1 - BEHIND;
+          const near = d < AHEAD || d > 1 - BEHIND || p === state.focus;
           p.mesh.visible = near;
           if (d < bestD) { bestD = d; best = p.index; }
         });
-        if (best !== state.currentIdx) {
-          state.currentIdx = best;
-          if (counterEl) counterEl.textContent = String(best + 1).padStart(2, '0');
+        const show = state.focus ? state.focus.index : best;
+        if (show !== state.currentIdx) {
+          state.currentIdx = show;
+          if (counterEl) counterEl.textContent = String(show + 1).padStart(2, '0');
         }
       }
 
-      function setHover(panel: typeof panels[0] | null) {
-        if (state.hovered === panel) return;
+      function setHover(panel: Panel | null) {
+        if (state.focus)               return; // ignore hover while focused
+        if (state.hovered === panel)   return;
         if (state.hovered) {
           gsap.to(state.hovered.material.uniforms.uHover, { value: 0, duration: 0.5, ease: 'power2.out' });
         }
         state.hovered = panel;
         if (panel) {
-          gsap.to(panel.material.uniforms.uHover, { value: 1, duration: 0.4, ease: 'power2.out' });
-          cardTitle.textContent = panel.media.title;
-          cardMeta.textContent  = panel.media.meta;
-          cardEl.style.opacity = '1';
-          cardEl.style.transform = 'translate(-50%, 0)';
-          canvas.style.cursor = 'pointer';
-          gsap.to(state, { speedMul: 0.25, duration: 0.8, ease: 'power2.out' });
+          gsap.to(panel.material.uniforms.uHover, { value: 0.6, duration: 0.4, ease: 'power2.out' });
+          cardTitle.textContent      = panel.media.title;
+          cardMeta.textContent       = panel.media.meta;
+          cardEl.style.opacity       = '0.7';
+          cardEl.style.transform     = 'translate(-50%, 0)';
+          canvas.style.cursor        = 'pointer';
+          gsap.to(state, { speedMul: 0.3, duration: 0.9, ease: 'power2.out' });
         } else {
-          cardEl.style.opacity = '0';
-          cardEl.style.transform = 'translate(-50%, 1.2rem)';
-          canvas.style.cursor = 'crosshair';
-          gsap.to(state, { speedMul: 1, duration: 1.2, ease: 'sine.inOut' });
+          cardEl.style.opacity       = '0';
+          cardEl.style.transform     = 'translate(-50%, 1.2rem)';
+          canvas.style.cursor        = 'crosshair';
+          gsap.to(state, { speedMul: 1,   duration: 1.2, ease: 'sine.inOut' });
         }
       }
 
       function updateHover() {
+        if (state.focus) return;  // no raycasting while camera is focused
         raycaster.setFromCamera(state.mouse, camera);
         const near: THREE.Object3D[] = [];
         panels.forEach(p => {
@@ -526,17 +596,55 @@ export default function InfiniteGallery3D() {
             near.push(p.mesh);
         });
         const hits = raycaster.intersectObjects(near, false);
-        setHover(hits.length ? (hits[0].object.userData.panel as typeof panels[0]) : null);
+        setHover(hits.length ? (hits[0].object.userData.panel as Panel) : null);
       }
 
       // ── Pointer events ─────────────────────────────────────────────────────
+      let pointerDownAt = 0;
+      let pointerDownX  = 0;
+      let pointerDownY  = 0;
+
       function onPointerMove(e: PointerEvent) {
         const rect = container.getBoundingClientRect();
         state.mouse.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1;
         state.mouse.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1;
-        state.aimTarget.set(-state.mouse.x * MOUSE_AMP, state.mouse.y * MOUSE_AMP * 0.7);
+        if (!state.focus)
+          state.aimTarget.set(-state.mouse.x * MOUSE_AMP, state.mouse.y * MOUSE_AMP * 0.7);
       }
-      canvas.addEventListener('pointermove', onPointerMove);
+
+      function onPointerDown(e: PointerEvent) {
+        pointerDownAt = performance.now();
+        pointerDownX  = e.clientX;
+        pointerDownY  = e.clientY;
+      }
+
+      function onPointerUp(e: PointerEvent) {
+        const moved = Math.hypot(e.clientX - pointerDownX, e.clientY - pointerDownY);
+        const held  = performance.now() - pointerDownAt;
+        if (moved > 10 || held > 500) return; // ignore drag / long-press
+
+        if (state.focus) {
+          // Already focused → close
+          closePanel();
+        } else if (state.hovered) {
+          // Hovered panel → open it
+          openPanel(state.hovered);
+          setHover(null);           // clear hover highlight (panel takes over)
+        }
+      }
+
+      canvas.addEventListener('pointermove',  onPointerMove, { passive: true });
+      canvas.addEventListener('pointerdown',  onPointerDown);
+      canvas.addEventListener('pointerup',    onPointerUp);
+
+      // Card close button acts as "click outside"
+      cardEl.style.pointerEvents = 'auto';
+      cardEl.addEventListener('pointerdown', (e) => e.stopPropagation());
+      cardEl.addEventListener('pointerup',   (e) => { e.stopPropagation(); closePanel(); });
+
+      // ESC key
+      function onKeyDown(e: KeyboardEvent) { if (e.key === 'Escape') closePanel(); }
+      window.addEventListener('keydown', onKeyDown);
 
       // ── Resize ─────────────────────────────────────────────────────────────
       function fitCamera() {
@@ -555,16 +663,25 @@ export default function InfiniteGallery3D() {
 
       function tick() {
         animId = requestAnimationFrame(tick);
-        const now = performance.now();
-        const dt  = Math.min((now - last) / 1000, 0.05);
-        last = now;
+        const now     = performance.now();
+        const dt      = Math.min((now - last) / 1000, 0.05);
+        last          = now;
         const elapsed = now / 1000;
 
         state.aim.lerp(state.aimTarget, 1 - Math.pow(0.001, dt));
         updateTravel(dt);
 
-        camera.position.copy(travelPos);
-        camera.quaternion.copy(travelQuat);
+        // Refresh focus target every frame (panel moves with the tunnel)
+        if (state.focus) focusTargets(state.focus);
+
+        // Blend camera between fly-through and panel-focus positions
+        if (state.focusMix > 0.0001) {
+          camera.position.lerpVectors(travelPos, focusPos, state.focusMix);
+          camera.quaternion.slerpQuaternions(travelQuat, focusQuat, state.focusMix);
+        } else {
+          camera.position.copy(travelPos);
+          camera.quaternion.copy(travelQuat);
+        }
 
         gridMat.uniforms.uTime.value   = elapsed;
         gridMat.uniforms.uHeadV.value  = state.t * totalLength;
@@ -581,6 +698,9 @@ export default function InfiniteGallery3D() {
         cancelAnimationFrame(animId);
         ro.disconnect();
         canvas.removeEventListener('pointermove', onPointerMove);
+        canvas.removeEventListener('pointerdown', onPointerDown);
+        canvas.removeEventListener('pointerup',   onPointerUp);
+        window.removeEventListener('keydown',     onKeyDown);
         renderer.dispose();
         texCache.forEach(t => t.dispose());
         canvas.remove();

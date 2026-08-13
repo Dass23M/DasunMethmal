@@ -77,23 +77,17 @@ export default function HomePage() {
 
           {/* Pin + Flip */}
           <div className="scroll-reveal-section">
-            <LazySection minHeight="600px">
-              <GSAPFlipSection />
-            </LazySection>
+            <GSAPFlipSection />
           </div>
 
           {/* 3D Infinite Gallery Tunnel */}
           <div className="scroll-reveal-section">
-            <LazySection minHeight="100vh">
-              <InfiniteGallery3D />
-            </LazySection>
+            <InfiniteGallery3D />
           </div>
 
           {/* Pinned Editorial Showcase */}
           <div className="scroll-reveal-section">
-            <LazySection minHeight="500px">
-              <EditorialShowcase />
-            </LazySection>
+            <EditorialShowcase />
           </div>
 
           <div className="scroll-reveal-section">
@@ -121,9 +115,7 @@ export default function HomePage() {
           </div>
 
           <div className="scroll-reveal-section">
-            <LazySection minHeight="600px">
-              <PosterDesign />
-            </LazySection>
+            <PosterDesign />
           </div>
 
           <div className="scroll-reveal-section">

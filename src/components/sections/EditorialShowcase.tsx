@@ -58,9 +58,9 @@ export default function EditorialShowcase() {
                     scrollTrigger: {
                         trigger: wrapper,
                         start: 'top top',
-                        end: '+=2000',
+                        end: '+=1000',
                         pin: true,
-                        scrub: 1.2,
+                        scrub: 1,
                         anticipatePin: 1,
                     },
                 });

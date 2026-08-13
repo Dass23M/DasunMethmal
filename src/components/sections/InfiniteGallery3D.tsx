@@ -393,23 +393,107 @@ export default function InfiniteGallery3D() {
         panels.push(mesh.userData.panel);
       }
 
-      // ── UI elements ────────────────────────────────────────────────────────
+
+      // ── Responsive UI (CSS injected into container) ─────────────────────────
+      const style = document.createElement('style');
+      style.textContent = `
+        .ig-ui { position:absolute;inset:0;pointer-events:none;z-index:10;font-family:"Courier New",monospace; }
+        .ig-logo {
+          position:absolute;top:1.4rem;left:1.8rem;
+          font-size:0.62rem;letter-spacing:0.34em;opacity:0.45;color:#FF6B00;
+        }
+        .ig-brand {
+          position:absolute;top:1.4rem;right:1.8rem;
+          text-align:right;line-height:1.75;color:#e8eef8;
+        }
+        .ig-brand-name  { font-size:0.7rem;letter-spacing:0.18em;font-weight:700; }
+        .ig-brand-sub   { font-size:0.54rem;letter-spacing:0.26em;color:#FF6B00;opacity:0.85; }
+        .ig-brand-vol   { font-size:0.54rem;letter-spacing:0.26em;opacity:0.38; }
+        .ig-counter {
+          position:absolute;bottom:1.4rem;left:1.8rem;
+          font-size:0.58rem;letter-spacing:0.2em;line-height:2.1;
+          color:rgba(255,107,0,0.55);
+        }
+        .ig-counter-n   { color:#e8eef8; }
+        .ig-counter-hint{ opacity:0.4;font-size:0.5rem;letter-spacing:0.22em;display:block;margin-top:0.1rem; }
+        .ig-card {
+          position:absolute;left:50%;bottom:2.2rem;
+          transform:translate(-50%,1.2rem);
+          min-width:280px;
+          padding:0.85rem 1.3rem;
+          border:1px solid rgba(255,107,0,0.22);
+          background:rgba(4,4,4,0.78);
+          backdrop-filter:blur(10px);
+          -webkit-backdrop-filter:blur(10px);
+          opacity:0;pointer-events:none;
+          transition:opacity 0.38s ease,transform 0.38s ease;
+          box-sizing:border-box;
+        }
+        .ig-card-title  { font-size:0.75rem;letter-spacing:0.16em;color:#e8eef8; }
+        .ig-card-meta   { margin-top:0.3rem;font-size:0.52rem;letter-spacing:0.24em;color:#FF6B00;opacity:0.8; }
+        .ig-card-esc    { margin-top:0.5rem;font-size:0.46rem;letter-spacing:0.22em;opacity:0.35;color:#e8eef8; }
+        /* vignette inside canvas container */
+        .ig-vignette {
+          position:absolute;inset:0;pointer-events:none;z-index:1;
+          background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,0.65) 100%);
+        }
+        /* ── Mobile ── */
+        @media (max-width:640px) {
+          .ig-logo { top:0.85rem;left:1rem;font-size:0.52rem;letter-spacing:0.22em; }
+          .ig-brand { top:0.85rem;right:1rem; }
+          .ig-brand-name  { font-size:0.58rem;letter-spacing:0.14em; }
+          .ig-brand-sub   { font-size:0.44rem;letter-spacing:0.18em; }
+          .ig-brand-vol   { display:none; }
+          .ig-counter { bottom:0.85rem;left:1rem;font-size:0.5rem; }
+          .ig-counter-hint{ font-size:0.42rem;letter-spacing:0.16em; }
+          .ig-card {
+            left:1rem;right:1rem;
+            bottom:1rem;
+            min-width:0;width:auto;
+            transform:translateY(1rem);
+            padding:0.75rem 1rem;
+          }
+          .ig-card-title { font-size:0.68rem; }
+          .ig-card-meta  { font-size:0.48rem; }
+          .ig-card-esc   { font-size:0.42rem; }
+        }
+        /* ── Tablet ── */
+        @media (min-width:641px) and (max-width:1024px) {
+          .ig-logo { top:1rem;left:1.4rem; }
+          .ig-brand { top:1rem;right:1.4rem; }
+          .ig-counter { bottom:1rem;left:1.4rem; }
+        }
+      `;
+      container.appendChild(style);
+
+      const vignette = document.createElement('div');
+      vignette.className = 'ig-vignette';
+      container.appendChild(vignette);
+
       const ui = document.createElement('div');
-      ui.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:10;font-family:"Courier New",monospace;';
+      ui.className = 'ig-ui';
+      const isMobile = window.matchMedia('(max-width:640px)').matches;
+      const hintText = isMobile
+        ? 'TAP · CLOSE'
+        : 'CLICK · ESC · CLOSE';
+      const navHint = isMobile
+        ? 'TAP IMAGE TO VIEW'
+        : 'HOVER TO PAUSE · CLICK TO VIEW';
       ui.innerHTML = `
-        <div id="ig-logo" style="position:absolute;top:1.4rem;left:1.8rem;font-size:0.62rem;letter-spacing:0.34em;opacity:0.45;color:#FF6B00;">IG—2026 / CREATIVE_GALLERY</div>
-        <div id="ig-brand" style="position:absolute;top:1.4rem;right:1.8rem;text-align:right;line-height:1.8;color:#e8eef8;">
-          <div style="font-size:0.7rem;letter-spacing:0.18em;font-weight:700;">DASUN METHMAL</div>
-          <div style="font-size:0.54rem;letter-spacing:0.26em;color:#FF6B00;opacity:0.85;">CREATIVE_PORTFOLIO</div>
-          <div style="font-size:0.54rem;letter-spacing:0.26em;opacity:0.4;">VOL. 01 · GALLERY TUNNEL</div>
+        <div class="ig-logo">IG—2026 / CREATIVE_GALLERY</div>
+        <div class="ig-brand">
+          <div class="ig-brand-name">DASUN METHMAL</div>
+          <div class="ig-brand-sub">CREATIVE_PORTFOLIO</div>
+          <div class="ig-brand-vol">VOL. 01 · GALLERY TUNNEL</div>
         </div>
-        <div id="ig-counter" style="position:absolute;bottom:1.4rem;left:1.8rem;font-size:0.58rem;letter-spacing:0.2em;line-height:2.1;color:rgba(255,107,0,0.55);">
-          ARTWORK <span id="ig-n" style="color:#e8eef8;">01</span> / <span id="ig-tot" style="color:#e8eef8;">${String(TOTAL).padStart(2,'0')}</span><br/>
-          <span style="opacity:0.4;font-size:0.5rem;letter-spacing:0.24em;">SCROLL TO NAVIGATE · HOVER TO PAUSE</span>
+        <div class="ig-counter">
+          ARTWORK <span class="ig-counter-n" id="ig-n">01</span> / <span class="ig-counter-n">${String(TOTAL).padStart(2,'0')}</span>
+          <span class="ig-counter-hint">${navHint}</span>
         </div>
-        <div id="ig-card" style="position:absolute;left:50%;bottom:2.2rem;transform:translate(-50%,1.2rem);min-width:280px;padding:0.85rem 1.3rem;border:1px solid rgba(255,107,0,0.22);background:rgba(4,4,4,0.75);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity 0.4s ease,transform 0.4s ease;">
-          <div id="ig-card-title" style="font-size:0.75rem;letter-spacing:0.16em;color:#e8eef8;">—</div>
-          <div id="ig-card-meta"  style="margin-top:0.3rem;font-size:0.52rem;letter-spacing:0.24em;color:#FF6B00;opacity:0.8;">—</div>
+        <div class="ig-card" id="ig-card">
+          <div class="ig-card-title" id="ig-card-title">—</div>
+          <div class="ig-card-meta"  id="ig-card-meta">—</div>
+          <div class="ig-card-esc">${hintText}</div>
         </div>
       `;
       container.appendChild(ui);
@@ -419,11 +503,23 @@ export default function InfiniteGallery3D() {
       const cardTitle  = ui.querySelector('#ig-card-title') as HTMLElement;
       const cardMeta   = ui.querySelector('#ig-card-meta')  as HTMLElement;
 
-      // ── Add ESC hint to card ────────────────────────────────────────────────
-      const escHint = document.createElement('div');
-      escHint.style.cssText = 'margin-top:0.55rem;font-size:0.48rem;letter-spacing:0.24em;opacity:0.38;color:#e8eef8;';
-      escHint.textContent   = 'CLICK · ESC  ·  CLOSE';
-      cardEl.appendChild(escHint);
+      // Card shows/hides via opacity + transform from CSS classes (not inline any more)
+      // Helper to show/hide card:
+      function showCard(title: string, meta: string, full: boolean) {
+        cardTitle.textContent = title;
+        cardMeta.textContent  = meta;
+        cardEl.style.opacity  = full ? '1' : '0.72';
+        // Mobile needs a different transform base (no left:50% centering)
+        cardEl.style.transform = isMobile
+          ? 'translateY(0)'
+          : 'translate(-50%, 0)';
+      }
+      function hideCard() {
+        cardEl.style.opacity   = '0';
+        cardEl.style.transform = isMobile ? 'translateY(1rem)' : 'translate(-50%, 1.2rem)';
+      }
+      hideCard(); // start hidden
+
 
       // ── Camera state ───────────────────────────────────────────────────────
       type Panel = typeof panels[0];
@@ -505,21 +601,13 @@ export default function InfiniteGallery3D() {
       // ── Open / Close panel ─────────────────────────────────────────────────
       function openPanel(panel: Panel) {
         state.focus = panel;
-        // Kill any running focusMix tweens
         gsap.killTweensOf(state, 'focusMix');
         gsap.killTweensOf(state, 'speedMul');
-        gsap.to(state, { focusMix: 1,    duration: 1.6, ease: 'power3.inOut' });
-        gsap.to(state, { speedMul: 0,    duration: 1.0, ease: 'power2.out'   });
-        // Highlight panel
+        gsap.to(state, { focusMix: 1, duration: 1.6, ease: 'power3.inOut' });
+        gsap.to(state, { speedMul: 0, duration: 1.0, ease: 'power2.out'   });
         gsap.to(panel.material.uniforms.uHover, { value: 1, duration: 0.4, ease: 'power2.out' });
-        // Show card info
-        cardTitle.textContent = panel.media.title;
-        cardMeta.textContent  = panel.media.meta;
         gsap.delayedCall(0.7, () => {
-          if (state.focus === panel) {
-            cardEl.style.opacity   = '1';
-            cardEl.style.transform = 'translate(-50%, 0)';
-          }
+          if (state.focus === panel) showCard(panel.media.title, panel.media.meta, true);
         });
         canvas.style.cursor = 'default';
       }
@@ -534,12 +622,9 @@ export default function InfiniteGallery3D() {
           onComplete: () => { if (state.focus === prev) state.focus = null; },
         });
         gsap.to(state, { speedMul: 1, duration: 1.8, ease: 'sine.inOut', delay: 0.4 });
-        // Dim panel halo
         gsap.to(prev.material.uniforms.uHover, { value: 0, duration: 0.5, ease: 'power2.out' });
-        // Hide card
-        cardEl.style.opacity   = '0';
-        cardEl.style.transform = 'translate(-50%, 1.2rem)';
-        canvas.style.cursor    = 'crosshair';
+        hideCard();
+        canvas.style.cursor = 'crosshair';
       }
 
       // ── Hover + raycast ────────────────────────────────────────────────────
@@ -565,25 +650,20 @@ export default function InfiniteGallery3D() {
       }
 
       function setHover(panel: Panel | null) {
-        if (state.focus)               return; // ignore hover while focused
+        if (state.focus)               return;
         if (state.hovered === panel)   return;
-        if (state.hovered) {
+        if (state.hovered)
           gsap.to(state.hovered.material.uniforms.uHover, { value: 0, duration: 0.5, ease: 'power2.out' });
-        }
         state.hovered = panel;
         if (panel) {
           gsap.to(panel.material.uniforms.uHover, { value: 0.6, duration: 0.4, ease: 'power2.out' });
-          cardTitle.textContent      = panel.media.title;
-          cardMeta.textContent       = panel.media.meta;
-          cardEl.style.opacity       = '0.7';
-          cardEl.style.transform     = 'translate(-50%, 0)';
-          canvas.style.cursor        = 'pointer';
+          showCard(panel.media.title, panel.media.meta, false);
+          canvas.style.cursor = 'pointer';
           gsap.to(state, { speedMul: 0.3, duration: 0.9, ease: 'power2.out' });
         } else {
-          cardEl.style.opacity       = '0';
-          cardEl.style.transform     = 'translate(-50%, 1.2rem)';
-          canvas.style.cursor        = 'crosshair';
-          gsap.to(state, { speedMul: 1,   duration: 1.2, ease: 'sine.inOut' });
+          hideCard();
+          canvas.style.cursor = 'crosshair';
+          gsap.to(state, { speedMul: 1, duration: 1.2, ease: 'sine.inOut' });
         }
       }
 
@@ -599,12 +679,14 @@ export default function InfiniteGallery3D() {
         setHover(hits.length ? (hits[0].object.userData.panel as Panel) : null);
       }
 
-      // ── Pointer events ─────────────────────────────────────────────────────
+      // ── Pointer / touch events ─────────────────────────────────────────────
       let pointerDownAt = 0;
       let pointerDownX  = 0;
       let pointerDownY  = 0;
 
       function onPointerMove(e: PointerEvent) {
+        // Only use mouse-aim for non-touch input
+        if (e.pointerType === 'touch') return;
         const rect = container.getBoundingClientRect();
         state.mouse.x =  ((e.clientX - rect.left) / rect.width)  * 2 - 1;
         state.mouse.y = -((e.clientY - rect.top)  / rect.height) * 2 + 1;
@@ -621,23 +703,44 @@ export default function InfiniteGallery3D() {
       function onPointerUp(e: PointerEvent) {
         const moved = Math.hypot(e.clientX - pointerDownX, e.clientY - pointerDownY);
         const held  = performance.now() - pointerDownAt;
-        if (moved > 10 || held > 500) return; // ignore drag / long-press
+        if (moved > 12 || held > 500) return; // ignore drag / long-press
 
         if (state.focus) {
-          // Already focused → close
           closePanel();
-        } else if (state.hovered) {
-          // Hovered panel → open it
+          return;
+        }
+
+        // On touch: raycast at tap point directly (no hover required)
+        if (e.pointerType === 'touch') {
+          const rect = container.getBoundingClientRect();
+          const mx =  ((e.clientX - rect.left) / rect.width)  * 2 - 1;
+          const my = -((e.clientY - rect.top)  / rect.height) * 2 + 1;
+          const tapMouse = new THREE.Vector2(mx, my);
+          raycaster.setFromCamera(tapMouse, camera);
+          const near: THREE.Object3D[] = [];
+          panels.forEach(p => {
+            if (p.mesh.visible && p.center.distanceToSquared(camera.position) < 48 * 48)
+              near.push(p.mesh);
+          });
+          const hits = raycaster.intersectObjects(near, false);
+          if (hits.length) {
+            openPanel(hits[0].object.userData.panel as Panel);
+          }
+          return;
+        }
+
+        // Desktop: use hovered panel
+        if (state.hovered) {
           openPanel(state.hovered);
-          setHover(null);           // clear hover highlight (panel takes over)
+          setHover(null);
         }
       }
 
       canvas.addEventListener('pointermove',  onPointerMove, { passive: true });
-      canvas.addEventListener('pointerdown',  onPointerDown);
+      canvas.addEventListener('pointerdown',  onPointerDown, { passive: true });
       canvas.addEventListener('pointerup',    onPointerUp);
 
-      // Card close button acts as "click outside"
+      // Card close button
       cardEl.style.pointerEvents = 'auto';
       cardEl.addEventListener('pointerdown', (e) => e.stopPropagation());
       cardEl.addEventListener('pointerup',   (e) => { e.stopPropagation(); closePanel(); });
@@ -648,11 +751,16 @@ export default function InfiniteGallery3D() {
 
       // ── Resize ─────────────────────────────────────────────────────────────
       function fitCamera() {
-        const W = container.clientWidth, H = container.clientHeight;
+        const W = container.clientWidth;
+        const H = container.clientHeight;
         camera.aspect = W / H;
-        camera.fov    = camera.aspect < 0.75 ? 82 : 70;
+        // Wider FOV on narrow/portrait screens so tunnel fills view nicely
+        camera.fov = camera.aspect < 0.65 ? 88 : camera.aspect < 0.9 ? 82 : 70;
         camera.updateProjectionMatrix();
         renderer.setSize(W, H);
+        // Re-check mobile breakpoint on resize (e.g. rotation)
+        const nowMobile = window.matchMedia('(max-width:640px)').matches;
+        if (nowMobile !== isMobile) hideCard(); // reset card position formula
       }
       const ro = new ResizeObserver(fitCamera);
       ro.observe(container);

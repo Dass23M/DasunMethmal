@@ -951,9 +951,11 @@ const STYLES = `
 @media (max-width: 56.25em) {
   .pcg-outer .pcg-dot-strip { display: none; }
   .pcg-outer .pcg-credit    { display: none; }
-  .pcg-outer .pcg-hud           { top: 1rem; right: 1rem; }
+  .pcg-outer .pcg-hud           { top: 1rem; right: 1rem; font-size: 0.75rem; }
+  .pcg-outer .pcg-scene-label   { font-size: 0.72rem; }
   .pcg-outer .pcg-theme-btn     { bottom: 1rem; left: 1.25rem; transform: none; }
   .pcg-outer .pcg-face-caption  { bottom: 1rem; }
+  .pcg-outer .pcg-caption-num   { font-size: 0.72rem; }
 
   .pcg-outer .pcg-section {
     min-height: 150vh;
@@ -968,9 +970,13 @@ const STYLES = `
   .pcg-outer .pcg-text-card,
   .pcg-outer .pcg-text-card.right {
     max-width: 100%;
-    padding: 1.5rem 1.25rem;
+    padding: 1.75rem 1.35rem;
   }
-  .pcg-outer .pcg-body-text { line-height: 1.55; }
+  .pcg-outer .pcg-tag       { font-size: 0.75rem; letter-spacing: 0.2em; }
+  .pcg-outer .pcg-body-text { font-size: 0.92rem; line-height: 1.65; color: color-mix(in srgb, var(--fg) 80%, transparent); }
+  .pcg-outer .pcg-stat-label{ font-size: 0.7rem; letter-spacing: 0.15em; }
+  .pcg-outer .pcg-cta,
+  .pcg-outer .pcg-cta-back  { font-size: 0.72rem; padding: 0.65rem 1.35rem; }
   .pcg-outer .pcg-stat-row  { gap: 1.5rem; margin-top: 1.25rem; }
   .pcg-outer .pcg-cta-row   { margin-top: 1.25rem; }
 }

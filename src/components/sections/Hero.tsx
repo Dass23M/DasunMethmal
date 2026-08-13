@@ -90,11 +90,11 @@ export default function Hero({
       />
       <div
         ref={heroContentRef}
-        className="relative z-[9] max-w-[1140px] mx-auto px-4 h-[100svh] min-h-0 lg:h-screen lg:min-h-[650px] flex items-center justify-center will-change-transform"
+        className="relative z-[9] max-w-[1240px] mx-auto px-4 h-[100svh] min-h-0 lg:h-screen lg:min-h-[650px] flex items-end justify-center pb-24 sm:pb-28 lg:pb-32 will-change-transform"
       >
-        <div className="text-center max-w-[850px] w-full px-2">
+        <div className="text-center max-w-[1050px] w-full px-2">
           {/* Title: DASUN METHMAL */}
-          <h1 className="hero-title-meth font-sora text-[2.2rem] xs:text-[2.8rem] sm:text-[3.8rem] lg:text-[5rem] font-black text-white mb-4 sm:mb-6 tracking-tight leading-[1.1]">
+          <h1 className="hero-title-meth font-sora text-[3.2rem] xs:text-[4.2rem] sm:text-[6.2rem] lg:text-[7.8rem] xl:text-[8.8rem] font-black text-white mb-4 sm:mb-6 tracking-tight leading-[0.95] drop-shadow-2xl">
             <span className="relative inline-block overflow-hidden align-top">
               <span className="hero-title-cover absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%]" />
               <span className="hero-title-text inline-block opacity-100">
@@ -104,7 +104,7 @@ export default function Hero({
           </h1>
 
           {/* Subtitle: A Fullstack Developer & Digital Marketer */}
-          <h2 className="hero-subtitle-meth text-[16px] sm:text-[24px] lg:text-[33px] font-light text-white leading-snug sm:leading-normal max-w-[22em] mx-auto">
+          <h2 className="hero-subtitle-meth text-[18px] sm:text-[26px] lg:text-[34px] font-normal text-white/90 leading-snug sm:leading-normal max-w-[26em] mx-auto">
             <span className="relative inline-block overflow-hidden align-top">
               <span className="hero-sub-cover absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%]" />
               <span className="hero-sub-text inline-block opacity-100">

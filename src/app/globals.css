@@ -1698,13 +1698,13 @@ textarea.form-control {
 
 @media (max-width: 575.98px) {
   body {
-    font-size: 15px;
-    line-height: 26px;
+    font-size: 16px;
+    line-height: 1.65;
   }
 
   .testimonial-inner-bg {
     padding: 24px 18px 42px;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 28px;
   }
 
@@ -1713,4 +1713,37 @@ textarea.form-control {
     gap: 18px;
   }
 }
+
+/* ============================================
+   UI/UX ACCESSIBILITY TYPOGRAPHY STANDARDS (MOBILE)
+   ============================================ */
+@media (max-width: 767.98px) {
+  /* Scale up micro-text & small labels on mobile to min 12px-14px for readability */
+  .font-mono.text-\[8px\],
+  .font-mono.text-\[8\.5px\],
+  .font-mono.text-\[9px\] {
+    font-size: 12px !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .font-mono.text-\[10px\],
+  .font-mono.text-\[11px\],
+  .text-\[10px\],
+  .text-\[11px\] {
+    font-size: 13px !important;
+  }
+
+  .font-inter.text-\[11px\],
+  .font-mono.text-xs,
+  .text-xs {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Prevent awkward iOS text shrinking */
+  p, span, li, label, input, textarea {
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
 

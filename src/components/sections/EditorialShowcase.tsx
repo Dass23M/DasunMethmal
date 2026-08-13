@@ -56,12 +56,10 @@ export default function EditorialShowcase() {
 
                 const tl = gsap.timeline({
                     scrollTrigger: {
-                        trigger: wrapper,
-                        start: 'top top',
-                        end: '+=1000',
-                        pin: true,
+                        trigger: section,
+                        start: 'top 75%',
+                        end: 'bottom 25%',
                         scrub: 1,
-                        anticipatePin: 1,
                     },
                 });
 
@@ -184,7 +182,7 @@ export default function EditorialShowcase() {
         <div ref={wrapperRef} className="w-full overflow-hidden bg-[#F5F5F7] text-black">
             <section
                 ref={sectionRef}
-                className="relative w-full h-auto py-12 sm:py-16 md:py-0 md:h-[100svh] md:h-screen bg-[#F5F5F7] flex items-center justify-center select-none overflow-hidden"
+                className="relative w-full h-auto py-16 sm:py-24 md:py-28 bg-[#F5F5F7] flex items-center justify-center select-none overflow-hidden"
             >
                 <div className="w-full max-w-[1550px] mx-auto px-5 sm:px-10 md:px-16 lg:px-20">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
@@ -205,7 +203,7 @@ export default function EditorialShowcase() {
                                 {/* Main Paragraph Text */}
                                 <p
                                     ref={textRef}
-                                    className="font-sora text-xl sm:text-2xl md:text-3xl lg:text-[2.05rem] font-medium leading-[1.4] tracking-tight text-black mt-6 will-change-transform"
+                                    className="font-inter text-base sm:text-lg md:text-xl lg:text-[1.65rem] font-normal leading-[1.55] tracking-normal text-black/85 mt-6 will-change-transform"
                                 >
                                     As an emerging digital marketer and web developer, I create targeted social media campaigns, SEO-optimized content, and engaging visual assets. I help growing brands establish a strong online presence through clean design, creative storytelling, and data-backed digital strategies.
                                 </p>

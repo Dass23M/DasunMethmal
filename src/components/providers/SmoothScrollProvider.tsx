@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Lenis from 'lenis';
+import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 /**
@@ -39,19 +40,14 @@ export default function SmoothScrollProvider({
 
     (window as any).lenis = lenis;
 
-    // Synchronize Lenis with GSAP ScrollTrigger
-    const handleScroll = () => {
-      ScrollTrigger.update();
-    };
-    lenis.on('scroll', handleScroll);
+    // Synchronize Lenis with GSAP ScrollTrigger & GSAP Ticker
+    lenis.on('scroll', ScrollTrigger.update);
 
-    // Animation Frame Loop
-    let animationFrameId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      animationFrameId = requestAnimationFrame(raf);
-    }
-    animationFrameId = requestAnimationFrame(raf);
+    const updateLenis = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+    gsap.ticker.add(updateLenis);
+    gsap.ticker.lagSmoothing(0);
 
     // Anchor smooth click interceptor
     const handleAnchorClick = (e: MouseEvent) => {
@@ -83,8 +79,8 @@ export default function SmoothScrollProvider({
 
     return () => {
       document.removeEventListener('click', handleAnchorClick);
-      lenis.off('scroll', handleScroll);
-      cancelAnimationFrame(animationFrameId);
+      gsap.ticker.remove(updateLenis);
+      lenis.off('scroll', ScrollTrigger.update);
       lenis.destroy();
       delete (window as any).lenis;
     };

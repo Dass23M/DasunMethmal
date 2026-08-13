@@ -203,21 +203,21 @@ export default function About() {
     >
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* ─── 1. TOP EDITORIAL SVG TITLE BANNER ─── */}
-        <div className="w-full mb-12 sm:mb-16 border-b border-white/10 pb-6">
-          <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-4">
+        <div className="w-full mb-10 sm:mb-14 border-b border-white/10 pb-6">
+          <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-3">
             <span>{"// ABOUT METHMAL"}</span>
             <span>EST. 2024</span>
           </div>
 
           <div className="relative w-full overflow-hidden">
-            <h2 className="font-sora font-black text-4xl sm:text-7xl md:text-8xl lg:text-[7.5rem] uppercase tracking-tight text-white leading-none">
+            <h2 className="font-sora font-bold text-3xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-white leading-none">
               METHMAL<span className="text-[#FF6B00]">.</span>
             </h2>
           </div>
         </div>
 
         {/* ─── 2. HERO ROW SPLIT: PORTRAIT LEFT / ABOUT TEXT RIGHT ─── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-end mb-24 sm:mb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-end mb-14 sm:mb-20">
           {/* Left Column (5 Cols): Grayscale Portrait Image */}
           <div className="lg:col-span-5">
             <div
@@ -268,7 +268,7 @@ export default function About() {
         </div>
 
         {/* ─── 3. GALLERY MOSAIC SECTION: ENGINEERING DISCIPLINE & CRAFT ─── */}
-        <div ref={galleryRef} className="mb-24 sm:mb-36">
+        <div ref={galleryRef} className="mb-14 sm:mb-20">
           <div className="w-full mb-8 sm:mb-10 border-b border-white/10 pb-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div className="flex items-center gap-3">

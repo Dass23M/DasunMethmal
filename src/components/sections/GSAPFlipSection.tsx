@@ -23,7 +23,7 @@ export default function GSAPFlipSection() {
   const hudReadoutRef = useRef<HTMLDivElement>(null);
   const heroCoordsRef = useRef<HTMLDivElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const isSectionVisible = useRef(false);
+  const isSectionVisible = useRef(true);
   const [activeSidebar, setActiveSidebar] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
@@ -467,6 +467,15 @@ export default function GSAPFlipSection() {
           start: 'top top',
           end: 'bottom bottom',
           scrub: isMobile ? 1.0 : 2.5, // Faster, smoother touch scroll scrub on mobile
+          onToggle: (self) => {
+            isSectionVisible.current = self.isActive;
+            if (canvasRef.current) {
+              canvasRef.current.style.opacity = self.isActive ? '1' : '0';
+            }
+            if (self.isActive && !isLoopActive && isRunning) {
+              tick();
+            }
+          },
           onUpdate: (self) => {
             if (self.progress > 0.02) idleTween.pause();
             else idleTween.resume();
@@ -612,7 +621,7 @@ export default function GSAPFlipSection() {
       <canvas
         ref={canvasRef}
         className="fixed top-0 left-0 pointer-events-none"
-        style={{ width: '100vw', height: '100vh', zIndex: 0, opacity: 0 }}
+        style={{ width: '100vw', height: '100vh', zIndex: 0, opacity: 1 }}
       />
 
       {/* ── Scanlines (Disabled for clean layout) ── */}

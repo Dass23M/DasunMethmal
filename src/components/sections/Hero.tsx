@@ -106,7 +106,7 @@ export default function Hero({
       >
         <div className="text-center max-w-[1050px] w-full px-2">
           {/* Title: DASUN METHMAL */}
-          <h1 className="hero-title-meth font-sora text-[3.2rem] xs:text-[4.2rem] sm:text-[6.2rem] lg:text-[7.8rem] xl:text-[8.8rem] font-black text-white mb-4 sm:mb-6 tracking-tight leading-[0.95] drop-shadow-2xl">
+          <h1 className="hero-title-meth font-sora text-[3rem] xs:text-[3.8rem] sm:text-[5.5rem] lg:text-[7rem] xl:text-[7.8rem] font-extrabold text-white mb-4 sm:mb-5 tracking-tight leading-[0.95] drop-shadow-xl">
             <span className="relative inline-block overflow-hidden align-top">
               <span className="hero-title-cover absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%]" />
               <span className="hero-title-text inline-block opacity-100">
@@ -116,7 +116,7 @@ export default function Hero({
           </h1>
 
           {/* Subtitle: A Fullstack Developer & Digital Marketer */}
-          <h2 className="hero-subtitle-meth text-[18px] sm:text-[26px] lg:text-[34px] font-normal text-white/90 leading-snug sm:leading-normal max-w-[26em] mx-auto">
+          <h2 className="hero-subtitle-meth text-[16px] sm:text-[22px] lg:text-[28px] font-normal text-white/80 leading-snug sm:leading-normal max-w-[26em] mx-auto tracking-wide font-inter">
             <span className="relative inline-block overflow-hidden align-top">
               <span className="hero-sub-cover absolute inset-0 bg-[#FF6B00] z-[2] -translate-x-[101%]" />
               <span className="hero-sub-text inline-block opacity-100">

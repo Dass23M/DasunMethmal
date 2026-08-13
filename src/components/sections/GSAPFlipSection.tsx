@@ -171,11 +171,15 @@ export default function GSAPFlipSection() {
       controls.enableDamping = true;
       controls.enabled = false;
 
-      // Lights
-      scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-      const dirLight = new THREE.DirectionalLight(0xfff4e0, 2.5);
+      // Lights - Brand Orange Theme (#FF6B00)
+      scene.add(new THREE.AmbientLight(0x221100, 1.2));
+      const dirLight = new THREE.DirectionalLight(0xFF8C00, 3.5);
       dirLight.position.set(3, 4, 5);
       scene.add(dirLight);
+
+      const pointLight = new THREE.PointLight(0xFF4500, 4.5, 25);
+      pointLight.position.set(-2, -2, 4);
+      scene.add(pointLight);
 
       // Textures - conditionally loaded only on desktop to eliminate 15MB payload on mobile
       let diffuse: THREE.Texture | null = null;
@@ -227,17 +231,19 @@ export default function GSAPFlipSection() {
           }
           void main() {
             float wf = wireMask(vBary, 1.6);
-            vec3 col = mix(vec3(0.07, 0.01, 0.0), vec3(1.0, 0.28, 0.04), wf);
-            col = mix(col, vec3(1.0, 0.8, 0.3) * 2.2, wf * 0.55);
+            vec3 baseCol = vec3(0.09, 0.02, 0.0);
+            vec3 orangeGlow = vec3(1.0, 0.42, 0.0);
+            vec3 col = mix(baseCol, orangeGlow, wf);
+            col = mix(col, vec3(1.0, 0.6, 0.0) * 2.5, wf * 0.65);
             gl_FragColor = vec4(col, 1.0);
           }
         `,
         side: THREE.DoubleSide,
       });
 
-      // Segment resolution optimized for device capability
+      // Segment resolution optimized for device capability & smaller ring scale
       const torusSegs = isMobile ? 40 : 70;
-      const TORUS_R = 2, TORUS_r = 0.4;
+      const TORUS_R = 1.55, TORUS_r = 0.32;
 
       torusGroup.add(
         new THREE.Mesh(
@@ -291,8 +297,9 @@ export default function GSAPFlipSection() {
         }
 
         const mat = new THREE.MeshStandardMaterial({
+          color: new THREE.Color(0xFF6B00),
           map: diffuse, normalMap: normalTex, roughnessMap: arm,
-          roughness: 1.0, metalness: 0.0, side: THREE.DoubleSide,
+          roughness: 0.45, metalness: 0.5, side: THREE.DoubleSide,
         });
 
         const list: THREE.Mesh[] = [];
@@ -617,11 +624,11 @@ export default function GSAPFlipSection() {
       className="relative w-full overflow-hidden"
       style={{ background: '#080808', color: '#eee8de', fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
     >
-      {/* ── Fixed WebGL Canvas ─────────────────────────────── */}
+      {/* ── WebGL Canvas Background ─────────────────────────────── */}
       <canvas
         ref={canvasRef}
-        className="fixed top-0 left-0 pointer-events-none"
-        style={{ width: '100vw', height: '100vh', zIndex: 0, opacity: 1 }}
+        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+        style={{ opacity: 1 }}
       />
 
       {/* ── Scanlines (Disabled for clean layout) ── */}

@@ -79,6 +79,17 @@ export default function Hero({
       ref={containerRef}
       className="cover-v1 bg-cover bg-no-repeat w-full lg:bg-fixed hero-cover-mobile relative overflow-hidden"
     >
+      {/* Precise mobile face-crop via inline style override */}
+      <style>{`
+        @media (max-width: 639px) {
+          #home-section .hero-bg-img {
+            object-position: 72% 18% !important;
+            transform: scale(1.55) !important;
+            transform-origin: 72% 18% !important;
+          }
+        }
+      `}</style>
+
       <Image
         src="/images/cover_bg_2.png"
         alt="Hero Background"
@@ -87,7 +98,7 @@ export default function Hero({
         unoptimized
         quality={100}
         sizes="100vw"
-        className="object-cover object-[18%_20%] sm:object-center scale-[1.35] sm:scale-100 origin-center transition-transform duration-500 pointer-events-none select-none z-0"
+        className="hero-bg-img object-cover sm:object-center sm:scale-100 pointer-events-none select-none z-0"
       />
       <div
         ref={heroContentRef}

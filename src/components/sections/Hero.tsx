@@ -84,9 +84,10 @@ export default function Hero({
         alt="Hero Background"
         fill
         priority
+        unoptimized
+        quality={100}
         sizes="100vw"
-        quality={85}
-        className="object-cover object-center pointer-events-none select-none z-0"
+        className="object-cover object-[18%_20%] sm:object-center scale-[1.35] sm:scale-100 origin-center transition-transform duration-500 pointer-events-none select-none z-0"
       />
       <div
         ref={heroContentRef}

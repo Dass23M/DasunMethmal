@@ -18,6 +18,7 @@ import Artifact3DSection from '@/components/sections/Artifact3DSection';
 import GSAPFlipSection from '@/components/sections/GSAPFlipSection';
 import EditorialShowcase from '@/components/sections/EditorialShowcase';
 import PosterDesign from '@/components/sections/PosterDesign';
+import InfiniteGallery3D from '@/components/sections/InfiniteGallery3D';
 
 /**
  * Main one-page portfolio — home page.
@@ -78,6 +79,13 @@ export default function HomePage() {
           <div className="scroll-reveal-section">
             <LazySection minHeight="600px">
               <GSAPFlipSection />
+            </LazySection>
+          </div>
+
+          {/* 3D Infinite Gallery Tunnel */}
+          <div className="scroll-reveal-section">
+            <LazySection minHeight="100vh">
+              <InfiniteGallery3D />
             </LazySection>
           </div>
 

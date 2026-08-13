@@ -246,7 +246,7 @@ export default function PosterDesign() {
     return (
       <div
         id="poster-design-section"
-        style={{ minHeight: '100vh', background: '#1c1814' }}
+        style={{ minHeight: '100vh', background: '#080808' }}
       />
     );
   }
@@ -480,35 +480,35 @@ export default function PosterDesign() {
 // the portfolio page.
 
 const STYLES = `
-/* ── Tokens ── */
+/* ── Tokens — Brand: Orange / White / Black ── */
 .pcg-outer {
-  --dark-bg:     #1c1814;
-  --dark-fg:     #ede8df;
-  --dark-muted:  #8a7b6e;
-  --light-bg:    #f0ece3;
-  --light-fg:    #0d0d14;
-  --light-muted: #9a9aaa;
-  --accent-dark: #d4a84b;
-  --accent-lt:   #3a6e00;
+  --dark-bg:     #080808;
+  --dark-fg:     #ffffff;
+  --dark-muted:  #999999;
+  --light-bg:    #f5f5f5;
+  --light-fg:    #0a0a0a;
+  --light-muted: #777777;
+  --accent-dark: #FF8A00;
+  --accent-lt:   #FF6B00;
 
   --bg:     var(--dark-bg);
   --fg:     var(--dark-fg);
   --muted:  var(--dark-muted);
   --accent: var(--accent-dark);
 
-  --font-display: 'Bebas Neue', sans-serif;
-  --font-mono:    'DM Mono', monospace;
+  --font-display: 'Sora', sans-serif;
+  --font-body:    'Inter', sans-serif;
   --hairline:     0.0625rem;
   --ui-inset:     2rem;
   --nav-x:        calc(var(--ui-inset) + 0.125rem);
-  --card-bg:      rgba(28, 24, 20, 0.82);
-  --card-border:  rgba(212, 168, 75, 0.2);
+  --card-bg:      rgba(8, 8, 8, 0.78);
+  --card-border:  rgba(255, 138, 0, 0.22);
   --z-ui:         20;
 
   position: relative;
   background: var(--bg);
   color:      var(--fg);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   transition: background 0.3s ease, color 0.3s ease;
 }
 
@@ -517,8 +517,8 @@ const STYLES = `
   --fg:          var(--light-fg);
   --muted:       var(--light-muted);
   --accent:      var(--accent-lt);
-  --card-bg:     rgba(240, 236, 227, 0.08);
-  --card-border: rgba(58, 110, 0, 0.14);
+  --card-bg:     rgba(255, 255, 255, 0.72);
+  --card-border: rgba(255, 107, 0, 0.18);
 }
 
 /* ── Section heading row ── */
@@ -535,20 +535,9 @@ const STYLES = `
 /* ── Scroll area ── */
 .pcg-outer .pcg-scroll-area {
   position: relative;
-  /*
-    Height is set naturally by its children:
-      pcg-stage     = 100 vh  (sticky, in flow)
-      pcg-sections  = 6×100 vh  with margin-top: -100 vh
-    Net height = 100 + 600 - 100 = 600 vh
-    Stick range = 600 - 100 = 500 vh  →  5 full-viewport transitions  ✓
-  */
 }
 
-/* ── Sticky 3-D stage ──
-   NO z-index here: avoids creating a new stacking context so that
-   the stage's absolutely-positioned children (z:20) can float above
-   the text sections (z:2) while the cube (z:0) stays behind them.
-── */
+/* ── Sticky 3-D stage ── */
 .pcg-outer .pcg-stage {
   position: sticky;
   top: 0;
@@ -588,15 +577,15 @@ const STYLES = `
   overflow: hidden;
   backface-visibility: hidden;
   background:
-    repeating-linear-gradient(0deg,   rgba(255,255,255,.02) 0, rgba(255,255,255,.02) 1px, transparent 1px, transparent 48px),
-    repeating-linear-gradient(90deg,  rgba(255,255,255,.02) 0, rgba(255,255,255,.02) 1px, transparent 1px, transparent 48px),
-    #14100d;
+    repeating-linear-gradient(0deg,   rgba(255,138,0,.04) 0, rgba(255,138,0,.04) 1px, transparent 1px, transparent 48px),
+    repeating-linear-gradient(90deg,  rgba(255,138,0,.04) 0, rgba(255,138,0,.04) 1px, transparent 1px, transparent 48px),
+    #0d0d0d;
 }
 .pcg-outer[data-theme="light"] .pcg-face {
   background:
     repeating-linear-gradient(0deg,  rgba(0,0,0,.05) 0, rgba(0,0,0,.05) 1px, transparent 1px, transparent 48px),
     repeating-linear-gradient(90deg, rgba(0,0,0,.05) 0, rgba(0,0,0,.05) 1px, transparent 1px, transparent 48px),
-    #ddd8cf;
+    #e8e8e8;
 }
 
 /* Face transforms — must match STOPS order */
@@ -619,6 +608,7 @@ const STYLES = `
   left: 1.75rem;
   font-family: var(--font-display);
   font-size: clamp(2rem, 8vw, 5rem);
+  font-weight: 700;
   letter-spacing: 0.04em;
   color: rgba(255,255,255,0.06);
   pointer-events: none;
@@ -639,15 +629,19 @@ const STYLES = `
   color: var(--muted);
   text-transform: uppercase;
   pointer-events: none;
+  font-family: var(--font-body);
 }
 .pcg-outer .pcg-progress-bar {
   width: 7.5rem;
   height: var(--hairline);
-  background: var(--muted);
+  background: rgba(255,255,255,0.15);
   margin-top: 0.5rem;
   margin-left: auto;
   position: relative;
   overflow: hidden;
+}
+.pcg-outer[data-theme="light"] .pcg-progress-bar {
+  background: rgba(0,0,0,0.12);
 }
 .pcg-outer .pcg-progress-fill {
   position: absolute;
@@ -660,6 +654,7 @@ const STYLES = `
   font-size: 0.6rem;
   color: var(--accent);
   margin-top: 0.4rem;
+  font-family: var(--font-body);
 }
 
 /* ── Dot navigation strip ── */
@@ -678,11 +673,14 @@ const STYLES = `
   width:  0.25rem;
   height: 0.25rem;
   border-radius: 50%;
-  background: var(--muted);
+  background: rgba(255,255,255,0.25);
   border: none;
   padding: 0;
   cursor: pointer;
   transition: background 0.3s, transform 0.3s;
+}
+.pcg-outer[data-theme="light"] .pcg-dot {
+  background: rgba(0,0,0,0.2);
 }
 .pcg-outer .pcg-dot.active {
   background: var(--accent);
@@ -699,7 +697,7 @@ const STYLES = `
   width:  2rem;
   height: 2rem;
   border: none;
-  background: color-mix(in srgb, var(--muted) 35%, transparent);
+  background: rgba(255,138,0,0.12);
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -708,7 +706,7 @@ const STYLES = `
   transition: background 0.3s;
 }
 .pcg-outer .pcg-theme-btn:hover {
-  background: color-mix(in srgb, var(--muted) 55%, transparent);
+  background: rgba(255,138,0,0.28);
 }
 .pcg-outer .pcg-theme-btn svg {
   width:  0.875rem;
@@ -739,16 +737,18 @@ const STYLES = `
   color: var(--accent);
   text-transform: uppercase;
   margin-bottom: 0.15rem;
+  font-family: var(--font-body);
 }
 .pcg-outer .pcg-caption-name {
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 5vw, 3.5rem);
+  font-weight: 700;
   letter-spacing: 0.08em;
   color: var(--muted);
-  opacity: 0.5;
+  opacity: 0.35;
   line-height: 1;
 }
-.pcg-outer[data-theme="light"] .pcg-caption-name { opacity: 0.35; }
+.pcg-outer[data-theme="light"] .pcg-caption-name { opacity: 0.25; }
 
 /* ── Credit (rotated, right-center) ── */
 .pcg-outer .pcg-credit {
@@ -758,7 +758,7 @@ const STYLES = `
   transform: translateY(-50%) rotate(-90deg);
   transform-origin: right center;
   z-index: var(--z-ui);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 0.65rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -773,8 +773,8 @@ const STYLES = `
 /* ── Text sections ── */
 .pcg-outer .pcg-text-sections {
   position: relative;
-  z-index: 2;           /* above cube (z:0), below HUD (z:20) */
-  margin-top: -100vh;   /* overlap with the sticky stage */
+  z-index: 2;
+  margin-top: -100vh;
 }
 
 .pcg-outer .pcg-section {
@@ -792,10 +792,11 @@ const STYLES = `
   padding: 2.25rem 2rem;
   background: var(--card-bg);
   border-left: var(--hairline) solid var(--card-border);
-  backdrop-filter: blur(6px) saturate(120%);
-  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
   overflow: hidden;
   transition: background 0.3s ease, border-color 0.3s ease;
+  border-radius: 2px;
 }
 .pcg-outer .pcg-text-card.right {
   margin-left: auto;
@@ -814,6 +815,7 @@ const STYLES = `
 
 /* ── Tag ── */
 .pcg-outer .pcg-tag {
+  font-family: var(--font-body);
   font-size: 0.6rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -824,16 +826,19 @@ const STYLES = `
 /* ── Heading ── */
 .pcg-outer .pcg-heading {
   font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: 0.03em;
-  line-height: 0.92;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
+  color: var(--fg);
 }
-.pcg-outer h1.pcg-heading { font-size: clamp(3rem, 8vw, 6.5rem); }
-.pcg-outer h2.pcg-heading { font-size: clamp(2.2rem, 5vw, 4rem); }
+.pcg-outer h1.pcg-heading { font-size: clamp(2.8rem, 7vw, 5.5rem); }
+.pcg-outer h2.pcg-heading { font-size: clamp(2rem, 4.5vw, 3.5rem); }
 
 /* ── Body ── */
 .pcg-outer .pcg-body-text {
+  font-family: var(--font-body);
   font-size: 0.78rem;
+  font-weight: 300;
   line-height: 1.8;
   color: color-mix(in srgb, var(--fg) 55%, transparent);
   margin-top: 1.25rem;
@@ -848,8 +853,8 @@ const STYLES = `
 }
 .pcg-outer .pcg-stat-row.right { justify-content: flex-end; }
 .pcg-outer .pcg-stat           { display: flex; flex-direction: column; gap: 0.15rem; }
-.pcg-outer .pcg-stat-num       { font-family: var(--font-display); font-size: 2.2rem; color: var(--accent); line-height: 1; }
-.pcg-outer .pcg-stat-label     { font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.pcg-outer .pcg-stat-num       { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--accent); line-height: 1; }
+.pcg-outer .pcg-stat-label     { font-family: var(--font-body); font-size: 0.58rem; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
 
 /* ── CTA row ── */
 .pcg-outer .pcg-cta-row       { display: flex; align-items: center; gap: 0.75rem; margin-top: 1.75rem; }
@@ -862,8 +867,9 @@ const STYLES = `
   padding: 0.6rem 1.25rem;
   border: var(--hairline) solid var(--accent);
   color: var(--accent);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 0.62rem;
+  font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   background: transparent;
@@ -872,7 +878,7 @@ const STYLES = `
 }
 .pcg-outer .pcg-cta:hover {
   background: var(--accent);
-  color: var(--bg);
+  color: #000;
 }
 
 .pcg-outer .pcg-cta-back {
@@ -880,20 +886,24 @@ const STYLES = `
   align-items: center;
   gap: 0.6rem;
   padding: 0.6rem 1.25rem;
-  border: var(--hairline) solid color-mix(in srgb, var(--muted) 45%, transparent);
+  border: var(--hairline) solid rgba(255,255,255,0.18);
   color: var(--muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 0.62rem;
+  font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   background: transparent;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
+.pcg-outer[data-theme="light"] .pcg-cta-back {
+  border-color: rgba(0,0,0,0.15);
+}
 .pcg-outer .pcg-cta-back:hover {
-  background: color-mix(in srgb, var(--muted) 12%, transparent);
-  border-color: var(--muted);
-  color: var(--fg);
+  background: rgba(255,138,0,0.08);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .pcg-outer .pcg-arrow {
@@ -902,9 +912,7 @@ const STYLES = `
   flex-shrink: 0;
 }
 
-/* ── Reveal animations ──
-   Elements start hidden; IntersectionObserver adds .pcg-visible.
-── */
+/* ── Reveal animations ── */
 .pcg-outer [data-reveal] {
   opacity: 0;
   translate: 0 0.625rem;
@@ -973,7 +981,7 @@ const STYLES = `
     padding: 1.75rem 1.35rem;
   }
   .pcg-outer .pcg-tag       { font-size: 0.75rem; letter-spacing: 0.2em; }
-  .pcg-outer .pcg-body-text { font-size: 0.92rem; line-height: 1.65; color: color-mix(in srgb, var(--fg) 80%, transparent); }
+  .pcg-outer .pcg-body-text { font-size: 0.92rem; line-height: 1.65; font-weight: 300; color: color-mix(in srgb, var(--fg) 80%, transparent); }
   .pcg-outer .pcg-stat-label{ font-size: 0.7rem; letter-spacing: 0.15em; }
   .pcg-outer .pcg-cta,
   .pcg-outer .pcg-cta-back  { font-size: 0.72rem; padding: 0.65rem 1.35rem; }

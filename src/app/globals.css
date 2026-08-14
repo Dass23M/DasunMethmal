@@ -296,15 +296,15 @@ a:hover {
   width: min(300px, 85vw);
   overflow-y: auto;
   padding-top: 30px;
-  padding-bottom: 70px;
   left: 0;
   transform: translateX(-100%);
   transition: 0.6s transform cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 20px 0 50px rgba(0, 0, 0, 0.8);
+  box-shadow: none;
 }
 
 body.offcanvas .site-mobile-menu {
   transform: translateX(0%);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
 }
 
 .site-mobile-menu .close-wrap {

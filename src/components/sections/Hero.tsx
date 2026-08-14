@@ -302,8 +302,8 @@ export default function Hero() {
           left: var(--x);
           top: var(--y);
           background-image: url("/images/methmal2.png");
-          background-size: 430px 580px;
-          background-position: calc(-1 * var(--x)) calc(-1 * var(--y));
+          background-size: 540px 720px;
+          background-position: calc(-1 * var(--x) - 55px) calc(-1 * var(--y) + 15px);
           background-color: #12131A;
           border-radius: 16px;
           border: 3px solid rgba(255, 138, 0, 0.25);

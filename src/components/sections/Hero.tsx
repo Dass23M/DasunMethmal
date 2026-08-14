@@ -79,13 +79,13 @@ export default function Hero({
       ref={containerRef}
       className="cover-v1 bg-cover bg-no-repeat w-full lg:bg-fixed hero-cover-mobile relative overflow-hidden"
     >
-      {/* Precise mobile face-crop via inline style override */}
+      {/* Precise mobile face positioning */}
       <style>{`
         @media (max-width: 639px) {
           #home-section .hero-bg-img {
-            object-position: 72% 18% !important;
-            transform: scale(1.55) !important;
-            transform-origin: 72% 18% !important;
+            object-position: 60% 15% !important;
+            transform: scale(1.25) !important;
+            transform-origin: 60% 15% !important;
           }
         }
       `}</style>

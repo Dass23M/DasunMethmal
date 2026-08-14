@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -37,7 +36,7 @@ export default function Hero() {
         const tl = gsap.timeline({ defaults: { ease: 'expo.easeInOut' } });
 
         tl.from('#hero-wrapper', {
-          duration: 3.5,
+          duration: 3.2,
           scale: 0.75,
           opacity: 0,
         })
@@ -47,7 +46,7 @@ export default function Hero() {
               duration: 2.0,
               width: 0,
             },
-            '-=2.5'
+            '-=2.2'
           )
           .from(
             '#blackcard',
@@ -128,7 +127,7 @@ export default function Hero() {
     <section
       id="home-section"
       ref={containerRef}
-      className="hero-serif-rm-style relative w-full h-screen bg-black text-white overflow-hidden select-none"
+      className="hero-rm-exact-style relative w-full h-screen bg-black text-white overflow-hidden select-none"
     >
       {/* Import Playfair Display & Sora Google Fonts */}
       <style>{`
@@ -169,10 +168,10 @@ export default function Hero() {
           height: 100%;
         }
 
-        /* Giant Serif DM Masked Typography */
+        /* Giant Serif DM Masked Typography using Dasun's photo */
         #hero-wrapper h1 {
           font-family: 'Playfair Display', serif;
-          font-size: clamp(200px, 36vw, 550px);
+          font-size: clamp(220px, 38vw, 580px);
           font-weight: 700;
           letter-spacing: -0.02em;
           line-height: 0.9;
@@ -181,36 +180,36 @@ export default function Hero() {
           -webkit-text-fill-color: transparent;
           -webkit-background-clip: text;
           background-clip: text;
-          background-image: url("https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80");
+          background-image: url("/images/cover_bg_2.png");
           background-size: cover;
-          background-position: 60% center;
+          background-position: center 25%;
         }
 
-        /* Right White Strip */
+        /* White Strip (Starts at left: 44%, extends to right edge) */
         #whitestrip {
           display: flex;
-          justify-content: center;
           align-items: center;
+          justify-content: flex-start;
           position: absolute;
           top: 50%;
+          left: 44%;
           right: 0;
           transform: translateY(-50%);
-          width: 52%;
           height: 140px;
           background-color: #ffffff;
           z-index: 10;
-          transition: all 0.5s ease;
+          padding-left: 140px;
         }
 
-        /* Floating Black Card */
+        /* Floating Black Card (Positioned centered over left boundary of whitestrip at 44%) */
         #blackcard {
           display: flex;
           justify-content: center;
           align-items: center;
-          padding: 30px;
+          padding: 28px 24px;
           position: absolute;
           top: 50%;
-          left: 0;
+          left: 44%;
           transform: translate(-50%, -50%);
           width: 240px;
           height: 330px;
@@ -227,7 +226,7 @@ export default function Hero() {
           font-weight: 400;
         }
 
-        /* Line Element & CTA Link */
+        /* Line Element & CTA Link inside White Strip */
         #linelem {
           display: flex;
           align-items: center;
@@ -237,10 +236,10 @@ export default function Hero() {
         }
 
         #linelem .hero-line {
-          width: 200px;
-          height: 2px;
+          width: clamp(100px, 14vw, 220px);
+          height: 1.5px;
           background-color: #000000;
-          margin: 0 30px;
+          margin: 0 25px;
           transition: width 0.3s ease;
         }
 
@@ -250,11 +249,10 @@ export default function Hero() {
           font-weight: 600;
           color: #000000;
           white-space: nowrap;
-          transition: color 0.3s ease;
         }
 
-        /* Interactive Plus / Arrow Icon Circle */
-        .hero-plus-icon-btn {
+        /* Circular Arrow/Plus Button Icon */
+        .hero-circle-btn {
           width: 32px;
           height: 32px;
           border-radius: 50%;
@@ -264,67 +262,24 @@ export default function Hero() {
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
           line-height: 1;
           cursor: pointer;
-          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, color 0.3s ease;
+          transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
         }
 
-        .hero-plus-icon-btn.is-active {
-          transform: rotate(45deg);
-          background-color: #000000;
-          color: #FF8A00;
-        }
-
-        #linelem:hover .hero-plus-icon-btn:not(.is-active) {
+        .hero-circle-btn:hover {
           transform: scale(1.12);
           background-color: #000000;
           color: #ffffff;
-        }
-
-        /* Revealed Name Overlay inside White Strip */
-        .hero-revealed-name-box {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          justify-content: center;
-          animation: fadeInName 0.4s ease forwards;
-        }
-
-        @keyframes fadeInName {
-          from { opacity: 0; transform: translateY(6px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-revealed-name {
-          font-family: 'Sora', sans-serif;
-          font-weight: 800;
-          font-size: 18px;
-          color: #000000;
-          letter-spacing: -0.02em;
-          line-height: 1.1;
-        }
-
-        .hero-revealed-name span {
-          color: #FF8A00;
-        }
-
-        .hero-revealed-sub {
-          font-family: var(--font-inter), 'Inter', sans-serif;
-          font-size: 10px;
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          color: #666666;
-          text-transform: uppercase;
-          margin-top: 3px;
         }
 
         /* Side Vertical Rotated Text */
         #sideelem {
           position: absolute;
           top: 50%;
-          left: 30px;
+          left: 35px;
           color: #ffffff;
           text-transform: uppercase;
           font-weight: 600;
@@ -338,38 +293,35 @@ export default function Hero() {
         }
 
         /* Responsive Tweaks */
-        @media (max-width: 1024px) {
+        @media (max-width: 1100px) {
           #whitestrip {
-            width: 70%;
-            height: 120px;
+            left: 35%;
+            padding-left: 130px;
           }
           #blackcard {
-            width: 200px;
-            height: 280px;
+            left: 35%;
+            width: 210px;
+            height: 290px;
             padding: 20px;
           }
           #blackcard p {
-            font-size: 12px;
+            font-size: 12.5px;
             line-height: 22px;
           }
           #linelem .hero-line {
-            width: 100px;
+            width: 90px;
             margin: 0 15px;
-          }
-          #sideelem {
-            left: -50px;
-            font-size: 8px;
-            letter-spacing: 10px;
           }
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
           #whitestrip {
             width: 100%;
             height: auto;
             position: absolute;
             bottom: 0;
             top: auto;
+            left: 0;
             right: 0;
             transform: none;
             flex-direction: column;
@@ -408,47 +360,36 @@ export default function Hero() {
       <div id="hero-circle" ref={circleRef} />
 
       <div id="hero-background">
-        {/* Giant Serif Masked DM Text */}
+        {/* Giant Serif Masked DM Typography with Dasun's Photo */}
         <div id="hero-wrapper">
           <h1>DM</h1>
         </div>
 
-        {/* White Strip Container */}
+        {/* White Strip Container (Extends from left: 44% to right edge) */}
         <div id="whitestrip">
-          {/* Floating Black Card with Serif Intro Paragraph */}
-          <div id="blackcard">
-            <p>
-              Dasun Methmal — Fullstack Software Engineer &amp; Digital Marketer. Engineering high-performance web applications, modern UI/UX platforms, and data-driven growth strategies.
-            </p>
-          </div>
-
-          {/* Interactive Line & CTA Link */}
-          <div id="linelem" onClick={toggleFullName}>
-            {showFullName ? (
-              <div className="hero-revealed-name-box" onClick={handleScrollToPortfolio}>
-                <span className="hero-revealed-name">
-                  DASUN METHMAL<span>.</span>
-                </span>
-                <span className="hero-revealed-sub">
-                  FULL-STACK ENGINEER &amp; MARKETER ↗
-                </span>
-              </div>
-            ) : (
-              <h4 onClick={handleScrollToPortfolio}>View More</h4>
-            )}
-
-            <div className="hero-line" onClick={handleScrollToPortfolio} />
-
+          {/* Interactive Line & CTA Link inside White Strip */}
+          <div id="linelem" onClick={handleScrollToPortfolio}>
+            <h4 onClick={toggleFullName}>
+              {showFullName ? 'Dasun Methmal' : 'View More'}
+            </h4>
+            <div className="hero-line" />
             <button
               type="button"
               onClick={toggleFullName}
-              className={`hero-plus-icon-btn ${showFullName ? 'is-active' : ''}`}
-              aria-label="Toggle full name reveal"
-              title={showFullName ? 'Close' : 'Reveal full name'}
+              className="hero-circle-btn"
+              aria-label="Toggle full name"
+              title="Toggle name / scroll"
             >
-              +
+              ➔
             </button>
           </div>
+        </div>
+
+        {/* Floating Black Card Overlapping Left Boundary of White Strip */}
+        <div id="blackcard">
+          <p>
+            Dasun Methmal — Fullstack Software Engineer &amp; Digital Marketer. Engineering high-performance web applications, modern UI/UX platforms, and data-driven growth strategies.
+          </p>
         </div>
 
         {/* Vertical Side Text */}

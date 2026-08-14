@@ -289,14 +289,18 @@ a:hover {
   position: fixed;
   z-index: 1009;
   height: 100svh;
-  background: #fff;
-  width: min(280px, 85vw);
-  overflow: auto;
+  background: rgba(13, 13, 13, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255, 138, 0, 0.2);
+  width: min(300px, 85vw);
+  overflow-y: auto;
   padding-top: 30px;
   padding-bottom: 70px;
   left: 0;
   transform: translateX(-100%);
-  transition: 1s transform cubic-bezier(0.23, 1, 0.32, 1);
+  transition: 0.6s transform cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 20px 0 50px rgba(0, 0, 0, 0.8);
 }
 
 body.offcanvas .site-mobile-menu {
@@ -306,19 +310,20 @@ body.offcanvas .site-mobile-menu {
 .site-mobile-menu .close-wrap {
   display: flex;
   justify-content: flex-end;
-  margin-right: 20px;
-  margin-bottom: 20px;
+  margin-right: 24px;
+  margin-bottom: 30px;
 }
 
 .site-mobile-menu .close-wrap a {
   display: flex;
   align-items: center;
-  color: #000;
+  color: #fff;
   gap: 12px;
+  text-decoration: none;
 }
 
 .site-mobile-menu .close-wrap a:hover {
-  opacity: 0.5;
+  opacity: 0.8;
 }
 
 .close-times {
@@ -331,9 +336,15 @@ body.offcanvas .site-mobile-menu {
 .close-times .bar2 {
   width: 2px;
   height: 20px;
-  background: #000;
+  background: #fff;
   position: absolute;
   left: 50%;
+  transition: background 0.3s;
+}
+
+.site-mobile-menu .close-wrap a:hover .bar1,
+.site-mobile-menu .close-wrap a:hover .bar2 {
+  background: #FF8A00;
 }
 
 .close-times .bar1 {
@@ -346,23 +357,30 @@ body.offcanvas .site-mobile-menu {
 
 .mobile-nav-ul {
   list-style: none;
-  padding: 0;
+  padding: 0 10px;
   margin: 0;
 }
 
 .mobile-nav-ul li {
   position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .mobile-nav-ul li a {
   display: block;
-  padding: 10px 20px;
-  color: #000;
+  padding: 14px 20px;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-sora), 'Sora', sans-serif;
   font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: all 0.3s ease;
 }
 
 .mobile-nav-ul li a:hover {
   color: #FF8A00;
+  padding-left: 28px;
+  background: rgba(255, 138, 0, 0.05);
 }
 
 .mobile-nav-ul li ul {
@@ -372,10 +390,11 @@ body.offcanvas .site-mobile-menu {
 }
 
 .mobile-nav-ul li ul a {
-  padding-left: 30px;
+  padding-left: 35px;
   font-size: 13px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ============================================

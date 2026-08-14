@@ -74,7 +74,7 @@ export default function Portfolio() {
       id="portfolio-section"
       ref={sectionRef}
       className="unslate-section"
-      style={{ background: '#111' }}
+      style={{ background: '#080808' }}
     >
       <style>{`
         /* ── Portfolio grid ───────────────────── */

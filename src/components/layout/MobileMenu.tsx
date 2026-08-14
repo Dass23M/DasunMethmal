@@ -43,8 +43,8 @@ export default function MobileMenu() {
   return (
     <nav className="site-mobile-menu" aria-label="Mobile navigation">
       <div className="close-wrap">
-        <a href="#" onClick={closeMenu}>
-          <span className="close-label" style={{ color: '#000', fontSize: '14px' }}>Close</span>
+        <a href="#" onClick={closeMenu} aria-label="Close mobile navigation menu">
+          <span className="close-label text-white/80 hover:text-[#FF8A00] transition-colors text-[14px] font-medium">Close</span>
           <div className="close-times">
             <span className="bar1" />
             <span className="bar2" />

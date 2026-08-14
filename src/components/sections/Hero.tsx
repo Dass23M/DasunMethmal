@@ -7,6 +7,7 @@ export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const circleRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
+  const [showFullName, setShowFullName] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -102,6 +103,23 @@ export default function Hero() {
     };
   }, [mounted]);
 
+  const toggleFullName = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowFullName((prev) => !prev);
+  };
+
+  const handleScrollToPortfolio = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const el = document.getElementById('portfolio-section');
+    if (el) {
+      if ((window as any).lenis) {
+        (window as any).lenis.scrollTo(el, { offset: 0, duration: 1.4 });
+      } else {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   if (!mounted) {
     return <section id="home-section" className="w-full h-screen bg-black" />;
   }
@@ -112,9 +130,9 @@ export default function Hero() {
       ref={containerRef}
       className="hero-serif-rm-style relative w-full h-screen bg-black text-white overflow-hidden select-none"
     >
-      {/* Import Playfair Display Google Font */}
+      {/* Import Playfair Display & Sora Google Fonts */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Sora:wght@700;800&display=swap');
 
         /* Custom Difference Cursor */
         #hero-circle {
@@ -181,6 +199,7 @@ export default function Hero() {
           height: 140px;
           background-color: #ffffff;
           z-index: 10;
+          transition: all 0.5s ease;
         }
 
         /* Floating Black Card */
@@ -214,6 +233,7 @@ export default function Hero() {
           align-items: center;
           text-decoration: none;
           color: #000000;
+          cursor: pointer;
         }
 
         #linelem .hero-line {
@@ -230,18 +250,74 @@ export default function Hero() {
           font-weight: 600;
           color: #000000;
           white-space: nowrap;
+          transition: color 0.3s ease;
         }
 
-        .hero-arrow-icon {
-          font-size: 22px;
+        /* Interactive Plus / Arrow Icon Circle */
+        .hero-plus-icon-btn {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: 1.5px solid #000000;
+          background: transparent;
           color: #000000;
-          transition: transform 0.3s ease;
-          display: inline-block;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          font-weight: 600;
           line-height: 1;
+          cursor: pointer;
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, color 0.3s ease;
         }
 
-        #linelem:hover .hero-arrow-icon {
-          transform: translateX(6px);
+        .hero-plus-icon-btn.is-active {
+          transform: rotate(45deg);
+          background-color: #000000;
+          color: #FF8A00;
+        }
+
+        #linelem:hover .hero-plus-icon-btn:not(.is-active) {
+          transform: scale(1.12);
+          background-color: #000000;
+          color: #ffffff;
+        }
+
+        /* Revealed Name Overlay inside White Strip */
+        .hero-revealed-name-box {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          animation: fadeInName 0.4s ease forwards;
+        }
+
+        @keyframes fadeInName {
+          from { opacity: 0; transform: translateY(6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-revealed-name {
+          font-family: 'Sora', sans-serif;
+          font-weight: 800;
+          font-size: 18px;
+          color: #000000;
+          letter-spacing: -0.02em;
+          line-height: 1.1;
+        }
+
+        .hero-revealed-name span {
+          color: #FF8A00;
+        }
+
+        .hero-revealed-sub {
+          font-family: var(--font-inter), 'Inter', sans-serif;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          color: #666666;
+          text-transform: uppercase;
+          margin-top: 3px;
         }
 
         /* Side Vertical Rotated Text */
@@ -347,11 +423,32 @@ export default function Hero() {
           </div>
 
           {/* Interactive Line & CTA Link */}
-          <Link href="#portfolio-section" id="linelem">
-            <h4>View More</h4>
-            <div className="hero-line" />
-            <span className="hero-arrow-icon">➔</span>
-          </Link>
+          <div id="linelem" onClick={toggleFullName}>
+            {showFullName ? (
+              <div className="hero-revealed-name-box" onClick={handleScrollToPortfolio}>
+                <span className="hero-revealed-name">
+                  DASUN METHMAL<span>.</span>
+                </span>
+                <span className="hero-revealed-sub">
+                  FULL-STACK ENGINEER &amp; MARKETER ↗
+                </span>
+              </div>
+            ) : (
+              <h4 onClick={handleScrollToPortfolio}>View More</h4>
+            )}
+
+            <div className="hero-line" onClick={handleScrollToPortfolio} />
+
+            <button
+              type="button"
+              onClick={toggleFullName}
+              className={`hero-plus-icon-btn ${showFullName ? 'is-active' : ''}`}
+              aria-label="Toggle full name reveal"
+              title={showFullName ? 'Close' : 'Reveal full name'}
+            >
+              +
+            </button>
+          </div>
         </div>
 
         {/* Vertical Side Text */}

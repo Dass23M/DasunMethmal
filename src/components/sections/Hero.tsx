@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
 type EffectPattern = 'flame' | 'venetian' | 'curtain' | 'hexagon' | 'liquid' | 'zoomsplit';
@@ -16,30 +16,10 @@ const TRAIL_IMAGES = [
   '/images/cover_bg_2.png',
 ];
 
-const COLUMN_1_WORDS = [
-  'Full-Stack', 'Next.js 14', 'React.js', 'TypeScript', 'Node.js',
-  'Architecture', 'Performance', 'Scalability', 'Clean Code', 'System Design',
-  'APIs & Microservices', 'Database Systems', 'DevOps & CI/CD', 'Security', 'Optimization',
-];
-
-const COLUMN_2_WORDS = [
-  'Digital Marketing', 'SEO Strategy', 'Growth Hacking', 'ROAS Focus', 'Ad Architecture',
-  'Conversion Rate', 'Brand Identity', 'Analytics', 'Social Campaigns', 'Lead Gen',
-  'Content Strategy', 'Funnel Design', 'Market Research', 'Audience Insights', 'Scaling',
-];
-
-const COLUMN_3_WORDS = [
-  'UI/UX Design', '3D WebGL', 'GSAP Motion', 'Interactive UI', 'Creative Direction',
-  'Design Systems', 'Figma Workshops', 'Prototyping', 'Visual Craft', 'Modern Aesthetics',
-  'Micro-Animations', 'User Research', 'Usability', 'Product Thinking', 'Excellence',
-];
-
-const ROTATED_WORDS = [
-  'INNOVATION', 'ARCHITECTURE', 'STRATEGY', 'EXECUTION', 'IMPACT',
-];
-
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLHeadingElement>(null);
   const speedIndicatorRef = useRef<HTMLDivElement>(null);
   const [activeEffect, setActiveEffect] = useState<EffectPattern>('flame');
   const [mounted, setMounted] = useState(false);
@@ -52,33 +32,22 @@ export default function Hero() {
     setMounted(true);
   }, []);
 
-  // ── GSAP Column Text Reveal ───────────────────────────────────────────────
+  // ── GSAP Reveal Animation ──────────────────────────────────────────────────
   useEffect(() => {
     if (!mounted || !heroRef.current) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline();
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      tl.to('.hero-text-item', {
-        opacity: 1,
-        y: 0,
-        filter: 'blur(0px)',
-        duration: 0.8,
-        ease: 'power2.out',
-        stagger: {
-          amount: 2.2,
-          from: 'start',
-        },
-      }).to(
-        '.hero-rotated-item',
-        {
-          opacity: 1,
-          filter: 'blur(0px)',
-          duration: 0.8,
-          ease: 'power2.out',
-          stagger: 0.18,
-        },
-        '-=1.6'
+      tl.fromTo(
+        titleRef.current,
+        { opacity: 0, y: 40, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 1.2, delay: 0.3 }
+      ).fromTo(
+        subtitleRef.current,
+        { opacity: 0, y: 25 },
+        { opacity: 1, y: 0, duration: 0.9 },
+        '-=0.6'
       );
     }, heroRef);
 
@@ -104,8 +73,8 @@ export default function Hero() {
       outEasing: 'cubic-bezier(.87, 0, .13, 1)',
       touchImageInterval: 40,
       minMovementForImage: isMobile ? 3 : 5,
-      minImageSize: isMobile ? 130 : 180,
-      maxImageSize: isMobile ? 240 : 320,
+      minImageSize: isMobile ? 120 : 180,
+      maxImageSize: isMobile ? 220 : 300,
       baseRotation: 25,
       maxRotationFactor: 2.5,
       speedSmoothingFactor: 0.25,
@@ -603,232 +572,112 @@ export default function Hero() {
   };
 
   if (!mounted) {
-    return <section id="home-section" className="w-full h-screen bg-[#0a0a0a]" />;
+    return <section id="home-section" className="w-full h-screen bg-[#080808]" />;
   }
 
   return (
     <section
       id="home-section"
       ref={heroRef}
-      className="hero-trail-section relative w-full h-screen bg-[#0a0a0a] text-white overflow-hidden select-none"
+      className="hero-clean-trail-section relative w-full h-screen bg-[#080808] text-white overflow-hidden select-none flex flex-col items-center justify-center"
     >
       <style>{`
-        .hero-trail-section {
+        .hero-clean-trail-section {
           --color-text: #ffffff;
-          --color-text-dark: #888888;
           --color-accent: #FF8A00;
         }
 
         /* Ambient Noise Overlay */
-        .hero-trail-section::after {
+        .hero-clean-trail-section::after {
           content: "";
           position: absolute;
           inset: 0;
           background-image: url("https://assets.codepen.io/7558/noise-002.png");
           background-repeat: repeat;
           background-size: 200px 200px;
-          opacity: 0.05;
+          opacity: 0.04;
           pointer-events: none;
           z-index: 4;
           mix-blend-mode: screen;
         }
 
-        /* Top Header Controls */
-        .hero-header-bar {
+        /* Sub-bar Effect Selector (Positioned cleanly below Navbar) */
+        .hero-effect-subbar {
           position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          z-index: 50;
-          padding: 1.8rem 2.5rem;
+          top: 95px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 40;
           display: flex;
-          justify-content: space-between;
           align-items: center;
-          background: transparent;
+          gap: 6px;
+          padding: 6px 12px;
+          background: rgba(20, 20, 20, 0.75);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 30px;
         }
 
-        .hero-logo-circles {
+        .hero-effect-subbar a {
           position: relative;
-          width: 3rem;
-          height: 1.5rem;
-        }
-
-        .hero-circle-1,
-        .hero-circle-2 {
-          position: absolute;
-          border-radius: 50%;
-          width: 1.4rem;
-          height: 1.4rem;
-          top: 50%;
-          background-color: #ffffff;
-          transition: transform 0.3s ease;
-        }
-
-        .hero-circle-1 {
-          left: 0;
-          transform: translate(0, -50%);
-        }
-
-        .hero-circle-2 {
-          left: 0.8rem;
-          transform: translate(0, -50%);
-          mix-blend-mode: exclusion;
-          background-color: #FF8A00;
-        }
-
-        .hero-logo-circles:hover .hero-circle-1 {
-          transform: translate(-0.4rem, -50%);
-        }
-
-        .hero-logo-circles:hover .hero-circle-2 {
-          transform: translate(0.4rem, -50%);
-        }
-
-        .hero-effects-menu ul,
-        .hero-social-menu ul {
-          display: flex;
-          gap: 1.5rem;
-          list-style: none;
-          margin: 0;
-          padding: 0;
-        }
-
-        .hero-effects-menu a,
-        .hero-social-menu a {
-          position: relative;
-          color: rgba(255, 255, 255, 0.7);
+          color: rgba(255, 255, 255, 0.65);
           text-decoration: none;
           font-family: var(--font-mono), monospace;
-          font-size: 11px;
+          font-size: 10px;
           text-transform: uppercase;
           letter-spacing: 0.08em;
-          transition: color 0.3s ease, opacity 0.3s ease;
-          padding: 2px 4px;
+          padding: 4px 10px;
+          border-radius: 20px;
+          transition: all 0.3s ease;
         }
 
-        .hero-effects-menu a::after,
-        .hero-social-menu a::after {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 0;
-          height: 100%;
-          background-color: #FF8A00;
-          z-index: -1;
-          transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .hero-effects-menu a:hover,
-        .hero-social-menu a:hover,
-        .hero-effects-menu a.active {
+        .hero-effect-subbar a.active,
+        .hero-effect-subbar a:hover {
           color: #000000;
-          opacity: 1;
+          background-color: #FF8A00;
+          font-weight: 700;
         }
 
-        .hero-effects-menu a:hover::after,
-        .hero-social-menu a:hover::after,
-        .hero-effects-menu a.active::after {
-          width: 100%;
-        }
-
-        /* Hero Container */
-        .hero-container-inner {
+        /* Center Content Box */
+        .hero-center-box {
           position: relative;
-          width: 100vw;
-          height: 100vh;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: linear-gradient(135deg, #050505 0%, #151515 50%, #050505 100%);
-          overflow: hidden;
-        }
-
-        /* Staggered Text Columns */
-        .hero-text-columns {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          z-index: 5;
-          display: grid;
-          grid-template-columns: repeat(12, 1fr);
-          gap: 1.5rem;
-          width: 100vw;
-          padding: 0 3rem;
-          pointer-events: none;
-        }
-
-        .hero-text-column {
-          grid-column: span 4;
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-
-        .hero-text-item {
-          font-family: var(--font-sora), 'Sora', sans-serif;
-          font-size: 16px;
-          font-weight: 700;
-          letter-spacing: -0.5px;
-          opacity: 0;
-          transform: translateY(20px);
-          filter: blur(10px);
-          transition: color 0.3s ease;
-        }
-
-        .hero-text-item:nth-child(3n+1) { color: #5a5a5a; }
-        .hero-text-item:nth-child(3n+2) { color: #787878; }
-        .hero-text-item:nth-child(3n)   { color: #a0a0a0; }
-
-        /* Rotated Text Column */
-        .hero-rotated-text {
-          position: absolute;
-          right: 40px;
-          top: 0;
-          height: 100vh;
-          z-index: 5;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-evenly;
-          align-items: center;
-          pointer-events: none;
-        }
-
-        .hero-rotated-item {
-          color: rgba(255, 255, 255, 0.35);
-          font-family: var(--font-sora), 'Sora', sans-serif;
-          font-size: 16px;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          transform: rotate(90deg);
-          transform-origin: center;
-          white-space: nowrap;
-          opacity: 0;
-          filter: blur(10px);
-        }
-
-        /* SVG Letter Layering */
-        .hero-svg-overlay {
-          position: absolute;
-          inset: 0;
-          width: 100vw;
-          height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          pointer-events: none;
           z-index: 10;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          padding: 0 20px;
+          max-width: 1200px;
+          pointer-events: none;
         }
 
-        .hero-svg-text {
+        .hero-title-name {
           font-family: var(--font-sora), 'Sora', sans-serif;
-          font-size: clamp(120px, 22vw, 360px);
+          font-size: clamp(38px, 7.5vw, 95px);
           font-weight: 900;
-          letter-spacing: 0.04em;
-          fill: #ffffff;
-          opacity: 0.95;
-          filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
+          letter-spacing: -0.03em;
+          line-height: 1.0;
+          color: #ffffff;
+          margin: 0 0 16px 0;
+          text-transform: uppercase;
+          filter: drop-shadow(0 15px 30px rgba(0,0,0,0.8));
+          white-space: nowrap;
+        }
+
+        .hero-title-name span {
+          color: #FF8A00;
+        }
+
+        .hero-subtitle-text {
+          font-family: var(--font-inter), 'Inter', sans-serif;
+          font-size: clamp(14px, 2vw, 22px);
+          font-weight: 400;
+          color: rgba(255, 255, 255, 0.8);
+          letter-spacing: 0.02em;
+          max-width: 600px;
+          margin: 0 auto;
         }
 
         /* Cursor Trail Elements */
@@ -874,14 +723,14 @@ export default function Hero() {
           background-repeat: no-repeat;
         }
 
-        /* Speed & Hint Indicators */
+        /* Bottom Indicators */
         .hero-cursor-hint {
           position: absolute;
           bottom: 28px;
           left: 0;
           right: 0;
           text-align: center;
-          color: rgba(255, 255, 255, 0.6);
+          color: rgba(255, 255, 255, 0.55);
           font-family: var(--font-mono), monospace;
           font-size: 11px;
           text-transform: uppercase;
@@ -902,137 +751,54 @@ export default function Hero() {
           letter-spacing: 0.12em;
           z-index: 25;
           pointer-events: none;
-          transition: opacity 0.3s ease;
         }
 
-        /* Mobile Tweaks */
-        @media (max-width: 900px) {
-          .hero-text-columns {
-            display: none;
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+          .hero-effect-subbar {
+            top: 80px;
+            max-width: 92vw;
+            overflow-x: auto;
+            white-space: nowrap;
           }
-          .hero-rotated-text {
-            display: none;
-          }
-          .hero-header-bar {
-            padding: 1.2rem;
-            flex-direction: column;
-            gap: 1rem;
-          }
-          .hero-effects-menu ul {
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            justify-content: center;
+          .hero-title-name {
+            white-space: normal;
+            font-size: clamp(32px, 10vw, 54px);
           }
         }
       `}</style>
 
-      {/* Header Controls (Tabs & Social) */}
-      <header className="hero-header-bar">
-        <div className="hero-logo-container">
-          <div className="hero-logo-circles">
-            <div className="hero-circle-1" />
-            <div className="hero-circle-2" />
-          </div>
-        </div>
+      {/* Trail Effect Selector Sub-bar (Positioned cleanly below Navbar) */}
+      <div className="hero-effect-subbar">
+        {(['flame', 'venetian', 'curtain', 'hexagon', 'liquid', 'zoomsplit'] as EffectPattern[]).map((pattern) => (
+          <a
+            key={pattern}
+            href="#"
+            onClick={(e) => handleEffectChange(pattern, e)}
+            className={activeEffect === pattern ? 'active' : ''}
+          >
+            {pattern.charAt(0).toUpperCase() + pattern.slice(1)}
+          </a>
+        ))}
+      </div>
 
-        <nav className="hero-effects-menu" aria-label="Trail effect mode selector">
-          <ul>
-            {(['flame', 'venetian', 'curtain', 'hexagon', 'liquid', 'zoomsplit'] as EffectPattern[]).map((pattern) => (
-              <li key={pattern}>
-                <a
-                  href="#"
-                  onClick={(e) => handleEffectChange(pattern, e)}
-                  className={activeEffect === pattern ? 'active' : ''}
-                >
-                  {pattern.charAt(0).toUpperCase() + pattern.slice(1)}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+      {/* Main Center Content Box: DASUN METHMAL. */}
+      <div className="hero-center-box">
+        <h1 ref={titleRef} className="hero-title-name">
+          DASUN METHMAL<span>.</span>
+        </h1>
+        <h2 ref={subtitleRef} className="hero-subtitle-text">
+          A Fullstack Developer &amp; Digital Marketer
+        </h2>
+      </div>
 
-        <div className="hero-social-menu hidden lg:block">
-          <ul>
-            <li>
-              <a href="https://github.com/Dass23M" target="_blank" rel="noopener noreferrer">
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://www.linkedin.com/in/dasun-methmal-607333230" target="_blank" rel="noopener noreferrer">
-                LinkedIn
-              </a>
-            </li>
-            <li>
-              <a href="https://www.instagram.com/_dase23_" target="_blank" rel="noopener noreferrer">
-                Instagram
-              </a>
-            </li>
-          </ul>
-        </div>
-      </header>
+      {/* Bottom Hint & Intensity Indicators */}
+      <div className="hero-cursor-hint">
+        Move cursor to reveal dynamic image trails | Select effect tabs above
+      </div>
 
-      {/* Hero Container */}
-      <div className="hero-container-inner">
-        {/* Staggered Keywords Column Grid */}
-        <div className="hero-text-columns">
-          <div className="hero-text-column">
-            {COLUMN_1_WORDS.map((word, i) => (
-              <span key={i} className="hero-text-item">
-                {word}
-              </span>
-            ))}
-          </div>
-
-          <div className="hero-text-column">
-            {COLUMN_2_WORDS.map((word, i) => (
-              <span key={i} className="hero-text-item">
-                {word}
-              </span>
-            ))}
-          </div>
-
-          <div className="hero-text-column">
-            {COLUMN_3_WORDS.map((word, i) => (
-              <span key={i} className="hero-text-item">
-                {word}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Rotated Keywords Right Sidebar */}
-        <div className="hero-rotated-text">
-          {ROTATED_WORDS.map((word, i) => (
-            <span key={i} className="hero-rotated-item">
-              {word}
-            </span>
-          ))}
-        </div>
-
-        {/* Giant SVG Typography Layer (METHMAL) */}
-        <div className="hero-svg-overlay">
-          <svg viewBox="0 0 1200 300" className="w-full max-w-[1400px] h-auto">
-            <text
-              x="50%"
-              y="55%"
-              textAnchor="middle"
-              dominantBaseline="middle"
-              className="hero-svg-text"
-            >
-              METHMAL
-            </text>
-          </svg>
-        </div>
-
-        {/* Bottom Cursor Hint & Speed Indicator */}
-        <div className="hero-cursor-hint">
-          Move cursor to reveal dynamic image trails | Select effect tabs above
-        </div>
-
-        <div ref={speedIndicatorRef} className="hero-speed-indicator">
-          {intensityText}
-        </div>
+      <div ref={speedIndicatorRef} className="hero-speed-indicator">
+        {intensityText}
       </div>
     </section>
   );

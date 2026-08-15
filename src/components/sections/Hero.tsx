@@ -120,7 +120,7 @@ export default function Hero() {
                 <img
                   src="/images/methmal2.png"
                   alt="Dasun Methmal Portrait"
-                  className="h-full w-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500"
+                  className="h-full w-full object-cover object-[center_15%] grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500"
                 />
                 <div className="text-left p-2 writing-mode-vertical text-[10px] font-mono font-semibold tracking-widest text-[#FF8A00] bg-black/80 backdrop-blur-sm">
                   BASED IN COLOMBO, SRI LANKA
@@ -129,14 +129,16 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Mobile Center Portrait Container */}
-          <div className="flex md:hidden mt-6 w-full max-w-2xl mx-auto rounded-xl overflow-hidden bg-[#121212] border border-white/10 shadow-xl">
-            <img
-              src="/images/methmal2.png"
-              alt="Dasun Methmal Portrait"
-              className="h-44 sm:h-52 w-full object-cover grayscale contrast-125"
-            />
-            <div className="text-left p-2.5 writing-mode-vertical text-[10px] font-mono font-semibold tracking-widest text-[#FF8A00] bg-black/80 backdrop-blur-sm">
+          {/* Mobile Center Portrait Container (Face Centered & Full Height Frame) */}
+          <div className="flex md:hidden mt-6 w-full max-w-2xl mx-auto rounded-2xl overflow-hidden bg-[#121212] border border-white/10 shadow-xl items-stretch">
+            <div className="flex-1 relative h-56 sm:h-64 overflow-hidden">
+              <img
+                src="/images/methmal2.png"
+                alt="Dasun Methmal Portrait"
+                className="w-full h-full object-cover object-[center_15%] grayscale contrast-125"
+              />
+            </div>
+            <div className="flex items-center justify-center p-3 writing-mode-vertical text-[10px] font-mono font-semibold tracking-widest text-[#FF8A00] bg-black/90 border-l border-white/10 shrink-0">
               BASED IN COLOMBO, SRI LANKA
             </div>
           </div>

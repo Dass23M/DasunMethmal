@@ -12,6 +12,7 @@ import Testimonials from '@/components/sections/Testimonials';
 import FaqSection from '@/components/sections/FaqSection';
 import Contact from '@/components/sections/Contact';
 import FooterMarquee from '@/components/sections/FooterMarquee';
+import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
 import LandoStyleSection from '@/components/sections/LandoStyleSection';
 
 import GSAPFlipSection from '@/components/sections/GSAPFlipSection';
@@ -38,6 +39,13 @@ export default function HomePage() {
           {/* 2. Pinned Scrub About Section */}
           <div className="scroll-reveal-section">
             <About />
+          </div>
+
+          {/* 3. Image Fan Showcase */}
+          <div className="scroll-reveal-section">
+            <LazySection minHeight="400px">
+              <ImageFanShowcase />
+            </LazySection>
           </div>
 
 

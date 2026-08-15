@@ -116,31 +116,31 @@ export default function Hero() {
                 <div className="hover:text-[#FF8A00] transition-colors cursor-default">/ DIGITAL MARKETING &amp; SEO</div>
               </div>
 
-              {/* Desktop Center Portrait Container */}
-              <div className="hidden md:flex relative w-44 h-56 rounded-xl overflow-hidden bg-[#1a1a1a] border border-white/15 shadow-xl shrink-0 group">
+              {/* Desktop Center Robot Container */}
+              <div className="hidden md:flex relative w-48 h-60 rounded-xl overflow-hidden bg-[#1a1a1a] border border-[#FF8A00]/30 shadow-2xl shadow-[#FF8A00]/10 shrink-0 group">
                 <img
-                  src="/images/methmal2.png"
-                  alt="Dasun Methmal Portrait"
-                  className="h-full w-full object-cover object-[center_15%] grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500"
+                  src="/images/robot_hero.png"
+                  alt="AI Robot Avatar"
+                  className="h-full w-full object-cover object-center transition-all duration-500 group-hover:scale-105"
                 />
-                <div className="text-left p-2 writing-mode-vertical text-[10px] font-mono font-semibold tracking-widest text-[#FF8A00] bg-black/80 backdrop-blur-sm">
-                  BASED IN COLOMBO, SRI LANKA
+                <div className="text-left p-2 writing-mode-vertical text-[10px] font-mono font-semibold tracking-widest text-[#FF8A00] bg-black/85 backdrop-blur-sm border-r border-white/10">
+                  AI ENGINE &amp; CREATIVE ROBOT
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Mobile Center Portrait Container (Face Centered & Full Height Frame) */}
-          <div className="flex md:hidden mt-6 w-full max-w-2xl mx-auto rounded-2xl overflow-hidden bg-[#121212] border border-white/10 shadow-xl items-stretch">
+          {/* Mobile Center Robot Container */}
+          <div className="flex md:hidden mt-6 w-full max-w-2xl mx-auto rounded-2xl overflow-hidden bg-[#121212] border border-[#FF8A00]/30 shadow-xl items-stretch">
             <div className="flex-1 relative h-56 sm:h-64 overflow-hidden">
               <img
-                src="/images/methmal2.png"
-                alt="Dasun Methmal Portrait"
-                className="w-full h-full object-cover object-[center_15%] grayscale contrast-125"
+                src="/images/robot_hero.png"
+                alt="AI Robot Avatar"
+                className="w-full h-full object-cover object-center"
               />
             </div>
             <div className="flex items-center justify-center p-3 writing-mode-vertical text-[10px] font-mono font-semibold tracking-widest text-[#FF8A00] bg-black/90 border-l border-white/10 shrink-0">
-              BASED IN COLOMBO, SRI LANKA
+              AI ENGINE &amp; CREATIVE ROBOT
             </div>
           </div>
         </div>

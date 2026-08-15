@@ -1761,7 +1761,7 @@ textarea.form-control {
 
   /* Prevent awkward iOS text shrinking */
   p, span, li, label, input, textarea {
-    -webkit-text-size-adjust: 100%;
+   
   }
 }
 

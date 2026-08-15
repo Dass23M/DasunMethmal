@@ -15,10 +15,16 @@ import FooterMarquee from '@/components/sections/FooterMarquee';
 import ImageFanShowcase from '@/components/sections/ImageFanShowcase';
 import LandoStyleSection from '@/components/sections/LandoStyleSection';
 
+import dynamic from 'next/dynamic';
+
 import GSAPFlipSection from '@/components/sections/GSAPFlipSection';
 import EditorialShowcase from '@/components/sections/EditorialShowcase';
 import PosterDesign from '@/components/sections/PosterDesign';
-import InfiniteGallery3D from '@/components/sections/InfiniteGallery3D';
+
+const InfiniteGallery3D = dynamic(
+  () => import('@/components/sections/InfiniteGallery3D'),
+  { ssr: false }
+);
 
 /**
  * Main one-page portfolio — home page.

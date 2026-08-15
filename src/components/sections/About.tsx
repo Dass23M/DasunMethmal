@@ -267,59 +267,6 @@ export default function About() {
           </div>
         </div>
 
-        {/* ─── 3. GALLERY MOSAIC SECTION: ENGINEERING DISCIPLINE & CRAFT ─── */}
-        <div ref={galleryRef} className="mb-14 sm:mb-20">
-          <div className="w-full mb-8 sm:mb-10 border-b border-white/10 pb-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div className="flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse shrink-0" />
-                <h2 className="font-sora font-bold text-xs sm:text-sm text-white tracking-widest uppercase">
-                  ENGINEERING DISCIPLINE &amp; VISUAL CRAFT
-                </h2>
-              </div>
-              <span className="font-mono text-xs font-semibold text-[#FF6B00] tracking-widest uppercase">
-                002 / CAPABILITIES &amp; ARCHITECTURE
-              </span>
-            </div>
-          </div>
-
-          {/* Horizontal Gallery Wrapper - 3 Images Small & Centered on Mobile */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-6 w-full max-w-[340px] sm:max-w-3xl mx-auto mb-8 sm:mb-10 justify-center items-center">
-            {GALLERY_IMAGES.map((item, idx) => (
-              <div
-                key={idx}
-                className="relative aspect-[3/4] rounded-lg sm:rounded-xl overflow-hidden border border-white/15 bg-[#14151C] group"
-              >
-                <div className="gallery-item-img relative w-full h-full">
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    fill
-                    sizes="(max-width: 640px) 33vw, 20vw"
-                    className="object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
-                  />
-                </div>
-                <div className="absolute inset-x-0 bottom-0 p-1.5 sm:p-2.5 bg-gradient-to-t from-black/90 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="font-mono text-[8px] sm:text-[10px] text-[#FF6B00] block truncate text-center sm:text-left">
-                    {item.title}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Gallery Caption Text */}
-          <div className="gallery-caption max-w-4xl mx-auto text-center pt-6">
-            <p className="font-inter text-xs sm:text-sm md:text-base text-white/80 leading-relaxed max-w-3xl mx-auto">
-              When software architecture becomes a labyrinth of choices,
-              methodical engineering offers a thread to follow. Through
-              continuous practice refining Next.js APIs, component composition,
-              and SEO strategies we create rhythm where there was noise. This
-              discipline transforms complex challenges into intuitive
-              experiences you can launch, measure, and scale.
-            </p>
-          </div>
-        </div>
 
         {/* ─── 4. FOOTER SECTION WITH GIANT STAGGERED DISPLAY & CONTACT CTA ─── */}
         <div className="footer pt-16 border-t border-white/10 flex flex-col items-center justify-between text-center relative">

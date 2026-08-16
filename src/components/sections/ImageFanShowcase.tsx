@@ -98,11 +98,11 @@ export default function ImageFanShowcase() {
     <section
       ref={sectionRef}
       id="capabilities-section"
-      className="w-full bg-[#080808] text-white py-16 sm:py-24 select-none relative overflow-hidden font-inter border-y border-white/10"
+      className="w-full bg-[#080808] text-white py-16 sm:py-24 select-none relative overflow-hidden font-inter"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-white/10 pb-6 mb-12 sm:mb-16 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-6 mb-12 sm:mb-16 gap-4">
           <div>
             <div className="flex items-center gap-2.5 mb-3">
               <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00] animate-pulse" />

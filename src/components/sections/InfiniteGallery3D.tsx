@@ -178,7 +178,7 @@ export default function InfiniteGallery3D() {
   return (
     <section
       id="3d-stream-section"
-      className="w-full bg-[#080808] text-white py-12 sm:py-20 md:py-24 relative overflow-hidden border-y border-white/10 select-none min-h-[500px] sm:min-h-[650px] md:min-h-[750px]"
+      className="w-full bg-[#080808] text-white py-12 sm:py-20 md:py-24 relative overflow-hidden select-none min-h-[500px] sm:min-h-[650px] md:min-h-[750px]"
     >
       <ImageStreamHero
         images={DEFAULT_STREAM_IMAGES}

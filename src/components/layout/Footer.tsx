@@ -7,9 +7,9 @@ export default function Footer() {
     const year = new Date().getFullYear();
 
     return (
-        <footer className="site-footer w-full bg-[#f5f5f7] select-none text-black">
+        <footer className="site-footer w-full bg-[#ffffff] select-none text-black">
             {/* ─── TOP LIGHT SECTION: 3 Columns ─── */}
-            <div className="w-full py-16 md:py-24 px-6 sm:px-12 lg:px-20 border-b border-gray-200">
+            <div className="w-full py-16 md:py-24 px-6 sm:px-12 lg:px-20">
                 <div className="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 items-start">
 
                     {/* Column 1: Pages */}
@@ -148,7 +148,7 @@ export default function Footer() {
 
                     {/* Center Cutout Notch & Vector Emblem Logo */}
                     <div className="relative order-1 md:order-2 flex flex-col items-center -mt-1">
-                        <div className="w-40 sm:w-48 h-20 sm:h-24 bg-[#f5f5f7] rounded-b-[45px] sm:rounded-b-[55px] flex items-center justify-center shadow-md relative z-10 px-4">
+                        <div className="w-40 sm:w-48 h-20 sm:h-24 bg-[#ffffff] rounded-b-[45px] sm:rounded-b-[55px] flex items-center justify-center shadow-md relative z-10 px-4">
                             <svg
                                 viewBox="0 0 140 140"
                                 className="w-12 h-12 sm:w-16 sm:h-16"
@@ -202,7 +202,7 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom Copyright Row */}
-                <div className="max-w-[1440px] mx-auto px-6 mt-8 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between text-xs text-white/50 gap-4">
+                <div className="max-w-[1440px] mx-auto px-6 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-white/50 gap-4">
                     <p>© {year} Dasun Methmal. All rights reserved.</p>
                     
                     {/* Website Launches Verified Badge */}

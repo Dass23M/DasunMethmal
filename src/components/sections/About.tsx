@@ -199,11 +199,11 @@ export default function About() {
     <section
       id="about-section"
       ref={containerRef}
-      className="w-full bg-[#000000] text-white select-none relative overflow-hidden py-16 sm:py-24 border-y border-white/10 font-inter"
+      className="w-full bg-[#080808] text-white select-none relative overflow-hidden py-16 sm:py-24 font-inter"
     >
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* ─── 1. TOP EDITORIAL SVG TITLE BANNER ─── */}
-        <div className="w-full mb-10 sm:mb-14 border-b border-white/10 pb-6">
+        <div className="w-full mb-10 sm:mb-14 pb-6">
           <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-3">
             <span>{"// ABOUT METHMAL"}</span>
             <span>EST. 2024</span>
@@ -269,7 +269,7 @@ export default function About() {
 
 
         {/* ─── 4. FOOTER SECTION WITH GIANT STAGGERED DISPLAY & CONTACT CTA ─── */}
-        <div className="footer pt-16 border-t border-white/10 flex flex-col items-center justify-between text-center relative">
+        <div className="footer pt-16 flex flex-col items-center justify-between text-center relative">
           {/* Interactive Contact Button & Email Copy */}
           <div
             ref={footerCtaRef}

@@ -76,7 +76,7 @@ export default function LandoStyleSection() {
     <section
       ref={sectionRef}
       id="landostyle-section"
-      className="relative w-full min-h-[700px] md:min-h-[850px] bg-[#000000] text-white overflow-hidden select-none flex flex-col justify-between py-8 md:py-12 border-y border-white/10"
+      className="relative w-full min-h-[700px] md:min-h-[850px] bg-[#080808] text-white overflow-hidden select-none flex flex-col justify-between py-8 md:py-12"
     >
 
       {/* ─── 2. TOP HEADER NAVIGATION BAR ─── */}
@@ -184,7 +184,7 @@ export default function LandoStyleSection() {
       </div>
 
       {/* ─── 4. BOTTOM STATUS BAR ─── */}
-      <div className="relative z-30 w-full max-w-[1440px] mx-auto px-5 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-white/70 border-t border-white/10 pt-4">
+      <div className="relative z-30 w-full max-w-[1440px] mx-auto px-5 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-white/70 pt-4">
         <div className="flex items-center gap-3">
           <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse" />
           <span>BASED IN SRI LANKA / AVAILABLE FOR GLOBAL REMOTE WORK</span>

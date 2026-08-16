@@ -30,6 +30,8 @@ const InfiniteGallery3D = dynamic(
  * Main one-page portfolio — home page.
  * Assembles all sections in order, with fixed footer reveal effect.
  */
+import ScrollRevealWrapper from '@/components/ui/ScrollRevealWrapper';
+
 export default function HomePage() {
   return (
     <>
@@ -41,7 +43,7 @@ export default function HomePage() {
         {/* Sections */}
         <Hero />
 
-        <div className="below-hero-reveal">
+        <ScrollRevealWrapper>
           {/* 2. Pinned Scrub About Section */}
           <div className="scroll-reveal-section">
             <About />
@@ -132,7 +134,7 @@ export default function HomePage() {
 
           {/* Dual-band scrolling marquee before footer */}
           <FooterMarquee />
-        </div>
+        </ScrollRevealWrapper>
       </main>
 
       {/* Fixed footer at bottom of viewport */}

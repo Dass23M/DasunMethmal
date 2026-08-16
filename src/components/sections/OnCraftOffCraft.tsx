@@ -109,7 +109,7 @@ export default function OnCraftOffCraft() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[720px] lg:min-h-[800px] bg-[#F5F5F7] text-black overflow-hidden select-none py-16 lg:py-24 border-y border-black/10 flex items-center justify-center"
+      className="relative w-full min-h-[720px] lg:min-h-[800px] bg-[#ffffff] text-black overflow-hidden select-none py-16 lg:py-24 flex items-center justify-center"
     >
       {/* ─── 1. LIGHT TOPOGRAPHIC CONTOUR LINES SVG BACKGROUND ─── */}
       <div className="absolute inset-0 pointer-events-none opacity-25">

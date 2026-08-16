@@ -118,7 +118,7 @@ export default function RandomTextReveal() {
   return (
     <div
       ref={containerRef}
-      className="w-full py-16 lg:py-24 bg-[#F5F5F7] flex items-center justify-center select-none relative z-10 border-t border-b border-gray-200/60"
+      className="w-full py-16 lg:py-24 bg-[#ffffff] flex items-center justify-center select-none relative z-10"
     >
       <h3
         ref={textRef}

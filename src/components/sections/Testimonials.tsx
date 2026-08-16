@@ -73,14 +73,14 @@ export default function Testimonials() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full min-h-[400px] bg-[#F5F5F7]" />;
+    return <section className="w-full min-h-[400px] bg-[#ffffff]" />;
   }
 
   // Duplicate items array so infinite marquee wraps 100% seamlessly
   const slides = [...TESTIMONIALS_DATA, ...TESTIMONIALS_DATA];
 
   return (
-    <section id="testimonial-section" className="w-full bg-[#F5F5F7] text-black py-16 md:py-24 overflow-hidden select-none">
+    <section id="testimonial-section" className="w-full bg-[#ffffff] text-black py-16 md:py-24 overflow-hidden select-none">
       {/* ─── HEADER SECTION ─── */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 mb-8 sm:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-8">
         <div>

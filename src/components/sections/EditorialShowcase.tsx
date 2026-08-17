@@ -54,21 +54,21 @@ export default function EditorialShowcase() {
     <section
       ref={sectionRef}
       id="digital-marketing-showcase"
-      className="relative w-full min-h-[80vh] md:min-h-[90vh] bg-black text-white py-16 sm:py-24 md:py-28 px-5 sm:px-10 md:px-16 lg:px-20 select-none overflow-hidden flex items-center"
+      className="relative w-full min-h-[75vh] md:min-h-[85vh] bg-black text-white py-16 sm:py-24 md:py-28 px-5 sm:px-10 md:px-16 lg:px-20 select-none overflow-hidden flex items-center"
     >
       {/* ─── 1. FULL-BLEED GLSL SHADER BACKGROUND ─── */}
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-85">
         <ShaderAnimation />
       </div>
 
-      {/* Subtle Gradient & Vignette Overlay for High Typography Contrast */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/80 via-black/45 to-black/85 pointer-events-none" />
+      {/* Vignette Overlay for Crisp Text Contrast */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/80 via-black/40 to-black/85 pointer-events-none" />
 
-      {/* ─── 2. FULL TRANSPARENT CONTENT (NO BOX CARDS) ─── */}
+      {/* ─── 2. TRANSPARENT BALANCED CONTENT ─── */}
       <div className="relative z-20 w-full max-w-[1550px] mx-auto">
-        <div ref={contentRef} className="w-full space-y-8 sm:space-y-12">
+        <div ref={contentRef} className="w-full space-y-6 sm:space-y-8 md:space-y-10">
 
-          {/* Site-Consistent Top Header Row */}
+          {/* Header Row */}
           <div>
             <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-3">
               <span className="flex items-center gap-2 font-bold">
@@ -78,7 +78,7 @@ export default function EditorialShowcase() {
               <span>EST. 2023</span>
             </div>
 
-            {/* Giant Title matching About / Site Typography */}
+            {/* Giant Sora Headline */}
             <h2 className="font-sora font-extrabold text-3xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-white leading-none drop-shadow-2xl">
               MARKETING<span className="text-[#FF6B00]">.</span>
             </h2>
@@ -91,11 +91,11 @@ export default function EditorialShowcase() {
             </p>
           </div>
 
-          {/* Floating Metrics Strip (No Box Card) */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-white/20 max-w-4xl">
+          {/* Well-Balanced Floating Metrics (No Border Line) */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-4xl pt-2">
             {MARKETING_METRICS.map((m, idx) => (
               <div key={idx} className="flex flex-col">
-                <span className="font-sora text-3xl sm:text-5xl font-black tracking-tight text-white drop-shadow-lg">
+                <span className="font-sora text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow-lg">
                   {m.value}
                 </span>
                 <span className="font-mono text-xs sm:text-sm text-[#FF6B00] uppercase tracking-widest mt-1">
@@ -105,11 +105,11 @@ export default function EditorialShowcase() {
             ))}
           </div>
 
-          {/* Floating Action Button */}
+          {/* Precision Sized CTA Button (8px 16px 24px step spacing) */}
           <div className="pt-2">
             <Link
               href="#poster-design-section"
-              className="inline-flex items-center gap-3 bg-[#FF6B00] text-black px-8 py-4 rounded-full text-xs sm:text-sm font-mono font-bold tracking-wider uppercase transition-all duration-300 hover:bg-white hover:scale-105 shadow-2xl group"
+              className="inline-flex items-center gap-3 bg-[#FF6B00] text-black px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-3.5 rounded-full text-xs sm:text-sm font-mono font-bold tracking-wider uppercase transition-all duration-300 hover:bg-white hover:scale-105 shadow-2xl group"
             >
               <span>EXPLORE MARKETING &amp; POSTER DESIGNS</span>
               <span className="text-base transition-transform duration-300 group-hover:translate-x-1 group-hover:rotate-45">

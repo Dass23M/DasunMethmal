@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ShaderAnimation } from '@/components/ui/ShaderAnimation';
+import { LiquidMetalButton } from '@/components/ui/LiquidMetalButton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -85,17 +85,12 @@ export default function EditorialShowcase() {
             </p>
           </div>
 
-          {/* Precision Sized Responsive CTA Button */}
+          {/* Liquid Metal WebGL Shader Button */}
           <div className="pt-2">
-            <Link
+            <LiquidMetalButton
+              label="EXPLORE MARKETING & POSTER DESIGNS"
               href="#poster-design-section"
-              className="inline-flex items-center justify-center gap-2.5 sm:gap-3 bg-[#FF6B00] text-black px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-3.5 rounded-full text-xs sm:text-sm font-mono font-bold tracking-wider uppercase transition-all duration-300 hover:bg-white hover:scale-105 shadow-2xl group w-full xs:w-auto text-center"
-            >
-              <span>EXPLORE MARKETING &amp; POSTER DESIGNS</span>
-              <span className="text-base transition-transform duration-300 group-hover:translate-x-1 group-hover:rotate-45">
-                ⤵
-              </span>
-            </Link>
+            />
           </div>
 
         </div>

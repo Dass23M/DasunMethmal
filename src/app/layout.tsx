@@ -134,6 +134,12 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
 
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
+
 
 
   // ---------------------------------------------------------------------------

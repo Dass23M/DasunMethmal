@@ -20,6 +20,7 @@ import dynamic from 'next/dynamic';
 import GSAPFlipSection from '@/components/sections/GSAPFlipSection';
 import EditorialShowcase from '@/components/sections/EditorialShowcase';
 import PosterDesign from '@/components/sections/PosterDesign';
+import GithubSection from '@/components/sections/GithubSection';
 
 const InfiniteGallery3D = dynamic(
   () => import('@/components/sections/InfiniteGallery3D'),
@@ -76,6 +77,13 @@ export default function HomePage() {
           <div className="scroll-reveal-section">
             <LazySection minHeight="400px">
               <Portfolio />
+            </LazySection>
+          </div>
+
+          {/* Real-time GitHub Activity Calendar */}
+          <div className="scroll-reveal-section">
+            <LazySection minHeight="300px">
+              <GithubSection />
             </LazySection>
           </div>
 

@@ -206,7 +206,7 @@ export default function About() {
         <div className="w-full mb-10 sm:mb-14 pb-6">
           <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-3">
             <span>{"// ABOUT METHMAL"}</span>
-            <span>EST. 2024</span>
+            <span>EST. 2023</span>
           </div>
 
           <div className="relative w-full overflow-hidden">

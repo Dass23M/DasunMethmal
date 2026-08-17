@@ -178,7 +178,7 @@ export default function Hero() {
         {/* Main Giant Headline & Name Tags */}
         <div className="relative hero-perspective">
           <p className="hero-year-badge text-xs sm:text-sm absolute -top-5 left-2 sm:left-6 md:left-20 font-mono font-medium tracking-widest text-[#FF8A00]">
-            EST. 2026
+            EST. 2023
           </p>
 
           <h1 className="hero-headline z-20 text-white relative font-sora font-extrabold text-center tracking-tight sm:tracking-[-6px] md:tracking-[-12px] xl:tracking-[-0.8rem] text-3xl xs:text-4xl sm:text-6xl md:text-8xl xl:text-[9.5rem] leading-none uppercase select-none drop-shadow-2xl">

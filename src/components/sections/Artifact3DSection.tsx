@@ -411,7 +411,7 @@ export default function Artifact3DSection() {
             {/* KPI strip */}
             <div className="art-hero-kpis opacity-0 translate-y-4 mt-8 grid grid-cols-2 sm:grid-cols-4 gap-px w-full max-w-xl border border-white/[0.07] rounded-xl overflow-hidden">
               {[
-                { val: '50+', lbl: 'Projects Shipped' },
+                { val: '10+', lbl: 'Projects Shipped' },
                 { val: '3×', lbl: 'Avg. ROAS' },
                 { val: '98', lbl: 'PageSpeed Score' },
                 { val: '5⭑', lbl: 'Client Rating' },
@@ -519,9 +519,9 @@ export default function Artifact3DSection() {
             {/* inline stat strip */}
             <div className="skill-bars grid grid-cols-3 border-t border-white/[0.06] pt-6 mt-8 opacity-0 translate-y-4">
               {[
-                { val: '50+', lbl: 'Projects' },
+                { val: '10+', lbl: 'Projects' },
                 { val: '99%', lbl: 'On-time' },
-                { val: '4yr+', lbl: 'Experience' },
+                { val: '2yr+', lbl: 'Experience' },
               ].map((s) => (
                 <div key={s.lbl}>
                   <div className="font-sora font-extrabold text-[1.55rem] text-[#FF8C00] leading-none">{s.val}</div>

@@ -88,7 +88,7 @@ export default function EditorialShowcase() {
           {/* Liquid Metal WebGL Shader Button */}
           <div className="pt-2">
             <LiquidMetalButton
-              label="EXPLORE MARKETING & POSTER DESIGNS"
+              label="EXPLORE MARKETING & DESIGNS"
               href="#poster-design-section"
             />
           </div>

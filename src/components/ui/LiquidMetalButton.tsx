@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useId } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import Link from "next/link";
 
@@ -12,12 +12,11 @@ interface LiquidMetalButtonProps {
 }
 
 export function LiquidMetalButton({
-  label = "EXPLORE MARKETING & POSTER DESIGNS",
+  label = "EXPLORE MARKETING & DESIGNS",
   href,
   onClick,
   className = "",
 }: LiquidMetalButtonProps) {
-  const containerId = useId();
   const canvasRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -42,7 +41,6 @@ export function LiquidMetalButton({
     const scene = new THREE.Scene();
     const geometry = new THREE.PlaneGeometry(2, 2);
 
-    // Custom Liquid Metal Shader with Portfolio Orange (#FF6B00) & Chrome Metallic Highlights
     const vertexShader = `
       void main() {
         gl_Position = vec4(position, 1.0);
@@ -55,12 +53,9 @@ export function LiquidMetalButton({
       uniform float time;
 
       void main() {
-        vec2 st = gl_FragCoord.xy / resolution.xy;
         vec2 p = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
-        
         float t = time * 0.4;
         
-        // Metallic Liquid Waves
         for(int n = 1; n < 4; n++) {
           float i = float(n);
           p += vec2(
@@ -69,10 +64,8 @@ export function LiquidMetalButton({
           );
         }
 
-        // Calculate specular metallic sheen
         float col = 0.5 + 0.5 * sin(p.x + p.y + t);
         
-        // Brand color mapping: Liquid Gold/Orange (#FF6B00) & Silver Chrome
         vec3 darkMetal = vec3(0.08, 0.08, 0.1);
         vec3 orangeGlow = vec3(1.0, 0.42, 0.0); // #FF6B00
         vec3 metallicSpec = vec3(1.0, 0.85, 0.6);
@@ -86,7 +79,7 @@ export function LiquidMetalButton({
 
     const uniforms = {
       time: uniformsRef.current.time,
-      resolution: { value: new THREE.Vector2(200, 50) },
+      resolution: { value: new THREE.Vector2(180, 40) },
     };
 
     const material = new THREE.ShaderMaterial({
@@ -105,8 +98,8 @@ export function LiquidMetalButton({
 
     const onResize = () => {
       if (!canvasRef.current) return;
-      const width = canvasRef.current.clientWidth || 280;
-      const height = canvasRef.current.clientHeight || 48;
+      const width = canvasRef.current.clientWidth || 200;
+      const height = canvasRef.current.clientHeight || 40;
       renderer.setSize(width, height);
       uniforms.resolution.value.set(
         renderer.domElement.width,
@@ -172,55 +165,55 @@ export function LiquidMetalButton({
   };
 
   const content = (
-    <div className="relative inline-block select-none group">
+    <div className="relative inline-block select-none group max-w-full">
       {/* 3D Perspective Wrapper */}
       <div style={{ perspective: "1000px" }}>
         <div
-          className="relative transition-all duration-500 ease-out"
+          className="relative transition-all duration-300 ease-out"
           style={{
             transformStyle: "preserve-3d",
-            transform: isPressed ? "scale(0.97) translateY(1px)" : isHovered ? "scale(1.04)" : "scale(1)",
+            transform: isPressed ? "scale(0.97) translateY(1px)" : isHovered ? "scale(1.03)" : "scale(1)",
           }}
         >
-          {/* Outer Liquid Shader Ring & Shadow */}
+          {/* Outer Ring & Glow */}
           <div
-            className="rounded-full overflow-hidden p-[2px] transition-all duration-300"
+            className="rounded-full overflow-hidden p-[1.5px] transition-all duration-300"
             style={{
               boxShadow: isHovered
-                ? "0 0 25px rgba(255, 107, 0, 0.4), 0 10px 20px rgba(0, 0, 0, 0.6)"
-                : "0 0 15px rgba(255, 107, 0, 0.2), 0 5px 12px rgba(0, 0, 0, 0.4)",
+                ? "0 0 20px rgba(255, 107, 0, 0.4), 0 6px 14px rgba(0, 0, 0, 0.5)"
+                : "0 0 10px rgba(255, 107, 0, 0.2), 0 3px 8px rgba(0, 0, 0, 0.3)",
               background: "linear-gradient(135deg, #FF6B00 0%, #331400 100%)",
             }}
           >
-            {/* Inner Container with Shader */}
-            <div className="relative rounded-full overflow-hidden bg-black px-6 py-3 sm:px-8 sm:py-3.5 flex items-center justify-center gap-3 border border-white/20">
+            {/* Sleek Inner Container */}
+            <div className="relative rounded-full overflow-hidden bg-black px-4 py-2 sm:px-6 sm:py-2.5 flex items-center justify-center gap-2 border border-white/20 min-h-[40px] sm:min-h-[44px]">
               {/* WebGL Shader Layer */}
               <div
                 ref={canvasRef}
                 className="absolute inset-0 w-full h-full pointer-events-none opacity-80"
               />
 
-              {/* Dark Overlay for Text Readability */}
+              {/* Contrast Overlay */}
               <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] pointer-events-none" />
 
               {/* Text & Icon Layer */}
-              <span className="relative z-20 font-mono font-bold text-xs sm:text-sm uppercase tracking-wider text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] flex items-center gap-2">
+              <span className="relative z-20 font-mono font-bold text-[11px] sm:text-xs uppercase tracking-wider text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] flex items-center gap-2 whitespace-nowrap">
                 <span>{label}</span>
-                <span className="text-base transition-transform duration-300 group-hover:translate-x-1 group-hover:rotate-45 text-[#FF6B00]">
+                <span className="text-xs sm:text-sm transition-transform duration-300 group-hover:translate-x-1 group-hover:rotate-45 text-[#FF6B00]">
                   ⤵
                 </span>
               </span>
 
-              {/* Click Ripple Effects */}
+              {/* Click Ripple Effect */}
               {ripples.map((r) => (
                 <span
                   key={r.id}
                   className="absolute rounded-full bg-[#FF6B00]/50 pointer-events-none animate-ping"
                   style={{
-                    left: r.x - 10,
-                    top: r.y - 10,
-                    width: 20,
-                    height: 20,
+                    left: r.x - 8,
+                    top: r.y - 8,
+                    width: 16,
+                    height: 16,
                   }}
                 />
               ))}

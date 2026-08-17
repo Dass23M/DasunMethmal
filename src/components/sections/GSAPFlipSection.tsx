@@ -25,7 +25,10 @@ export default function GSAPFlipSection() {
 
   useEffect(() => {
     setMounted(true);
-    setIsMobileDevice(window.innerWidth < 768);
+    const updateMobile = () => setIsMobileDevice(window.innerWidth < 768);
+    updateMobile();
+    window.addEventListener('resize', updateMobile);
+    return () => window.removeEventListener('resize', updateMobile);
   }, []);
 
   useEffect(() => {
@@ -112,7 +115,7 @@ export default function GSAPFlipSection() {
     window.addEventListener('mousemove', updateHUD, { passive: true });
     window.addEventListener('touchmove', updateHUD, { passive: true });
 
-    // ── 3D GEOMETRIC RING BACKGROUND RENDERER (from Artifact3DSection) ──
+    // ── 3D GEOMETRIC RING BACKGROUND RENDERER ──
     (() => {
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -133,9 +136,8 @@ export default function GSAPFlipSection() {
       };
       window.addEventListener('resize', handleCanvasResize);
 
-      // Slightly smaller scale for GSAPFlipSection
-      const R = Math.min(width, height) * (isMobile ? 0.14 : 0.17);
-      const r = Math.min(width, height) * (isMobile ? 0.045 : 0.06);
+      const R = Math.min(width, height) * (isMobile ? 0.16 : 0.17);
+      const r = Math.min(width, height) * (isMobile ? 0.05 : 0.06);
       const segMajor = isMobile ? 22 : 36;
       const segMinor = isMobile ? 12 : 18;
 
@@ -216,17 +218,14 @@ export default function GSAPFlipSection() {
         ringAnimFrameId = requestAnimationFrame(renderRing);
       };
 
-      // Expose start function for the visibility trigger to use
       (containerRef as any)._startFlipLoop = () => {
         if (!isLoopActive && isRunning) {
           renderRing();
         }
       };
 
-      // Start immediately
       renderRing();
 
-      // GSAP ScrollTrigger for smooth scroll rotation
       const scrollTriggerObj = ScrollTrigger.create({
         trigger: containerRef.current,
         start: 'top bottom',
@@ -261,14 +260,14 @@ export default function GSAPFlipSection() {
         .to('.gsapflip-hero-coords', { opacity: 1, duration: 0.4 }, '-=0.2')
         .to('.gsapflip-hover-hint', { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.1');
 
-      gsap.timeline({ scrollTrigger: { trigger: '#gsapflip-section-2', start: 'top 75%' } })
+      gsap.timeline({ scrollTrigger: { trigger: '#gsapflip-section-2', start: 'top 85%' } })
         .to('#gsapflip-section-2 .sec-num', { opacity: 1, duration: 0.4 })
         .to('#gsapflip-section-2 .sec-tag', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.1')
         .to('#gsapflip-section-2 .sec-h2', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.2')
         .to('#gsapflip-section-2 .sec-body', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
         .to('#gsapflip-section-2 .stats', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.2');
 
-      gsap.timeline({ scrollTrigger: { trigger: '#gsapflip-section-3', start: 'top 75%' } })
+      gsap.timeline({ scrollTrigger: { trigger: '#gsapflip-section-3', start: 'top 85%' } })
         .to('#gsapflip-section-3 .sec-num', { opacity: 1, duration: 0.4 })
         .to('#gsapflip-section-3 .sec-tag', { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.1')
         .to('#gsapflip-section-3 .sec-h2', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.2')
@@ -301,7 +300,7 @@ export default function GSAPFlipSection() {
         },
       });
 
-      // Overlay visibility trigger — controls ring loop + canvas + HUD visibility
+      // Overlay visibility trigger
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: 'top bottom',
@@ -318,7 +317,7 @@ export default function GSAPFlipSection() {
         onEnterBack: () => {
           isSectionVisible.current = true;
           (containerRef.current as any)?._startFlipLoop?.();
-          gsap.to([canvasRef.current].filter(Boolean), { opacity: 1, duration: 0.3 });
+          gsap.to([canvasRef.current].filter(Boolean), { opacity: 0.3 });
         },
         onLeaveBack: () => {
           isSectionVisible.current = false;
@@ -383,22 +382,21 @@ export default function GSAPFlipSection() {
         }}
       />
 
-      {/* ── Responsive Top Navigation Bar ──────────────────── */}
+      {/* ── Responsive Top Navigation Bar (Clean Line-Free) ── */}
       <nav
-        className="fixed top-0 left-0 right-0 flex justify-between items-center pointer-events-none px-5 md:px-12 py-4 md:py-7"
-        style={{
-          zIndex: 100,
-          borderBottom: '1px solid rgba(255,255,255,0.04)',
-        }}
+        className="fixed top-0 left-0 right-0 flex justify-between items-center pointer-events-none px-5 md:px-12 py-4 md:py-6"
+        style={{ zIndex: 100 }}
       >
-        <span style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.65rem', letterSpacing: '0.25em', color: '#eee8de', opacity: 0.6 }}>
+        <span className="font-mono text-[0.6rem] tracking-[0.25em] text-white/40 uppercase">
+          SYSTEM :: GSAP_FLIP
         </span>
         <div
           ref={navStatusRef}
-          className="flex items-center gap-2.5"
+          className="flex items-center gap-2"
           style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.6rem', letterSpacing: '0.15em', color: '#ff4d00', opacity: 0 }}
         >
           <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#ff4d00', animation: 'gsapflip-blink 1.4s ease-in-out infinite' }} />
+          <span>ONLINE</span>
         </div>
       </nav>
 
@@ -412,7 +410,8 @@ export default function GSAPFlipSection() {
           <div key={i} className="flex items-center">
             <div style={{
               width: activeSidebar === i ? 32 : 20,
-              height: 1,
+              height: 2,
+              borderRadius: 2,
               background: activeSidebar === i ? '#ff4d00' : 'rgba(255,255,255,0.15)',
               transition: 'width 0.4s, background 0.4s',
             }} />
@@ -420,15 +419,13 @@ export default function GSAPFlipSection() {
         ))}
       </div>
 
-      {/* ── HUD Corner Decorations (Desktop & Tablet) ─────── */}
+      {/* ── HUD Corner Readout (Desktop & Tablet) ─────── */}
       <div
         ref={hudTLRef}
-        className="fixed pointer-events-none hidden sm:block"
+        className="fixed pointer-events-none hidden sm:block font-mono text-[0.58rem] tracking-[0.2em] text-orange-500/50 uppercase"
         style={{ top: '4.5rem', left: '2.5rem', zIndex: 100, opacity: 0 }}
       >
-        <svg width="32" height="32" fill="none">
-          <path d="M32 1H1v31" stroke="rgba(255,77,0,0.3)" strokeWidth="1" />
-        </svg>
+        [ 3D_MATRIX ]
       </div>
 
       <div
@@ -449,9 +446,6 @@ export default function GSAPFlipSection() {
         >
           X: +0.000<br />Y: +0.000<br />Z: +7.000
         </div>
-        <svg width="32" height="32" fill="none" style={{ transform: 'rotate(180deg)' }}>
-          <path d="M32 1H1v31" stroke="rgba(255,77,0,0.3)" strokeWidth="1" />
-        </svg>
       </div>
 
       {/* ── Scrollable Sections Container ──────────────────── */}
@@ -460,31 +454,32 @@ export default function GSAPFlipSection() {
         {/* SECTION 1 — Hero */}
         <section
           id="gsapflip-section-1"
-          className="min-h-screen mb-[30vh] md:mb-[60vh] flex flex-col justify-between px-5 sm:px-8 md:px-12 pt-24 md:pt-32 pb-12 relative"
+          className="min-h-[85vh] md:min-h-screen mb-12 sm:mb-20 md:mb-[35vh] flex flex-col justify-between px-5 sm:px-8 md:px-12 pt-20 sm:pt-24 md:pt-32 pb-10 relative"
         >
           <div className="flex flex-col items-center pt-4 md:pt-[4vh]">
+            <div className="mb-4 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-500/10 text-orange-400 text-[0.62rem] sm:text-xs font-mono tracking-[0.2em] uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+              Fullstack &amp; Web Development
+            </div>
             <h2
-              className="gsapflip-hero-title text-[clamp(2.5rem,8vw,7.5rem)] font-extrabold leading-[0.95] tracking-tight text-center uppercase"
+              className="gsapflip-hero-title text-[clamp(2.4rem,7vw,7.5rem)] font-extrabold leading-[0.98] tracking-tight text-center uppercase"
               style={{ opacity: 0, transform: 'translateY(30px)' }}
             >
-              The future<br />is <span style={{ color: '#ff4d00' }}>fracture.</span>
+              The future<br />is <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-500 to-orange-600">fracture.</span>
             </h2>
 
             <div
-              className="gsapflip-hero-meta text-center mt-6 md:mt-8"
+              className="gsapflip-hero-meta text-center mt-5 md:mt-8"
               style={{ opacity: 0, transform: 'translateY(20px)' }}
             >
-              <span style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.68rem', letterSpacing: '0.35em', textTransform: 'uppercase', color: '#ff4d00', display: 'block', marginBottom: '0.8rem' }}>
-                Fullstack &amp; Web Development
-              </span>
-              <span className="text-base sm:text-lg md:text-xl text-white/90 font-normal max-w-[38ch] md:max-w-[42ch] leading-relaxed mx-auto block">
+              <p className="text-base sm:text-lg md:text-xl text-white/85 font-normal max-w-[36ch] sm:max-w-[42ch] leading-relaxed mx-auto block">
                 Crafting modern web applications, high-converting platforms, and seamless digital solutions.
-              </span>
+              </p>
             </div>
           </div>
 
           <div
-            className="gsapflip-hover-hint absolute bottom-36 md:bottom-60 left-1/2 -translate-x-1/2 whitespace-nowrap"
+            className="gsapflip-hover-hint absolute bottom-28 md:bottom-52 left-1/2 -translate-x-1/2 whitespace-nowrap"
             style={{
               fontFamily: '"Courier New", Courier, monospace',
               fontSize: '0.58rem',
@@ -494,20 +489,20 @@ export default function GSAPFlipSection() {
               opacity: 0,
             }}
           >
-            ↑ Touch / move over surface to interact ↑
+            ↑ Touch or scroll to interact ↑
           </div>
 
-          <div className="flex justify-center items-end relative w-full">
+          <div className="flex justify-center items-end relative w-full pt-8">
             <div
-              className="gsapflip-hero-cta flex flex-col items-center gap-4 pointer-events-auto cursor-pointer"
+              className="gsapflip-hero-cta flex flex-col items-center gap-3 pointer-events-auto cursor-pointer group"
               style={{ opacity: 0, transform: 'translateY(20px)' }}
             >
-              <span style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(238,232,222,0.4)' }}>
+              <span className="font-mono text-[0.62rem] tracking-[0.25em] uppercase text-white/40 group-hover:text-orange-400 transition-colors">
                 Scroll to explore
               </span>
-              <div style={{ width: 42, height: 42, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'gsapflip-float 2.5s ease-in-out infinite' }}>
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/[0.03] hover:bg-orange-500/20 transition-all flex items-center justify-center animate-[gsapflip-float_2.5s_ease-in-out_infinite]">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                  <path d="M8 2v12M3 9l5 5 5-5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+                  <path d="M8 2v12M3 9l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
               </div>
             </div>
@@ -526,75 +521,78 @@ export default function GSAPFlipSection() {
           </div>
         </section>
 
-        {/* Separator Divider */}
-        <div className="w-full h-px bg-white/5" />
-
         {/* SECTION 2 — Architecture */}
         <section
           id="gsapflip-section-2"
-          className="min-h-screen mb-[30vh] md:mb-[60vh] grid grid-cols-1 md:grid-cols-2"
+          className="min-h-fit md:min-h-screen mb-12 sm:mb-20 md:mb-[35vh] grid grid-cols-1 md:grid-cols-2 items-center px-4 sm:px-8 md:px-12 max-w-7xl mx-auto"
         >
-          <div className="hidden md:block min-h-screen" />
-          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-16 py-16 md:py-24 border-l-0 md:border-l border-white/5 bg-black/50 md:bg-transparent">
-            <div className="sec-num" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)', marginBottom: '2rem', opacity: 0 }}>
+          <div className="hidden md:block min-h-[60vh]" />
+          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-12 py-10 sm:py-14 md:py-16 rounded-3xl bg-zinc-950/80 backdrop-blur-xl pointer-events-auto shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+            <div className="sec-num font-mono text-[0.6rem] tracking-[0.2em] text-white/30 mb-4 opacity-0">
               02 / 03
             </div>
-            <p className="sec-tag" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#ff4d00', marginBottom: '1.2rem', opacity: 0, transform: 'translateY(15px)' }}>
+            <p className="sec-tag font-mono text-xs tracking-[0.25em] uppercase text-[#ff4d00] mb-3 opacity-0" style={{ transform: 'translateY(15px)' }}>
               {"// Development Approach"}
             </p>
-            <h2 className="sec-h2 text-[clamp(2rem,4vw,3.8rem)] font-extrabold leading-[1.05] tracking-tight mb-6 text-white" style={{ opacity: 0, transform: 'translateY(25px)' }}>
+            <h2 className="sec-h2 text-[clamp(1.8rem,3.8vw,3.5rem)] font-extrabold leading-[1.08] tracking-tight mb-5 text-white opacity-0" style={{ transform: 'translateY(25px)' }}>
               Clean Code.<br />Seamless Performance.
             </h2>
-            <p className="sec-body text-base sm:text-lg leading-relaxed text-white/90 max-w-[42ch] mb-8 font-normal" style={{ opacity: 0, transform: 'translateY(15px)' }}>
+            <p className="sec-body text-sm sm:text-base md:text-lg leading-relaxed text-white/80 max-w-[42ch] mb-8 font-normal opacity-0" style={{ transform: 'translateY(15px)' }}>
               Every project is engineered for speed, responsiveness, and business growth. I combine clean Next.js architecture with modern UI interactions to turn your vision into a production-ready web application.
             </p>
-            <div className="stats grid grid-cols-3 border-t border-white/10 pt-6" style={{ opacity: 0, transform: 'translateY(15px)' }}>
-              {[{ n: '100%', l: 'Responsive' }, { n: '<1s', l: 'Fast Load' }, { n: 'SEO', l: 'Optimized' }].map((s) => (
-                <div key={s.l}>
-                  <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#ff4d00] leading-none">{s.n}</div>
-                  <div style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginTop: '0.4rem' }}>{s.l}</div>
+
+            <div className="stats grid grid-cols-3 gap-3 pt-2 opacity-0" style={{ transform: 'translateY(15px)' }}>
+              {[
+                { n: '100%', l: 'Responsive' },
+                { n: '<1s', l: 'Fast Load' },
+                { n: 'SEO', l: 'Optimized' }
+              ].map((s) => (
+                <div key={s.l} className="bg-white/[0.04] backdrop-blur-md rounded-2xl p-3 sm:p-4 text-center transition-all hover:bg-white/[0.08]">
+                  <div className="text-lg sm:text-2xl md:text-3xl font-extrabold text-[#ff4d00] leading-none">{s.n}</div>
+                  <div className="font-mono text-[0.55rem] sm:text-[0.62rem] tracking-wider uppercase text-white/70 mt-2">{s.l}</div>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Separator Divider */}
-        <div className="w-full h-px bg-white/5" />
-
         {/* SECTION 3 — Interaction */}
         <section
           id="gsapflip-section-3"
-          className="min-h-screen mb-[15vh] md:mb-[10vh] grid grid-cols-1 md:grid-cols-2"
+          className="min-h-fit md:min-h-screen mb-12 sm:mb-16 md:mb-[15vh] grid grid-cols-1 md:grid-cols-2 items-center px-4 sm:px-8 md:px-12 max-w-7xl mx-auto"
         >
-          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-16 py-16 md:py-24 border-r-0 md:border-r border-white/5 bg-black/50 md:bg-transparent">
-            <div className="sec-num" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.6rem', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)', marginBottom: '2rem', opacity: 0 }}>
+          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-12 py-10 sm:py-14 md:py-16 rounded-3xl bg-zinc-950/80 backdrop-blur-xl pointer-events-auto shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+            <div className="sec-num font-mono text-[0.6rem] tracking-[0.2em] text-white/30 mb-4 opacity-0">
               03 / 03
             </div>
-            <p className="sec-tag" style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.7rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#ff4d00', marginBottom: '1.2rem', opacity: 0, transform: 'translateY(15px)' }}>
+            <p className="sec-tag font-mono text-xs tracking-[0.25em] uppercase text-[#ff4d00] mb-3 opacity-0" style={{ transform: 'translateY(15px)' }}>
               {"// Services & Value"}
             </p>
-            <h2 className="sec-h2 text-[clamp(2rem,4vw,3.8rem)] font-extrabold leading-[1.05] tracking-tight mb-6 text-white" style={{ opacity: 0, transform: 'translateY(25px)' }}>
+            <h2 className="sec-h2 text-[clamp(1.8rem,3.8vw,3.5rem)] font-extrabold leading-[1.08] tracking-tight mb-5 text-white opacity-0" style={{ transform: 'translateY(25px)' }}>
               Custom Web Solutions.<br />Built For Growth.
             </h2>
-            <p className="sec-body text-base sm:text-lg leading-relaxed text-white/90 max-w-[42ch] mb-8 font-normal" style={{ opacity: 0, transform: 'translateY(15px)' }}>
+            <p className="sec-body text-sm sm:text-base md:text-lg leading-relaxed text-white/80 max-w-[42ch] mb-8 font-normal opacity-0" style={{ transform: 'translateY(15px)' }}>
               Whether you need a modern business website, custom web application, or high-converting landing page, I deliver scalable digital solutions crafted to attract and convert new clients.
             </p>
-            <ul className="feat-list flex flex-col border-t border-white/10" style={{ opacity: 0, transform: 'translateY(15px)' }}>
+
+            <ul className="feat-list flex flex-col gap-2.5 pt-2 opacity-0" style={{ transform: 'translateY(15px)' }}>
               {[
                 'Fullstack Web Apps · Next.js & React',
                 'Responsive & Mobile-First UI/UX Design',
                 'SEO Optimization & High Performance',
                 'Fast Turnaround & Dedicated Support',
               ].map((feat, i) => (
-                <li key={i} className="flex items-center gap-3 py-3.5 border-b border-white/10 text-sm sm:text-base text-white/90 font-medium" style={{ fontFamily: '"Courier New", Courier, monospace', letterSpacing: '0.05em' }}>
-                  <span style={{ color: '#ff4d00' }}>→</span>
-                  {feat}
+                <li
+                  key={i}
+                  className="flex items-center gap-3.5 px-4 py-3 sm:py-3.5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] transition-all text-xs sm:text-sm md:text-base text-white/90 font-medium font-mono"
+                >
+                  <span className="w-2 h-2 rounded-full bg-[#ff4d00] shadow-[0_0_8px_#ff4d00]" />
+                  <span>{feat}</span>
                 </li>
               ))}
             </ul>
           </div>
-          <div className="hidden md:block min-h-screen" />
+          <div className="hidden md:block min-h-[60vh]" />
         </section>
 
       </div>

@@ -22,12 +22,22 @@ export async function generateMetadata({ params }: Props) {
   const description = project
     ? project.subtitle || project.description1
     : 'Dasun Methmal Fullstack Developer & AI Engineer portfolio case study.';
-  const canonicalUrl = `https://dasunmethmal.com/portfolio/${params.id}`;
+  const canonicalUrl = `https://www.dasunmethmal.com/portfolio/${params.id}`;
   const image = project?.images[0] || '/images/cover_bg_2.png';
 
   return {
     title,
     description,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
     alternates: {
       canonical: canonicalUrl,
     },
@@ -60,8 +70,35 @@ export default function PortfolioSinglePage({ params }: Props) {
   const prevProject = portfolioSingles[(currentIndex - 1 + portfolioSingles.length) % portfolioSingles.length];
   const nextProject = portfolioSingles[(currentIndex + 1) % portfolioSingles.length];
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: project.title,
+    headline: project.title,
+    description: project.subtitle || project.description1,
+    image: project.images[0],
+    author: {
+      '@type': 'Person',
+      name: 'Dasun Methmal',
+      url: 'https://www.dasunmethmal.com',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Dasun Methmal',
+      url: 'https://www.dasunmethmal.com',
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://www.dasunmethmal.com/portfolio/${project.id}`,
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="site-inner bg-black text-white select-none">
         <Navbar />
 

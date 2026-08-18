@@ -21,12 +21,22 @@ export async function generateMetadata({ params }: Props) {
   const description = post
     ? `${post.title} by ${post.author}. ${post.description}`
     : 'Dasun Methmal Fullstack Developer & AI Engineer design journal.';
-  const canonicalUrl = `https://dasunmethmal.com/blog/${params.slug}`;
+  const canonicalUrl = `https://www.dasunmethmal.com/blog/${params.slug}`;
   const image = post?.heroImage || post?.image || '/images/cover_bg_2.png';
 
   return {
     title,
     description,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
     alternates: {
       canonical: canonicalUrl,
     },
@@ -66,8 +76,35 @@ export default function BlogSinglePage({ params }: Props) {
   const prevPost = postIndex > 0 ? blogPosts[postIndex - 1] : null;
   const nextPost = postIndex < blogPosts.length - 1 ? blogPosts[postIndex + 1] : null;
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description,
+    image: post.heroImage || post.image,
+    author: {
+      '@type': 'Person',
+      name: post.author || 'Dasun Methmal',
+      url: 'https://www.dasunmethmal.com',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Dasun Methmal',
+      url: 'https://www.dasunmethmal.com',
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://www.dasunmethmal.com/blog/${post.slug}`,
+    },
+    datePublished: post.date,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="site-inner">
         <Navbar />
 

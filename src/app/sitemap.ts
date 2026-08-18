@@ -3,7 +3,7 @@ import { portfolioSingles } from '@/data/portfolio';
 import { blogPosts } from '@/data/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dasunmethmal.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dasunmethmal.com';
 
   const staticPages: MetadataRoute.Sitemap = [
     {

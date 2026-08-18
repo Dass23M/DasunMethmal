@@ -84,10 +84,10 @@ export default function RevealLinksSection() {
   ];
 
   return (
-    <section id="social-reveal-links" className="w-full bg-[#080808] text-white py-16 sm:py-24 px-6 sm:px-12 lg:px-20 select-none border-t border-white/10">
+    <section id="social-reveal-links" className="w-full bg-[#080808] text-white py-16 sm:py-24 px-6 sm:px-12 lg:px-20 select-none">
       <div className="max-w-[1550px] mx-auto">
         {/* Section Header Tag */}
-        <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-8 border-b border-white/10 pb-4">
+        <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-8 pb-4">
           <span className="flex items-center gap-2 font-bold">
             <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse" />
             {"// CONNECT & SOCIAL CHANNELS"}

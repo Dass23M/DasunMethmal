@@ -42,60 +42,69 @@ export default function HomePage() {
         {/* Navigation */}
         <Navbar />
 
-        {/* Sections */}
+        {/* 1. Hero Landmark */}
         <Hero />
 
         <ScrollRevealWrapper>
-          {/* 2. Pinned Scrub About Section */}
+          {/* 2. Immediate Trust: Logo Slider (Tech Stack & Client Brands) */}
           <div className="scroll-reveal-section">
-            <About />
-          </div>
-
-          {/* 3. Image Fan Showcase */}
-          <div className="scroll-reveal-section">
-            <LazySection minHeight="400px">
-              <ImageFanShowcase />
+            <LazySection minHeight="200px">
+              <LogoSlider />
             </LazySection>
           </div>
 
-
-          {/* Lando Norris Style Banner Section */}
-          <div className="scroll-reveal-section">
-            <LazySection minHeight="300px">
-              <LandoStyleSection />
-            </LazySection>
-          </div>
-
-          {/* ON CRAFT / OFF CRAFT Section */}
-          <div className="scroll-reveal-section">
-            <LazySection minHeight="400px">
-              <OnCraftOffCraft />
-            </LazySection>
-          </div>
-
-
-
+          {/* 3. Core Proof of Work: Featured Projects Portfolio */}
           <div className="scroll-reveal-section">
             <LazySection minHeight="400px">
               <Portfolio />
             </LazySection>
           </div>
 
-          {/* Real-time GitHub Activity Calendar */}
+          {/* 4. Real-time GitHub Activity Calendar */}
           <div className="scroll-reveal-section">
             <LazySection minHeight="300px">
               <GithubSection />
             </LazySection>
           </div>
 
-          {/* Pin + Flip */}
+          {/* 5. Personal Story & Background */}
+          <div className="scroll-reveal-section">
+            <About />
+          </div>
+
+          {/* 6. ON CRAFT / OFF CRAFT Section */}
+          <div className="scroll-reveal-section">
+            <LazySection minHeight="400px">
+              <OnCraftOffCraft />
+            </LazySection>
+          </div>
+
+          {/* 7. Engineering Services & Capabilities (Pin + Flip) */}
           <div className="scroll-reveal-section">
             <GSAPFlipSection />
           </div>
 
-          {/* 3D Infinite Gallery Tunnel */}
+          {/* 8. Skills Grid */}
           <div className="scroll-reveal-section">
-            <InfiniteGallery3D />
+            <LazySection minHeight="400px">
+              <ScrollRevealGrid />
+            </LazySection>
+          </div>
+
+          {/* --- CREATIVE SHOWCASE GROUP --- */}
+
+          {/* Lando Style Banner Section */}
+          <div className="scroll-reveal-section">
+            <LazySection minHeight="300px">
+              <LandoStyleSection />
+            </LazySection>
+          </div>
+
+          {/* Image Fan Showcase */}
+          <div className="scroll-reveal-section">
+            <LazySection minHeight="400px">
+              <ImageFanShowcase />
+            </LazySection>
           </div>
 
           {/* Pinned Editorial Showcase */}
@@ -103,32 +112,31 @@ export default function HomePage() {
             <EditorialShowcase />
           </div>
 
+          {/* 3D Infinite Gallery Tunnel */}
           <div className="scroll-reveal-section">
-            <LazySection minHeight="200px">
-              <LogoSlider />
-            </LazySection>
+            <InfiniteGallery3D />
           </div>
 
+          {/* Graphic & Poster Design Showcase */}
+          <div className="scroll-reveal-section">
+            <PosterDesign />
+          </div>
+
+          {/* Typographic Text Reveal Separator */}
           <div className="scroll-reveal-section">
             <RandomTextReveal />
           </div>
 
-          <div className="scroll-reveal-section">
-            <LazySection minHeight="400px">
-              <ScrollRevealGrid />
-            </LazySection>
-          </div>
+          {/* --- VALIDATION & CONVERSION --- */}
 
+          {/* Testimonials & Recommendations */}
           <div className="scroll-reveal-section">
             <LazySection minHeight="400px">
               <Testimonials />
             </LazySection>
           </div>
 
-          <div className="scroll-reveal-section">
-            <PosterDesign />
-          </div>
-
+          {/* FAQ Section */}
           <div className="scroll-reveal-section">
             <LazySection minHeight="300px">
               <FaqSection />
@@ -142,6 +150,7 @@ export default function HomePage() {
             </LazySection>
           </div>
 
+          {/* Contact Section */}
           <div className="scroll-reveal-section">
             <LazySection minHeight="400px">
               <Contact />

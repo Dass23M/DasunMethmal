@@ -111,7 +111,7 @@ export default function LogoSlider() {
       style={{
         padding: '2.5rem 0',
         overflow: 'hidden',
-        background: 'transparent',
+        background: '#080808',
         borderTop: '1px solid rgba(255,255,255,0.07)',
         borderBottom: '1px solid rgba(255,255,255,0.07)',
         userSelect: 'none',

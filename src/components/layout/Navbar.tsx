@@ -157,8 +157,7 @@ export default function Navbar() {
         <div className="absolute left-1/2 -translate-x-1/2 z-[99]">
           <Link
             href="/"
-            className={`font-sora text-[1.7rem] font-bold no-underline transition-colors duration-300 ${scrolled ? 'text-black' : 'text-white'
-              }`}
+            className="font-sora text-[1.7rem] font-bold no-underline text-white transition-colors duration-300"
           >
             METHMAL<span className="text-[#FF8A00]">.</span>
           </Link>
@@ -186,8 +185,7 @@ export default function Navbar() {
           <a
             href="#"
             onClick={toggleMenu}
-            className={`text-[14px] px-[7px] py-[10px] block transition-colors duration-300 ${scrolled ? 'text-black' : 'text-white'
-              }`}
+            className="text-[14px] px-[7px] py-[10px] block text-white transition-colors duration-300"
           >
             Menu
           </a>
@@ -212,13 +210,11 @@ function NavLink({
 }) {
   const [hovered, setHovered] = useState(false);
 
-  const colorClass = scrolled
-    ? hovered
-      ? 'text-[#FF8A00]'
-      : 'text-black'
-    : 'text-white';
+  const colorClass = hovered || isActive
+    ? 'text-[#FF8A00]'
+    : 'text-white/90';
 
-  const underlineBg = scrolled ? 'bg-[#FF8A00]' : 'bg-white';
+  const underlineBg = 'bg-[#FF8A00]';
 
   return (
     <a

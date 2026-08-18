@@ -110,11 +110,11 @@ export default function Contact() {
     };
 
     if (!mounted) {
-        return <section className="w-full min-h-screen bg-[#ffffff]" />;
+        return <section className="w-full min-h-screen bg-[#080808]" />;
     }
 
     return (
-        <section id="contact-section" ref={sectionRef} className="w-full bg-[#ffffff] py-16 md:py-24 overflow-hidden">
+        <section id="contact-section" ref={sectionRef} className="w-full bg-[#080808] text-white py-16 md:py-24 overflow-hidden">
             <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-8 md:px-12">
 
                 {/* Main Hero Card Container with Artistic Sunset Gradient Background */}

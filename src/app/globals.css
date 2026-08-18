@@ -250,18 +250,21 @@ a:hover {
   left: 0;
   top: 0;
   margin-top: -130px;
-  background: #fff !important;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  padding-top: 5px;
-  padding-bottom: 5px;
+  background: rgba(8, 8, 8, 0.92) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .site-nav.scrolled .site-logo a {
-  color: #000;
+  color: #fff;
 }
 
 .site-nav.scrolled .nav-ul > li > a {
-  color: #000;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .site-nav.scrolled .nav-ul > li > a::after {

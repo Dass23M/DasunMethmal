@@ -103,13 +103,13 @@ export default function OnCraftOffCraft() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full h-[600px] bg-[#F6F6F2]" />;
+    return <section className="w-full h-[600px] bg-[#080808]" />;
   }
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[720px] lg:min-h-[800px] bg-[#ffffff] text-black overflow-hidden select-none py-16 lg:py-24 flex items-center justify-center"
+      className="relative w-full min-h-[720px] lg:min-h-[800px] bg-[#080808] text-white overflow-hidden select-none py-16 lg:py-24 flex items-center justify-center"
     >
       {/* ─── 1. LIGHT TOPOGRAPHIC CONTOUR LINES SVG BACKGROUND ─── */}
       <div className="absolute inset-0 pointer-events-none opacity-25">
@@ -122,7 +122,7 @@ export default function OnCraftOffCraft() {
           <path
             d="M-100,120 Q300,20 700,180 T1500,80"
             fill="none"
-            stroke="#111116"
+            stroke="rgba(255,255,255,0.2)"
             strokeWidth="1.2"
             strokeDasharray="6 6"
           />
@@ -135,7 +135,7 @@ export default function OnCraftOffCraft() {
           <path
             d="M-100,520 Q450,380 900,600 T1600,550"
             fill="none"
-            stroke="#111116"
+            stroke="rgba(255,255,255,0.2)"
             strokeWidth="1"
             opacity="0.5"
           />
@@ -146,7 +146,7 @@ export default function OnCraftOffCraft() {
             strokeWidth="1.2"
             strokeDasharray="8 6"
           />
-          <circle cx="720" cy="450" r="320" fill="none" stroke="#111116" strokeWidth="0.5" opacity="0.15" />
+          <circle cx="720" cy="450" r="320" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" opacity="0.15" />
           <circle cx="720" cy="450" r="480" fill="none" stroke="#FF6B00" strokeWidth="0.5" opacity="0.2" />
         </svg>
       </div>
@@ -179,10 +179,10 @@ export default function OnCraftOffCraft() {
           <div className="flex flex-col items-center md:items-start group">
             {/* Giant Stacked Title */}
             <div className="relative mb-4">
-              <span className="font-sora font-light text-5xl sm:text-6xl lg:text-7xl tracking-tight text-black block leading-none">
+              <span className="font-sora font-light text-5xl sm:text-6xl lg:text-7xl tracking-tight text-white block leading-none">
                 ON
               </span>
-              <span className="font-sora font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter text-black block leading-none mt-1">
+              <span className="font-sora font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter text-white block leading-none mt-1">
                 CRAFT
               </span>
 
@@ -205,14 +205,14 @@ export default function OnCraftOffCraft() {
             </div>
 
             {/* Description */}
-            <p className="font-inter text-xs sm:text-sm md:text-base text-gray-700 font-medium leading-relaxed max-w-sm mb-6">
+            <p className="font-inter text-xs sm:text-sm md:text-base text-white/75 font-medium leading-relaxed max-w-sm mb-6">
               Fullstack web development, custom Next.js applications, 3D interactive interfaces, and production architecture.
             </p>
 
             {/* Neon Orange Action Button matching reference */}
             <Link
               href="#portfolio-section"
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#FF6B00] text-black flex items-center justify-center font-bold text-xl sm:text-2xl shadow-md transition-all duration-300 hover:bg-black hover:text-[#FF6B00] hover:scale-110"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-[#FF6B00] text-black flex items-center justify-center font-bold text-xl sm:text-2xl shadow-md transition-all duration-300 hover:bg-white hover:text-black hover:scale-110"
               aria-label="View Engineering Projects"
             >
               ⤤
@@ -223,16 +223,16 @@ export default function OnCraftOffCraft() {
           <div className="flex flex-col items-center md:items-start group">
             {/* Giant Stacked Title */}
             <div className="relative mb-4">
-              <span className="font-sora font-light text-5xl sm:text-6xl lg:text-7xl tracking-tight text-black block leading-none">
+              <span className="font-sora font-light text-5xl sm:text-6xl lg:text-7xl tracking-tight text-white block leading-none">
                 OFF
               </span>
-              <span className="font-sora font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter text-black block leading-none mt-1">
+              <span className="font-sora font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter text-white block leading-none mt-1">
                 CRAFT
               </span>
             </div>
 
             {/* Description */}
-            <p className="font-inter text-xs sm:text-sm md:text-base text-gray-700 font-medium leading-relaxed max-w-sm mb-6">
+            <p className="font-inter text-xs sm:text-sm md:text-base text-white/75 font-medium leading-relaxed max-w-sm mb-6">
               Data-driven growth marketing, SEO strategies, social media campaigns, visual branding, and content creation.
             </p>
 

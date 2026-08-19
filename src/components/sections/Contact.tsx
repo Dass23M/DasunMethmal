@@ -13,10 +13,17 @@ export default function Contact() {
     const contentRef = useRef<HTMLDivElement>(null);
     const [mounted, setMounted] = useState(false);
 
-    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+        botcheck: '',
+    });
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [statusMessage, setStatusMessage] = useState('');
     const [warning, setWarning] = useState('');
 
     useEffect(() => {
@@ -99,14 +106,23 @@ export default function Contact() {
             const data = await res.json();
             if (data.ok) {
                 setSuccess(true);
+                setStatusMessage(data.message || 'Your message was sent successfully!');
+                setFormData({ name: '', email: '', subject: '', message: '', botcheck: '' });
             } else {
                 setWarning(data.message || 'Something went wrong. Please try again.');
             }
         } catch {
-            setWarning('Something went wrong. Please try again.');
+            setWarning('Network error. Please check your connection and try again.');
         } finally {
             setSubmitting(false);
         }
+    };
+
+    const handleReset = () => {
+        setSuccess(false);
+        setStatusMessage('');
+        setWarning('');
+        setErrors({});
     };
 
     if (!mounted) {
@@ -165,20 +181,34 @@ export default function Contact() {
                                 {!success ? (
                                     <form onSubmit={handleSubmit} noValidate className="space-y-4">
 
+                                        {/* Honeypot Anti-Spam Field */}
+                                        <input
+                                            type="text"
+                                            name="botcheck"
+                                            value={formData.botcheck}
+                                            onChange={(e) => handleInput('botcheck', e.target.value)}
+                                            style={{ display: 'none' }}
+                                            tabIndex={-1}
+                                            autoComplete="off"
+                                        />
+
                                         {/* Name Input */}
                                         <div>
-                                            <label htmlFor="name" className="block text-xs font-semibold text-gray-700 mb-2">
-                                                Name
+                                            <label htmlFor="contact-name" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                                                Name*
                                             </label>
                                             <input
                                                 type="text"
-                                                id="name"
+                                                id="contact-name"
                                                 name="name"
                                                 autoComplete="name"
                                                 placeholder="Emily Johnson"
                                                 value={formData.name}
                                                 onChange={(e) => handleInput('name', e.target.value)}
-                                                className="w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all"
+                                                className={`w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all ${
+                                                    errors.name ? 'ring-2 ring-red-500 bg-red-50/20' : 'focus:ring-black/20'
+                                                }`}
+                                                aria-invalid={!!errors.name}
                                             />
                                             {errors.name && (
                                                 <span className="text-[11px] text-red-500 mt-1 block font-medium">
@@ -189,18 +219,21 @@ export default function Contact() {
 
                                         {/* Email Input */}
                                         <div>
-                                            <label htmlFor="email" className="block text-xs font-semibold text-gray-700 mb-2">
+                                            <label htmlFor="contact-email" className="block text-xs font-semibold text-gray-700 mb-1.5">
                                                 E-mail*
                                             </label>
                                             <input
                                                 type="email"
-                                                id="email"
+                                                id="contact-email"
                                                 name="email"
                                                 autoComplete="email"
-                                                placeholder="emilyjohnson@gamil.com"
+                                                placeholder="emilyjohnson@gmail.com"
                                                 value={formData.email}
                                                 onChange={(e) => handleInput('email', e.target.value)}
-                                                className="w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all"
+                                                className={`w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all ${
+                                                    errors.email ? 'ring-2 ring-red-500 bg-red-50/20' : 'focus:ring-black/20'
+                                                }`}
+                                                aria-invalid={!!errors.email}
                                             />
                                             {errors.email && (
                                                 <span className="text-[11px] text-red-500 mt-1 block font-medium">
@@ -209,20 +242,40 @@ export default function Contact() {
                                             )}
                                         </div>
 
+                                        {/* Subject Input (Optional) */}
+                                        <div>
+                                            <label htmlFor="contact-subject" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                                                Subject <span className="text-gray-400 font-normal">(Optional)</span>
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="contact-subject"
+                                                name="subject"
+                                                autoComplete="off"
+                                                placeholder="Project Inquiry / Collaboration"
+                                                value={formData.subject}
+                                                onChange={(e) => handleInput('subject', e.target.value)}
+                                                className="w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all"
+                                            />
+                                        </div>
+
                                         {/* Message Input */}
                                         <div>
-                                            <label htmlFor="message" className="block text-xs font-semibold text-gray-700 mb-2">
+                                            <label htmlFor="contact-message" className="block text-xs font-semibold text-gray-700 mb-1.5">
                                                 Message*
                                             </label>
                                             <textarea
-                                                id="message"
+                                                id="contact-message"
                                                 name="message"
                                                 autoComplete="off"
                                                 rows={3}
-                                                placeholder="Your message"
+                                                placeholder="Tell me about your project or inquiry..."
                                                 value={formData.message}
                                                 onChange={(e) => handleInput('message', e.target.value)}
-                                                className="w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all resize-none h-[95px]"
+                                                className={`w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all resize-none h-[95px] ${
+                                                    errors.message ? 'ring-2 ring-red-500 bg-red-50/20' : 'focus:ring-black/20'
+                                                }`}
+                                                aria-invalid={!!errors.message}
                                             />
                                             {errors.message && (
                                                 <span className="text-[11px] text-red-500 mt-1 block font-medium">
@@ -236,23 +289,48 @@ export default function Contact() {
                                             <button
                                                 type="submit"
                                                 disabled={submitting}
-                                                className="w-full bg-black text-white font-bold tracking-widest text-xs uppercase py-3.5 rounded-xl hover:bg-black/85 hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md"
+                                                className="w-full bg-black text-white font-bold tracking-widest text-xs uppercase py-3.5 rounded-xl hover:bg-black/85 hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                                             >
-                                                {submitting ? 'SENDING...' : 'YOUR MESSAGE'}
+                                                {submitting ? (
+                                                    <>
+                                                        <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                        </svg>
+                                                        <span>SENDING...</span>
+                                                    </>
+                                                ) : (
+                                                    <span>SEND MESSAGE</span>
+                                                )}
                                             </button>
                                         </div>
 
                                         {warning && (
-                                            <p className="text-xs text-red-600 text-center mt-2 font-medium">
+                                            <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-xl text-xs text-center font-medium">
                                                 {warning}
-                                            </p>
+                                            </div>
                                         )}
                                     </form>
                                 ) : (
-                                    <div className="py-8 text-center">
-                                        <p className="font-bold text-green-600 text-sm">
-                                            Your message was sent successfully!
-                                        </p>
+                                    <div className="py-8 px-4 text-center flex flex-col items-center space-y-4">
+                                        <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center shadow-inner">
+                                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-sora font-bold text-lg text-black mb-1">Thank You!</h4>
+                                            <p className="text-xs text-gray-600 max-w-[280px] leading-relaxed">
+                                                {statusMessage || 'Your message has been sent successfully. I will get back to you soon!'}
+                                            </p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={handleReset}
+                                            className="mt-2 text-xs font-semibold text-black underline underline-offset-4 hover:opacity-70 transition-opacity"
+                                        >
+                                            Send another message
+                                        </button>
                                     </div>
                                 )}
 

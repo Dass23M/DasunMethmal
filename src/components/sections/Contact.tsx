@@ -97,6 +97,40 @@ export default function Contact() {
         setSubmitting(true);
         setWarning('');
 
+        // 1. Direct Web3Forms submission from browser (Bypasses server proxies & Cloudflare WAF)
+        const web3Key = (process.env.NEXT_PUBLIC_WEB3FORMS_KEY || '').trim();
+        if (web3Key && !web3Key.includes('your_') && web3Key.length > 10) {
+            try {
+                const res = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Accept: 'application/json',
+                    },
+                    body: JSON.stringify({
+                        access_key: web3Key,
+                        name: formData.name.trim(),
+                        email: formData.email.trim(),
+                        subject: formData.subject.trim() || `New Portfolio Message from ${formData.name.trim()}`,
+                        message: formData.message.trim(),
+                        from_name: 'Portfolio Contact Form',
+                    }),
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    setSuccess(true);
+                    setStatusMessage(data.message || 'Your message was sent successfully!');
+                    setFormData({ name: '', email: '', subject: '', message: '', botcheck: '' });
+                    setSubmitting(false);
+                    return;
+                }
+            } catch (err) {
+                console.warn('Direct Web3Forms submission error, attempting server endpoint fallback...', err);
+            }
+        }
+
+        // 2. Fallback to Server Route (/api/contact)
         try {
             const res = await fetch('/api/contact', {
                 method: 'POST',

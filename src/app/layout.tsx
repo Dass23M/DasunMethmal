@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Sora, Inter, JetBrains_Mono } from 'next/font/google';
+import { Sora, Inter } from 'next/font/google';
 import './globals.css';
 
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
@@ -7,6 +7,8 @@ import MobileMenu from '@/components/layout/MobileMenu';
 import Loader from '@/components/layout/Loader';
 import GSAPSectionAnimator from '@/components/providers/GSAPSectionAnimator';
 import LenisBackgroundCanvas from '@/components/ui/LenisBackgroundCanvas';
+import CustomCursor from '@/components/ui/CustomCursor';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
 // -----------------------------------------------------------------------------
 // Fonts
@@ -24,12 +26,8 @@ const inter = Inter({
   display: 'swap',
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-mono',
-  display: 'swap',
-});
+// We load JetBrains Mono via <link> tags in the document head 
+// to prevent Next.js build timeouts (AbortError) when fetching from Google Fonts API.
 
 // -----------------------------------------------------------------------------
 // Site configuration
@@ -297,8 +295,6 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
 
-
-
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
@@ -309,23 +305,29 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+        className={`${sora.variable} ${inter.variable} bg-white dark:bg-black text-black dark:text-white transition-colors duration-300 font-sans`}
+        style={{ '--font-mono': '"JetBrains Mono", monospace' } as React.CSSProperties}
       >
-        <SmoothScrollProvider>
-          <LenisBackgroundCanvas />
-          <GSAPSectionAnimator>
-            {/* Page loader */}
-            <Loader />
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <SmoothScrollProvider>
+            <LenisBackgroundCanvas />
+            <GSAPSectionAnimator>
+              {/* Custom Interactive Cursor */}
+              <CustomCursor />
 
-            {/* Mobile slide-out menu */}
-            <MobileMenu />
+              {/* Page loader */}
+              <Loader />
 
-            {/* Main site wrapper */}
-            <div className="unslate_co--site-wrap">
-              {children}
-            </div>
-          </GSAPSectionAnimator>
-        </SmoothScrollProvider>
+              {/* Mobile slide-out menu */}
+              <MobileMenu />
+
+              {/* Main site wrapper */}
+              <div className="unslate_co--site-wrap">
+                {children}
+              </div>
+            </GSAPSectionAnimator>
+          </SmoothScrollProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

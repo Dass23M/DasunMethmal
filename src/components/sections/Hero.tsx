@@ -250,13 +250,13 @@ export default function Hero() {
           <a
             href="#contact-section"
             onClick={handleSmoothScroll('#contact-section')}
-            className="inline-flex items-center justify-center gap-3 bg-[#FF8A00] hover:bg-[#FF8A00]/90 text-black font-sora font-bold text-sm sm:text-base px-7 sm:px-8 py-3.5 sm:py-4 rounded-full transition-all transform hover:scale-105 shadow-xl shadow-[#FF8A00]/25 w-full sm:w-auto"
+            className="inline-flex items-center justify-center gap-2 bg-[#FF8A00] hover:bg-[#FF8A00]/90 text-black font-sora font-bold text-sm px-6 py-2 rounded-full transition-all transform hover:scale-105 shadow-xl shadow-[#FF8A00]/25 w-auto"
           >
             Book a Call
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"

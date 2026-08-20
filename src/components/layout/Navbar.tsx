@@ -1,20 +1,38 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 /**
  * Site navigation bar matching Unfold template layout.
- * Styled entirely with Tailwind CSS utility classes.
+ * Uses framer-motion to hide on scroll down and show on scroll up.
  */
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [awake, setAwake] = useState(false);
-  const [sleep, setSleep] = useState(false);
   const [activeSection, setActiveSection] = useState('home-section');
-  const lastScrollTop = useRef(0);
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  
+  const { scrollY } = useScroll();
 
-  const scrollTicking = useRef(false);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    
+    // Check if we have scrolled past a certain point to apply the solid background
+    if (latest > 50) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+
+    // Hide navbar on scroll down, show on scroll up (only after scrolling past 150px)
+    if (latest > 150 && latest > previous) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
 
   useEffect(() => {
     const sections = [
@@ -50,44 +68,6 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  const handleScroll = useCallback(() => {
-    if (!scrollTicking.current) {
-      scrollTicking.current = true;
-      requestAnimationFrame(() => {
-        const st = window.scrollY;
-
-        if (st > 150) {
-          setScrolled(true);
-        } else {
-          setScrolled(false);
-          setAwake(false);
-          setSleep(false);
-        }
-
-        if (st > 350) {
-          if (st > lastScrollTop.current) {
-            setAwake(false);
-            setSleep(true);
-          } else {
-            setAwake(true);
-            setSleep(false);
-          }
-        } else {
-          setAwake(false);
-          setSleep(true);
-        }
-
-        lastScrollTop.current = st;
-        scrollTicking.current = false;
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-
   const toggleMenu = (e: React.MouseEvent) => {
     e.preventDefault();
     document.body.classList.toggle('offcanvas');
@@ -110,15 +90,6 @@ export default function Navbar() {
     }
   };
 
-  const navClass = [
-    'site-nav',
-    scrolled ? 'scrolled' : '',
-    awake ? 'awake' : '',
-    sleep ? 'sleep' : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
-
   const leftLinks = [
     { label: 'Home', id: 'home-section' },
     { label: 'Portfolio', id: 'portfolio-section' },
@@ -134,7 +105,20 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className={navClass} aria-label="Main navigation">
+    <motion.nav 
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: "-100%" }
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
+      className={`fixed top-0 left-0 right-0 z-[1002] transition-colors duration-300 py-[20px] ${
+        scrolled 
+          ? 'bg-white/90 dark:bg-[#080808]/90 backdrop-blur-md border-b border-black/10 dark:border-white/10 shadow-xl' 
+          : 'bg-transparent py-[30px]'
+      }`}
+      aria-label="Main navigation"
+    >
       <div className="w-full max-w-[1140px] mx-auto px-[15px] relative flex items-center justify-between">
         {/* Left Menu Items (Home, Portfolio, About, Services) */}
         <div className="flex-1 hidden lg:flex">
@@ -145,7 +129,6 @@ export default function Navbar() {
                   label={item.label}
                   onClick={(e) => scrollToSection(e, item.id)}
                   href={`#${item.id}`}
-                  scrolled={scrolled}
                   isActive={activeSection === item.id}
                 />
               </li>
@@ -157,14 +140,14 @@ export default function Navbar() {
         <div className="absolute left-1/2 -translate-x-1/2 z-[99]">
           <Link
             href="/"
-            className="font-sora text-[1.7rem] font-bold no-underline text-white transition-colors duration-300"
+            className="font-sora text-[1.7rem] font-bold no-underline text-black dark:text-white transition-colors duration-300"
           >
             METHMAL<span className="text-[#FF8A00]">.</span>
           </Link>
         </div>
 
         {/* Right Menu Items (Skills, Testimonial, Journal, Contact) */}
-        <div className="flex-1 hidden lg:flex justify-end">
+        <div className="flex-1 hidden lg:flex justify-end items-center gap-[15px]">
           <ul className="list-none p-0 m-0 flex gap-[15px]">
             {rightLinks.map((item) => (
               <li key={item.id}>
@@ -172,26 +155,30 @@ export default function Navbar() {
                   label={item.label}
                   onClick={(e) => scrollToSection(e, item.id)}
                   href={`#${item.id}`}
-                  scrolled={scrolled}
                   isActive={activeSection === item.id}
                 />
               </li>
             ))}
           </ul>
+          
+          <div className="ml-4">
+            <ThemeToggle />
+          </div>
         </div>
 
-        {/* Mobile menu toggle */}
-        <div className="block lg:hidden">
+        {/* Mobile menu toggle & Theme Toggle */}
+        <div className="flex lg:hidden items-center gap-4">
+          <ThemeToggle />
           <a
             href="#"
             onClick={toggleMenu}
-            className="text-[14px] px-[7px] py-[10px] block text-white transition-colors duration-300"
+            className="text-[14px] px-[7px] py-[10px] block text-black dark:text-white transition-colors duration-300"
           >
             Menu
           </a>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }
 
@@ -199,20 +186,18 @@ function NavLink({
   label,
   href,
   onClick,
-  scrolled,
   isActive,
 }: {
   label: string;
   href: string;
   onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
-  scrolled: boolean;
   isActive: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
 
   const colorClass = hovered || isActive
     ? 'text-[#FF8A00]'
-    : 'text-white/90';
+    : 'text-black/80 dark:text-white/90';
 
   const underlineBg = 'bg-[#FF8A00]';
 

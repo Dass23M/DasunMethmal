@@ -167,7 +167,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile menu toggle & Theme Toggle */}
-        <div className="flex lg:hidden items-center gap-3">
+        <div className="flex lg:hidden items-center gap-3 ml-auto">
           <a
             href="#"
             onClick={toggleMenu}

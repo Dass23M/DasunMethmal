@@ -200,7 +200,7 @@ export default function Loader() {
     <div
       ref={overlayRef}
       id="site-preloader"
-      className="fixed inset-0 z-[9999] bg-[#000000] text-white flex flex-col items-center justify-center overflow-hidden select-none font-sora"
+      className="fixed inset-0 z-[9999] bg-[#000000] text-black dark:text-white flex flex-col items-center justify-center overflow-hidden select-none font-sora"
     >
       {/* Ambient Gold Radial Glow */}
       <div className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center">
@@ -217,7 +217,7 @@ export default function Loader() {
         {/* Minimalist Name Only */}
         <div
           ref={nameRef}
-          className="font-sora font-black text-2xl sm:text-3xl tracking-[0.3em] uppercase text-white mt-4 drop-shadow-md"
+          className="font-sora font-black text-2xl sm:text-3xl tracking-[0.3em] uppercase text-black dark:text-white mt-4 drop-shadow-md"
         >
           Methmal
         </div>

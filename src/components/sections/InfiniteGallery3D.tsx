@@ -123,7 +123,7 @@ export function ImageStreamHero({
               return (
                 <div
                   key={`${name}-${i}`}
-                  className={cn(card, "absolute overflow-hidden shadow-2xl border border-white/15 bg-[#121212]")}
+                  className={cn(card, "absolute overflow-hidden shadow-2xl border border-black/15 dark:border-white/15 bg-white dark:bg-[#121212]")}
                   style={{
                     left: "50%",
                     top: `${axis}%`,
@@ -178,7 +178,7 @@ export default function InfiniteGallery3D() {
   return (
     <section
       id="3d-stream-section"
-      className="w-full bg-[#080808] text-white py-12 sm:py-20 md:py-24 relative overflow-hidden select-none min-h-[500px] sm:min-h-[650px] md:min-h-[750px]"
+      className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white py-12 sm:py-20 md:py-24 relative overflow-hidden select-none min-h-[500px] sm:min-h-[650px] md:min-h-[750px]"
     >
       <ImageStreamHero
         images={DEFAULT_STREAM_IMAGES}
@@ -189,16 +189,16 @@ export default function InfiniteGallery3D() {
       >
         {/* Header Badge & Title Overlay - Responsive Scaling */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center pt-6 sm:pt-8">
-          <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white/5 border border-white/10 font-mono text-[10px] sm:text-xs text-[#FF8A00] tracking-widest uppercase mb-3 sm:mb-4 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white/5 border border-black/10 dark:border-white/10 font-mono text-[10px] sm:text-xs text-[#FF8A00] tracking-widest uppercase mb-3 sm:mb-4 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse" />
             <span>003 // 3D CORRIDOR SHOWCASE</span>
           </div>
 
-          <h2 className="font-sora font-extrabold text-2xl xs:text-3xl sm:text-5xl md:text-6xl text-white uppercase tracking-tight leading-tight sm:leading-none drop-shadow-2xl">
+          <h2 className="font-sora font-extrabold text-2xl xs:text-3xl sm:text-5xl md:text-6xl text-black dark:text-white uppercase tracking-tight leading-tight sm:leading-none drop-shadow-2xl">
             INFINITE CREATIVE <span className="text-[#FF8A00]">STREAM.</span>
           </h2>
 
-          <p className="font-inter text-xs sm:text-sm md:text-base text-white/70 max-w-xl mx-auto mt-3 sm:mt-4 leading-relaxed font-light px-2">
+          <p className="font-inter text-xs sm:text-sm md:text-base text-black/70 dark:text-white/70 max-w-xl mx-auto mt-3 sm:mt-4 leading-relaxed font-light px-2">
             An immersive 3D perspective corridor streaming software architecture, visual designs, and growth campaigns continuously toward the viewer.
           </p>
         </div>

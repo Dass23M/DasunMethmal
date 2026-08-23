@@ -44,10 +44,10 @@ export default function MobileMenu() {
     <nav className="site-mobile-menu bg-white/95 dark:bg-[#0d0d0d]/95 text-black dark:text-white" aria-label="Mobile navigation">
       <div className="close-wrap">
         <a href="#" onClick={closeMenu} aria-label="Close mobile navigation menu">
-          <span className="close-label text-black/80 dark:text-white/80 hover:text-[#FF8A00] transition-colors text-[14px] font-medium">Close</span>
+          <span className="close-label text-black/80 dark:text-white/80 dark:text-white/80 hover:text-[#FF8A00] transition-colors text-[14px] font-medium">Close</span>
           <div className="close-times">
-            <span className="bar1 bg-black dark:bg-white" />
-            <span className="bar2 bg-black dark:bg-white" />
+            <span className="bar1 bg-gray-50 dark:bg-black dark:bg-white" />
+            <span className="bar2 bg-gray-50 dark:bg-black dark:bg-white" />
           </div>
         </a>
       </div>
@@ -82,6 +82,11 @@ export default function MobileMenu() {
           </a>
         </li>
         <li>
+          <a href="#blog-section" onClick={(e) => handleSectionClick(e, 'blog-section')}>
+            Blog
+          </a>
+        </li>
+        <li>
           <a href="#poster-design-section" onClick={(e) => handleSectionClick(e, 'poster-design-section')}>
             Poster Design
           </a>
@@ -89,6 +94,11 @@ export default function MobileMenu() {
         <li>
           <a href="#contact-section" onClick={(e) => handleSectionClick(e, 'contact-section')}>
             Contact
+          </a>
+        </li>
+        <li className="mt-6">
+          <a href="/Dasun Methmal CV.pdf" download target="_blank" rel="noopener noreferrer" className="!text-[#FF8A00] !font-bold">
+            Download CV
           </a>
         </li>
       </ul>

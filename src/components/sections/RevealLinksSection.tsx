@@ -21,7 +21,7 @@ const FlipLink = ({ label, handle, href, icon }: FlipLinkProps) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex items-center justify-between w-full py-4 sm:py-6 border-b border-white/10 text-white hover:text-[#FF6B00] transition-colors duration-300 select-none"
+      className="group relative flex items-center justify-between w-full py-4 sm:py-6 border-b border-black/10 dark:border-white/10 text-black dark:text-white hover:text-[#FF6B00] transition-colors duration-300 select-none"
     >
       {/* Left side: Icon Badge + Giant Text */}
       <div className="flex items-center gap-4 sm:gap-8 overflow-hidden">
@@ -32,7 +32,7 @@ const FlipLink = ({ label, handle, href, icon }: FlipLinkProps) => {
             hovered: { scale: 1.1, backgroundColor: "#FF6B00", color: "#000000" },
           }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="w-11 h-11 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center flex-shrink-0 border border-white/15 shadow-md"
+          className="w-11 h-11 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center flex-shrink-0 border border-black/15 dark:border-white/15 shadow-md"
         >
           {icon}
         </motion.div>
@@ -84,7 +84,7 @@ const FlipLink = ({ label, handle, href, icon }: FlipLinkProps) => {
       </div>
 
       {/* Right side: Handle & Animated Arrow Badge */}
-      <div className="hidden sm:flex items-center gap-3 font-mono text-xs sm:text-sm text-white/50 group-hover:text-white transition-colors duration-300">
+      <div className="hidden sm:flex items-center gap-3 font-mono text-xs sm:text-sm text-black/50 dark:text-white/50 group-hover:text-black dark:text-white transition-colors duration-300">
         <span>{handle}</span>
         <motion.span
           variants={{
@@ -92,7 +92,7 @@ const FlipLink = ({ label, handle, href, icon }: FlipLinkProps) => {
             hovered: { x: 4, y: -4 },
           }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="w-8 h-8 rounded-full bg-white/5 border border-white/10 group-hover:bg-[#FF6B00] group-hover:border-[#FF6B00] group-hover:text-black flex items-center justify-center text-sm font-bold transition-colors duration-300"
+          className="w-8 h-8 rounded-full bg-white/5 border border-black/10 dark:border-white/10 group-hover:bg-[#FF6B00] group-hover:border-[#FF6B00] group-hover:text-black flex items-center justify-center text-sm font-bold transition-colors duration-300"
         >
           ↗
         </motion.span>
@@ -160,7 +160,7 @@ export default function RevealLinksSection() {
   ];
 
   return (
-    <section id="social-reveal-links" className="w-full bg-[#080808] text-white py-16 sm:py-24 px-6 sm:px-12 lg:px-20 select-none">
+    <section id="social-reveal-links" className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white py-16 sm:py-24 px-6 sm:px-12 lg:px-20 select-none">
       <div className="max-w-[1550px] mx-auto">
         {/* Section Header Tag */}
         <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-8 pb-4">

@@ -337,14 +337,14 @@ export default function GSAPFlipSection() {
     };
   }, [mounted]);
 
-  if (!mounted) return <section className="w-full h-screen" style={{ background: '#080808' }} />;
+  if (!mounted) return <section className="w-full h-screen bg-gray-50 dark:bg-[#080808]" />;
 
   return (
     <div
       ref={containerRef}
       id="services-section"
-      className="relative w-full overflow-hidden"
-      style={{ background: '#080808', color: '#eee8de', fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
+      className="relative w-full overflow-hidden bg-gray-50 dark:bg-[#080808] text-black dark:text-[#eee8de]"
+      style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
     >
       {/* ── 3D Ring Canvas Background (fixed to viewport) ───── */}
       <canvas
@@ -387,7 +387,7 @@ export default function GSAPFlipSection() {
         className="fixed top-0 left-0 right-0 flex justify-between items-center pointer-events-none px-5 md:px-12 py-4 md:py-6"
         style={{ zIndex: 100 }}
       >
-        <span className="font-mono text-[0.6rem] tracking-[0.25em] text-white/40 uppercase">
+        <span className="font-mono text-[0.6rem] tracking-[0.25em] text-black/40 dark:text-white/40 uppercase">
           SYSTEM :: GSAP_FLIP
         </span>
         <div
@@ -472,7 +472,7 @@ export default function GSAPFlipSection() {
               className="gsapflip-hero-meta text-center mt-5 md:mt-8"
               style={{ opacity: 0, transform: 'translateY(20px)' }}
             >
-              <p className="text-base sm:text-lg md:text-xl text-white/85 font-normal max-w-[36ch] sm:max-w-[42ch] leading-relaxed mx-auto block">
+              <p className="text-base sm:text-lg md:text-xl text-black dark:text-white/85 font-normal max-w-[36ch] sm:max-w-[42ch] leading-relaxed mx-auto block">
                 Crafting modern web applications, high-converting platforms, and seamless digital solutions.
               </p>
             </div>
@@ -497,7 +497,7 @@ export default function GSAPFlipSection() {
               className="gsapflip-hero-cta flex flex-col items-center gap-3 pointer-events-auto cursor-pointer group"
               style={{ opacity: 0, transform: 'translateY(20px)' }}
             >
-              <span className="font-mono text-[0.62rem] tracking-[0.25em] uppercase text-white/40 group-hover:text-orange-400 transition-colors">
+              <span className="font-mono text-[0.62rem] tracking-[0.25em] uppercase text-black/40 dark:text-white/40 group-hover:text-orange-400 transition-colors">
                 Scroll to explore
               </span>
               <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/[0.03] hover:bg-orange-500/20 transition-all flex items-center justify-center animate-[gsapflip-float_2.5s_ease-in-out_infinite]">
@@ -527,17 +527,17 @@ export default function GSAPFlipSection() {
           className="min-h-fit md:min-h-screen mb-12 sm:mb-20 md:mb-[35vh] grid grid-cols-1 md:grid-cols-2 items-center px-4 sm:px-8 md:px-12 max-w-7xl mx-auto"
         >
           <div className="hidden md:block min-h-[60vh]" />
-          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-12 py-10 sm:py-14 md:py-16 rounded-3xl bg-zinc-950/80 backdrop-blur-xl pointer-events-auto shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
-            <div className="sec-num font-mono text-[0.6rem] tracking-[0.2em] text-white/30 mb-4 opacity-0">
+          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-12 py-10 sm:py-14 md:py-16 rounded-3xl bg-white/90 dark:bg-zinc-950/80 backdrop-blur-xl pointer-events-auto shadow-xl dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+            <div className="sec-num font-mono text-[0.6rem] tracking-[0.2em] text-black dark:text-white/30 mb-4 opacity-0">
               02 / 03
             </div>
             <p className="sec-tag font-mono text-xs tracking-[0.25em] uppercase text-[#ff4d00] mb-3 opacity-0" style={{ transform: 'translateY(15px)' }}>
               {"// Development Approach"}
             </p>
-            <h2 className="sec-h2 text-[clamp(1.8rem,3.8vw,3.5rem)] font-extrabold leading-[1.08] tracking-tight mb-5 text-white opacity-0" style={{ transform: 'translateY(25px)' }}>
+            <h2 className="sec-h2 text-[clamp(1.8rem,3.8vw,3.5rem)] font-extrabold leading-[1.08] tracking-tight mb-5 text-black dark:text-white opacity-0" style={{ transform: 'translateY(25px)' }}>
               Clean Code.<br />Seamless Performance.
             </h2>
-            <p className="sec-body text-sm sm:text-base md:text-lg leading-relaxed text-white/80 max-w-[42ch] mb-8 font-normal opacity-0" style={{ transform: 'translateY(15px)' }}>
+            <p className="sec-body text-sm sm:text-base md:text-lg leading-relaxed text-black/80 dark:text-white/80 dark:text-white/80 max-w-[42ch] mb-8 font-normal opacity-0" style={{ transform: 'translateY(15px)' }}>
               Every project is engineered for speed, responsiveness, and business growth. I combine clean Next.js architecture with modern UI interactions to turn your vision into a production-ready web application.
             </p>
 
@@ -547,9 +547,9 @@ export default function GSAPFlipSection() {
                 { n: '<1s', l: 'Fast Load' },
                 { n: 'SEO', l: 'Optimized' }
               ].map((s) => (
-                <div key={s.l} className="bg-white/[0.04] backdrop-blur-md rounded-2xl p-3 sm:p-4 text-center transition-all hover:bg-white/[0.08]">
+                <div key={s.l} className="bg-black/5 dark:bg-white/[0.04] backdrop-blur-md rounded-2xl p-3 sm:p-4 text-center transition-all hover:bg-black/10 dark:hover:bg-white/[0.08]">
                   <div className="text-lg sm:text-2xl md:text-3xl font-extrabold text-[#ff4d00] leading-none">{s.n}</div>
-                  <div className="font-mono text-[0.55rem] sm:text-[0.62rem] tracking-wider uppercase text-white/70 mt-2">{s.l}</div>
+                  <div className="font-mono text-[0.55rem] sm:text-[0.62rem] tracking-wider uppercase text-black/70 dark:text-white/70 mt-2">{s.l}</div>
                 </div>
               ))}
             </div>
@@ -561,17 +561,17 @@ export default function GSAPFlipSection() {
           id="gsapflip-section-3"
           className="min-h-fit md:min-h-screen mb-12 sm:mb-16 md:mb-[15vh] grid grid-cols-1 md:grid-cols-2 items-center px-4 sm:px-8 md:px-12 max-w-7xl mx-auto"
         >
-          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-12 py-10 sm:py-14 md:py-16 rounded-3xl bg-zinc-950/80 backdrop-blur-xl pointer-events-auto shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
-            <div className="sec-num font-mono text-[0.6rem] tracking-[0.2em] text-white/30 mb-4 opacity-0">
+          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-12 py-10 sm:py-14 md:py-16 rounded-3xl bg-white/90 dark:bg-zinc-950/80 backdrop-blur-xl pointer-events-auto shadow-xl dark:shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+            <div className="sec-num font-mono text-[0.6rem] tracking-[0.2em] text-black dark:text-white/30 mb-4 opacity-0">
               03 / 03
             </div>
             <p className="sec-tag font-mono text-xs tracking-[0.25em] uppercase text-[#ff4d00] mb-3 opacity-0" style={{ transform: 'translateY(15px)' }}>
               {"// Services & Value"}
             </p>
-            <h2 className="sec-h2 text-[clamp(1.8rem,3.8vw,3.5rem)] font-extrabold leading-[1.08] tracking-tight mb-5 text-white opacity-0" style={{ transform: 'translateY(25px)' }}>
+            <h2 className="sec-h2 text-[clamp(1.8rem,3.8vw,3.5rem)] font-extrabold leading-[1.08] tracking-tight mb-5 text-black dark:text-white opacity-0" style={{ transform: 'translateY(25px)' }}>
               Custom Web Solutions.<br />Built For Growth.
             </h2>
-            <p className="sec-body text-sm sm:text-base md:text-lg leading-relaxed text-white/80 max-w-[42ch] mb-8 font-normal opacity-0" style={{ transform: 'translateY(15px)' }}>
+            <p className="sec-body text-sm sm:text-base md:text-lg leading-relaxed text-black/80 dark:text-white/80 dark:text-white/80 max-w-[42ch] mb-8 font-normal opacity-0" style={{ transform: 'translateY(15px)' }}>
               Whether you need a modern business website, custom web application, or high-converting landing page, I deliver scalable digital solutions crafted to attract and convert new clients.
             </p>
 
@@ -584,7 +584,7 @@ export default function GSAPFlipSection() {
               ].map((feat, i) => (
                 <li
                   key={i}
-                  className="flex items-center gap-3.5 px-4 py-3 sm:py-3.5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] transition-all text-xs sm:text-sm md:text-base text-white/90 font-medium font-mono"
+                  className="flex items-center gap-3.5 px-4 py-3 sm:py-3.5 rounded-2xl bg-black/5 dark:bg-white/[0.04] hover:bg-black/10 dark:hover:bg-white/[0.08] transition-all text-xs sm:text-sm md:text-base text-black/90 dark:text-white/90 font-medium font-mono"
                 >
                   <span className="w-2 h-2 rounded-full bg-[#ff4d00] shadow-[0_0_8px_#ff4d00]" />
                   <span>{feat}</span>

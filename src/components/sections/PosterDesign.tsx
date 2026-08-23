@@ -245,8 +245,8 @@ export default function PosterDesign() {
   if (!mounted) {
     return (
       <div
-        id="poster-design-section"
-        style={{ minHeight: '100vh', background: '#080808' }}
+        className="relative w-full overflow-hidden bg-gray-50 dark:bg-[#080808]"
+        style={{ minHeight: '100vh' }}
       />
     );
   }

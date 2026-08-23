@@ -63,7 +63,7 @@ export default function Footer() {
                                 href="https://www.linkedin.com/in/dasun-methmal-607333230?utm_source=share_via&utm_content=profile&utm_medium=member_android"
                                 target="_blank"
                                 rel="noreferrer"
-                                className="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center text-xs font-bold shadow-sm border border-gray-250 hover:bg-[#FF6B00] hover:text-white hover:border-[#FF6B00] transition-all duration-300"
+                                className="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center text-xs font-bold shadow-sm border border-gray-250 hover:bg-[#FF6B00] hover:text-black dark:text-white hover:border-[#FF6B00] transition-all duration-300"
                                 aria-label="LinkedIn"
                             >
                                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
@@ -74,7 +74,7 @@ export default function Footer() {
                                 href="https://www.instagram.com/_dase23_?igsh=bDJjeDJmMjI0bWFm"
                                 target="_blank"
                                 rel="noreferrer"
-                                className="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center text-xs font-bold shadow-sm border border-gray-250 hover:bg-[#FF6B00] hover:text-white hover:border-[#FF6B00] transition-all duration-300"
+                                className="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center text-xs font-bold shadow-sm border border-gray-250 hover:bg-[#FF6B00] hover:text-black dark:text-white hover:border-[#FF6B00] transition-all duration-300"
                                 aria-label="Instagram"
                             >
                                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
@@ -85,7 +85,7 @@ export default function Footer() {
                                 href="https://www.facebook.com/share/19NZDkGEqc"
                                 target="_blank"
                                 rel="noreferrer"
-                                className="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center text-xs font-bold shadow-sm border border-gray-250 hover:bg-[#FF6B00] hover:text-white hover:border-[#FF6B00] transition-all duration-300"
+                                className="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center text-xs font-bold shadow-sm border border-gray-250 hover:bg-[#FF6B00] hover:text-black dark:text-white hover:border-[#FF6B00] transition-all duration-300"
                                 aria-label="Facebook"
                             >
                                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
@@ -96,7 +96,7 @@ export default function Footer() {
                                 href="https://www.tiktok.com/@dcode33?_r=1&_t=ZS-98n1Uw4x7iR"
                                 target="_blank"
                                 rel="noreferrer"
-                                className="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center text-xs font-bold shadow-sm border border-gray-250 hover:bg-[#FF6B00] hover:text-white hover:border-[#FF6B00] transition-all duration-300"
+                                className="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center text-xs font-bold shadow-sm border border-gray-250 hover:bg-[#FF6B00] hover:text-black dark:text-white hover:border-[#FF6B00] transition-all duration-300"
                                 aria-label="TikTok"
                             >
                                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
@@ -121,7 +121,7 @@ export default function Footer() {
             </div>
 
             {/* ─── BOTTOM DARK SECTION WITH EMBLEM NOTCH & GIANT TYPOGRAPHY ─── */}
-            <div className="w-full bg-black text-white relative pt-0 pb-10 overflow-hidden">
+            <div className="w-full bg-gray-50 dark:bg-black text-black dark:text-white relative pt-0 pb-10 overflow-hidden">
 
                 {/* Notch & Side Social Buttons Container */}
                 <div className="max-w-[1440px] mx-auto px-6 sm:px-12 relative flex flex-col md:flex-row items-center justify-between gap-6 z-20">
@@ -132,7 +132,7 @@ export default function Footer() {
                             href="https://www.linkedin.com/in/dasun-methmal-607333230?utm_source=share_via&utm_content=profile&utm_medium=member_android"
                             target="_blank"
                             rel="noreferrer"
-                            className="px-6 py-2.5 rounded-full border border-white/80 text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
+                            className="px-6 py-2.5 rounded-full border border-white/80 text-black dark:text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
                         >
                             LinkedIn
                         </a>
@@ -140,7 +140,7 @@ export default function Footer() {
                             href="https://www.instagram.com/_dase23_?igsh=bDJjeDJmMjI0bWFm"
                             target="_blank"
                             rel="noreferrer"
-                            className="px-6 py-2.5 rounded-full border border-white/80 text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
+                            className="px-6 py-2.5 rounded-full border border-white/80 text-black dark:text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
                         >
                             Instagram
                         </a>
@@ -178,7 +178,7 @@ export default function Footer() {
                             href="https://www.facebook.com/share/19NZDkGEqc"
                             target="_blank"
                             rel="noreferrer"
-                            className="px-6 py-2.5 rounded-full border border-white/80 text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
+                            className="px-6 py-2.5 rounded-full border border-white/80 text-black dark:text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
                         >
                             Facebook
                         </a>
@@ -186,7 +186,7 @@ export default function Footer() {
                             href="https://www.tiktok.com/@dcode33?_r=1&_t=ZS-98n1Uw4x7iR"
                             target="_blank"
                             rel="noreferrer"
-                            className="px-6 py-2.5 rounded-full border border-white/80 text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
+                            className="px-6 py-2.5 rounded-full border border-white/80 text-black dark:text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
                         >
                             TikTok
                         </a>
@@ -196,13 +196,13 @@ export default function Footer() {
 
                 {/* Giant Bottom Typography */}
                 <div className="w-full text-center mt-10 md:mt-14 overflow-hidden px-2">
-                    <div className="font-sora font-black text-white text-[15vw] sm:text-[17vw] lg:text-[18vw] leading-none tracking-tighter uppercase select-none opacity-95">
+                    <div className="font-sora font-black text-black dark:text-white text-[15vw] sm:text-[17vw] lg:text-[18vw] leading-none tracking-tighter uppercase select-none opacity-95">
                         DASUN METHMAL
                     </div>
                 </div>
 
                 {/* Bottom Copyright Row */}
-                <div className="max-w-[1440px] mx-auto px-6 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-white/50 gap-4">
+                <div className="max-w-[1440px] mx-auto px-6 mt-8 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-black/50 dark:text-white/50 gap-4">
                     <p>© {year} Dasun Methmal. All rights reserved.</p>
                     
                     {/* Website Launches Verified Badge */}

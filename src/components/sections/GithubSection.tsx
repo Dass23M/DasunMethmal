@@ -11,13 +11,13 @@ export default function GithubSection() {
   }, []);
 
   if (!mounted) {
-    return <section className="w-full min-h-[400px] bg-[#080808]" />;
+    return <section className="w-full min-h-[400px] bg-gray-50 dark:bg-[#080808]" />;
   }
 
   return (
     <section
       id="github-section"
-      className="w-full bg-[#080808] text-white py-16 sm:py-24 px-4 sm:px-8 lg:px-12 select-none relative overflow-hidden"
+      className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white py-16 sm:py-24 px-4 sm:px-8 lg:px-12 select-none relative overflow-hidden"
     >
       <div className="max-w-[1440px] mx-auto">
         {/* Section Header */}
@@ -27,20 +27,20 @@ export default function GithubSection() {
               <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse" />
               <span>{"// CODE & OPEN SOURCE"}</span>
             </div>
-            <h2 className="font-sora font-extrabold text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight uppercase leading-tight">
+            <h2 className="font-sora font-extrabold text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-black dark:text-white tracking-tight uppercase leading-tight">
               GitHub <span className="text-[#FF6B00]">Activity</span>
             </h2>
           </div>
 
           <div className="max-w-md">
-            <p className="font-inter text-xs sm:text-sm md:text-base text-white/70 leading-relaxed mb-4">
+            <p className="font-inter text-xs sm:text-sm md:text-base text-black/70 dark:text-white/70 leading-relaxed mb-4">
               Real-time contribution graph, commits, and open-source code activity tracked directly from my GitHub profile.
             </p>
             <a
               href="https://github.com/Dass23M"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono text-[#FF6B00] hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono text-[#FF6B00] hover:text-black dark:text-white transition-colors"
             >
               <span>VIEW FULL PROFILE @Dass23M</span>
               <span>↗</span>

@@ -138,7 +138,7 @@ export default function BestWorksBanner() {
     <div ref={wrapperRef} className="hidden md:block w-full overflow-hidden">
       <section
         ref={sectionRef}
-        className="relative w-full min-h-[380px] h-auto py-16 sm:py-24 md:py-0 md:h-[100svh] md:h-screen text-white flex items-center justify-center select-none overflow-hidden"
+        className="relative w-full min-h-[380px] h-auto py-16 sm:py-24 md:py-0 md:h-[100svh] md:h-screen text-black dark:text-white flex items-center justify-center select-none overflow-hidden"
       >
         {/* Background Image: orangebackground.webp */}
         <div className="absolute inset-0 z-0">
@@ -154,11 +154,11 @@ export default function BestWorksBanner() {
         </div>
 
         {/* Outer Frame with '+' Corner Crosshairs (matching ImpactSection style) */}
-        <div className="absolute inset-6 sm:inset-10 lg:inset-14 z-10 border border-white/20 rounded-3xl pointer-events-none p-4 sm:p-6 flex flex-col justify-between">
-          <span className="absolute top-2 left-3 text-white/80 text-sm sm:text-base font-mono select-none">+</span>
-          <span className="absolute top-2 right-3 text-white/80 text-sm sm:text-base font-mono select-none">+</span>
-          <span className="absolute bottom-2 left-3 text-white/80 text-sm sm:text-base font-mono select-none">+</span>
-          <span className="absolute bottom-2 right-3 text-white/80 text-sm sm:text-base font-mono select-none">+</span>
+        <div className="absolute inset-6 sm:inset-10 lg:inset-14 z-10 border border-black/20 dark:border-white/20 rounded-3xl pointer-events-none p-4 sm:p-6 flex flex-col justify-between">
+          <span className="absolute top-2 left-3 text-black/80 dark:text-white/80 dark:text-white/80 text-sm sm:text-base font-mono select-none">+</span>
+          <span className="absolute top-2 right-3 text-black/80 dark:text-white/80 dark:text-white/80 text-sm sm:text-base font-mono select-none">+</span>
+          <span className="absolute bottom-2 left-3 text-black/80 dark:text-white/80 dark:text-white/80 text-sm sm:text-base font-mono select-none">+</span>
+          <span className="absolute bottom-2 right-3 text-black/80 dark:text-white/80 dark:text-white/80 text-sm sm:text-base font-mono select-none">+</span>
         </div>
 
         {/* Main Content Container */}
@@ -167,7 +167,7 @@ export default function BestWorksBanner() {
           {/* Rotating Asterisk Star Icon (ImpactSection style) */}
           <div className="banner-star absolute top-[-60px] sm:top-[-40px] lg:top-[-20px] right-[10%] sm:right-[15%] pointer-events-none">
             <svg
-              className="w-14 h-14 sm:w-20 sm:h-20 lg:w-24 lg:h-24 text-white/90 animate-[spin_20s_linear_infinite] drop-shadow-lg"
+              className="w-14 h-14 sm:w-20 sm:h-20 lg:w-24 lg:h-24 text-black/90 dark:text-white/90 animate-[spin_20s_linear_infinite] drop-shadow-lg"
               viewBox="0 0 100 100"
               fill="none"
               stroke="currentColor"
@@ -182,8 +182,8 @@ export default function BestWorksBanner() {
           </div>
 
           {/* Top Pill Tag Badge */}
-          <div className="banner-badge mb-4 sm:mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white font-mono text-xs sm:text-sm font-bold tracking-widest uppercase shadow-lg">
-            <span className="text-white">✳</span>
+          <div className="banner-badge mb-4 sm:mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-black/20 dark:border-white/20 text-black dark:text-white font-mono text-xs sm:text-sm font-bold tracking-widest uppercase shadow-lg">
+            <span className="text-black dark:text-white">✳</span>
             <span>FEATURED SHOWCASE</span>
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
           </div>
@@ -192,14 +192,14 @@ export default function BestWorksBanner() {
           <div className="flex flex-col items-center justify-center text-center">
             
             {/* Row 1: OUR BEST */}
-            <div className="text-row-1 font-sora font-black text-[clamp(2.5rem,10vw,4.5rem)] md:text-[9vw] lg:text-[8.5vw] xl:text-[8rem] 2xl:text-[9.5rem] tracking-tighter uppercase leading-[0.9] text-white drop-shadow-2xl">
-              <span className="text-white">OUR </span>
+            <div className="text-row-1 font-sora font-black text-[clamp(2.5rem,10vw,4.5rem)] md:text-[9vw] lg:text-[8.5vw] xl:text-[8rem] 2xl:text-[9.5rem] tracking-tighter uppercase leading-[0.9] text-black dark:text-white drop-shadow-2xl">
+              <span className="text-black dark:text-white">OUR </span>
               <span className="text-black drop-shadow-none">BEST</span>
             </div>
 
             {/* Row 2: WOR [CARD] KS */}
-            <div className="text-row-2 flex items-center justify-center gap-[4px] sm:gap-[12px] md:gap-[18px] mt-[6px] sm:mt-[12px] font-sora font-black text-[clamp(2.5rem,10vw,4.5rem)] md:text-[9vw] lg:text-[8.5vw] xl:text-[8rem] 2xl:text-[9.5rem] tracking-tighter uppercase leading-[0.9] text-white drop-shadow-2xl">
-              <span className="text-white">WOR</span>
+            <div className="text-row-2 flex items-center justify-center gap-[4px] sm:gap-[12px] md:gap-[18px] mt-[6px] sm:mt-[12px] font-sora font-black text-[clamp(2.5rem,10vw,4.5rem)] md:text-[9vw] lg:text-[8.5vw] xl:text-[8rem] 2xl:text-[9.5rem] tracking-tighter uppercase leading-[0.9] text-black dark:text-white drop-shadow-2xl">
+              <span className="text-black dark:text-white">WOR</span>
 
               {/* Embedded Work Preview Card */}
               <Link
@@ -236,7 +236,7 @@ export default function BestWorksBanner() {
           <div className="mt-8 sm:mt-12">
             <Link
               href="#portfolio-section"
-              className="inline-flex items-center gap-3 bg-black text-white px-7 py-3.5 sm:px-9 sm:py-4 rounded-full font-sora font-bold text-xs sm:text-sm tracking-wider uppercase border border-white/20 transition-all duration-300 hover:bg-white hover:text-black hover:scale-105 shadow-2xl group"
+              className="inline-flex items-center gap-3 bg-gray-50 dark:bg-black text-black dark:text-white px-7 py-3.5 sm:px-9 sm:py-4 rounded-full font-sora font-bold text-xs sm:text-sm tracking-wider uppercase border border-black/20 dark:border-white/20 transition-all duration-300 hover:bg-white hover:text-black hover:scale-105 shadow-2xl group"
             >
               <span>EXPLORE ALL PROJECTS</span>
               <span className="text-base transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>

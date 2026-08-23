@@ -64,11 +64,11 @@ export default function FooterMarquee() {
       </div>
 
       {/* ─── BOTTOM RIBBON (dark, rotates −3° → forms X) ─── */}
-      <div className="absolute left-[-15%] w-[130%] h-[50px] md:h-[70px] overflow-hidden whitespace-nowrap flex items-center top-[52%] rotate-[-3deg] bg-[#1a1a1a] z-[1] shadow-[0_6px_30px_rgba(0,0,0,0.7)]">
+      <div className="absolute left-[-15%] w-[130%] h-[50px] md:h-[70px] overflow-hidden whitespace-nowrap flex items-center top-[52%] rotate-[-3deg] bg-gray-100 dark:bg-[#1a1a1a] z-[1] shadow-[0_6px_30px_rgba(0,0,0,0.7)]">
         <div className="inline-flex items-center will-change-transform" ref={bottomTrackRef}>
           {Array.from({ length: REPEATS }).map((_, i) => (
             <span key={`b-${i}`} className="inline-flex items-center gap-[12px] md:gap-[20px] px-[16px] md:px-[28px] shrink-0" aria-hidden="true">
-              <span className="font-sora text-[1.4rem] md:text-[2.6rem] font-black tracking-wide uppercase leading-none text-white">
+              <span className="font-sora text-[1.4rem] md:text-[2.6rem] font-black tracking-wide uppercase leading-none text-black dark:text-white">
                 Let&apos;s Get Started
               </span>
               <span className="text-[1rem] md:text-[1.8rem] leading-none text-[#FF6B00]">✦</span>

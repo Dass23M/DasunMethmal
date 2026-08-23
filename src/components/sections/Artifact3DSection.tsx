@@ -335,7 +335,7 @@ export default function Artifact3DSection() {
     <div
       ref={containerRef}
       id="artifact-3d-section"
-      className="relative w-full bg-[#000000] text-white font-inter select-none"
+      className="relative w-full bg-[#000000] text-black dark:text-white font-inter select-none"
     >
       {/* ── FIXED CANVAS ── */}
       <canvas
@@ -358,7 +358,7 @@ export default function Artifact3DSection() {
         ref={hudCornerBRRef}
         className="fixed bottom-8 right-10 z-[10] pointer-events-none opacity-0 flex-col items-end gap-2 hidden md:flex"
       >
-        <div ref={hudReadoutRef} className="font-mono text-[9px] text-white/40 leading-relaxed text-right">
+        <div ref={hudReadoutRef} className="font-mono text-[9px] text-black/40 dark:text-white/40 leading-relaxed text-right">
           X: +0.000<br />Y: +0.000<br />Z: +7.000
         </div>
         <svg width="36" height="36" fill="none" className="rotate-180">
@@ -396,13 +396,13 @@ export default function Artifact3DSection() {
               Full-Stack Developer &amp; Digital Marketer
             </p>
 
-            <h2 className="art-hero-title font-sora font-extrabold text-[clamp(2.4rem,6.5vw,7rem)] uppercase leading-[0.9] tracking-[-0.025em] text-white opacity-0 translate-y-8">
+            <h2 className="art-hero-title font-sora font-extrabold text-[clamp(2.4rem,6.5vw,7rem)] uppercase leading-[0.9] tracking-[-0.025em] text-black dark:text-white opacity-0 translate-y-8">
               Craft.&nbsp;Code.<br />
               <span className="text-[#FF8C00]">Convert.</span>
             </h2>
 
             <div className="art-hero-meta text-center opacity-0 translate-y-5 mt-6 max-w-[42ch] mx-auto">
-              <p className="font-inter text-[11px] text-white/55 leading-[1.75]">
+              <p className="font-inter text-[11px] text-black dark:text-white/55 leading-[1.75]">
                 I design and engineer digital products that look stunning and&nbsp;perform at scale —
                 then drive real traffic, leads and revenue through data-backed marketing systems.
               </p>
@@ -418,7 +418,7 @@ export default function Artifact3DSection() {
               ].map((k) => (
                 <div key={k.lbl} className="bg-white/[0.03] px-4 py-4 text-center">
                   <div className="font-sora font-extrabold text-[1.4rem] text-[#FF8C00] leading-none">{k.val}</div>
-                  <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/35 mt-1">{k.lbl}</div>
+                  <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-black dark:text-white/35 mt-1">{k.lbl}</div>
                 </div>
               ))}
             </div>
@@ -426,10 +426,10 @@ export default function Artifact3DSection() {
 
           <div className="flex justify-center items-end relative mt-8">
             <div className="art-hero-cta flex flex-col items-center gap-5 opacity-0 translate-y-5">
-              <span className="font-mono text-[8.5px] tracking-[0.32em] uppercase text-white/45">
+              <span className="font-mono text-[8.5px] tracking-[0.32em] uppercase text-black dark:text-white/45">
                 Scroll to explore
               </span>
-              <div className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center animate-bounce hover:border-[#FF8C00] transition-colors">
+              <div className="w-10 h-10 rounded-full border border-black/15 dark:border-white/15 flex items-center justify-center animate-bounce hover:border-[#FF8C00] transition-colors">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M8 2v12M3 9l5 5 5-5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
                 </svg>
@@ -438,7 +438,7 @@ export default function Artifact3DSection() {
 
             <div
               ref={heroCoordsRef}
-              className="font-mono text-[8px] text-white/20 text-right leading-[1.8] absolute right-0 bottom-0 hidden sm:block"
+              className="font-mono text-[8px] text-black dark:text-white/20 text-right leading-[1.8] absolute right-0 bottom-0 hidden sm:block"
             >
               φ 000.00° · θ 000.00°<br />NODES: 2500+ · CELLS: 50×50
             </div>
@@ -458,7 +458,7 @@ export default function Artifact3DSection() {
           <div className="hidden lg:block" />
 
           <div className="flex flex-col justify-center px-6 py-10 sm:px-12 sm:py-14 lg:px-16 border-l border-white/[0.04] bg-black/40 lg:bg-transparent">
-            <div className="sec-num font-mono text-[8px] tracking-[0.22em] text-white/15 mb-10 opacity-0">
+            <div className="sec-num font-mono text-[8px] tracking-[0.22em] text-black dark:text-white/15 mb-10 opacity-0">
               02 / 03
             </div>
             <p className="sec-tag font-mono text-[9px] tracking-[0.28em] uppercase text-[#FF8C00] mb-4 opacity-0 translate-y-4">
@@ -467,7 +467,7 @@ export default function Artifact3DSection() {
             <h2 className="sec-h2 font-sora font-bold text-[clamp(2rem,3.8vw,3.4rem)] leading-[1.0] tracking-[-0.03em] mb-5 opacity-0 translate-y-6">
               Two disciplines.<br />One workflow.
             </h2>
-            <p className="sec-body font-inter text-[11px] leading-[1.85] text-white/50 max-w-[38ch] mb-8 opacity-0 translate-y-4">
+            <p className="sec-body font-inter text-[11px] leading-[1.85] text-black/50 dark:text-white/50 max-w-[38ch] mb-8 opacity-0 translate-y-4">
               From component architecture to paid media optimisation — I operate across the full
               stack of digital growth. Every pixel is intentional; every campaign is measurable.
             </p>
@@ -480,7 +480,7 @@ export default function Artifact3DSection() {
                   {webSkills.map((s) => (
                     <div key={s.label}>
                       <div className="flex justify-between mb-1">
-                        <span className="font-mono text-[9px] text-white/60">{s.label}</span>
+                        <span className="font-mono text-[9px] text-black dark:text-white/60">{s.label}</span>
                         <span className="font-mono text-[9px] text-[#FF8C00]">{s.pct}%</span>
                       </div>
                       <div className="h-px bg-white/10 relative overflow-hidden rounded-full">
@@ -501,7 +501,7 @@ export default function Artifact3DSection() {
                   {mktSkills.map((s) => (
                     <div key={s.label}>
                       <div className="flex justify-between mb-1">
-                        <span className="font-mono text-[9px] text-white/60">{s.label}</span>
+                        <span className="font-mono text-[9px] text-black dark:text-white/60">{s.label}</span>
                         <span className="font-mono text-[9px] text-[#FF8C00]">{s.pct}%</span>
                       </div>
                       <div className="h-px bg-white/10 relative overflow-hidden rounded-full">
@@ -525,7 +525,7 @@ export default function Artifact3DSection() {
               ].map((s) => (
                 <div key={s.lbl}>
                   <div className="font-sora font-extrabold text-[1.55rem] text-[#FF8C00] leading-none">{s.val}</div>
-                  <div className="font-mono text-[7.5px] tracking-[0.18em] uppercase text-white/30 mt-1">{s.lbl}</div>
+                  <div className="font-mono text-[7.5px] tracking-[0.18em] uppercase text-black dark:text-white/30 mt-1">{s.lbl}</div>
                 </div>
               ))}
             </div>
@@ -543,7 +543,7 @@ export default function Artifact3DSection() {
         >
           {/* ─ Header ────────────────────────────────────────────── */}
           <div className="flex flex-col items-start mb-8">
-            <div className="sec-num font-mono text-[8px] tracking-[0.22em] text-white/15 mb-8 opacity-0">
+            <div className="sec-num font-mono text-[8px] tracking-[0.22em] text-black dark:text-white/15 mb-8 opacity-0">
               03 / 03
             </div>
             <p className="sec-tag font-mono text-[9px] tracking-[0.28em] uppercase text-[#FF8C00] mb-3 opacity-0 translate-y-4">
@@ -553,7 +553,7 @@ export default function Artifact3DSection() {
               Delivered across<br />
               <span className="text-[#FF8C00]">4 countries.</span>
             </h2>
-            <p className="sec-h2 font-inter text-[11px] text-white/45 leading-[1.8] mt-4 max-w-[44ch] opacity-0 translate-y-6">
+            <p className="sec-h2 font-inter text-[11px] text-black dark:text-white/45 leading-[1.8] mt-4 max-w-[44ch] opacity-0 translate-y-6">
               From Sri Lanka to Europe and beyond — I&apos;ve partnered with clients across multiple
               continents, delivering web and marketing solutions that drive measurable growth.
             </p>
@@ -588,7 +588,7 @@ export default function Artifact3DSection() {
           <div className="mt-8 mb-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#FF8C00] animate-pulse" />
-              <span className="font-mono text-[8.5px] uppercase tracking-[0.25em] text-white/50">Global Work &amp; Partners</span>
+              <span className="font-mono text-[8.5px] uppercase tracking-[0.25em] text-black/50 dark:text-white/50">Global Work &amp; Partners</span>
             </div>
             <span className="font-mono text-[8px] text-[#FF8C00] tracking-[0.2em] bg-[#FF8C00]/10 border border-[#FF8C00]/25 rounded-full px-2.5 py-0.5">
               4 COUNTRIES
@@ -606,7 +606,7 @@ export default function Artifact3DSection() {
                   return (
                     <div
                       key={key}
-                      className="flag-card country-card flex-shrink-0 relative w-[135px] sm:w-[170px] h-[95px] sm:h-[115px] rounded-xl overflow-hidden cursor-pointer group border border-white/10 hover:border-[#FF8C00]/60 transition-all duration-300 shadow-lg bg-black/60"
+                      className="flag-card country-card flex-shrink-0 relative w-[135px] sm:w-[170px] h-[95px] sm:h-[115px] rounded-xl overflow-hidden cursor-pointer group border border-black/10 dark:border-white/10 hover:border-[#FF8C00]/60 transition-all duration-300 shadow-lg bg-black/60"
                       onMouseEnter={() => !isHome && setActiveCountry(i - 1)}
                       onMouseLeave={() => setActiveCountry(null)}
                     >
@@ -641,12 +641,12 @@ export default function Artifact3DSection() {
                         ) : (
                           <span />
                         )}
-                        <span className="font-mono text-[6.5px] text-white/30">0{i + 1}</span>
+                        <span className="font-mono text-[6.5px] text-black dark:text-white/30">0{i + 1}</span>
                       </div>
 
                       {/* Bottom Info Text */}
                       <div className="absolute bottom-2.5 left-2.5 right-2.5 z-10">
-                        <div className="font-sora font-bold text-[10px] sm:text-[11.5px] text-white leading-tight drop-shadow-sm group-hover:text-[#FF8C00] transition-colors duration-300">
+                        <div className="font-sora font-bold text-[10px] sm:text-[11.5px] text-black dark:text-white leading-tight drop-shadow-sm group-hover:text-[#FF8C00] transition-colors duration-300">
                           {item.name}
                         </div>
                       </div>
@@ -668,7 +668,7 @@ export default function Artifact3DSection() {
               <span>Start a Project</span>
               <span>↗</span>
             </Link>
-            <span className="font-mono text-[9px] text-white/30 tracking-[0.15em]">
+            <span className="font-mono text-[9px] text-black dark:text-white/30 tracking-[0.15em]">
               Worldwide remote · Free consultation
             </span>
           </div>

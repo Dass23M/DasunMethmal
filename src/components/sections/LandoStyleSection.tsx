@@ -76,14 +76,14 @@ export default function LandoStyleSection() {
     <section
       ref={sectionRef}
       id="landostyle-section"
-      className="relative w-full min-h-[700px] md:min-h-[850px] bg-[#080808] text-white overflow-hidden select-none flex flex-col justify-between py-8 md:py-12"
+      className="relative w-full min-h-[700px] md:min-h-[850px] bg-gray-50 dark:bg-[#080808] text-black dark:text-white overflow-hidden select-none flex flex-col justify-between py-8 md:py-12"
     >
 
       {/* ─── 2. TOP HEADER NAVIGATION BAR ─── */}
       <div className="relative z-30 w-full max-w-[1440px] mx-auto px-5 sm:px-10 flex items-center justify-between">
         {/* Left Brand Title */}
         <div className="flex items-center gap-2">
-          <span className="font-sora font-black text-xl sm:text-2xl tracking-tighter text-white uppercase">
+          <span className="font-sora font-black text-xl sm:text-2xl tracking-tighter text-black dark:text-white uppercase">
             METHMAL<span className="text-[#FF6B00]">.</span>
           </span>
         </div>
@@ -106,10 +106,10 @@ export default function LandoStyleSection() {
 
           {/* Row 2: Rightward Scrolling Secondary Giant Headline */}
           <div className="w-max flex whitespace-nowrap" ref={marquee2Ref}>
-            <span className="font-sora font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-white leading-none pr-8 opacity-90">
+            <span className="font-sora font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-black dark:text-white leading-none pr-8 opacity-90">
               {marqueeText2}
             </span>
-            <span className="font-sora font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-white leading-none pr-8 opacity-90">
+            <span className="font-sora font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-black dark:text-white leading-none pr-8 opacity-90">
               {marqueeText2}
             </span>
           </div>
@@ -119,7 +119,7 @@ export default function LandoStyleSection() {
         <div className="relative z-20 w-[280px] xs:w-[320px] sm:w-[420px] md:w-[480px] aspect-[4/5] sm:aspect-[3/4] rounded-2xl overflow-visible group">
 
           {/* Main Portrait Frame */}
-          <div className="relative w-full h-full rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl bg-[#1c201a]">
+          <div className="relative w-full h-full rounded-2xl overflow-hidden border-2 border-black/20 dark:border-white/20 shadow-2xl bg-[#1c201a]">
             <Image
               src="/images/methmal1.png"
               alt="Methmal Portrait"
@@ -132,7 +132,7 @@ export default function LandoStyleSection() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
 
             {/* Bottom Card Title */}
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white z-10">
+            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-black dark:text-white z-10">
               <div>
                 <p className="font-sora font-extrabold text-sm sm:text-base tracking-wide uppercase">
                   METHMAL
@@ -184,7 +184,7 @@ export default function LandoStyleSection() {
       </div>
 
       {/* ─── 4. BOTTOM STATUS BAR ─── */}
-      <div className="relative z-30 w-full max-w-[1440px] mx-auto px-5 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-white/70 pt-4">
+      <div className="relative z-30 w-full max-w-[1440px] mx-auto px-5 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-black/70 dark:text-white/70 pt-4">
         <div className="flex items-center gap-3">
           <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse" />
           <span>BASED IN SRI LANKA / AVAILABLE FOR GLOBAL REMOTE WORK</span>

@@ -63,8 +63,8 @@ body.offcanvas {
 }
 
 ::selection {
-  background: #000;
-  color: #fff;
+  background: var(--accent);
+  color: #000;
 }
 
 a {
@@ -80,7 +80,6 @@ a:hover {
    SITE LAYOUT
    ============================================ */
 .site-inner {
-  background: #000;
   position: relative;
   z-index: 1;
   width: 100%;
@@ -105,7 +104,7 @@ a:hover {
   height: 100%;
   position: fixed;
   z-index: 7100;
-  background: #000;
+  background: var(--dark);
   top: 0;
   left: 0;
   right: 0;
@@ -1606,7 +1605,6 @@ textarea.form-control {
 .below-hero-reveal {
   position: relative;
   z-index: 10;
-  background: #000;
 }
 
 /* Section wrappers */

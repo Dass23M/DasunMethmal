@@ -16,7 +16,7 @@ export default function PortfolioSliderClient({ images }: Props) {
   return (
     <div className="relative w-full mb-12 sm:mb-16">
       {/* Main Image Stage */}
-      <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl sm:rounded-3xl overflow-hidden border border-white/15 bg-[#12131A] shadow-2xl group">
+      <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl sm:rounded-3xl overflow-hidden border border-black/15 dark:border-white/15 bg-[#12131A] shadow-2xl group">
         <Image
           src={images[current]}
           alt={`Project Showcase ${current + 1}`}
@@ -34,7 +34,7 @@ export default function PortfolioSliderClient({ images }: Props) {
           <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between items-center pointer-events-none z-10">
             <button
               onClick={prev}
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-[#FF6B00] border border-white/20 hover:border-[#FF6B00] text-white hover:text-black flex items-center justify-center pointer-events-auto backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-xl"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-[#FF6B00] border border-black/20 dark:border-white/20 hover:border-[#FF6B00] text-black dark:text-white hover:text-black flex items-center justify-center pointer-events-auto backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-xl"
               aria-label="Previous image"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -43,7 +43,7 @@ export default function PortfolioSliderClient({ images }: Props) {
             </button>
             <button
               onClick={next}
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-[#FF6B00] border border-white/20 hover:border-[#FF6B00] text-white hover:text-black flex items-center justify-center pointer-events-auto backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-xl"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-[#FF6B00] border border-black/20 dark:border-white/20 hover:border-[#FF6B00] text-black dark:text-white hover:text-black flex items-center justify-center pointer-events-auto backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-xl"
               aria-label="Next image"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -55,7 +55,7 @@ export default function PortfolioSliderClient({ images }: Props) {
 
         {/* Slide Counter Badge */}
         {images.length > 1 && (
-          <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-white/15 px-3 py-1 rounded-full font-mono text-[10px] font-bold text-white/80 uppercase tracking-widest z-10">
+          <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-black/15 dark:border-white/15 px-3 py-1 rounded-full font-mono text-[10px] font-bold text-black/80 dark:text-white/80 dark:text-white/80 uppercase tracking-widest z-10">
             {current + 1} / {images.length}
           </div>
         )}

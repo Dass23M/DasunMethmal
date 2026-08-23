@@ -91,14 +91,14 @@ export default function ImageFanShowcase() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full min-h-screen bg-[#080808]" />;
+    return <section className="w-full min-h-screen bg-gray-50 dark:bg-[#080808]" />;
   }
 
   return (
     <section
       ref={sectionRef}
       id="capabilities-section"
-      className="w-full bg-[#080808] text-white py-16 sm:py-24 select-none relative overflow-hidden font-inter"
+      className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white py-16 sm:py-24 select-none relative overflow-hidden font-inter"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
@@ -110,12 +110,12 @@ export default function ImageFanShowcase() {
                 {"// CORE CAPABILITIES & SERVICES"}
               </span>
             </div>
-            <h2 className="font-sora text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight uppercase leading-none">
+            <h2 className="font-sora text-3xl sm:text-5xl lg:text-6xl font-extrabold text-black dark:text-white tracking-tight uppercase leading-none">
               EXPERTISE &amp; CRAFT<span className="text-[#FF6B00]">.</span>
             </h2>
           </div>
 
-          <p className="font-inter text-sm sm:text-base text-white/70 max-w-md leading-relaxed font-normal">
+          <p className="font-inter text-sm sm:text-base text-black/70 dark:text-white/70 max-w-md leading-relaxed font-normal">
             Delivering end-to-end digital solutions combining engineering precision, visual storytelling, and growth marketing.
           </p>
         </div>
@@ -139,17 +139,17 @@ export default function ImageFanShowcase() {
               {/* Card Header & Badge */}
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 font-mono text-[11px] font-bold text-[#FF6B00] tracking-widest uppercase">
+                  <span className="px-3 py-1 rounded-full bg-white/5 border border-black/10 dark:border-white/10 font-mono text-[11px] font-bold text-[#FF6B00] tracking-widest uppercase">
                     {item.num} / {item.category}
                   </span>
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: item.accent }} />
                 </div>
 
-                <h3 className="font-sora text-xl sm:text-2xl font-bold text-white leading-snug tracking-tight mb-3 transition-colors duration-300 group-hover:text-[#FF6B00]">
+                <h3 className="font-sora text-xl sm:text-2xl font-bold text-black dark:text-white leading-snug tracking-tight mb-3 transition-colors duration-300 group-hover:text-[#FF6B00]">
                   {item.header}
                 </h3>
 
-                <p className="text-white/75 font-normal text-xs sm:text-sm leading-relaxed mb-4">
+                <p className="text-black dark:text-white/75 font-normal text-xs sm:text-sm leading-relaxed mb-4">
                   {item.desc}
                 </p>
               </div>
@@ -171,7 +171,7 @@ export default function ImageFanShowcase() {
                   {item.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] font-mono text-white/70"
+                      className="px-2.5 py-1 rounded-md bg-white/5 border border-black/10 dark:border-white/10 text-[10px] font-mono text-black/70 dark:text-white/70"
                     >
                       {tag}
                     </span>

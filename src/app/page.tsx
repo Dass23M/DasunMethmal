@@ -9,6 +9,7 @@ import LogoSlider from '@/components/sections/LogoSlider';
 import RandomTextReveal from '@/components/sections/RandomTextReveal';
 import ScrollRevealGrid from '@/components/sections/ScrollRevealGrid';
 import Testimonials from '@/components/sections/Testimonials';
+import Blog from '@/components/sections/Blog';
 import FaqSection from '@/components/sections/FaqSection';
 import Contact from '@/components/sections/Contact';
 import FooterMarquee from '@/components/sections/FooterMarquee';
@@ -133,6 +134,13 @@ export default function HomePage() {
           <div className="scroll-reveal-section">
             <LazySection minHeight="400px">
               <Testimonials />
+            </LazySection>
+          </div>
+
+          {/* Thought Leadership (Blog) */}
+          <div className="scroll-reveal-section">
+            <LazySection minHeight="400px">
+              <Blog />
             </LazySection>
           </div>
 

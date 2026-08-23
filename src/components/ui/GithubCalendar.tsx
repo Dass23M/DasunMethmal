@@ -842,8 +842,8 @@ export const GithubCalendar = memo(function GithubCalendar({
   return (
     <div
       className={cn(
-        "w-fit mx-auto overflow-x-hidden border rounded-2xl transition-all duration-500 bg-[#0c0c0e]/90 backdrop-blur-xl border-white/10 p-4 sm:p-6 shadow-2xl",
-        gameActive ? "bg-black border-neutral-800" : "",
+        "w-fit mx-auto overflow-x-hidden border rounded-2xl transition-all duration-500 bg-[#0c0c0e]/90 backdrop-blur-xl border-black/10 dark:border-white/10 p-4 sm:p-6 shadow-2xl",
+        gameActive ? "bg-gray-50 dark:bg-black border-neutral-800" : "",
         className,
       )}
     >
@@ -981,7 +981,7 @@ export const GithubCalendar = memo(function GithubCalendar({
 
               return (
                 <div
-                  className="pointer-events-none absolute z-50 rounded-lg bg-zinc-900 border border-white/10 px-3 py-1.5 text-xs font-medium text-white shadow-xl whitespace-nowrap"
+                  className="pointer-events-none absolute z-50 rounded-lg bg-zinc-900 border border-black/10 dark:border-white/10 px-3 py-1.5 text-xs font-medium text-black dark:text-white shadow-xl whitespace-nowrap"
                   style={{
                     left: tooltip.x,
                     top: tooltip.y,
@@ -990,7 +990,7 @@ export const GithubCalendar = memo(function GithubCalendar({
                 >
                   {tooltipText}
                   {/* Small arrow pointing down */}
-                  <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rotate-45 bg-zinc-900 border-r border-b border-white/10" />
+                  <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rotate-45 bg-zinc-900 border-r border-b border-black/10 dark:border-white/10" />
                 </div>
               );
             })()}
@@ -1016,7 +1016,7 @@ export const GithubCalendar = memo(function GithubCalendar({
               </div>
 
               {/* Game Mode Switch */}
-              <div className="flex items-center gap-2 border-l border-white/10 pl-4">
+              <div className="flex items-center gap-2 border-l border-black/10 dark:border-white/10 pl-4">
                 <span className="text-xs text-zinc-300 font-mono select-none">
                   🕹️ Arcade Game Mode
                 </span>
@@ -1045,9 +1045,9 @@ export const GithubCalendar = memo(function GithubCalendar({
                 href={`https://github.com/${username}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-x-1.5 text-zinc-400 hover:text-white transition-colors select-none"
+                className="flex items-center gap-x-1.5 text-zinc-400 hover:text-black dark:text-white transition-colors select-none"
               >
-                <span className="font-semibold text-white">
+                <span className="font-semibold text-black dark:text-white">
                   @{username}
                 </span>
                 <span>contributed</span>

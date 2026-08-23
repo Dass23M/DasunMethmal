@@ -186,7 +186,7 @@ export function LiquidMetalButton({
             }}
           >
             {/* Sleek Inner Container */}
-            <div className="relative rounded-full overflow-hidden bg-black px-4 py-2 sm:px-6 sm:py-2.5 flex items-center justify-center gap-2 border border-white/20 min-h-[40px] sm:min-h-[44px]">
+            <div className="relative rounded-full overflow-hidden bg-gray-50 dark:bg-black px-4 py-2 sm:px-6 sm:py-2.5 flex items-center justify-center gap-2 border border-black/20 dark:border-white/20 min-h-[40px] sm:min-h-[44px]">
               {/* WebGL Shader Layer */}
               <div
                 ref={canvasRef}
@@ -197,7 +197,7 @@ export function LiquidMetalButton({
               <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] pointer-events-none" />
 
               {/* Text & Icon Layer */}
-              <span className="relative z-20 font-mono font-bold text-[11px] sm:text-xs uppercase tracking-wider text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] flex items-center gap-2 whitespace-nowrap">
+              <span className="relative z-20 font-mono font-bold text-[11px] sm:text-xs uppercase tracking-wider text-black dark:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] flex items-center gap-2 whitespace-nowrap">
                 <span>{label}</span>
                 <span className="text-xs sm:text-sm transition-transform duration-300 group-hover:translate-x-1 group-hover:rotate-45 text-[#FF6B00]">
                   ⤵

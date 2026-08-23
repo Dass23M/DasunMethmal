@@ -41,14 +41,14 @@ export default function EditorialShowcase() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full min-h-[500px] bg-black" />;
+    return <section className="w-full min-h-[500px] bg-gray-50 dark:bg-black" />;
   }
 
   return (
     <section
       ref={sectionRef}
       id="digital-marketing-showcase"
-      className="relative w-full min-h-[65vh] sm:min-h-[75vh] md:min-h-[85vh] bg-black text-white py-14 sm:py-24 md:py-28 px-4 sm:px-8 md:px-16 lg:px-20 select-none overflow-hidden flex items-center"
+      className="relative w-full min-h-[65vh] sm:min-h-[75vh] md:min-h-[85vh] bg-gray-50 dark:bg-black text-black dark:text-white py-14 sm:py-24 md:py-28 px-4 sm:px-8 md:px-16 lg:px-20 select-none overflow-hidden flex items-center"
     >
       {/* ─── 1. FULL-BLEED GLSL SHADER BACKGROUND ─── */}
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-85">
@@ -73,14 +73,14 @@ export default function EditorialShowcase() {
             </div>
 
             {/* Giant Sora Headline */}
-            <h2 className="font-sora font-extrabold text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-white leading-none drop-shadow-2xl">
+            <h2 className="font-sora font-extrabold text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-black dark:text-white leading-none drop-shadow-2xl">
               MARKETING<span className="text-[#FF6B00]">.</span>
             </h2>
           </div>
 
           {/* Floating Information Paragraph */}
           <div className="max-w-3xl">
-            <p className="font-inter text-sm sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed sm:leading-relaxed text-white/90 drop-shadow-md">
+            <p className="font-inter text-sm sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed sm:leading-relaxed text-black/90 dark:text-white/90 drop-shadow-md">
               Combining creative visual engineering with data-backed digital strategies. I engineer targeted social media campaigns, search engine optimization, and high-converting visual assets that scale brands and capture customer engagement.
             </p>
           </div>

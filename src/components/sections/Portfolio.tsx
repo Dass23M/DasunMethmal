@@ -73,8 +73,8 @@ export default function Portfolio() {
     <section
       id="portfolio-section"
       ref={sectionRef}
-      className="unslate-section"
-      style={{ background: '#080808' }}
+      className="relative min-h-[90vh] md:min-h-[85vh] w-full flex items-center justify-center overflow-hidden bg-gray-50 dark:bg-[#080808]"
+      style={{ minHeight: '100vh' }}
     >
       <style>{`
         /* ── Portfolio grid ───────────────────── */

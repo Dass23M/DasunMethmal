@@ -42,6 +42,7 @@ export default function Navbar() {
       'services-section',
       'skills-section',
       'testimonial-section',
+      'blog-section',
       'poster-design-section',
       'contact-section',
     ];
@@ -100,7 +101,7 @@ export default function Navbar() {
   const rightLinks = [
     { label: 'Skills', id: 'skills-section' },
     { label: 'Testimonial', id: 'testimonial-section' },
-    { label: 'Poster Design', id: 'poster-design-section' },
+    { label: 'Blog', id: 'blog-section' },
     { label: 'Contact', id: 'contact-section' },
   ];
 
@@ -160,15 +161,13 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          
           <div className="ml-4">
             <ThemeToggle />
           </div>
         </div>
 
         {/* Mobile menu toggle & Theme Toggle */}
-        <div className="flex lg:hidden items-center gap-4">
-          <ThemeToggle />
+        <div className="flex lg:hidden items-center gap-3">
           <a
             href="#"
             onClick={toggleMenu}
@@ -176,6 +175,7 @@ export default function Navbar() {
           >
             Menu
           </a>
+          <ThemeToggle />
         </div>
       </div>
     </motion.nav>
@@ -197,7 +197,7 @@ function NavLink({
 
   const colorClass = hovered || isActive
     ? 'text-[#FF8A00]'
-    : 'text-black/80 dark:text-white/90';
+    : 'text-black/80 dark:text-white/80 dark:text-white/90';
 
   const underlineBg = 'bg-[#FF8A00]';
 

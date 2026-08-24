@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const BLOG_POSTS = [
   {
@@ -62,10 +63,12 @@ export default function Blog() {
                 {/* Image Container */}
                 <div className="relative w-full h-56 overflow-hidden bg-gray-100 dark:bg-[#1a1a1a]">
                   <div className="absolute inset-0 bg-[#FF8A00]/10 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <img
+                  <Image
                     src={post.image}
                     alt={post.title}
-                    className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transform transition-transform duration-700 group-hover:scale-105"
                   />
                   {/* Category Badge */}
                   <div className="absolute top-4 left-4 z-20 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-black/10 dark:border-white/10">

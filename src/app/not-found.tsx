@@ -7,7 +7,7 @@ export default function NotFound() {
         <span className="text-[#FF6B00]">❇</span>
         <span>404 - PAGE NOT FOUND</span>
       </div>
-      <h1 className="font-sora font-black text-6xl md:text-8xl tracking-tight mb-4">
+      <h1 className="font-display font-black text-6xl md:text-8xl tracking-tight mb-4">
         404
       </h1>
       <p className="text-gray-400 text-base md:text-lg max-w-md mb-8">

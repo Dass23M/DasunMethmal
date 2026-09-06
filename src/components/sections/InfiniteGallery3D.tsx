@@ -194,11 +194,11 @@ export default function InfiniteGallery3D() {
             <span>003 // 3D CORRIDOR SHOWCASE</span>
           </div>
 
-          <h2 className="font-sora font-extrabold text-2xl xs:text-3xl sm:text-5xl md:text-6xl text-black dark:text-white uppercase tracking-tight leading-tight sm:leading-none drop-shadow-2xl">
+          <h2 className="font-display font-extrabold text-2xl xs:text-3xl sm:text-5xl md:text-6xl text-black dark:text-white uppercase tracking-tight leading-tight sm:leading-none drop-shadow-2xl">
             INFINITE CREATIVE <span className="text-[#FF8A00]">STREAM.</span>
           </h2>
 
-          <p className="font-inter text-xs sm:text-sm md:text-base text-black/70 dark:text-white/70 max-w-xl mx-auto mt-3 sm:mt-4 leading-relaxed font-light px-2">
+          <p className="font-body text-xs sm:text-sm md:text-base text-black/70 dark:text-white/70 max-w-xl mx-auto mt-3 sm:mt-4 leading-relaxed font-light px-2">
             An immersive 3D perspective corridor streaming software architecture, visual designs, and growth campaigns continuously toward the viewer.
           </p>
         </div>
@@ -207,7 +207,7 @@ export default function InfiniteGallery3D() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center pb-8 sm:pb-10 mt-auto pt-12 sm:pt-16">
           <Link
             href="#portfolio-section"
-            className="inline-flex items-center justify-center gap-2 bg-[#FF8A00] hover:bg-[#FF8A00]/90 text-black font-sora font-bold text-xs sm:text-sm px-5 sm:px-6 py-2.5 sm:py-3 rounded-full transition-all transform hover:scale-105 shadow-xl shadow-[#FF8A00]/20 uppercase tracking-wider w-full xs:w-auto"
+            className="inline-flex items-center justify-center gap-2 bg-[#FF8A00] hover:bg-[#FF8A00]/90 text-black font-display font-bold text-xs sm:text-sm px-5 sm:px-6 py-2.5 sm:py-3 rounded-full transition-all transform hover:scale-105 shadow-xl shadow-[#FF8A00]/20 uppercase tracking-wider w-full xs:w-auto"
           >
             Explore All Works ↗
           </Link>

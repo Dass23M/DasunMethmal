@@ -201,13 +201,13 @@ export default function Contact() {
                                         className="object-cover"
                                     />
                                     <div className="absolute inset-0 bg-black/30" />
-                                    <span className="relative z-10 font-sora font-black text-black dark:text-white text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">
+                                    <span className="relative z-10 font-display font-black text-black dark:text-white text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">
                                         METHMAL®
                                     </span>
                                 </div>
 
                                 {/* Card Title */}
-                                <h3 className="font-sora font-bold text-center text-xl text-white mt-4 mb-4 tracking-tight">
+                                <h3 className="font-display font-bold text-center text-xl text-white mt-4 mb-4 tracking-tight">
                                     Reach Out to Me
                                 </h3>
 
@@ -323,7 +323,7 @@ export default function Contact() {
                                             <button
                                                 type="submit"
                                                 disabled={submitting}
-                                                className="w-full bg-[#FF8A00] text-black font-sora font-extrabold tracking-widest text-xs uppercase py-4 rounded-xl hover:shadow-[0_0_20px_rgba(255,138,0,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed group relative overflow-hidden"
+                                                className="w-full bg-[#FF8A00] text-black font-display font-extrabold tracking-widest text-xs uppercase py-4 rounded-xl hover:shadow-[0_0_20px_rgba(255,138,0,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed group relative overflow-hidden"
                                             >
                                                 {submitting ? (
                                                     <>
@@ -353,7 +353,7 @@ export default function Contact() {
                                             </svg>
                                         </div>
                                         <div>
-                                            <h4 className="font-sora font-bold text-lg text-white mb-1">Thank You!</h4>
+                                            <h4 className="font-display font-bold text-lg text-white mb-1">Thank You!</h4>
                                             <p className="text-xs text-gray-400 max-w-[280px] leading-relaxed">
                                                 {statusMessage || 'Your message has been sent successfully. I will get back to you soon!'}
                                             </p>
@@ -382,7 +382,7 @@ export default function Contact() {
                                 </div>
 
                                 {/* Giant Headline */}
-                                <h2 className="font-sora font-black text-black dark:text-white uppercase tracking-tight leading-[0.95] text-[clamp(2.5rem,6.5vw,5.5rem)] text-left drop-shadow-lg">
+                                <h2 className="font-display font-black text-black dark:text-white uppercase tracking-tight leading-[0.95] text-[clamp(2.5rem,6.5vw,5.5rem)] text-left drop-shadow-lg">
                                     LET’S CREATE <br />
                                     TOGETHER
                                 </h2>
@@ -392,7 +392,7 @@ export default function Contact() {
                             <div className="flex items-start gap-4 max-w-[440px] pt-4">
                                 <span className="text-[#FF8A00] text-xl mt-1 flex-shrink-0 animate-pulse">✦</span>
                                 <div>
-                                    <h4 className="font-sora font-bold uppercase text-black dark:text-white tracking-wider text-sm sm:text-base mb-2">
+                                    <h4 className="font-display font-bold uppercase text-black dark:text-white tracking-wider text-sm sm:text-base mb-2">
                                         RESULTS-DRIVEN SOLUTIONS
                                     </h4>
                                     <p className="text-black dark:text-gray-300 text-xs sm:text-sm leading-relaxed font-normal">

@@ -88,14 +88,14 @@ export default function Testimonials() {
       {/* ─── HEADER SECTION ─── */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 mb-6 sm:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-8">
         <div>
-          <span className="font-sora font-bold text-xs uppercase tracking-widest text-[#FF8A00] mb-2 block">
+          <span className="font-display font-bold text-xs uppercase tracking-widest text-[#FF8A00] mb-2 block">
             {"// TESTIMONIALS"}
           </span>
-          <h2 className="font-sora font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-black dark:text-white tracking-tight leading-tight">
+          <h2 className="font-display font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-black dark:text-white tracking-tight leading-tight">
             Trusted Brands Worldwide
           </h2>
         </div>
-        <p className="font-inter text-xs sm:text-sm md:text-base text-black/70 dark:text-white/70 max-w-md leading-relaxed">
+        <p className="font-body text-xs sm:text-sm md:text-base text-black/70 dark:text-white/70 max-w-md leading-relaxed">
           We build the next in digital experiences. From strategy to design, development to retention, we&apos;ve got you covered. 2+ years of experience, 10+ projects launched.
         </p>
       </div>
@@ -118,20 +118,20 @@ export default function Testimonials() {
                   {/* Brand Logo Tag */}
                   <div className="flex items-center gap-2 mb-2.5 sm:mb-4">
                     <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#FF8A00] transition-transform duration-300 group-hover:scale-125" />
-                    <span className="font-sora font-bold text-sm sm:text-base md:text-lg text-black dark:text-white tracking-tight">
+                    <span className="font-display font-bold text-sm sm:text-base md:text-lg text-black dark:text-white tracking-tight">
                       {card.brand}
                     </span>
                   </div>
 
                   {/* Quote */}
-                  <blockquote className="font-inter text-xs xs:text-sm sm:text-base text-black/90 dark:text-gray-300 leading-snug sm:leading-relaxed mb-3 sm:mb-8 font-normal">
+                  <blockquote className="font-body text-xs xs:text-sm sm:text-base text-black/90 dark:text-gray-300 leading-snug sm:leading-relaxed mb-3 sm:mb-8 font-normal">
                     &ldquo;{card.quote}&rdquo;
                   </blockquote>
                 </div>
 
                 {/* Author Info */}
                 <div>
-                  <h3 className="font-sora font-bold text-xs sm:text-base md:text-lg text-black dark:text-white leading-tight flex items-center gap-2">
+                  <h3 className="font-display font-bold text-xs sm:text-base md:text-lg text-black dark:text-white leading-tight flex items-center gap-2">
                     {card.name}
                     {card.linkedin && (
                       <a href={card.linkedin} target="_blank" rel="noopener noreferrer" className="text-[#0A66C2] hover:opacity-80 transition-opacity">
@@ -141,10 +141,10 @@ export default function Testimonials() {
                       </a>
                     )}
                   </h3>
-                  <p className="font-inter text-[10px] sm:text-sm text-black/70 dark:text-[#A0A0A0] font-medium mt-0.5">
+                  <p className="font-body text-[10px] sm:text-sm text-black/70 dark:text-[#A0A0A0] font-medium mt-0.5">
                     {card.position}
                   </p>
-                  <p className="font-inter text-[9px] sm:text-xs text-black/40 dark:text-white/40 mt-0.5">
+                  <p className="font-body text-[9px] sm:text-xs text-black/40 dark:text-white/40 mt-0.5">
                     {card.location}
                   </p>
                 </div>

@@ -181,7 +181,7 @@ export default function Hero() {
             EST. 2023
           </p>
 
-          <h1 className="hero-headline z-20 text-black dark:text-white relative font-sora font-extrabold text-center tracking-tight sm:tracking-[-6px] md:tracking-[-12px] xl:tracking-[-0.8rem] text-3xl xs:text-4xl sm:text-6xl md:text-8xl xl:text-[9.5rem] leading-none uppercase select-none drop-shadow-2xl">
+          <h1 className="hero-headline z-20 text-black dark:text-white relative font-display font-extrabold text-left tracking-tight sm:tracking-[-6px] md:tracking-[-12px] xl:tracking-[-0.8rem] text-3xl xs:text-4xl sm:text-6xl md:text-8xl xl:text-[9.5rem] leading-none uppercase select-none drop-shadow-2xl max-w-6xl">
             CREATIVE ENGINEER
           </h1>
 
@@ -199,7 +199,7 @@ export default function Hero() {
         <div className="grid relative mt-12 sm:mt-20 md:mt-24">
           <div className="space-y-8 pt-4 sm:pt-8 flex gap-6 justify-center">
             <div className="hero-discipline-card flex flex-col sm:flex-row gap-6 bg-white/5 dark:bg-[#121212]/50 backdrop-blur-xl border border-black/10 dark:border-white/5 rounded-2xl w-full max-w-2xl h-fit p-6 sm:p-8 md:p-10 items-start sm:items-end justify-between shadow-2xl">
-              <div className="font-sora font-semibold text-base sm:text-xl md:text-2xl space-y-2 text-black/90 dark:text-white/90">
+              <div className="font-display font-semibold text-base sm:text-xl md:text-2xl space-y-2 text-black/90 dark:text-white/90">
                 <div className="hover:text-[#FF8A00] transition-colors cursor-default">/ FULLSTACK DEVELOPMENT</div>
                 <div className="hover:text-[#FF8A00] transition-colors cursor-default">/ WEB DESIGN (UX/UI)</div>
                 <div className="hover:text-[#FF8A00] transition-colors cursor-default">/ DIGITAL MARKETING &amp; SEO</div>
@@ -234,8 +234,8 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="hero-bio mt-12 sm:mt-20 md:mt-32">
-          <p className="mx-auto max-w-2xl font-mono text-center text-xs sm:text-sm md:text-base font-medium tracking-wide text-black/80 dark:text-gray-300 leading-relaxed uppercase px-2">
+        <div className="hero-bio mt-12 sm:mt-24 md:mt-40 max-w-2xl ml-0">
+          <p className="font-mono text-left text-xs sm:text-sm md:text-base font-medium tracking-wide text-black/80 dark:text-gray-300 leading-relaxed uppercase px-2">
             I&apos;M AN EXPERIENCED FULLSTACK ENGINEER &amp; DIGITAL MARKETER,
             <br className="hidden xs:block" />
             WHO CRAFTS MEMORABLE HIGH-PERFORMANCE WEB EXPERIENCES
@@ -244,11 +244,11 @@ export default function Hero() {
           </p>
         </div>
 
-        <div className="hero-cta-btn flex flex-row flex-wrap justify-center gap-5 pt-8 sm:pt-10">
+        <div className="hero-cta-btn flex flex-row flex-wrap justify-start gap-5 pt-8 sm:pt-10 px-2">
           <a
             href="#contact-section"
             onClick={handleSmoothScroll('#contact-section')}
-            className="group relative inline-flex items-center justify-center gap-2 bg-[#FF8A00] text-black font-sora font-bold text-sm px-8 py-3 rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,138,0,0.6)] w-auto overflow-hidden"
+            className="group relative inline-flex items-center justify-center gap-2 bg-[#FF8A00] text-black font-display font-bold text-sm px-8 py-3 rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,138,0,0.6)] w-auto overflow-hidden"
           >
             <span className="relative z-10 flex items-center gap-2">
               Book a Call
@@ -276,7 +276,7 @@ export default function Hero() {
             download
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center justify-center gap-2 bg-transparent border border-black/20 dark:border-white/20 hover:border-[#FF8A00] dark:hover:border-[#FF8A00] text-black dark:text-white font-sora font-bold text-sm px-8 py-3 rounded-full transition-all duration-300 hover:scale-[1.02] hover:bg-[#FF8A00]/5 w-auto"
+            className="group inline-flex items-center justify-center gap-2 bg-transparent border border-black/20 dark:border-white/20 hover:border-[#FF8A00] dark:hover:border-[#FF8A00] text-black dark:text-white font-display font-bold text-sm px-8 py-3 rounded-full transition-all duration-300 hover:scale-[1.02] hover:bg-[#FF8A00]/5 w-auto"
           >
             Download CV
             <svg
@@ -352,7 +352,7 @@ export default function Hero() {
             </a>
 
             <div className="mt-2">
-              <h2 className="text-2xl sm:text-4xl md:text-5xl font-sora font-extrabold uppercase tracking-tight text-black dark:text-white">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-extrabold uppercase tracking-tight text-black dark:text-white">
                 DESIGN WITHOUT <span className="text-[#FF8A00]">LIMITS</span>
               </h2>
             </div>

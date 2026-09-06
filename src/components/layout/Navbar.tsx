@@ -140,7 +140,7 @@ export default function Navbar() {
         <div className="absolute left-1/2 -translate-x-1/2 z-[99]">
           <Link
             href="/"
-            className="font-sora text-[1.7rem] font-bold no-underline text-black dark:text-white transition-colors duration-300"
+            className="font-display text-[1.7rem] font-bold no-underline text-black dark:text-white transition-colors duration-300"
           >
             METHMAL<span className="text-[#FF8A00]">.</span>
           </Link>

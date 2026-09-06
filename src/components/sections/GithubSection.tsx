@@ -27,13 +27,13 @@ export default function GithubSection() {
               <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse" />
               <span>{"// CODE & OPEN SOURCE"}</span>
             </div>
-            <h2 className="font-sora font-extrabold text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-black dark:text-white tracking-tight uppercase leading-tight">
+            <h2 className="font-display font-extrabold text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-black dark:text-white tracking-tight uppercase leading-tight">
               GitHub <span className="text-[#FF6B00]">Activity</span>
             </h2>
           </div>
 
           <div className="max-w-md">
-            <p className="font-inter text-xs sm:text-sm md:text-base text-black/70 dark:text-white/70 leading-relaxed mb-4">
+            <p className="font-body text-xs sm:text-sm md:text-base text-black/70 dark:text-white/70 leading-relaxed mb-4">
               Real-time contribution graph, commits, and open-source code activity tracked directly from my GitHub profile.
             </p>
             <a

@@ -14,10 +14,10 @@ export default function Footer() {
 
                     {/* Column 1: Pages */}
                     <div className="flex flex-col items-center md:items-start text-center md:text-left">
-                        <h3 className="font-sora font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
+                        <h3 className="font-display font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
                             Pages
                         </h3>
-                        <ul className="space-y-3 font-inter text-sm text-gray-700 font-medium">
+                        <ul className="space-y-3 font-body text-sm text-gray-700 font-medium">
                             <li>
                                 <Link href="/" className="hover:text-[#FF6B00] transition-colors">
                                     Home
@@ -43,15 +43,15 @@ export default function Footer() {
 
                     {/* Column 2: Follow Us */}
                     <div className="flex flex-col items-center text-center">
-                        <h3 className="font-sora font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
+                        <h3 className="font-display font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
                             Follow Us
                         </h3>
-                        <p className="font-inter text-sm text-gray-700 font-medium mb-1">
+                        <p className="font-body text-sm text-gray-700 font-medium mb-1">
                             <a href="mailto:methmal.liyanage23@gmail.com" className="hover:text-[#FF6B00] transition-colors">
                                 methmal.liyanage23@gmail.com
                             </a>
                         </p>
-                        <p className="font-inter text-sm text-gray-700 font-medium mb-6">
+                        <p className="font-body text-sm text-gray-700 font-medium mb-6">
                             <a href="tel:+94703056192" className="hover:text-[#FF6B00] transition-colors">
                                 +94 70 3056 192
                             </a>
@@ -108,10 +108,10 @@ export default function Footer() {
 
                     {/* Column 3: Address */}
                     <div className="flex flex-col items-center md:items-end text-center md:text-right">
-                        <h3 className="font-sora font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
+                        <h3 className="font-display font-bold text-base md:text-lg text-black mb-6 tracking-tight uppercase">
                             Address
                         </h3>
-                        <address className="not-italic font-inter text-sm text-gray-700 font-medium space-y-1">
+                        <address className="not-italic font-body text-sm text-gray-700 font-medium space-y-1">
                             <p>Colombo,</p>
                             <p>Sri Lanka</p>
                         </address>
@@ -132,7 +132,7 @@ export default function Footer() {
                             href="https://www.linkedin.com/in/dasun-methmal-607333230?utm_source=share_via&utm_content=profile&utm_medium=member_android"
                             target="_blank"
                             rel="noreferrer"
-                            className="px-6 py-2.5 rounded-full border border-white/80 text-black dark:text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
+                            className="px-6 py-2.5 rounded-full border border-white/80 text-black dark:text-white font-display font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
                         >
                             LinkedIn
                         </a>
@@ -140,7 +140,7 @@ export default function Footer() {
                             href="https://www.instagram.com/_dase23_?igsh=bDJjeDJmMjI0bWFm"
                             target="_blank"
                             rel="noreferrer"
-                            className="px-6 py-2.5 rounded-full border border-white/80 text-black dark:text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
+                            className="px-6 py-2.5 rounded-full border border-white/80 text-black dark:text-white font-display font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
                         >
                             Instagram
                         </a>
@@ -178,7 +178,7 @@ export default function Footer() {
                             href="https://www.facebook.com/share/19NZDkGEqc"
                             target="_blank"
                             rel="noreferrer"
-                            className="px-6 py-2.5 rounded-full border border-white/80 text-black dark:text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
+                            className="px-6 py-2.5 rounded-full border border-white/80 text-black dark:text-white font-display font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
                         >
                             Facebook
                         </a>
@@ -186,7 +186,7 @@ export default function Footer() {
                             href="https://www.tiktok.com/@dcode33?_r=1&_t=ZS-98n1Uw4x7iR"
                             target="_blank"
                             rel="noreferrer"
-                            className="px-6 py-2.5 rounded-full border border-white/80 text-black dark:text-white font-sora font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
+                            className="px-6 py-2.5 rounded-full border border-white/80 text-black dark:text-white font-display font-semibold text-xs tracking-wider uppercase hover:bg-white hover:text-black transition-all duration-300 shadow-sm"
                         >
                             TikTok
                         </a>
@@ -196,7 +196,7 @@ export default function Footer() {
 
                 {/* Giant Bottom Typography */}
                 <div className="w-full text-center mt-10 md:mt-14 overflow-hidden px-2">
-                    <div className="font-sora font-black text-black dark:text-white text-[15vw] sm:text-[17vw] lg:text-[18vw] leading-none tracking-tighter uppercase select-none opacity-95">
+                    <div className="font-display font-black text-black dark:text-white text-[15vw] sm:text-[17vw] lg:text-[18vw] leading-none tracking-tighter uppercase select-none opacity-95">
                         DASUN METHMAL
                     </div>
                 </div>

@@ -199,7 +199,7 @@ export default function About() {
     <section
       id="about-section"
       ref={containerRef}
-      className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white select-none relative overflow-hidden py-16 sm:py-24 font-inter"
+      className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white select-none relative overflow-hidden py-16 sm:py-24 font-body"
     >
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* ─── 1. TOP EDITORIAL SVG TITLE BANNER ─── */}
@@ -210,7 +210,7 @@ export default function About() {
           </div>
 
           <div className="relative w-full overflow-hidden">
-            <h2 className="font-sora font-bold text-3xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-black dark:text-white leading-none">
+            <h2 className="font-display font-bold text-3xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-black dark:text-white leading-none">
               METHMAL<span className="text-[#FF6B00]">.</span>
             </h2>
           </div>
@@ -250,14 +250,14 @@ export default function About() {
               <span className="font-mono text-xs font-bold text-[#FF6B00] tracking-widest uppercase block">
                 001 / PHILOSOPHY &amp; JOURNEY
               </span>
-              <p className="font-inter text-sm sm:text-base md:text-lg text-black dark:text-gray-300 leading-relaxed font-normal">
+              <p className="font-body text-sm sm:text-base md:text-lg text-black dark:text-gray-300 leading-relaxed font-normal">
                 I am a fullstack software engineer and digital marketer
                 exploring the intersection of modern web architecture and
                 creative growth strategy. Building digital solutions as a craft,
                 my work embodies the transformation of complex ideas into
                 seamless, production-grade applications.
               </p>
-              <p className="font-inter text-sm sm:text-base md:text-lg text-black/70 dark:text-[#A0A0A0] leading-relaxed font-normal">
+              <p className="font-body text-sm sm:text-base md:text-lg text-black/70 dark:text-[#A0A0A0] leading-relaxed font-normal">
                 Through deliberate practice and technical precision, I find that
                 clean code provides structure in times of uncertainty and offers
                 rare clarity when scaling user experiences. Each platform
@@ -277,12 +277,12 @@ export default function About() {
           >
             <button
               onClick={handleCopyEmail}
-              className="group relative px-10 py-4 rounded-full bg-[#FF8A00] text-black font-sora font-extrabold text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(255,138,0,0.4)] hover:shadow-[0_0_30px_rgba(255,138,0,0.6)] transition-all duration-300 hover:scale-105 overflow-hidden"
+              className="group relative px-10 py-4 rounded-full bg-[#FF8A00] text-black font-display font-extrabold text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(255,138,0,0.4)] hover:shadow-[0_0_30px_rgba(255,138,0,0.6)] transition-all duration-300 hover:scale-105 overflow-hidden"
             >
               <span className="relative z-10 block transition-transform duration-300 group-hover:-translate-y-full">
                 + GET IN TOUCH
               </span>
-              <span className="absolute inset-0 z-10 flex items-center justify-center translate-y-full transition-transform duration-300 group-hover:translate-y-0 text-white font-sora font-extrabold text-sm tracking-wider uppercase">
+              <span className="absolute inset-0 z-10 flex items-center justify-center translate-y-full transition-transform duration-300 group-hover:translate-y-0 text-white font-display font-extrabold text-sm tracking-wider uppercase">
                 SEND EMAIL
               </span>
               <div className="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
@@ -305,7 +305,7 @@ export default function About() {
 
           {/* Giant Bottom Display Text Wave */}
           <div className="w-full overflow-hidden">
-            <div className="flex items-center justify-center gap-4 sm:gap-8 font-sora font-black text-4xl sm:text-7xl md:text-8xl lg:text-[7rem] text-black dark:text-white/20 uppercase tracking-tighter">
+            <div className="flex items-center justify-center gap-4 sm:gap-8 font-display font-black text-4xl sm:text-7xl md:text-8xl lg:text-[7rem] text-black dark:text-white/20 uppercase tracking-tighter">
               <span className="footer-svg-path">CRAFT</span>
               <span className="footer-svg-path text-[#FF6B00]">•</span>
               <span className="footer-svg-path">VISION</span>

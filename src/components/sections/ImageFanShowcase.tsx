@@ -98,7 +98,7 @@ export default function ImageFanShowcase() {
     <section
       ref={sectionRef}
       id="capabilities-section"
-      className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white py-16 sm:py-24 select-none relative overflow-hidden font-inter"
+      className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white py-16 sm:py-24 select-none relative overflow-hidden font-body"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
@@ -106,16 +106,16 @@ export default function ImageFanShowcase() {
           <div>
             <div className="flex items-center gap-2.5 mb-3">
               <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00] animate-pulse" />
-              <span className="font-sora font-bold text-xs sm:text-sm tracking-widest text-[#FF6B00] uppercase">
+              <span className="font-display font-bold text-xs sm:text-sm tracking-widest text-[#FF6B00] uppercase">
                 {"// CORE CAPABILITIES & SERVICES"}
               </span>
             </div>
-            <h2 className="font-sora text-3xl sm:text-5xl lg:text-6xl font-extrabold text-black dark:text-white tracking-tight uppercase leading-none">
+            <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-black dark:text-white tracking-tight uppercase leading-none">
               EXPERTISE &amp; CRAFT<span className="text-[#FF6B00]">.</span>
             </h2>
           </div>
 
-          <p className="font-inter text-sm sm:text-base text-black/70 dark:text-white/70 max-w-md leading-relaxed font-normal">
+          <p className="font-body text-sm sm:text-base text-black/70 dark:text-white/70 max-w-md leading-relaxed font-normal">
             Delivering end-to-end digital solutions combining engineering precision, visual storytelling, and growth marketing.
           </p>
         </div>
@@ -145,7 +145,7 @@ export default function ImageFanShowcase() {
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: item.accent }} />
                 </div>
 
-                <h3 className="font-sora text-xl sm:text-2xl font-bold text-black dark:text-white leading-snug tracking-tight mb-3 transition-colors duration-300 group-hover:text-[#FF6B00]">
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-black dark:text-white leading-snug tracking-tight mb-3 transition-colors duration-300 group-hover:text-[#FF6B00]">
                   {item.header}
                 </h3>
 
@@ -181,7 +181,7 @@ export default function ImageFanShowcase() {
                 <Link
                   href="#contact-section"
                   style={{ backgroundColor: item.accent }}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-black font-sora font-extrabold text-xs tracking-wider uppercase shadow-lg transition-all duration-300 hover:brightness-110 hover:shadow-[0_8px_20px_rgba(255,107,0,0.3)]"
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-black font-display font-extrabold text-xs tracking-wider uppercase shadow-lg transition-all duration-300 hover:brightness-110 hover:shadow-[0_8px_20px_rgba(255,107,0,0.3)]"
                 >
                   <span>WORK WITH ME ↗</span>
                 </Link>

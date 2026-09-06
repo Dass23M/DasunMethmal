@@ -83,7 +83,7 @@ export default function LandoStyleSection() {
       <div className="relative z-30 w-full max-w-[1440px] mx-auto px-5 sm:px-10 flex items-center justify-between">
         {/* Left Brand Title */}
         <div className="flex items-center gap-2">
-          <span className="font-sora font-black text-xl sm:text-2xl tracking-tighter text-black dark:text-white uppercase">
+          <span className="font-display font-black text-xl sm:text-2xl tracking-tighter text-black dark:text-white uppercase">
             METHMAL<span className="text-[#FF6B00]">.</span>
           </span>
         </div>
@@ -96,20 +96,20 @@ export default function LandoStyleSection() {
         <div className="absolute inset-0 flex flex-col justify-center gap-4 sm:gap-6 overflow-hidden pointer-events-none opacity-85 select-none">
           {/* Row 1: Leftward Scrolling Giant Headline */}
           <div className="w-max flex whitespace-nowrap" ref={marquee1Ref}>
-            <span className="font-sora font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-[#FF6B00] leading-none pr-8">
+            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-[#FF6B00] leading-none pr-8">
               {marqueeText1}
             </span>
-            <span className="font-sora font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-[#FF6B00] leading-none pr-8">
+            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-[#FF6B00] leading-none pr-8">
               {marqueeText1}
             </span>
           </div>
 
           {/* Row 2: Rightward Scrolling Secondary Giant Headline */}
           <div className="w-max flex whitespace-nowrap" ref={marquee2Ref}>
-            <span className="font-sora font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-black dark:text-white leading-none pr-8 opacity-90">
+            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-black dark:text-white leading-none pr-8 opacity-90">
               {marqueeText2}
             </span>
-            <span className="font-sora font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-black dark:text-white leading-none pr-8 opacity-90">
+            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-black dark:text-white leading-none pr-8 opacity-90">
               {marqueeText2}
             </span>
           </div>
@@ -134,7 +134,7 @@ export default function LandoStyleSection() {
             {/* Bottom Card Title */}
             <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-black dark:text-white z-10">
               <div>
-                <p className="font-sora font-extrabold text-sm sm:text-base tracking-wide uppercase">
+                <p className="font-display font-extrabold text-sm sm:text-base tracking-wide uppercase">
                   METHMAL
                 </p>
                 <p className="font-mono text-[10px] sm:text-xs text-[#FF6B00] font-semibold">

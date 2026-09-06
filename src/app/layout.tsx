@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Sora, Inter } from 'next/font/google';
+import { Bricolage_Grotesque, IBM_Plex_Sans } from 'next/font/google';
 import './globals.css';
 
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
@@ -14,15 +14,16 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider';
 // Fonts
 // -----------------------------------------------------------------------------
 
-const sora = Sora({
+const display = Bricolage_Grotesque({
   subsets: ['latin'],
-  variable: '--font-sora',
+  variable: '--font-display',
   display: 'swap',
 });
 
-const inter = Inter({
+const body = IBM_Plex_Sans({
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-body',
   display: 'swap',
 });
 
@@ -305,7 +306,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${sora.variable} ${inter.variable} bg-black text-white font-sans`}
+        className={`${display.variable} ${body.variable} bg-black text-white font-sans`}
         style={{ '--font-mono': '"JetBrains Mono", monospace' } as React.CSSProperties}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">

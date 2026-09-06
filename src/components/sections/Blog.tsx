@@ -42,14 +42,14 @@ export default function Blog() {
         {/* Header Section */}
         <div className="mb-12 sm:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <span className="font-sora font-bold text-xs uppercase tracking-widest text-[#FF8A00] mb-3 block">
+            <span className="font-display font-bold text-xs uppercase tracking-widest text-[#FF8A00] mb-3 block">
               {"// THOUGHT LEADERSHIP"}
             </span>
-            <h2 className="font-sora font-black text-3xl sm:text-5xl md:text-6xl text-black dark:text-white tracking-tight leading-tight">
+            <h2 className="font-display font-black text-3xl sm:text-5xl md:text-6xl text-black dark:text-white tracking-tight leading-tight">
               Latest Insights
             </h2>
           </div>
-          <p className="font-inter text-sm sm:text-base text-black/70 dark:text-white/70 max-w-md leading-relaxed">
+          <p className="font-body text-sm sm:text-base text-black/70 dark:text-white/70 max-w-md leading-relaxed">
             Exploring the intersection of software engineering, digital marketing, and artificial intelligence.
           </p>
         </div>
@@ -72,7 +72,7 @@ export default function Blog() {
                   />
                   {/* Category Badge */}
                   <div className="absolute top-4 left-4 z-20 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-black/10 dark:border-white/10">
-                    <span className="font-sora text-[10px] font-bold text-[#FF8A00] uppercase tracking-wider">
+                    <span className="font-display text-[10px] font-bold text-[#FF8A00] uppercase tracking-wider">
                       {post.category}
                     </span>
                   </div>
@@ -83,15 +83,15 @@ export default function Blog() {
                   <div className="font-mono text-xs text-black/50 dark:text-white/50 mb-3 uppercase tracking-wider">
                     {post.date}
                   </div>
-                  <h3 className="font-sora font-bold text-xl sm:text-2xl text-black dark:text-white mb-3 group-hover:text-[#FF8A00] transition-colors line-clamp-2">
+                  <h3 className="font-display font-bold text-xl sm:text-2xl text-black dark:text-white mb-3 group-hover:text-[#FF8A00] transition-colors line-clamp-2">
                     {post.title}
                   </h3>
-                  <p className="font-inter text-sm text-black/70 dark:text-white/70 leading-relaxed mb-6 line-clamp-3 flex-1">
+                  <p className="font-body text-sm text-black/70 dark:text-white/70 leading-relaxed mb-6 line-clamp-3 flex-1">
                     {post.excerpt}
                   </p>
                   
                   {/* Read More Link */}
-                  <div className="flex items-center gap-2 mt-auto text-[#FF8A00] font-sora font-semibold text-sm">
+                  <div className="flex items-center gap-2 mt-auto text-[#FF8A00] font-display font-semibold text-sm">
                     Read Article
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

@@ -122,7 +122,7 @@ export default function RandomTextReveal() {
     >
       <h3
         ref={textRef}
-        className="font-sora text-black dark:text-white text-xl sm:text-3xl md:text-4xl lg:text-[2.4rem] font-medium leading-[1.38] tracking-tight max-w-[42ch] text-center px-5 sm:px-8 md:px-12"
+        className="font-display text-black dark:text-white text-xl sm:text-3xl md:text-4xl lg:text-[2.4rem] font-medium leading-[1.38] tracking-tight max-w-[42ch] text-center px-5 sm:px-8 md:px-12"
       >
         {textContent}
       </h3>

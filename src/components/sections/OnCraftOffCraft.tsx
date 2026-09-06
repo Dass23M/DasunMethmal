@@ -179,10 +179,10 @@ export default function OnCraftOffCraft() {
           <div className="flex flex-col items-center md:items-start group">
             {/* Giant Stacked Title */}
             <div className="relative mb-4">
-              <span className="font-sora font-light text-5xl sm:text-6xl lg:text-7xl tracking-tight text-black dark:text-white block leading-none">
+              <span className="font-display font-light text-5xl sm:text-6xl lg:text-7xl tracking-tight text-black dark:text-white block leading-none">
                 ON
               </span>
-              <span className="font-sora font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter text-black dark:text-white block leading-none mt-1">
+              <span className="font-display font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter text-black dark:text-white block leading-none mt-1">
                 CRAFT
               </span>
 
@@ -205,7 +205,7 @@ export default function OnCraftOffCraft() {
             </div>
 
             {/* Description */}
-            <p className="font-inter text-xs sm:text-sm md:text-base text-black dark:text-white/75 font-medium leading-relaxed max-w-sm mb-6">
+            <p className="font-body text-xs sm:text-sm md:text-base text-black dark:text-white/75 font-medium leading-relaxed max-w-sm mb-6">
               Fullstack web development, custom Next.js applications, 3D interactive interfaces, and production architecture.
             </p>
 
@@ -223,16 +223,16 @@ export default function OnCraftOffCraft() {
           <div className="flex flex-col items-center md:items-start group">
             {/* Giant Stacked Title */}
             <div className="relative mb-4">
-              <span className="font-sora font-light text-5xl sm:text-6xl lg:text-7xl tracking-tight text-black dark:text-white block leading-none">
+              <span className="font-display font-light text-5xl sm:text-6xl lg:text-7xl tracking-tight text-black dark:text-white block leading-none">
                 OFF
               </span>
-              <span className="font-sora font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter text-black dark:text-white block leading-none mt-1">
+              <span className="font-display font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter text-black dark:text-white block leading-none mt-1">
                 CRAFT
               </span>
             </div>
 
             {/* Description */}
-            <p className="font-inter text-xs sm:text-sm md:text-base text-black dark:text-white/75 font-medium leading-relaxed max-w-sm mb-6">
+            <p className="font-body text-xs sm:text-sm md:text-base text-black dark:text-white/75 font-medium leading-relaxed max-w-sm mb-6">
               Data-driven growth marketing, SEO strategies, social media campaigns, visual branding, and content creation.
             </p>
 

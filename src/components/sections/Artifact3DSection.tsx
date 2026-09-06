@@ -335,7 +335,7 @@ export default function Artifact3DSection() {
     <div
       ref={containerRef}
       id="artifact-3d-section"
-      className="relative w-full bg-[#000000] text-black dark:text-white font-inter select-none"
+      className="relative w-full bg-[#000000] text-black dark:text-white font-body select-none"
     >
       {/* ── FIXED CANVAS ── */}
       <canvas
@@ -396,13 +396,13 @@ export default function Artifact3DSection() {
               Full-Stack Developer &amp; Digital Marketer
             </p>
 
-            <h2 className="art-hero-title font-sora font-extrabold text-[clamp(2.4rem,6.5vw,7rem)] uppercase leading-[0.9] tracking-[-0.025em] text-black dark:text-white opacity-0 translate-y-8">
+            <h2 className="art-hero-title font-display font-extrabold text-[clamp(2.4rem,6.5vw,7rem)] uppercase leading-[0.9] tracking-[-0.025em] text-black dark:text-white opacity-0 translate-y-8">
               Craft.&nbsp;Code.<br />
               <span className="text-[#FF8C00]">Convert.</span>
             </h2>
 
             <div className="art-hero-meta text-center opacity-0 translate-y-5 mt-6 max-w-[42ch] mx-auto">
-              <p className="font-inter text-[11px] text-black dark:text-white/55 leading-[1.75]">
+              <p className="font-body text-[11px] text-black dark:text-white/55 leading-[1.75]">
                 I design and engineer digital products that look stunning and&nbsp;perform at scale —
                 then drive real traffic, leads and revenue through data-backed marketing systems.
               </p>
@@ -417,7 +417,7 @@ export default function Artifact3DSection() {
                 { val: '5⭑', lbl: 'Client Rating' },
               ].map((k) => (
                 <div key={k.lbl} className="bg-white/[0.03] px-4 py-4 text-center">
-                  <div className="font-sora font-extrabold text-[1.4rem] text-[#FF8C00] leading-none">{k.val}</div>
+                  <div className="font-display font-extrabold text-[1.4rem] text-[#FF8C00] leading-none">{k.val}</div>
                   <div className="font-mono text-[8px] uppercase tracking-[0.18em] text-black dark:text-white/35 mt-1">{k.lbl}</div>
                 </div>
               ))}
@@ -464,10 +464,10 @@ export default function Artifact3DSection() {
             <p className="sec-tag font-mono text-[9px] tracking-[0.28em] uppercase text-[#FF8C00] mb-4 opacity-0 translate-y-4">
               {'// Technical Expertise'}
             </p>
-            <h2 className="sec-h2 font-sora font-bold text-[clamp(2rem,3.8vw,3.4rem)] leading-[1.0] tracking-[-0.03em] mb-5 opacity-0 translate-y-6">
+            <h2 className="sec-h2 font-display font-bold text-[clamp(2rem,3.8vw,3.4rem)] leading-[1.0] tracking-[-0.03em] mb-5 opacity-0 translate-y-6">
               Two disciplines.<br />One workflow.
             </h2>
-            <p className="sec-body font-inter text-[11px] leading-[1.85] text-black/50 dark:text-white/50 max-w-[38ch] mb-8 opacity-0 translate-y-4">
+            <p className="sec-body font-body text-[11px] leading-[1.85] text-black/50 dark:text-white/50 max-w-[38ch] mb-8 opacity-0 translate-y-4">
               From component architecture to paid media optimisation — I operate across the full
               stack of digital growth. Every pixel is intentional; every campaign is measurable.
             </p>
@@ -524,7 +524,7 @@ export default function Artifact3DSection() {
                 { val: '2yr+', lbl: 'Experience' },
               ].map((s) => (
                 <div key={s.lbl}>
-                  <div className="font-sora font-extrabold text-[1.55rem] text-[#FF8C00] leading-none">{s.val}</div>
+                  <div className="font-display font-extrabold text-[1.55rem] text-[#FF8C00] leading-none">{s.val}</div>
                   <div className="font-mono text-[7.5px] tracking-[0.18em] uppercase text-black dark:text-white/30 mt-1">{s.lbl}</div>
                 </div>
               ))}
@@ -549,11 +549,11 @@ export default function Artifact3DSection() {
             <p className="sec-tag font-mono text-[9px] tracking-[0.28em] uppercase text-[#FF8C00] mb-3 opacity-0 translate-y-4">
               {'// Global Reach'}
             </p>
-            <h2 className="sec-h2 font-sora font-bold text-[clamp(2rem,4vw,3.6rem)] leading-[1.0] tracking-[-0.03em] opacity-0 translate-y-6">
+            <h2 className="sec-h2 font-display font-bold text-[clamp(2rem,4vw,3.6rem)] leading-[1.0] tracking-[-0.03em] opacity-0 translate-y-6">
               Delivered across<br />
               <span className="text-[#FF8C00]">4 countries.</span>
             </h2>
-            <p className="sec-h2 font-inter text-[11px] text-black dark:text-white/45 leading-[1.8] mt-4 max-w-[44ch] opacity-0 translate-y-6">
+            <p className="sec-h2 font-body text-[11px] text-black dark:text-white/45 leading-[1.8] mt-4 max-w-[44ch] opacity-0 translate-y-6">
               From Sri Lanka to Europe and beyond — I&apos;ve partnered with clients across multiple
               continents, delivering web and marketing solutions that drive measurable growth.
             </p>
@@ -646,7 +646,7 @@ export default function Artifact3DSection() {
 
                       {/* Bottom Info Text */}
                       <div className="absolute bottom-2.5 left-2.5 right-2.5 z-10">
-                        <div className="font-sora font-bold text-[10px] sm:text-[11.5px] text-black dark:text-white leading-tight drop-shadow-sm group-hover:text-[#FF8C00] transition-colors duration-300">
+                        <div className="font-display font-bold text-[10px] sm:text-[11.5px] text-black dark:text-white leading-tight drop-shadow-sm group-hover:text-[#FF8C00] transition-colors duration-300">
                           {item.name}
                         </div>
                       </div>
@@ -663,7 +663,7 @@ export default function Artifact3DSection() {
           <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <Link
               href="#contact-section"
-              className="inline-flex items-center gap-2 bg-[#FF8C00] text-black font-sora font-extrabold text-[10px] px-6 py-3 rounded-full uppercase tracking-wider hover:bg-white transition-all duration-300 shadow-[0_0_24px_rgba(255,140,0,0.35)]"
+              className="inline-flex items-center gap-2 bg-[#FF8C00] text-black font-display font-extrabold text-[10px] px-6 py-3 rounded-full uppercase tracking-wider hover:bg-white transition-all duration-300 shadow-[0_0_24px_rgba(255,140,0,0.35)]"
             >
               <span>Start a Project</span>
               <span>↗</span>

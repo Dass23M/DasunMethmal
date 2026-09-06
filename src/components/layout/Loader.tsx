@@ -86,12 +86,12 @@ export default function Loader() {
     <div
       ref={overlayRef}
       id="site-preloader"
-      className="fixed inset-0 z-[9999] bg-white dark:bg-[#080808] flex flex-col items-center justify-center overflow-hidden select-none font-sora"
+      className="fixed inset-0 z-[9999] bg-white dark:bg-[#080808] flex flex-col items-center justify-center overflow-hidden select-none font-display"
     >
       <div ref={textContainerRef} className="flex flex-col items-center justify-center relative">
         <h1
           ref={nameRef}
-          className="font-sora font-black text-2xl sm:text-3xl md:text-4xl tracking-[0.3em] uppercase text-black dark:text-white mb-6"
+          className="font-display font-black text-2xl sm:text-3xl md:text-4xl tracking-[0.3em] uppercase text-black dark:text-white mb-6"
         >
           METHMAL<span className="text-[#FF8A00]">.</span>
         </h1>

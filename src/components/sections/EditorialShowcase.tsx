@@ -73,14 +73,14 @@ export default function EditorialShowcase() {
             </div>
 
             {/* Giant Sora Headline */}
-            <h2 className="font-sora font-extrabold text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-black dark:text-white leading-none drop-shadow-2xl">
+            <h2 className="font-display font-extrabold text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-black dark:text-white leading-none drop-shadow-2xl">
               MARKETING<span className="text-[#FF6B00]">.</span>
             </h2>
           </div>
 
           {/* Floating Information Paragraph */}
           <div className="max-w-3xl">
-            <p className="font-inter text-sm sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed sm:leading-relaxed text-black/90 dark:text-white/90 drop-shadow-md">
+            <p className="font-body text-sm sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed sm:leading-relaxed text-black/90 dark:text-white/90 drop-shadow-md">
               Combining creative visual engineering with data-backed digital strategies. I engineer targeted social media campaigns, search engine optimization, and high-converting visual assets that scale brands and capture customer engagement.
             </p>
           </div>

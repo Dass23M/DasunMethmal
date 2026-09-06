@@ -305,10 +305,10 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${sora.variable} ${inter.variable} bg-white dark:bg-black text-black dark:text-white transition-colors duration-300 font-sans`}
+        className={`${sora.variable} ${inter.variable} bg-black text-white font-sans`}
         style={{ '--font-mono': '"JetBrains Mono", monospace' } as React.CSSProperties}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
           <SmoothScrollProvider>
             <LenisBackgroundCanvas />
             <GSAPSectionAnimator>

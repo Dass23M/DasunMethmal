@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
-import ThemeToggle from '@/components/ui/ThemeToggle';
 
 /**
  * Site navigation bar matching Unfold template layout.
@@ -161,9 +160,6 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          <div className="ml-4">
-            <ThemeToggle />
-          </div>
         </div>
 
         {/* Mobile menu toggle (Left) */}
@@ -177,10 +173,6 @@ export default function Navbar() {
           </a>
         </div>
 
-        {/* Mobile Theme Toggle (Right) */}
-        <div className="flex lg:hidden ml-auto">
-          <ThemeToggle />
-        </div>
       </div>
     </motion.nav>
   );

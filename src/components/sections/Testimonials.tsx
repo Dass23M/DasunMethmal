@@ -88,7 +88,7 @@ export default function Testimonials() {
       {/* ─── HEADER SECTION ─── */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 mb-6 sm:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-8">
         <div>
-          <span className="font-sora font-bold text-xs uppercase tracking-widest text-[#FF6B00] mb-2 block">
+          <span className="font-sora font-bold text-xs uppercase tracking-widest text-[#FF8A00] mb-2 block">
             {"// TESTIMONIALS"}
           </span>
           <h2 className="font-sora font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-black dark:text-white tracking-tight leading-tight">
@@ -110,21 +110,21 @@ export default function Testimonials() {
           {slides.map((card, idx) => (
             <div
               key={`${card.id}-${idx}`}
-              className="w-[78vw] xs:w-[82vw] sm:w-[620px] md:w-[740px] shrink-0 bg-white dark:bg-[#121212] rounded-[20px] sm:rounded-[32px] p-4 xs:p-5 sm:p-8 flex flex-col md:flex-row gap-3.5 sm:gap-8 items-center border border-black/10 dark:border-white/10 shadow-sm transition-all duration-300 hover:shadow-md hover:border-black/20 dark:border-white/20"
+              className="w-[78vw] xs:w-[82vw] sm:w-[620px] md:w-[740px] shrink-0 bg-white dark:bg-[#121212]/50 backdrop-blur-xl rounded-[20px] sm:rounded-[32px] p-4 xs:p-5 sm:p-8 flex flex-col md:flex-row gap-3.5 sm:gap-8 items-center border border-black/10 dark:border-white/5 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:border-black/20 dark:hover:border-white/10 group"
             >
               {/* Text Info Container */}
               <div className="flex-1 flex flex-col justify-between h-full text-left w-full">
                 <div>
                   {/* Brand Logo Tag */}
                   <div className="flex items-center gap-2 mb-2.5 sm:mb-4">
-                    <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#FF6B00]" />
+                    <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#FF8A00] transition-transform duration-300 group-hover:scale-125" />
                     <span className="font-sora font-bold text-sm sm:text-base md:text-lg text-black dark:text-white tracking-tight">
                       {card.brand}
                     </span>
                   </div>
 
                   {/* Quote */}
-                  <blockquote className="font-inter text-xs xs:text-sm sm:text-base text-black/90 dark:text-white/90 leading-snug sm:leading-relaxed mb-3 sm:mb-8 font-normal">
+                  <blockquote className="font-inter text-xs xs:text-sm sm:text-base text-black/90 dark:text-gray-300 leading-snug sm:leading-relaxed mb-3 sm:mb-8 font-normal">
                     &ldquo;{card.quote}&rdquo;
                   </blockquote>
                 </div>
@@ -141,7 +141,7 @@ export default function Testimonials() {
                       </a>
                     )}
                   </h3>
-                  <p className="font-inter text-[10px] sm:text-sm text-black/70 dark:text-white/70 font-medium mt-0.5">
+                  <p className="font-inter text-[10px] sm:text-sm text-black/70 dark:text-[#A0A0A0] font-medium mt-0.5">
                     {card.position}
                   </p>
                   <p className="font-inter text-[9px] sm:text-xs text-black/40 dark:text-white/40 mt-0.5">
@@ -151,7 +151,7 @@ export default function Testimonials() {
               </div>
 
               {/* Portrait Image Side */}
-              <div className="w-full md:w-[250px] lg:w-[280px] h-[140px] xs:h-[160px] sm:h-[300px] shrink-0 relative rounded-lg sm:rounded-2xl overflow-hidden border border-black/10 dark:border-white/10">
+              <div className="w-full md:w-[250px] lg:w-[280px] h-[140px] xs:h-[160px] sm:h-[300px] shrink-0 relative rounded-lg sm:rounded-2xl overflow-hidden border border-black/10 dark:border-white/5">
                 <Image
                   src={card.image}
                   alt={card.name}

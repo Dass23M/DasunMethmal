@@ -30,28 +30,28 @@ export default function Hero() {
         gsap.fromTo(
           '.hero-year-badge',
           { opacity: 0, y: -25 },
-          { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.6 }
+          { opacity: 1, y: 0, duration: 1.0, ease: 'expo.out', delay: 0.6 }
         );
 
         // 3. Giant Headline 3D Perspective Reveal
         gsap.fromTo(
           '.hero-headline',
           { opacity: 0, y: 45, rotateX: 18, transformOrigin: 'top center' },
-          { opacity: 1, y: 0, rotateX: 0, duration: 1.1, ease: 'power3.out', delay: 0.75 }
+          { opacity: 1, y: 0, rotateX: 0, duration: 1.2, ease: 'expo.out', delay: 0.75 }
         );
 
         // 4. Name Tag Fade & Letter Spacing Expansion
         gsap.fromTo(
           '.hero-name-tag',
           { opacity: 0, y: 15 },
-          { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', delay: 0.9 }
+          { opacity: 1, y: 0, duration: 1.0, ease: 'expo.out', delay: 0.9 }
         );
 
         // 5. Discipline Box Scale & Float In
         gsap.fromTo(
           '.hero-discipline-card',
-          { opacity: 0, scale: 0.93, y: 35 },
-          { opacity: 1, scale: 1, y: 0, duration: 0.9, ease: 'power3.out', delay: 1.05 }
+          { opacity: 0, scale: 0.95, y: 35 },
+          { opacity: 1, scale: 1, y: 0, duration: 1.2, ease: 'expo.out', delay: 1.05 }
         );
 
         // 6. Robot Portrait 3D Rotation & Pop
@@ -65,7 +65,7 @@ export default function Hero() {
         gsap.fromTo(
           '.hero-bio',
           { opacity: 0, y: 25 },
-          { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 1.35 }
+          { opacity: 1, y: 0, duration: 1.0, ease: 'expo.out', delay: 1.35 }
         );
 
         // 8. Call to Action Button Pop
@@ -79,7 +79,7 @@ export default function Hero() {
         gsap.fromTo(
           '.hero-recent-works',
           { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', delay: 1.65 }
+          { opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', delay: 1.65 }
         );
       }, heroRef);
     });
@@ -198,7 +198,7 @@ export default function Hero() {
         {/* Disciplines & Portrait Grid */}
         <div className="grid relative mt-12 sm:mt-20 md:mt-24">
           <div className="space-y-8 pt-4 sm:pt-8 flex gap-6 justify-center">
-            <div className="hero-discipline-card flex flex-col sm:flex-row gap-6 bg-white dark:bg-[#121212] border border-black/10 dark:border-white/10 rounded-2xl w-full max-w-2xl h-fit p-6 sm:p-8 md:p-10 items-start sm:items-end justify-between shadow-2xl">
+            <div className="hero-discipline-card flex flex-col sm:flex-row gap-6 bg-white/5 dark:bg-[#121212]/50 backdrop-blur-xl border border-black/10 dark:border-white/5 rounded-2xl w-full max-w-2xl h-fit p-6 sm:p-8 md:p-10 items-start sm:items-end justify-between shadow-2xl">
               <div className="font-sora font-semibold text-base sm:text-xl md:text-2xl space-y-2 text-black/90 dark:text-white/90">
                 <div className="hover:text-[#FF8A00] transition-colors cursor-default">/ FULLSTACK DEVELOPMENT</div>
                 <div className="hover:text-[#FF8A00] transition-colors cursor-default">/ WEB DESIGN (UX/UI)</div>
@@ -206,13 +206,13 @@ export default function Hero() {
               </div>
 
               {/* Desktop Center Robot Container */}
-              <div className="hero-robot-card hidden md:flex relative w-48 h-60 rounded-xl overflow-hidden bg-gray-100 dark:bg-[#1a1a1a] border border-[#FF8A00]/30 shadow-2xl shadow-[#FF8A00]/10 shrink-0 group">
+              <div className="hero-robot-card hidden md:flex relative w-48 h-60 rounded-xl overflow-hidden bg-gray-100 dark:bg-[#111] border border-black/10 dark:border-white/5 shadow-[0_0_30px_rgba(255,138,0,0.15)] shrink-0 group">
                 <img
                   src="/images/robot_hero.png"
                   alt="AI Robot Avatar"
-                  className="h-full w-full object-cover object-center transition-all duration-500 group-hover:scale-105"
+                  className="h-full w-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
                 />
-                <div className="text-left p-2 writing-mode-vertical text-[10px] font-mono font-semibold tracking-widest text-[#FF8A00] bg-white/85 dark:bg-black/85 backdrop-blur-sm border-r border-black/10 dark:border-white/10">
+                <div className="text-left p-2 writing-mode-vertical text-[10px] font-mono font-semibold tracking-widest text-[#FF8A00] bg-white/85 dark:bg-black/85 backdrop-blur-md border-r border-black/5 dark:border-white/5 transition-all duration-500 group-hover:bg-white/95 dark:group-hover:bg-black/95">
                   AI ENGINE &amp; CREATIVE ROBOT
                 </div>
               </div>
@@ -220,7 +220,7 @@ export default function Hero() {
           </div>
 
           {/* Mobile Center Robot Container */}
-          <div className="hero-robot-card flex md:hidden mt-6 w-full max-w-2xl mx-auto rounded-2xl overflow-hidden bg-white dark:bg-[#121212] border border-[#FF8A00]/30 shadow-xl items-stretch">
+          <div className="hero-robot-card flex md:hidden mt-6 w-full max-w-2xl mx-auto rounded-2xl overflow-hidden bg-white/5 dark:bg-[#121212]/50 backdrop-blur-xl border border-black/10 dark:border-white/5 shadow-xl items-stretch">
             <div className="flex-1 relative h-56 sm:h-64 overflow-hidden">
               <img
                 src="/images/robot_hero.png"
@@ -228,15 +228,14 @@ export default function Hero() {
                 className="w-full h-full object-cover object-center"
               />
             </div>
-            <div className="flex items-center justify-center p-3 writing-mode-vertical text-[10px] font-mono font-semibold tracking-widest text-[#FF8A00] bg-white/90 dark:bg-black/90 border-l border-black/10 dark:border-white/10 shrink-0">
+            <div className="flex items-center justify-center p-3 writing-mode-vertical text-[10px] font-mono font-semibold tracking-widest text-[#FF8A00] bg-white/90 dark:bg-black/90 backdrop-blur-md border-l border-black/5 dark:border-white/5 shrink-0">
               AI ENGINE &amp; CREATIVE ROBOT
             </div>
           </div>
         </div>
 
-        {/* Bio Paragraph */}
         <div className="hero-bio mt-12 sm:mt-20 md:mt-32">
-          <p className="mx-auto max-w-2xl font-mono text-center text-xs sm:text-sm md:text-base font-medium tracking-wide text-black/80 dark:text-white/80 dark:text-white/80 leading-relaxed uppercase px-2">
+          <p className="mx-auto max-w-2xl font-mono text-center text-xs sm:text-sm md:text-base font-medium tracking-wide text-black/80 dark:text-gray-300 leading-relaxed uppercase px-2">
             I&apos;M AN EXPERIENCED FULLSTACK ENGINEER &amp; DIGITAL MARKETER,
             <br className="hidden xs:block" />
             WHO CRAFTS MEMORABLE HIGH-PERFORMANCE WEB EXPERIENCES
@@ -245,28 +244,31 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Call to Action Buttons */}
-        <div className="hero-cta-btn flex flex-row flex-wrap justify-center gap-4 pt-6 sm:pt-8">
+        <div className="hero-cta-btn flex flex-row flex-wrap justify-center gap-5 pt-8 sm:pt-10">
           <a
             href="#contact-section"
             onClick={handleSmoothScroll('#contact-section')}
-            className="inline-flex items-center justify-center gap-2 bg-[#FF8A00] hover:bg-[#FF8A00]/90 text-black font-sora font-bold text-sm px-6 py-2 rounded-full transition-all transform hover:scale-105 shadow-xl shadow-[#FF8A00]/25 w-auto"
+            className="group relative inline-flex items-center justify-center gap-2 bg-[#FF8A00] text-black font-sora font-bold text-sm px-8 py-3 rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,138,0,0.6)] w-auto overflow-hidden"
           >
-            Book a Call
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M7 7h10v10" />
-              <path d="M7 17 17 7" />
-            </svg>
+            <span className="relative z-10 flex items-center gap-2">
+              Book a Call
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              >
+                <path d="M7 7h10v10" />
+                <path d="M7 17 17 7" />
+              </svg>
+            </span>
+            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
           </a>
           
           <a
@@ -274,7 +276,7 @@ export default function Hero() {
             download
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 bg-transparent border-2 border-[#FF8A00] hover:bg-[#FF8A00]/10 text-black dark:text-white font-sora font-bold text-sm px-6 py-[6px] rounded-full transition-all transform hover:scale-105 w-auto"
+            className="group inline-flex items-center justify-center gap-2 bg-transparent border border-black/20 dark:border-white/20 hover:border-[#FF8A00] dark:hover:border-[#FF8A00] text-black dark:text-white font-sora font-bold text-sm px-8 py-3 rounded-full transition-all duration-300 hover:scale-[1.02] hover:bg-[#FF8A00]/5 w-auto"
           >
             Download CV
             <svg
@@ -287,6 +289,7 @@ export default function Hero() {
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className="transition-transform duration-300 group-hover:-translate-y-1"
             >
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="7 10 12 15 17 10" />
@@ -297,27 +300,26 @@ export default function Hero() {
 
         {/* Bottom Recent Work Showcase */}
         <div className="hero-recent-works flex flex-col md:flex-row mt-16 sm:mt-24 items-center md:items-end justify-between gap-10 md:gap-8 pt-10 sm:pt-12">
-          {/* Stacked Portfolio Cards (Centered on Mobile) */}
           <div className="relative mb-6 md:mb-0 w-64 h-40 mx-auto md:mx-0">
-            <div className="w-52 sm:w-64 h-32 sm:h-40 shadow-2xl border border-black/15 dark:border-white/15 rounded-xl overflow-hidden bg-gray-100 dark:bg-[#1a1a1a]">
+            <div className="w-52 sm:w-64 h-32 sm:h-40 shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-black/10 dark:border-white/5 rounded-xl overflow-hidden bg-gray-100 dark:bg-[#111]">
               <img
                 src="/images/post-1.png"
                 alt="Portfolio showcase 1"
-                className="w-full h-full object-cover opacity-75 hover:opacity-100 transition-opacity"
+                className="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity duration-500"
               />
             </div>
-            <div className="w-52 sm:w-64 h-32 sm:h-40 absolute left-4 sm:left-6 -top-4 sm:-top-6 shadow-2xl border border-black/20 dark:border-white/20 rounded-xl overflow-hidden bg-gray-100 dark:bg-[#1a1a1a]">
+            <div className="w-52 sm:w-64 h-32 sm:h-40 absolute left-4 sm:left-6 -top-4 sm:-top-6 shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-black/15 dark:border-white/5 rounded-xl overflow-hidden bg-gray-100 dark:bg-[#111]">
               <img
                 src="/images/post-2.png"
                 alt="Portfolio showcase 2"
-                className="w-full h-full object-cover opacity-85 hover:opacity-100 transition-opacity"
+                className="w-full h-full object-cover opacity-75 hover:opacity-100 transition-opacity duration-500"
               />
             </div>
-            <div className="w-52 sm:w-64 h-32 sm:h-40 absolute left-8 sm:left-12 -top-8 sm:-top-12 shadow-2xl border border-black/30 dark:border-white/30 rounded-xl overflow-hidden bg-gray-100 dark:bg-[#1a1a1a]">
+            <div className="w-52 sm:w-64 h-32 sm:h-40 absolute left-8 sm:left-12 -top-8 sm:-top-12 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-black/20 dark:border-white/10 rounded-xl overflow-hidden bg-gray-100 dark:bg-[#111] group">
               <img
                 src="/images/post-3.png"
                 alt="Portfolio showcase 3"
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
               />
             </div>
           </div>

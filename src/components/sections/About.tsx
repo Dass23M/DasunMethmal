@@ -75,8 +75,8 @@ export default function About() {
             opacity: 1,
             clipPath: "inset(0% 0% 0% 0%)",
             filter: "none",
-            duration: isMobile ? 1.1 : 1.4,
-            ease: "power3.out",
+            duration: isMobile ? 1.2 : 1.5,
+            ease: "expo.out",
             scrollTrigger: {
               trigger: heroImageRef.current,
               start: isMobile ? "top 88%" : "top 80%",
@@ -94,8 +94,8 @@ export default function About() {
           {
             y: 0,
             opacity: 1,
-            duration: isMobile ? 1.1 : 1.0,
-            ease: "power3.out",
+            duration: isMobile ? 1.2 : 1.2,
+            ease: "expo.out",
             scrollTrigger: {
               trigger: aboutTextRef.current,
               start: isMobile ? "top 90%" : "top 85%",
@@ -135,8 +135,8 @@ export default function About() {
             {
               y: 0,
               opacity: 1,
-              duration: 0.9,
-              ease: "power3.out",
+              duration: 1.0,
+              ease: "expo.out",
               scrollTrigger: {
                 trigger: caption,
                 start: "top 85%",
@@ -222,7 +222,7 @@ export default function About() {
           <div className="lg:col-span-5">
             <div
               ref={heroImageRef}
-              className="relative w-full max-w-sm lg:max-w-none mx-auto aspect-[4/5] rounded-2xl overflow-hidden border border-black/15 dark:border-white/15 shadow-2xl bg-[#14151C] group"
+              className="relative w-full max-w-sm lg:max-w-none mx-auto aspect-[4/5] rounded-2xl overflow-hidden border border-black/10 dark:border-white/5 shadow-2xl bg-[#111] group"
             >
               <Image
                 src="/images/methmal2.png"
@@ -250,14 +250,14 @@ export default function About() {
               <span className="font-mono text-xs font-bold text-[#FF6B00] tracking-widest uppercase block">
                 001 / PHILOSOPHY &amp; JOURNEY
               </span>
-              <p className="font-inter text-sm sm:text-base md:text-lg text-black dark:text-white/85 leading-relaxed font-normal">
+              <p className="font-inter text-sm sm:text-base md:text-lg text-black dark:text-gray-300 leading-relaxed font-normal">
                 I am a fullstack software engineer and digital marketer
                 exploring the intersection of modern web architecture and
                 creative growth strategy. Building digital solutions as a craft,
                 my work embodies the transformation of complex ideas into
                 seamless, production-grade applications.
               </p>
-              <p className="font-inter text-sm sm:text-base md:text-lg text-black/70 dark:text-white/70 leading-relaxed font-normal">
+              <p className="font-inter text-sm sm:text-base md:text-lg text-black/70 dark:text-[#A0A0A0] leading-relaxed font-normal">
                 Through deliberate practice and technical precision, I find that
                 clean code provides structure in times of uncertainty and offers
                 rare clarity when scaling user experiences. Each platform
@@ -277,9 +277,15 @@ export default function About() {
           >
             <button
               onClick={handleCopyEmail}
-              className="px-8 py-3.5 rounded-full bg-[#FF6B00] text-black font-sora font-extrabold text-xs tracking-wider uppercase shadow-xl hover:bg-white transition-all duration-300 hover:scale-105"
+              className="group relative px-10 py-4 rounded-full bg-[#FF8A00] text-black font-sora font-extrabold text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(255,138,0,0.4)] hover:shadow-[0_0_30px_rgba(255,138,0,0.6)] transition-all duration-300 hover:scale-105 overflow-hidden"
             >
-              + GET IN TOUCH
+              <span className="relative z-10 block transition-transform duration-300 group-hover:-translate-y-full">
+                + GET IN TOUCH
+              </span>
+              <span className="absolute inset-0 z-10 flex items-center justify-center translate-y-full transition-transform duration-300 group-hover:translate-y-0 text-white font-sora font-extrabold text-sm tracking-wider uppercase">
+                SEND EMAIL
+              </span>
+              <div className="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
             </button>
 
             <div

@@ -49,8 +49,8 @@ export default function Portfolio() {
           {
             y: 0,
             opacity: 1,
-            duration: 0.7,
-            ease: 'power3.out',
+            duration: 0.8,
+            ease: 'expo.out',
             scrollTrigger: {
               trigger: card,
               start: 'top 88%',
@@ -165,7 +165,7 @@ export default function Portfolio() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          background: #FF6B00;
+          background: #FF8A00;
           color: #fff;
           font-size: 11px;
           font-weight: 700;
@@ -193,7 +193,7 @@ export default function Portfolio() {
           top: 16px;
           left: 16px;
           background: rgba(0, 0, 0, 0.85);
-          color: #FF6B00;
+          color: #FF8A00;
           font-size: 0.68rem;
           font-weight: 700;
           letter-spacing: 0.12em;

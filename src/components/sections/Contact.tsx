@@ -164,7 +164,7 @@ export default function Contact() {
     }
 
     return (
-        <section id="contact-section" ref={sectionRef} className="w-full bg-[#ffffff] text-black py-16 md:py-24 overflow-hidden">
+        <section id="contact-section" ref={sectionRef} className="w-full bg-[#080808] text-white py-16 md:py-24 overflow-hidden">
             <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-8 md:px-12">
 
                 {/* Main Hero Card Container with Artistic Sunset Gradient Background */}
@@ -189,7 +189,7 @@ export default function Contact() {
 
                         {/* Left Column: Floating White Contact Form Card */}
                         <div ref={cardRef} className="lg:col-span-5 w-full flex justify-center lg:justify-start order-2 lg:order-1">
-                            <div className="bg-white text-black rounded-[24px] shadow-2xl p-4 sm:p-8 w-full max-w-[430px] border border-black/20 dark:border-white/20 select-none">
+                            <div className="bg-[#111]/80 backdrop-blur-xl text-white rounded-[24px] shadow-2xl p-4 sm:p-8 w-full max-w-[430px] border border-white/5 select-none">
 
                                 {/* Embedded Header Banner Block */}
                                 <div className="relative h-[95px] rounded-[16px] overflow-hidden flex items-center justify-center shadow-md">
@@ -207,7 +207,7 @@ export default function Contact() {
                                 </div>
 
                                 {/* Card Title */}
-                                <h3 className="font-sora font-bold text-center text-xl text-black mt-4 mb-4 tracking-tight">
+                                <h3 className="font-sora font-bold text-center text-xl text-white mt-4 mb-4 tracking-tight">
                                     Reach Out to Me
                                 </h3>
 
@@ -228,7 +228,7 @@ export default function Contact() {
 
                                         {/* Name Input */}
                                         <div>
-                                            <label htmlFor="contact-name" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                                            <label htmlFor="contact-name" className="block text-xs font-semibold text-gray-300 mb-1.5">
                                                 Name*
                                             </label>
                                             <input
@@ -239,8 +239,8 @@ export default function Contact() {
                                                 placeholder="Emily Johnson"
                                                 value={formData.name}
                                                 onChange={(e) => handleInput('name', e.target.value)}
-                                                className={`w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all ${
-                                                    errors.name ? 'ring-2 ring-red-500 bg-red-50/20' : 'focus:ring-black/20'
+                                                className={`w-full bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all ${
+                                                    errors.name ? 'ring-2 ring-red-500 bg-red-500/10' : 'focus:ring-white/10'
                                                 }`}
                                                 aria-invalid={!!errors.name}
                                             />
@@ -253,7 +253,7 @@ export default function Contact() {
 
                                         {/* Email Input */}
                                         <div>
-                                            <label htmlFor="contact-email" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                                            <label htmlFor="contact-email" className="block text-xs font-semibold text-gray-300 mb-1.5">
                                                 E-mail*
                                             </label>
                                             <input
@@ -264,8 +264,8 @@ export default function Contact() {
                                                 placeholder="emilyjohnson@gmail.com"
                                                 value={formData.email}
                                                 onChange={(e) => handleInput('email', e.target.value)}
-                                                className={`w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all ${
-                                                    errors.email ? 'ring-2 ring-red-500 bg-red-50/20' : 'focus:ring-black/20'
+                                                className={`w-full bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all ${
+                                                    errors.email ? 'ring-2 ring-red-500 bg-red-500/10' : 'focus:ring-white/10'
                                                 }`}
                                                 aria-invalid={!!errors.email}
                                             />
@@ -278,8 +278,8 @@ export default function Contact() {
 
                                         {/* Subject Input (Optional) */}
                                         <div>
-                                            <label htmlFor="contact-subject" className="block text-xs font-semibold text-gray-700 mb-1.5">
-                                                Subject <span className="text-gray-400 font-normal">(Optional)</span>
+                                            <label htmlFor="contact-subject" className="block text-xs font-semibold text-gray-300 mb-1.5">
+                                                Subject <span className="text-gray-500 font-normal">(Optional)</span>
                                             </label>
                                             <input
                                                 type="text"
@@ -289,13 +289,13 @@ export default function Contact() {
                                                 placeholder="Project Inquiry / Collaboration"
                                                 value={formData.subject}
                                                 onChange={(e) => handleInput('subject', e.target.value)}
-                                                className="w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all"
+                                                className="w-full bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/10 transition-all"
                                             />
                                         </div>
 
                                         {/* Message Input */}
                                         <div>
-                                            <label htmlFor="contact-message" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                                            <label htmlFor="contact-message" className="block text-xs font-semibold text-gray-300 mb-1.5">
                                                 Message*
                                             </label>
                                             <textarea
@@ -306,8 +306,8 @@ export default function Contact() {
                                                 placeholder="Tell me about your project or inquiry..."
                                                 value={formData.message}
                                                 onChange={(e) => handleInput('message', e.target.value)}
-                                                className={`w-full bg-[#f4f4f5] rounded-xl px-4 py-3 text-sm text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 transition-all resize-none h-[95px] ${
-                                                    errors.message ? 'ring-2 ring-red-500 bg-red-50/20' : 'focus:ring-black/20'
+                                                className={`w-full bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all resize-none h-[95px] ${
+                                                    errors.message ? 'ring-2 ring-red-500 bg-red-500/10' : 'focus:ring-white/10'
                                                 }`}
                                                 aria-invalid={!!errors.message}
                                             />
@@ -323,7 +323,7 @@ export default function Contact() {
                                             <button
                                                 type="submit"
                                                 disabled={submitting}
-                                                className="w-full bg-gray-50 dark:bg-black text-black dark:text-white font-bold tracking-widest text-xs uppercase py-3.5 rounded-xl hover:bg-white/85 dark:bg-black/85 hover:scale-[1.01] active:scale-[0.99] transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                                                className="w-full bg-[#FF8A00] text-black font-sora font-extrabold tracking-widest text-xs uppercase py-4 rounded-xl hover:shadow-[0_0_20px_rgba(255,138,0,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed group relative overflow-hidden"
                                             >
                                                 {submitting ? (
                                                     <>
@@ -353,15 +353,15 @@ export default function Contact() {
                                             </svg>
                                         </div>
                                         <div>
-                                            <h4 className="font-sora font-bold text-lg text-black mb-1">Thank You!</h4>
-                                            <p className="text-xs text-gray-600 max-w-[280px] leading-relaxed">
+                                            <h4 className="font-sora font-bold text-lg text-white mb-1">Thank You!</h4>
+                                            <p className="text-xs text-gray-400 max-w-[280px] leading-relaxed">
                                                 {statusMessage || 'Your message has been sent successfully. I will get back to you soon!'}
                                             </p>
                                         </div>
                                         <button
                                             type="button"
                                             onClick={handleReset}
-                                            className="mt-2 text-xs font-semibold text-black underline underline-offset-4 hover:opacity-70 transition-opacity"
+                                            className="mt-2 text-xs font-semibold text-white underline underline-offset-4 hover:opacity-70 transition-opacity"
                                         >
                                             Send another message
                                         </button>
@@ -376,8 +376,8 @@ export default function Contact() {
 
                             <div>
                                 {/* Top Pill Badge */}
-                                <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md text-black px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase shadow-md mb-8">
-                                    <span className="text-[#FF6B00] text-sm">❇</span>
+                                <div className="inline-flex items-center gap-2 bg-black/50 border border-white/10 backdrop-blur-md text-white px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase shadow-md mb-8">
+                                    <span className="text-[#FF8A00] text-sm">❇</span>
                                     <span>CONTACT ME</span>
                                 </div>
 
@@ -390,12 +390,12 @@ export default function Contact() {
 
                             {/* Bottom Right Sub-section */}
                             <div className="flex items-start gap-4 max-w-[440px] pt-4">
-                                <span className="text-[#FF6B00] text-xl mt-1 flex-shrink-0 animate-pulse">✦</span>
+                                <span className="text-[#FF8A00] text-xl mt-1 flex-shrink-0 animate-pulse">✦</span>
                                 <div>
                                     <h4 className="font-sora font-bold uppercase text-black dark:text-white tracking-wider text-sm sm:text-base mb-2">
                                         RESULTS-DRIVEN SOLUTIONS
                                     </h4>
-                                    <p className="text-black dark:text-white/85 text-xs sm:text-sm leading-relaxed font-normal">
+                                    <p className="text-black dark:text-gray-300 text-xs sm:text-sm leading-relaxed font-normal">
                                         Refining the design through feedback and testing to ensure the best user experience.
                                     </p>
                                 </div>

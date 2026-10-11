@@ -13,7 +13,7 @@ export default function Navbar() {
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   
-  const { scrollY } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -112,16 +112,22 @@ export default function Navbar() {
       }}
       animate={hidden ? "hidden" : "visible"}
       transition={{ duration: 0.35, ease: "easeInOut" }}
-      className={`fixed top-0 left-0 right-0 z-[1002] transition-colors duration-300 py-[20px] ${
+      className={`fixed top-0 left-0 right-0 z-[1002] transition-all duration-300 ${
         scrolled 
-          ? 'bg-white/90 dark:bg-[#080808]/90 backdrop-blur-md border-b border-black/10 dark:border-white/10 shadow-xl' 
-          : 'bg-transparent py-[30px]'
+          ? 'bg-black/85 backdrop-blur-xl border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)] py-[14px]' 
+          : 'bg-transparent py-[26px]'
       }`}
       aria-label="Main navigation"
     >
-      <div className="w-full max-w-[1140px] mx-auto px-[15px] relative flex items-center justify-between">
+      {/* Sleek Gradient Scroll Progress Bar */}
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#FF6B00] via-[#FFAA00] to-[#FF8A00] origin-left shadow-[0_0_10px_rgba(255,138,0,0.85)] z-50 pointer-events-none"
+        style={{ scaleX: scrollYProgress }}
+      />
+
+      <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-6 relative flex items-center justify-between">
         {/* Left Menu Items (Home, Portfolio, About, Services) */}
-        <div className="flex-1 hidden lg:flex">
+        <div className="flex-1 hidden lg:flex items-center gap-4">
           <ul className="list-none p-0 m-0 flex gap-[15px]">
             {leftLinks.map((item) => (
               <li key={item.id}>
@@ -137,18 +143,18 @@ export default function Navbar() {
         </div>
 
         {/* Center Logo with Methmal */}
-        <div className="absolute left-1/2 -translate-x-1/2 z-[99]">
+        <div className="absolute left-1/2 -translate-x-1/2 z-[99] flex items-center gap-3">
           <Link
             href="/"
-            className="font-display text-[1.7rem] font-bold no-underline text-black dark:text-white transition-colors duration-300"
+            className="font-display text-[1.7rem] font-bold no-underline text-white transition-all duration-300 hover:drop-shadow-[0_0_15px_rgba(255,138,0,0.5)] tracking-tight"
           >
             METHMAL<span className="text-[#FF8A00]">.</span>
           </Link>
         </div>
 
         {/* Right Menu Items (Skills, Testimonial, Journal, Contact) */}
-        <div className="flex-1 hidden lg:flex justify-end items-center gap-[15px]">
-          <ul className="list-none p-0 m-0 flex gap-[15px]">
+        <div className="flex-1 hidden lg:flex justify-end items-center gap-4">
+          <ul className="list-none p-0 m-0 flex gap-[15px] items-center">
             {rightLinks.map((item) => (
               <li key={item.id}>
                 <NavLink
@@ -160,6 +166,12 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
+
+          {/* Availability Status Badge */}
+          <div className="hidden xl:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-[11px] font-mono text-emerald-400 select-none shadow-[0_0_12px_rgba(16,185,129,0.15)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Open to Work</span>
+          </div>
         </div>
 
         {/* Mobile menu toggle (Left) */}
@@ -167,7 +179,7 @@ export default function Navbar() {
           <a
             href="#"
             onClick={toggleMenu}
-            className="text-[14px] px-[7px] py-[10px] block text-black dark:text-white transition-colors duration-300"
+            className="text-[13px] font-mono font-medium tracking-wider uppercase px-3 py-1.5 rounded-full border border-white/15 bg-white/5 text-white transition-all duration-300 hover:border-[#FF8A00] hover:text-[#FF8A00]"
           >
             Menu
           </a>

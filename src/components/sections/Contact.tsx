@@ -189,7 +189,7 @@ export default function Contact() {
 
                         {/* Left Column: Floating White Contact Form Card */}
                         <div ref={cardRef} className="lg:col-span-5 w-full flex justify-center lg:justify-start order-2 lg:order-1">
-                            <div className="bg-[#111]/80 backdrop-blur-xl text-white rounded-[24px] shadow-2xl p-4 sm:p-8 w-full max-w-[430px] border border-white/5 select-none">
+                            <div className="glass-card-premium text-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-5 sm:p-8 w-full max-w-[430px] border border-white/10 select-none">
 
                                 {/* Embedded Header Banner Block */}
                                 <div className="relative h-[95px] rounded-[16px] overflow-hidden flex items-center justify-center shadow-md">
@@ -201,7 +201,7 @@ export default function Contact() {
                                         className="object-cover"
                                     />
                                     <div className="absolute inset-0 bg-black/30" />
-                                    <span className="relative z-10 font-display font-black text-black dark:text-white text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">
+                                    <span className="relative z-10 font-display font-black text-white text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">
                                         METHMAL®
                                     </span>
                                 </div>
@@ -239,8 +239,8 @@ export default function Contact() {
                                                 placeholder="Emily Johnson"
                                                 value={formData.name}
                                                 onChange={(e) => handleInput('name', e.target.value)}
-                                                className={`w-full bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all ${
-                                                    errors.name ? 'ring-2 ring-red-500 bg-red-500/10' : 'focus:ring-white/10'
+                                                className={`w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FF8A00] focus:ring-1 focus:ring-[#FF8A00] transition-all ${
+                                                    errors.name ? 'border-red-500 bg-red-500/10' : ''
                                                 }`}
                                                 aria-invalid={!!errors.name}
                                             />
@@ -264,8 +264,8 @@ export default function Contact() {
                                                 placeholder="emilyjohnson@gmail.com"
                                                 value={formData.email}
                                                 onChange={(e) => handleInput('email', e.target.value)}
-                                                className={`w-full bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all ${
-                                                    errors.email ? 'ring-2 ring-red-500 bg-red-500/10' : 'focus:ring-white/10'
+                                                className={`w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FF8A00] focus:ring-1 focus:ring-[#FF8A00] transition-all ${
+                                                    errors.email ? 'border-red-500 bg-red-500/10' : ''
                                                 }`}
                                                 aria-invalid={!!errors.email}
                                             />
@@ -289,7 +289,7 @@ export default function Contact() {
                                                 placeholder="Project Inquiry / Collaboration"
                                                 value={formData.subject}
                                                 onChange={(e) => handleInput('subject', e.target.value)}
-                                                className="w-full bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/10 transition-all"
+                                                className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FF8A00] focus:ring-1 focus:ring-[#FF8A00] transition-all"
                                             />
                                         </div>
 
@@ -306,8 +306,8 @@ export default function Contact() {
                                                 placeholder="Tell me about your project or inquiry..."
                                                 value={formData.message}
                                                 onChange={(e) => handleInput('message', e.target.value)}
-                                                className={`w-full bg-[#1a1a1a] rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all resize-none h-[95px] ${
-                                                    errors.message ? 'ring-2 ring-red-500 bg-red-500/10' : 'focus:ring-white/10'
+                                                className={`w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FF8A00] focus:ring-1 focus:ring-[#FF8A00] transition-all resize-none h-[95px] ${
+                                                    errors.message ? 'border-red-500 bg-red-500/10' : ''
                                                 }`}
                                                 aria-invalid={!!errors.message}
                                             />
@@ -323,7 +323,7 @@ export default function Contact() {
                                             <button
                                                 type="submit"
                                                 disabled={submitting}
-                                                className="w-full bg-[#FF8A00] text-black font-display font-extrabold tracking-widest text-xs uppercase py-4 rounded-xl hover:shadow-[0_0_20px_rgba(255,138,0,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed group relative overflow-hidden"
+                                                className="w-full bg-gradient-to-r from-[#FF6B00] via-[#FFAA00] to-[#FF8A00] text-black font-display font-black tracking-widest text-xs uppercase py-4 rounded-xl hover:shadow-[0_0_25px_rgba(255,138,0,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed group relative overflow-hidden"
                                             >
                                                 {submitting ? (
                                                     <>

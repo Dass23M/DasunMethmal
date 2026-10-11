@@ -43,66 +43,52 @@ export default function FaqSection() {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!mounted || !sectionRef.current) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        sectionRef.current,
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-          },
-        }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [mounted]);
-
   const toggleAccordion = (index: number) => {
     setOpenIndex((prev) => (prev === index ? null : index));
   };
 
   if (!mounted) {
-    return <section className="w-full min-h-screen bg-gray-50 dark:bg-[#080808]" />;
+    return <section className="w-full min-h-[500px] bg-black" />;
   }
 
   return (
     <section
       ref={sectionRef}
       id="faq-section"
-      className="w-full min-h-screen h-auto py-16 lg:py-24 lg:min-h-screen bg-gray-50 dark:bg-[#080808] text-black dark:text-white flex items-center justify-center overflow-hidden select-none"
+      className="w-full py-20 lg:py-28 bg-black text-white flex items-center justify-center overflow-hidden select-none"
     >
       <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-8 md:px-16 lg:px-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 xl:gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 xl:gap-24 items-start">
           
-          {/* Left Column: Stacked Display Title perfectly constrained within 5 columns */}
+          {/* Left Column: Stacked Display Title */}
           <div className="lg:col-span-5 flex flex-col justify-center">
-            <h2 className="font-display font-black uppercase tracking-tighter text-black dark:text-white text-[clamp(2.2rem,4.5vw,4.2rem)] xl:text-[4.5rem] leading-[0.88] text-left">
+            <div className="flex items-center gap-2 font-mono text-xs font-bold text-[#FF8A00] uppercase tracking-widest mb-4">
+              <span className="w-2 h-2 rounded-full bg-[#FF8A00] radar-pulse" />
+              <span>{"// FREQUENT INQUIRIES"}</span>
+            </div>
+            <h2 className="font-display font-black uppercase tracking-tighter text-white text-[clamp(2.4rem,4.5vw,4.5rem)] leading-[0.9] text-left">
               <span className="block">FREQUENTLY</span>
               <span className="block mt-1">ASKED</span>
-              <span className="block mt-1 text-transparent [-webkit-text-stroke:1.8px_rgba(255,255,255,0.85)]">
+              <span className="block mt-1 text-transparent [-webkit-text-stroke:1.8px_rgba(255,138,0,0.85)]">
                 QUESTIONS
               </span>
             </h2>
+            <p className="font-body text-sm sm:text-base text-white/60 mt-6 leading-relaxed max-w-md font-light">
+              Clear answers regarding engagement models, design-to-production turnaround, post-launch scaling, and technology stack.
+            </p>
           </div>
 
-          {/* Right Column: Clean Accordion List */}
-          <div className="lg:col-span-7 w-full space-y-1">
+          {/* Right Column: Clean Glass Accordion List */}
+          <div className="lg:col-span-7 w-full space-y-3">
             {FAQ_ITEMS.map((item, idx) => {
               const isOpen = openIndex === idx;
 
               return (
                 <div
                   key={idx}
-                  className="border-b border-white/12 py-4 sm:py-6 transition-colors duration-300"
+                  className={`glass-card-premium rounded-2xl p-5 sm:p-6 transition-all duration-300 border ${
+                    isOpen ? 'border-[#FF8A00]/40 shadow-[0_4px_24px_rgba(255,138,0,0.08)]' : 'border-white/5 hover:border-white/15'
+                  }`}
                 >
                   {/* Header Clickable Row */}
                   <button
@@ -111,8 +97,8 @@ export default function FaqSection() {
                     aria-expanded={isOpen}
                   >
                     <span
-                      className={`font-display font-bold text-base sm:text-lg md:text-[1.15rem] tracking-tight transition-colors duration-300 ${
-                        isOpen ? 'text-black dark:text-white' : 'text-black dark:text-white/85 group-hover:text-[#FF6B00]'
+                      className={`font-display font-bold text-base sm:text-lg md:text-[1.1rem] tracking-tight transition-colors duration-300 ${
+                        isOpen ? 'text-[#FF8A00]' : 'text-white group-hover:text-[#FF8A00]'
                       }`}
                     >
                       {item.question}
@@ -120,10 +106,10 @@ export default function FaqSection() {
 
                     {/* Circular Action Toggle Button */}
                     <span
-                      className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0 transition-all duration-300 shadow-sm ${
+                      className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0 transition-all duration-300 border ${
                         isOpen
-                          ? 'bg-[#FF6B00] text-black dark:text-white rotate-45'
-                          : 'bg-white text-black group-hover:bg-[#FF6B00] group-hover:text-black dark:text-white'
+                          ? 'bg-[#FF8A00] text-black border-[#FF8A00] rotate-45'
+                          : 'bg-white/5 text-white/80 border-white/10 group-hover:bg-[#FF8A00] group-hover:text-black group-hover:border-[#FF8A00]'
                       }`}
                     >
                       +
@@ -139,7 +125,7 @@ export default function FaqSection() {
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <p className="font-body text-black dark:text-white/60 text-xs sm:text-sm leading-relaxed max-w-[620px]">
+                      <p className="font-body text-white/70 text-xs sm:text-sm leading-relaxed max-w-[620px] font-light">
                         {item.answer}
                       </p>
                     </div>

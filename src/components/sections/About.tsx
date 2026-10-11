@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import SectionHeading from "@/components/ui/SectionHeading";
 
 const GALLERY_IMAGES = [
   {
@@ -202,6 +203,12 @@ export default function About() {
       className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white select-none relative overflow-hidden py-16 sm:py-24 font-body"
     >
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+        <SectionHeading 
+          title="ABOUT &amp; ENGINEERING BACKGROUND" 
+          subtitle="Software Engineering graduate from Cardiff Metropolitan University specializing in full-stack architecture & growth."
+          theme="dark" 
+        />
+
         {/* ─── 1. TOP EDITORIAL SVG TITLE BANNER ─── */}
         <div className="w-full mb-10 sm:mb-14 pb-6">
           <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-3">

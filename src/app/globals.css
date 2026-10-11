@@ -1791,11 +1791,140 @@ textarea.form-control {
     font-size: 14px !important;
     line-height: 1.6 !important;
   }
+}
 
-  /* Prevent awkward iOS text shrinking */
-  p, span, li, label, input, textarea {
-   
+/* ==========================================================================
+   PREMIUM PORTFOLIO DESIGN SYSTEM & MODERN EFFECTS (ui-ux-pro-max & design)
+   ========================================================================== */
+
+/* Sleek custom scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070709;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.25s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FF8A00;
+  box-shadow: 0 0 10px rgba(255, 138, 0, 0.6);
+}
+
+/* Luxury Glassmorphic Panels */
+.glass-card-premium {
+  background: rgba(14, 14, 18, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-premium:hover {
+  border-color: rgba(255, 138, 0, 0.35);
+  box-shadow: 
+    0 20px 40px -15px rgba(0, 0, 0, 0.7),
+    0 0 25px rgba(255, 138, 0, 0.12),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  transform: translateY(-3px);
+}
+
+/* High-End Text Gradients */
+.text-gradient-amber {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFAA00 50%, #FF8A00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-silver {
+  background: linear-gradient(135deg, #FFFFFF 0%, #D4D4D8 50%, #A1A1AA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glow Text */
+.text-glow-accent {
+  text-shadow: 0 0 20px rgba(255, 138, 0, 0.45);
+}
+
+/* Live Radar Pulse Indicator */
+.radar-pulse {
+  position: relative;
+  display: inline-flex;
+}
+
+.radar-pulse::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  background: #FF8A00;
+  opacity: 0.75;
+  animation: radarPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes radarPing {
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
   }
+}
+
+/* Hover Lift */
+.hover-lift {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Ambient Radial Glow */
+.ambient-glow-amber {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(255, 138, 0, 0.12) 0%, rgba(255, 138, 0, 0) 70%);
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+/* Subtle Shimmer Sweep on Hover */
+.shimmer-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transition: transform 0.8s ease-in-out;
+  pointer-events: none;
+}
+
+.shimmer-hover:hover::after {
+  transform: translateX(100%);
 }
 
 

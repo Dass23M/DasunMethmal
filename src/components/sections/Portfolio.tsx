@@ -100,27 +100,40 @@ export default function Portfolio() {
           cursor: pointer !important;
           text-decoration: none;
           color: inherit;
-          border-radius: 4px;
+          border-radius: 16px;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: #0e0e12;
+          box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
           will-change: transform, opacity;
           transform: translateZ(0);
+          transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pf-card:hover {
+          border-color: rgba(255, 138, 0, 0.45);
+          box-shadow: 
+            0 20px 40px -10px rgba(0, 0, 0, 0.8),
+            0 0 30px rgba(255, 138, 0, 0.18);
+          transform: translateY(-4px);
         }
 
         .pf-card-img-wrap {
           position: relative;
           overflow: hidden;
           line-height: 0;
+          border-radius: 15px;
         }
 
         .pf-card-img-wrap img {
           width: 100%;
           height: auto;
           display: block;
-          transition: transform 0.45s ease;
+          transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
           pointer-events: none;
         }
 
         .pf-card:hover .pf-card-img-wrap img {
-          transform: scale(1.07);
+          transform: scale(1.06);
         }
 
         /* ── Hover overlay ───────────────────────
@@ -128,11 +141,11 @@ export default function Portfolio() {
         .pf-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.18) 55%, transparent 100%);
+          background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 55%, transparent 100%);
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
-          padding: 24px 24px 16px;
+          padding: 24px 24px 20px;
           opacity: 0;
           transition: opacity 0.35s ease;
           pointer-events: none;
@@ -144,20 +157,21 @@ export default function Portfolio() {
 
         .pf-overlay-title {
           color: #fff;
-          font-size: 15px;
-          font-weight: 700;
-          margin: 0 0 4px;
-          font-family: 'Sora', sans-serif;
+          font-size: 16px;
+          font-weight: 800;
+          margin: 0 0 6px;
+          font-family: var(--font-display), sans-serif;
           line-height: 1.3;
+          letter-spacing: -0.01em;
         }
 
         .pf-overlay-cat {
-          color: rgba(255, 255, 255, 0.55);
+          color: rgba(255, 255, 255, 0.65);
           font-size: 11px;
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-mono), monospace;
           margin: 0 0 16px;
-          text-transform: capitalize;
-          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
         }
 
         /* ── "View Project" button inside overlay ── */
@@ -166,17 +180,18 @@ export default function Portfolio() {
           align-items: center;
           gap: 8px;
           background: #FF8A00;
-          color: #fff;
+          color: #000;
           font-size: 11px;
-          font-weight: 700;
-          font-family: 'Sora', sans-serif;
+          font-weight: 800;
+          font-family: var(--font-display), sans-serif;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          padding: 8px 16px;
-          border-radius: 20px;
+          padding: 8px 18px;
+          border-radius: 9999px;
           width: fit-content;
+          box-shadow: 0 0 15px rgba(255, 138, 0, 0.5);
           transform: translateY(8px);
-          transition: transform 0.3s ease, background 0.2s ease;
+          transition: transform 0.3s ease, background 0.2s ease, box-shadow 0.2s ease;
         }
 
         .pf-card:hover .pf-view-btn {
@@ -184,29 +199,38 @@ export default function Portfolio() {
         }
 
         .pf-view-btn:hover {
-          background: #e55e00;
+          background: #FFAA00;
+          box-shadow: 0 0 25px rgba(255, 138, 0, 0.8);
         }
 
         /* ── Count badge ──────────────────────── */
         .pf-badge {
           position: absolute;
-          top: 16px;
-          left: 16px;
-          background: rgba(0, 0, 0, 0.85);
+          top: 14px;
+          left: 14px;
+          background: rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 138, 0, 0.35);
           color: #FF8A00;
-          font-size: 0.68rem;
+          font-size: 0.7rem;
           font-weight: 700;
-          letter-spacing: 0.12em;
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-family: 'Sora', sans-serif;
+          letter-spacing: 0.1em;
+          padding: 4px 10px;
+          border-radius: 9999px;
+          font-family: var(--font-mono), monospace;
           pointer-events: none;
           z-index: 2;
+          box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
       `}</style>
 
       <div className="pf-section-inner">
-        <SectionHeading title="WEB DEVELOPMENT WORKS" theme="dark" />
+        <SectionHeading 
+          title="FEATURED DIGITAL WORKS" 
+          subtitle="Engineered web applications, full-stack digital architectures, and interactive experiences."
+          theme="dark" 
+        />
 
         <div className="pf-grid">
           {portfolioItems.map((item, idx) => (

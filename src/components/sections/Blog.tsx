@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import SectionHeading from '@/components/ui/SectionHeading';
 
 const BLOG_POSTS = [
   {
@@ -40,39 +41,34 @@ export default function Blog() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 relative z-10">
         
         {/* Header Section */}
-        <div className="mb-12 sm:mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <span className="font-display font-bold text-xs uppercase tracking-widest text-[#FF8A00] mb-3 block">
-              {"// THOUGHT LEADERSHIP"}
-            </span>
-            <h2 className="font-display font-black text-3xl sm:text-5xl md:text-6xl text-black dark:text-white tracking-tight leading-tight">
-              Latest Insights
-            </h2>
-          </div>
-          <p className="font-body text-sm sm:text-base text-black/70 dark:text-white/70 max-w-md leading-relaxed">
-            Exploring the intersection of software engineering, digital marketing, and artificial intelligence.
-          </p>
+        <div className="mb-12 sm:mb-16">
+          <SectionHeading
+            category="THOUGHT LEADERSHIP"
+            title="LATEST INSIGHTS"
+            subtitle="Exploring the intersection of fullstack engineering, digital marketing strategy, and applied artificial intelligence."
+          />
         </div>
 
         {/* Blog Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {BLOG_POSTS.map((post) => (
-            <Link href={`#blog-section`} key={post.id} className="group block">
-              <div className="bg-white dark:bg-[#121212] rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 transition-all duration-300 hover:border-[#FF8A00]/50 hover:shadow-2xl hover:shadow-[#FF8A00]/10 h-full flex flex-col">
+            <Link href={`#blog-section`} key={post.id} className="group block h-full">
+              <div className="glass-card-premium hover-lift rounded-3xl overflow-hidden transition-all duration-500 h-full flex flex-col group-hover:border-[#FF8A00]/40 group-hover:shadow-[0_12px_40px_rgba(255,138,0,0.12)]">
                 
                 {/* Image Container */}
-                <div className="relative w-full h-56 overflow-hidden bg-gray-100 dark:bg-[#1a1a1a]">
+                <div className="relative w-full h-56 overflow-hidden bg-black/40">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-70" />
                   <div className="absolute inset-0 bg-[#FF8A00]/10 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <Image
                     src={post.image}
                     alt={post.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover transform transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover transform transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                   {/* Category Badge */}
-                  <div className="absolute top-4 left-4 z-20 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full border border-black/10 dark:border-white/10">
-                    <span className="font-display text-[10px] font-bold text-[#FF8A00] uppercase tracking-wider">
+                  <div className="absolute top-4 left-4 z-20 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 shadow-lg">
+                    <span className="font-mono text-[10px] font-bold text-[#FF8A00] uppercase tracking-wider">
                       {post.category}
                     </span>
                   </div>
@@ -80,13 +76,13 @@ export default function Blog() {
 
                 {/* Content Container */}
                 <div className="p-6 sm:p-8 flex-1 flex flex-col">
-                  <div className="font-mono text-xs text-black/50 dark:text-white/50 mb-3 uppercase tracking-wider">
+                  <div className="font-mono text-xs text-white/50 mb-3 uppercase tracking-wider">
                     {post.date}
                   </div>
-                  <h3 className="font-display font-bold text-xl sm:text-2xl text-black dark:text-white mb-3 group-hover:text-[#FF8A00] transition-colors line-clamp-2">
+                  <h3 className="font-display font-bold text-xl sm:text-2xl text-white mb-3 group-hover:text-[#FF8A00] transition-colors line-clamp-2">
                     {post.title}
                   </h3>
-                  <p className="font-body text-sm text-black/70 dark:text-white/70 leading-relaxed mb-6 line-clamp-3 flex-1">
+                  <p className="font-body text-sm text-white/70 leading-relaxed mb-6 line-clamp-3 flex-1 font-light">
                     {post.excerpt}
                   </p>
                   

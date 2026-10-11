@@ -33,15 +33,15 @@ export default function GSAPSectionAnimator({
             revealSections.forEach((section) => {
               gsap.fromTo(
                 section,
-                { autoAlpha: 0, y: 35 },
+                { autoAlpha: 0, y: 24 },
                 {
                   autoAlpha: 1,
                   y: 0,
-                  duration: 0.8,
+                  duration: 0.85,
                   ease: 'power2.out',
                   scrollTrigger: {
                     trigger: section,
-                    start: 'top 92%',
+                    start: 'top 90%',
                     toggleActions: 'play none none reverse',
                     invalidateOnRefresh: true,
                     onLeave: () => {
@@ -51,6 +51,11 @@ export default function GSAPSectionAnimator({
                 }
               );
             });
+
+            // Delayed refresh for dynamic components / images
+            const refreshTimeout = setTimeout(() => {
+              ScrollTrigger.refresh();
+            }, 600);
 
             // Parallax covers
             const covers = document.querySelectorAll('.cover-v1');

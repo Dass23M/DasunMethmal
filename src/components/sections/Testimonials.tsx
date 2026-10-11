@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
+import SectionHeading from '@/components/ui/SectionHeading';
 
 const TESTIMONIALS_DATA = [
   {
@@ -85,19 +86,12 @@ export default function Testimonials() {
 
   return (
     <section id="testimonial-section" className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white py-12 sm:py-20 md:py-24 overflow-hidden select-none">
-      {/* ─── HEADER SECTION ─── */}
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 mb-6 sm:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-8">
-        <div>
-          <span className="font-display font-bold text-xs uppercase tracking-widest text-[#FF8A00] mb-2 block">
-            {"// TESTIMONIALS"}
-          </span>
-          <h2 className="font-display font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-black dark:text-white tracking-tight leading-tight">
-            Trusted Brands Worldwide
-          </h2>
-        </div>
-        <p className="font-body text-xs sm:text-sm md:text-base text-black/70 dark:text-white/70 max-w-md leading-relaxed">
-          We build the next in digital experiences. From strategy to design, development to retention, we&apos;ve got you covered. 2+ years of experience, 10+ projects launched.
-        </p>
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 mb-8 sm:mb-14">
+        <SectionHeading 
+          title="CLIENT ENDORSEMENTS &amp; TESTIMONIALS" 
+          subtitle="Direct feedback from startup founders, product directors, and global engineering collaborators."
+          theme="dark" 
+        />
       </div>
 
       {/* ─── CONTINUOUS SMOOTH GSAP INFINITE MARQUEE SLIDER ─── */}
@@ -106,11 +100,11 @@ export default function Testimonials() {
         onMouseEnter={() => tweenRef.current?.pause()}
         onMouseLeave={() => tweenRef.current?.play()}
       >
-        <div ref={trackRef} className="inline-flex gap-3.5 sm:gap-8 will-change-transform">
+        <div ref={trackRef} className="inline-flex gap-4 sm:gap-8 will-change-transform">
           {slides.map((card, idx) => (
             <div
               key={`${card.id}-${idx}`}
-              className="w-[78vw] xs:w-[82vw] sm:w-[620px] md:w-[740px] shrink-0 bg-white dark:bg-[#121212]/50 backdrop-blur-xl rounded-[20px] sm:rounded-[32px] p-4 xs:p-5 sm:p-8 flex flex-col md:flex-row gap-3.5 sm:gap-8 items-center border border-black/10 dark:border-white/5 shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:border-black/20 dark:hover:border-white/10 group"
+              className="w-[78vw] xs:w-[82vw] sm:w-[620px] md:w-[740px] shrink-0 glass-card-premium rounded-[20px] sm:rounded-[32px] p-5 xs:p-6 sm:p-8 flex flex-col md:flex-row gap-4 sm:gap-8 items-center border border-white/[0.08] hover:border-[#FF8A00]/40 shadow-xl transition-all duration-300 group"
             >
               {/* Text Info Container */}
               <div className="flex-1 flex flex-col justify-between h-full text-left w-full">

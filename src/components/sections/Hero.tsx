@@ -177,16 +177,22 @@ export default function Hero() {
       <div className="mx-auto max-w-7xl relative z-20 px-4 sm:px-6">
         {/* Main Giant Headline & Name Tags */}
         <div className="relative hero-perspective">
-          <p className="hero-year-badge text-xs sm:text-sm absolute -top-5 left-2 sm:left-6 md:left-20 font-mono font-medium tracking-widest text-[#FF8A00]">
-            EST. 2023
-          </p>
+          <div className="hero-year-badge flex flex-wrap items-center gap-2.5 sm:gap-4 mb-4">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF8A00]/10 border border-[#FF8A00]/30 text-[#FF8A00] font-mono text-xs font-semibold tracking-wider shadow-[0_0_15px_rgba(255,138,0,0.15)]">
+              <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse" />
+              EST. 2023
+            </span>
+            <span className="text-black/60 dark:text-white/60 font-mono text-[11px] tracking-widest hidden sm:inline-block">
+              CARDIFF MET GRADUATE • FULLSTACK &amp; AI
+            </span>
+          </div>
 
           <h1 className="hero-headline z-20 text-black dark:text-white relative font-display font-extrabold text-left tracking-tight sm:tracking-[-6px] md:tracking-[-12px] xl:tracking-[-0.8rem] text-3xl xs:text-4xl sm:text-6xl md:text-8xl xl:text-[9.5rem] leading-none uppercase select-none drop-shadow-2xl max-w-6xl">
             CREATIVE ENGINEER
           </h1>
 
           {/* Desktop Name Tag */}
-          <p className="hero-name-tag text-2xl md:text-4xl hidden xl:block absolute -bottom-10 right-16 font-mono font-light tracking-[8px] text-[#FF8A00]">
+          <p className="hero-name-tag text-2xl md:text-4xl hidden xl:block absolute -bottom-10 right-16 font-mono font-light tracking-[8px] text-[#FF8A00] drop-shadow-[0_0_15px_rgba(255,138,0,0.3)]">
             DASUN METHMAL
           </p>
           {/* Mobile/Tablet Name Tag */}
@@ -198,7 +204,7 @@ export default function Hero() {
         {/* Disciplines & Portrait Grid */}
         <div className="grid relative mt-12 sm:mt-20 md:mt-24">
           <div className="space-y-8 pt-4 sm:pt-8 flex gap-6 justify-center">
-            <div className="hero-discipline-card flex flex-col sm:flex-row gap-6 bg-white/5 dark:bg-[#121212]/50 backdrop-blur-xl border border-black/10 dark:border-white/5 rounded-2xl w-full max-w-2xl h-fit p-6 sm:p-8 md:p-10 items-start sm:items-end justify-between shadow-2xl">
+            <div className="hero-discipline-card flex flex-col sm:flex-row gap-6 glass-card-premium rounded-2xl w-full max-w-2xl h-fit p-6 sm:p-8 md:p-10 items-start sm:items-end justify-between shadow-2xl">
               <div className="font-display font-semibold text-base sm:text-xl md:text-2xl space-y-2 text-black/90 dark:text-white/90">
                 <div className="hover:text-[#FF8A00] transition-colors cursor-default">/ FULLSTACK DEVELOPMENT</div>
                 <div className="hover:text-[#FF8A00] transition-colors cursor-default">/ WEB DESIGN (UX/UI)</div>
@@ -294,6 +300,28 @@ export default function Hero() {
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="7 10 12 15 17 10" />
               <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+          </a>
+        </div>
+
+        {/* Modern Interactive Scroll Down Cue */}
+        <div className="pt-8 sm:pt-10 px-2 flex items-center">
+          <a
+            href="#portfolio-section"
+            onClick={handleSmoothScroll('#portfolio-section')}
+            className="group inline-flex items-center gap-3 text-xs font-mono font-medium tracking-widest text-black/60 dark:text-white/60 hover:text-[#FF8A00] dark:hover:text-[#FF8A00] transition-colors"
+          >
+            <div className="w-5 h-8 rounded-full border border-black/30 dark:border-white/20 group-hover:border-[#FF8A00] flex items-start justify-center p-1 transition-colors">
+              <span className="w-1 h-2 rounded-full bg-[#FF8A00] animate-bounce" />
+            </div>
+            <span>SCROLL TO EXPLORE</span>
+            <svg
+              className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-y-1 text-[#FF8A00]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </a>
         </div>

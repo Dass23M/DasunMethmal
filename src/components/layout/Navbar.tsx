@@ -9,11 +9,16 @@ import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
  * Uses framer-motion to hide on scroll down and show on scroll up.
  */
 export default function Navbar() {
+  const [mounted, setMounted] = useState(false);
   const [activeSection, setActiveSection] = useState('home-section');
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   
   const { scrollY, scrollYProgress } = useScroll();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -119,11 +124,13 @@ export default function Navbar() {
       }`}
       aria-label="Main navigation"
     >
-      {/* Sleek Gradient Scroll Progress Bar */}
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#FF6B00] via-[#FFAA00] to-[#FF8A00] origin-left shadow-[0_0_10px_rgba(255,138,0,0.85)] z-50 pointer-events-none"
-        style={{ scaleX: scrollYProgress }}
-      />
+      {/* Sleek Gradient Scroll Progress Bar - Render only on client to avoid hydration mismatch */}
+      {mounted && (
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#FF6B00] via-[#FFAA00] to-[#FF8A00] origin-left shadow-[0_0_10px_rgba(255,138,0,0.85)] z-50 pointer-events-none"
+          style={{ scaleX: scrollYProgress }}
+        />
+      )}
 
       <div className="w-full max-w-[1240px] mx-auto px-4 sm:px-6 relative flex items-center justify-between">
         {/* Left Menu Items (Home, Portfolio, About, Services) */}

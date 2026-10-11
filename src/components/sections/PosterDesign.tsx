@@ -245,7 +245,7 @@ export default function PosterDesign() {
   if (!mounted) {
     return (
       <div
-        className="relative w-full overflow-hidden bg-gray-50 dark:bg-[#080808]"
+        className="relative w-full overflow-hidden bg-[#07080B]"
         style={{ minHeight: '100vh' }}
       />
     );
@@ -482,14 +482,14 @@ export default function PosterDesign() {
 const STYLES = `
 /* ── Tokens — Brand: Orange / White / Black ── */
 .pcg-outer {
-  --dark-bg:     #080808;
+  --dark-bg:     #07080B;
   --dark-fg:     #ffffff;
-  --dark-muted:  #999999;
-  --light-bg:    #f5f5f5;
-  --light-fg:    #0a0a0a;
-  --light-muted: #777777;
+  --dark-muted:  #94a3b8;
+  --light-bg:    #07080B;
+  --light-fg:    #ffffff;
+  --light-muted: #94a3b8;
   --accent-dark: #FF8A00;
-  --accent-lt:   #FF6B00;
+  --accent-lt:   #FFAA00;
 
   --bg:     var(--dark-bg);
   --fg:     var(--dark-fg);
@@ -501,8 +501,8 @@ const STYLES = `
   --hairline:     0.0625rem;
   --ui-inset:     2rem;
   --nav-x:        calc(var(--ui-inset) + 0.125rem);
-  --card-bg:      rgba(8, 8, 8, 0.78);
-  --card-border:  rgba(255, 138, 0, 0.22);
+  --card-bg:      rgba(13, 14, 21, 0.85);
+  --card-border:  rgba(255, 138, 0, 0.28);
   --z-ui:         20;
 
   position: relative;

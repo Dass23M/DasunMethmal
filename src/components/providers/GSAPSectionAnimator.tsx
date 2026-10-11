@@ -10,7 +10,9 @@ if (typeof window !== 'undefined') {
 
 /**
  * GSAP ScrollTrigger section orchestrator.
- * - Desktop-only smooth section reveals + parallax covers + hero pin
+ * - Smooth section entrance reveals with 3D depth and subtle easing
+ * - Hero parallax depth scrub
+ * - Parallax covers
  * - Mobile (<992px): Keeps all sections 100% visible, unblocked & responsive
  */
 export default function GSAPSectionAnimator({
@@ -26,89 +28,84 @@ export default function GSAPSectionAnimator({
       window.scrollTo(0, 0);
       const mm = gsap.matchMedia();
 
-          // ── Desktop (≥992px): Smooth section reveal + parallax + hero pin ──
-          mm.add('(min-width: 992px)', () => {
-            const revealSections = gsap.utils.toArray<HTMLElement>('.scroll-reveal-section');
+      // ── Desktop (≥992px): Smooth section reveal + parallax depth ──
+      mm.add('(min-width: 992px)', () => {
+        const revealSections = gsap.utils.toArray<HTMLElement>('.scroll-reveal-section');
 
-            revealSections.forEach((section) => {
-              gsap.fromTo(
-                section,
-                { autoAlpha: 0, y: 24 },
-                {
-                  autoAlpha: 1,
-                  y: 0,
-                  duration: 0.85,
-                  ease: 'power2.out',
-                  scrollTrigger: {
-                    trigger: section,
-                    start: 'top 90%',
-                    toggleActions: 'play none none reverse',
-                    invalidateOnRefresh: true,
-                    onLeave: () => {
-                      gsap.set(section, { clearProps: 'transform,opacity,visibility' });
-                    },
-                  },
-                }
-              );
-            });
-
-            // Delayed refresh for dynamic components / images
-            const refreshTimeout = setTimeout(() => {
-              ScrollTrigger.refresh();
-            }, 600);
-
-            // Parallax covers
-            const covers = document.querySelectorAll('.cover-v1');
-            covers.forEach((cover) => {
-              gsap.fromTo(
-                cover,
-                { backgroundPositionY: '30%' },
-                {
-                  backgroundPositionY: '70%',
-                  ease: 'none',
-                  scrollTrigger: {
-                    trigger: cover,
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: 1.2,
-                    invalidateOnRefresh: true,
-                  },
-                }
-              );
-            });
-
-            if (document.querySelector('#home-section')) {
-              gsap.to('.hero-title-meth, .hero-subtitle-meth', {
-                yPercent: -20,
-                opacity: 0.15,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: '#home-section',
-                  start: 'top top',
-                  end: 'bottom 20%',
-                  scrub: 1.2,
+        revealSections.forEach((section) => {
+          gsap.fromTo(
+            section,
+            { autoAlpha: 0, y: 32 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.9,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 88%',
+                toggleActions: 'play none none reverse',
+                invalidateOnRefresh: true,
+                onLeave: () => {
+                  gsap.set(section, { clearProps: 'transform,opacity,visibility' });
                 },
-              });
+              },
+            }
+          );
+        });
 
-              ScrollTrigger.create({
-                trigger: '#home-section',
+        // Parallax depth fade on Hero during scroll down
+        const heroSection = document.querySelector('#home-section');
+        if (heroSection) {
+          gsap.to('.hero-perspective', {
+            y: -50,
+            opacity: 0.35,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '#home-section',
+              start: 'top top',
+              end: 'bottom 10%',
+              scrub: 1.2,
+            },
+          });
+        }
+
+        // Parallax covers
+        const covers = document.querySelectorAll('.cover-v1');
+        covers.forEach((cover) => {
+          gsap.fromTo(
+            cover,
+            { backgroundPositionY: '30%' },
+            {
+              backgroundPositionY: '70%',
+              ease: 'none',
+              scrollTrigger: {
+                trigger: cover,
                 start: 'top top',
                 end: 'bottom top',
-                pin: true,
-                pinSpacing: false,
-                anticipatePin: 1,
-              });
+                scrub: 1.2,
+                invalidateOnRefresh: true,
+              },
             }
-          });
-
-          // ── Mobile (<991px): Ensure all sections are 100% visible ──
-          mm.add('(max-width: 991px)', () => {
-            const revealSections = gsap.utils.toArray<HTMLElement>('.scroll-reveal-section');
-            revealSections.forEach((section) => {
-              gsap.set(section, { clearProps: 'all', opacity: 1, visibility: 'visible' });
-            });
-          });
+          );
         });
+
+        // Delayed refresh for dynamic components / images
+        const refreshTimeout = setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 600);
+
+        return () => clearTimeout(refreshTimeout);
+      });
+
+      // ── Mobile (<991px): Ensure all sections are 100% visible ──
+      mm.add('(max-width: 991px)', () => {
+        const revealSections = gsap.utils.toArray<HTMLElement>('.scroll-reveal-section');
+        revealSections.forEach((section) => {
+          gsap.set(section, { clearProps: 'all', opacity: 1, visibility: 'visible' });
+        });
+      });
+    });
 
     return () => ctx.revert();
   }, []);

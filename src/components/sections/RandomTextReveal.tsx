@@ -112,17 +112,20 @@ export default function RandomTextReveal() {
   }, [mounted, textContent]);
 
   if (!mounted) {
-    return <div className="w-full py-16 lg:py-24 bg-gray-50 dark:bg-[#080808]" />;
+    return <div className="w-full py-20 lg:py-32 bg-[#07080B]" />;
   }
 
   return (
     <div
       ref={containerRef}
-      className="w-full py-16 lg:py-24 bg-gray-50 dark:bg-[#080808] flex items-center justify-center select-none relative z-10"
+      className="w-full py-20 lg:py-32 bg-[#07080B] luxury-mesh-bg flex items-center justify-center select-none relative z-10 overflow-hidden"
     >
+      {/* Ambient background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[250px] bg-[#FF8A00]/5 blur-[120px] pointer-events-none rounded-full" />
+
       <h3
         ref={textRef}
-        className="font-display text-black dark:text-white text-xl sm:text-3xl md:text-4xl lg:text-[2.4rem] font-medium leading-[1.38] tracking-tight max-w-[42ch] text-center px-5 sm:px-8 md:px-12"
+        className="font-display text-white text-xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-medium leading-[1.4] tracking-tight max-w-[44ch] text-center px-5 sm:px-8 md:px-12 relative z-10"
       >
         {textContent}
       </h3>

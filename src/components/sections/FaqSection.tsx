@@ -55,7 +55,7 @@ export default function FaqSection() {
     <section
       ref={sectionRef}
       id="faq-section"
-      className="w-full py-20 lg:py-28 bg-black text-white flex items-center justify-center overflow-hidden select-none"
+      className="w-full py-20 lg:py-28 bg-[#07080B] text-white flex items-center justify-center overflow-hidden select-none luxury-mesh-bg"
     >
       <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-8 md:px-16 lg:px-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 xl:gap-24 items-start">
@@ -73,21 +73,21 @@ export default function FaqSection() {
                 QUESTIONS
               </span>
             </h2>
-            <p className="font-body text-sm sm:text-base text-white/60 mt-6 leading-relaxed max-w-md font-light">
+            <p className="font-body text-sm sm:text-base text-zinc-400 mt-6 leading-relaxed max-w-md font-light">
               Clear answers regarding engagement models, design-to-production turnaround, post-launch scaling, and technology stack.
             </p>
           </div>
 
           {/* Right Column: Clean Glass Accordion List */}
-          <div className="lg:col-span-7 w-full space-y-3">
+          <div className="lg:col-span-7 w-full space-y-4">
             {FAQ_ITEMS.map((item, idx) => {
               const isOpen = openIndex === idx;
 
               return (
                 <div
                   key={idx}
-                  className={`glass-card-premium rounded-2xl p-5 sm:p-6 transition-all duration-300 border ${
-                    isOpen ? 'border-[#FF8A00]/40 shadow-[0_4px_24px_rgba(255,138,0,0.08)]' : 'border-white/5 hover:border-white/15'
+                  className={`obsidian-surface rounded-2xl p-5 sm:p-6 transition-all duration-300 border ${
+                    isOpen ? 'border-[#FF8A00]/50 shadow-[0_4px_30px_rgba(255,138,0,0.12)] bg-[#12141F]' : 'border-white/10 hover:border-white/20'
                   }`}
                 >
                   {/* Header Clickable Row */}

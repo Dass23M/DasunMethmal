@@ -1,8 +1,15 @@
 'use client';
 
+import React from 'react';
+import { motion } from 'framer-motion';
+
 /**
- * Editorial-style section header divider matching EditorialShowcase.
- * Features orange dot indicator, uppercase tracking title, year meta, and thin line divider.
+ * High-End Luxury Editorial Section Heading
+ * Features:
+ * - Dynamic scroll-triggered beam draw
+ * - Kinetic typography with letter-spacing settling
+ * - Radar pulse live beacon
+ * - Frosted glass meta pill with glow
  */
 interface SectionHeadingProps {
   title: string;
@@ -16,48 +23,96 @@ interface SectionHeadingProps {
 export default function SectionHeading({
   title,
   meta = '©2026',
-  theme = 'dark',
   className = '',
   subtitle,
   category,
 }: SectionHeadingProps) {
-  const isLight = theme === 'light';
-
   return (
-    <div
-      className={`w-full mb-8 sm:mb-16 border-b pb-5 transition-colors relative ${
-        isLight
-          ? 'border-black/15 text-black'
-          : 'border-black/15 dark:border-white/10 text-black dark:text-white'
-      } ${className}`}
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-60px' }}
+      className={`w-full mb-10 sm:mb-16 relative ${className}`}
     >
+      {/* Category Tag with Cyber Pulse */}
       {category && (
-        <span className="font-mono text-xs font-bold text-[#FF8A00] tracking-widest uppercase mb-2 block">
-          {"// " + category}
-        </span>
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: -10 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+          }}
+          className="flex items-center gap-2 mb-2.5"
+        >
+          <span className="font-mono text-[11px] sm:text-xs font-bold text-[#FF8A00] tracking-[0.2em] uppercase flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse shadow-[0_0_8px_#FF8A00]" />
+            {'// ' + category}
+          </span>
+        </motion.div>
       )}
-      <div className="flex items-center justify-between text-xs sm:text-sm font-bold tracking-widest uppercase">
-        <span className="flex items-center gap-3">
-          <span className="relative flex h-2.5 w-2.5">
+
+      {/* Main Title Row */}
+      <div className="flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm font-bold tracking-widest uppercase">
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, x: -16 },
+            visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 } },
+          }}
+          className="flex items-center gap-3.5"
+        >
+          {/* Radar Beacon */}
+          <span className="relative flex h-3 w-3 shrink-0">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF8A00] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FF8A00] shadow-[0_0_8px_#FF8A00]" />
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-gradient-to-tr from-[#FF6B00] to-[#FFAA00] shadow-[0_0_12px_#FF8A00]" />
           </span>
-          <span className="font-display tracking-[0.16em] text-sm sm:text-base font-extrabold text-black dark:text-white">
+
+          {/* Heading Text */}
+          <h2 className="font-display tracking-[0.14em] sm:tracking-[0.18em] text-lg sm:text-2xl md:text-3xl font-extrabold text-white leading-none uppercase drop-shadow-md">
             {title}
-          </span>
-        </span>
-        <span className="font-mono text-[11px] opacity-60 px-2.5 py-0.5 rounded-full border border-white/10 bg-white/[0.03]">
+          </h2>
+        </motion.div>
+
+        {/* Year Meta Glass Chip */}
+        <motion.span
+          variants={{
+            hidden: { opacity: 0, scale: 0.9 },
+            visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.2 } },
+          }}
+          className="font-mono text-[11px] sm:text-xs font-semibold text-zinc-400 px-3 py-1 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md shadow-sm"
+        >
           {meta}
-        </span>
+        </motion.span>
       </div>
+
+      {/* Subtitle */}
       {subtitle && (
-        <p className="mt-2 text-xs sm:text-sm text-black/60 dark:text-white/60 font-body max-w-xl">
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 10 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.25 } },
+          }}
+          className="mt-3 text-xs sm:text-sm md:text-base text-zinc-400 font-body max-w-2xl leading-relaxed font-light"
+        >
           {subtitle}
-        </p>
+        </motion.p>
       )}
-      {/* Ambient gradient highlight */}
-      <div className="absolute -bottom-[1px] left-0 w-28 h-[2px] bg-gradient-to-r from-[#FF8A00] via-[#FFAA00] to-transparent" />
-    </div>
+
+      {/* Animated Bottom Laser Beam Divider */}
+      <div className="relative mt-5 sm:mt-6 w-full h-[1px] bg-white/[0.08] overflow-hidden">
+        <motion.div
+          variants={{
+            hidden: { scaleX: 0, originX: 0 },
+            visible: { scaleX: 1, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 } },
+          }}
+          className="absolute inset-0 bg-gradient-to-r from-[#FF8A00] via-[#FFAA00] to-transparent w-full h-full"
+        />
+        <motion.div
+          variants={{
+            hidden: { left: '-10%' },
+            visible: { left: '100%', transition: { duration: 1.4, ease: 'easeInOut', delay: 0.3 } },
+          }}
+          className="absolute top-0 bottom-0 w-24 bg-gradient-to-r from-transparent via-white to-transparent opacity-70"
+        />
+      </div>
+    </motion.div>
   );
 }
-

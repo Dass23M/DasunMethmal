@@ -843,7 +843,7 @@ export const GithubCalendar = memo(function GithubCalendar({
     <div
       className={cn(
         "w-fit mx-auto overflow-x-hidden border rounded-2xl transition-all duration-500 bg-[#0c0c0e]/90 backdrop-blur-xl border-black/10 dark:border-white/10 p-4 sm:p-6 shadow-2xl",
-        gameActive ? "bg-gray-50 dark:bg-black border-neutral-800" : "",
+        gameActive ? "bg-[#07080B] border-neutral-800" : "",
         className,
       )}
     >

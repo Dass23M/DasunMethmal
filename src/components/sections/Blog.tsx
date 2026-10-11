@@ -37,14 +37,14 @@ const BLOG_POSTS = [
 
 export default function Blog() {
   return (
-    <section id="blog-section" className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white py-16 sm:py-24 overflow-hidden relative">
+    <section id="blog-section" className="w-full bg-[#07080B] text-white py-20 sm:py-28 overflow-hidden relative luxury-mesh-bg">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 relative z-10">
         
         {/* Header Section */}
         <div className="mb-12 sm:mb-16">
           <SectionHeading
             category="THOUGHT LEADERSHIP"
-            title="LATEST INSIGHTS"
+            title="LATEST INSIGHTS &amp; WRITINGS"
             subtitle="Exploring the intersection of fullstack engineering, digital marketing strategy, and applied artificial intelligence."
           />
         </div>
@@ -53,7 +53,7 @@ export default function Blog() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {BLOG_POSTS.map((post) => (
             <Link href={`#blog-section`} key={post.id} className="group block h-full">
-              <div className="glass-card-premium hover-lift rounded-3xl overflow-hidden transition-all duration-500 h-full flex flex-col group-hover:border-[#FF8A00]/40 group-hover:shadow-[0_12px_40px_rgba(255,138,0,0.12)]">
+              <div className="obsidian-surface rounded-3xl overflow-hidden transition-all duration-500 h-full flex flex-col group-hover:border-[#FF8A00]/40 group-hover:shadow-[0_15px_45px_rgba(255,138,0,0.18)]">
                 
                 {/* Image Container */}
                 <div className="relative w-full h-56 overflow-hidden bg-black/40">

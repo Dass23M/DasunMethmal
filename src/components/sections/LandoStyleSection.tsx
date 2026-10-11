@@ -76,15 +76,15 @@ export default function LandoStyleSection() {
     <section
       ref={sectionRef}
       id="landostyle-section"
-      className="relative w-full min-h-[700px] md:min-h-[850px] bg-gray-50 dark:bg-[#080808] text-black dark:text-white overflow-hidden select-none flex flex-col justify-between py-8 md:py-12"
+      className="relative w-full min-h-[700px] md:min-h-[850px] bg-[#07080B] text-white overflow-hidden select-none flex flex-col justify-between py-12 md:py-16 luxury-mesh-bg"
     >
 
       {/* ─── 2. TOP HEADER NAVIGATION BAR ─── */}
       <div className="relative z-30 w-full max-w-[1440px] mx-auto px-5 sm:px-10 flex items-center justify-between">
         {/* Left Brand Title */}
         <div className="flex items-center gap-2">
-          <span className="font-display font-black text-xl sm:text-2xl tracking-tighter text-black dark:text-white uppercase">
-            METHMAL<span className="text-[#FF6B00]">.</span>
+          <span className="font-display font-black text-xl sm:text-2xl tracking-tighter text-white uppercase">
+            METHMAL<span className="text-gradient-amber">.</span>
           </span>
         </div>
       </div>
@@ -96,20 +96,20 @@ export default function LandoStyleSection() {
         <div className="absolute inset-0 flex flex-col justify-center gap-4 sm:gap-6 overflow-hidden pointer-events-none opacity-85 select-none">
           {/* Row 1: Leftward Scrolling Giant Headline */}
           <div className="w-max flex whitespace-nowrap" ref={marquee1Ref}>
-            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-[#FF6B00] leading-none pr-8">
+            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-[#FF8A00] leading-none pr-8">
               {marqueeText1}
             </span>
-            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-[#FF6B00] leading-none pr-8">
+            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-[#FF8A00] leading-none pr-8">
               {marqueeText1}
             </span>
           </div>
 
           {/* Row 2: Rightward Scrolling Secondary Giant Headline */}
           <div className="w-max flex whitespace-nowrap" ref={marquee2Ref}>
-            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-black dark:text-white leading-none pr-8 opacity-90">
+            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-white/80 leading-none pr-8">
               {marqueeText2}
             </span>
-            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-black dark:text-white leading-none pr-8 opacity-90">
+            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-white/80 leading-none pr-8">
               {marqueeText2}
             </span>
           </div>

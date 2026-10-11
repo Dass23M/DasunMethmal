@@ -200,25 +200,25 @@ export default function About() {
     <section
       id="about-section"
       ref={containerRef}
-      className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white select-none relative overflow-hidden py-16 sm:py-24 font-body"
+      className="w-full bg-[#07080B] text-white select-none relative overflow-hidden py-20 sm:py-28 font-body luxury-mesh-bg"
     >
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         <SectionHeading 
           title="ABOUT &amp; ENGINEERING BACKGROUND" 
           subtitle="Software Engineering graduate from Cardiff Metropolitan University specializing in full-stack architecture & growth."
-          theme="dark" 
+          category="BACKGROUND &amp; IDENTITY"
         />
 
         {/* ─── 1. TOP EDITORIAL SVG TITLE BANNER ─── */}
         <div className="w-full mb-10 sm:mb-14 pb-6">
-          <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-3">
+          <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF8A00] uppercase tracking-widest mb-3">
             <span>{"// ABOUT METHMAL"}</span>
             <span>EST. 2023</span>
           </div>
 
           <div className="relative w-full overflow-hidden">
-            <h2 className="font-display font-bold text-3xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-black dark:text-white leading-none">
-              METHMAL<span className="text-[#FF6B00]">.</span>
+            <h2 className="font-display font-black text-3xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-white leading-none">
+              METHMAL<span className="text-gradient-amber">.</span>
             </h2>
           </div>
         </div>
@@ -229,7 +229,7 @@ export default function About() {
           <div className="lg:col-span-5">
             <div
               ref={heroImageRef}
-              className="relative w-full max-w-sm lg:max-w-none mx-auto aspect-[4/5] rounded-2xl overflow-hidden border border-black/10 dark:border-white/5 shadow-2xl bg-[#111] group"
+              className="relative w-full max-w-sm lg:max-w-none mx-auto aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-[0_15px_45px_rgba(0,0,0,0.8)] bg-[#0D0E15] group"
             >
               <Image
                 src="/images/methmal2.png"
@@ -238,33 +238,33 @@ export default function About() {
                 sizes="(max-width: 1024px) 100vw, 42vw"
                 className="object-cover grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-black dark:text-white font-mono text-xs">
-                <span>METHMAL®</span>
-                <span className="text-[#FF6B00]">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-white font-mono text-xs">
+                <span className="font-bold tracking-wider">METHMAL®</span>
+                <span className="text-[#FF8A00] font-semibold">
                   FULLSTACK &amp; MARKETING
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Spacer Column (3 Cols) */}
+          {/* Spacer Column (2 Cols) */}
           <div className="hidden lg:block lg:col-span-2" />
 
           {/* Right Column (5 Cols): Editorial Journey Text */}
           <div className="lg:col-span-5">
-            <div ref={aboutTextRef} className="space-y-4">
-              <span className="font-mono text-xs font-bold text-[#FF6B00] tracking-widest uppercase block">
-                001 / PHILOSOPHY &amp; JOURNEY
+            <div ref={aboutTextRef} className="space-y-5">
+              <span className="font-mono text-xs font-bold text-[#FF8A00] tracking-widest uppercase block">
+                001 / PHILOSOPHY &amp; ARCHITECTURAL VISION
               </span>
-              <p className="font-body text-sm sm:text-base md:text-lg text-black dark:text-gray-300 leading-relaxed font-normal">
+              <p className="font-body text-sm sm:text-base md:text-lg text-zinc-200 leading-relaxed font-normal">
                 I am a fullstack software engineer and digital marketer
                 exploring the intersection of modern web architecture and
                 creative growth strategy. Building digital solutions as a craft,
                 my work embodies the transformation of complex ideas into
                 seamless, production-grade applications.
               </p>
-              <p className="font-body text-sm sm:text-base md:text-lg text-black/70 dark:text-[#A0A0A0] leading-relaxed font-normal">
+              <p className="font-body text-sm sm:text-base md:text-lg text-zinc-400 leading-relaxed font-light">
                 Through deliberate practice and technical precision, I find that
                 clean code provides structure in times of uncertainty and offers
                 rare clarity when scaling user experiences. Each platform

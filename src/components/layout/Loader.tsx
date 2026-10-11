@@ -86,19 +86,19 @@ export default function Loader() {
     <div
       ref={overlayRef}
       id="site-preloader"
-      className="fixed inset-0 z-[9999] bg-white dark:bg-[#080808] flex flex-col items-center justify-center overflow-hidden select-none font-display"
+      className="fixed inset-0 z-[9999] bg-[#07080B] flex flex-col items-center justify-center overflow-hidden select-none font-display"
     >
       <div ref={textContainerRef} className="flex flex-col items-center justify-center relative">
         <h1
           ref={nameRef}
-          className="font-display font-black text-2xl sm:text-3xl md:text-4xl tracking-[0.3em] uppercase text-black dark:text-white mb-6"
+          className="font-display font-black text-2xl sm:text-3xl md:text-4xl tracking-[0.3em] uppercase text-white mb-6"
         >
           METHMAL<span className="text-[#FF8A00]">.</span>
         </h1>
         
         {/* The razor-thin luxury loading line */}
-        <div className="w-[120px] sm:w-[160px] h-[1px] bg-black/10 dark:bg-white/10 rounded-full overflow-hidden">
-          <div ref={lineRef} className="w-full h-full bg-black dark:bg-white rounded-full" />
+        <div className="w-[120px] sm:w-[160px] h-[1.5px] bg-white/10 rounded-full overflow-hidden">
+          <div ref={lineRef} className="w-full h-full bg-gradient-to-r from-[#FF8A00] to-[#FFAA00] shadow-[0_0_8px_#FF8A00] rounded-full" />
         </div>
       </div>
     </div>

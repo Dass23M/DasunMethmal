@@ -1927,4 +1927,89 @@ textarea.form-control {
   transform: translateX(100%);
 }
 
+/* Luxury Multi-Point Mesh Background */
+.luxury-mesh-bg {
+  background-color: #07080B;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(255, 138, 0, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.04) 0%, transparent 45%),
+    radial-gradient(circle at 50% 75%, rgba(255, 138, 0, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 80% 90%, rgba(129, 140, 248, 0.03) 0%, transparent 40%);
+}
+
+/* Obsidian Glass Surface */
+.obsidian-surface {
+  background: rgba(13, 14, 21, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.obsidian-surface:hover {
+  border-color: rgba(255, 138, 0, 0.4);
+  box-shadow: 
+    0 20px 45px -15px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(255, 138, 0, 0.15),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Kinetic Gradient Shimmer Headline */
+@keyframes textShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #FFFFFF 0%,
+    #FFE2B3 25%,
+    #FF8A00 50%,
+    #FFE2B3 75%,
+    #FFFFFF 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShimmer 6s ease infinite;
+}
+
+/* Floating Animation */
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+/* High-Tech Radar Ring */
+.live-beacon {
+  position: relative;
+  display: inline-flex;
+}
+
+.live-beacon::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  border: 1px solid #10B981;
+  opacity: 0.8;
+  animation: beaconPulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes beaconPulse {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+
 

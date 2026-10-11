@@ -91,31 +91,34 @@ export default function ImageFanShowcase() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full min-h-screen bg-gray-50 dark:bg-[#080808]" />;
+    return <section className="w-full min-h-screen bg-[#07080B]" />;
   }
 
   return (
     <section
       ref={sectionRef}
       id="capabilities-section"
-      className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white py-16 sm:py-24 select-none relative overflow-hidden font-body"
+      className="w-full bg-[#07080B] luxury-mesh-bg text-white py-20 sm:py-28 select-none relative overflow-hidden font-body"
     >
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+      {/* Ambient background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-[#FF8A00]/5 blur-[140px] pointer-events-none rounded-full" />
+
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between pb-6 mb-12 sm:mb-16 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between pb-6 mb-12 sm:mb-16 gap-4 border-b border-white/[0.08]">
           <div>
             <div className="flex items-center gap-2.5 mb-3">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00] animate-pulse" />
-              <span className="font-display font-bold text-xs sm:text-sm tracking-widest text-[#FF6B00] uppercase">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#FF8A00] radar-pulse shadow-[0_0_8px_#FF8A00]" />
+              <span className="font-display font-bold text-xs sm:text-sm tracking-widest text-[#FF8A00] uppercase">
                 {"// CORE CAPABILITIES & SERVICES"}
               </span>
             </div>
-            <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-black dark:text-white tracking-tight uppercase leading-none">
-              EXPERTISE &amp; CRAFT<span className="text-[#FF6B00]">.</span>
+            <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight uppercase leading-none">
+              EXPERTISE &amp; CRAFT<span className="text-[#FF8A00]">.</span>
             </h2>
           </div>
 
-          <p className="font-body text-sm sm:text-base text-black/70 dark:text-white/70 max-w-md leading-relaxed font-normal">
+          <p className="font-body text-sm sm:text-base text-zinc-300 max-w-md leading-relaxed font-normal">
             Delivering end-to-end digital solutions combining engineering precision, visual storytelling, and growth marketing.
           </p>
         </div>
@@ -128,40 +131,40 @@ export default function ImageFanShowcase() {
           {SERVICES.map((item) => (
             <div
               key={item.id}
-              className="service-card group bg-[#12131A]/90 border border-white/12 rounded-2xl p-6 flex flex-col justify-between backdrop-blur-xl shadow-2xl relative overflow-hidden transition-all duration-500 hover:border-[#FF6B00]/50 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(255,107,0,0.12)]"
+              className="service-card group obsidian-surface rounded-2xl p-6 flex flex-col justify-between border border-white/10 shadow-2xl relative overflow-hidden transition-all duration-500 hover:border-[#FF8A00]/50 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(255,138,0,0.15)]"
             >
               {/* Top Ambient Glow */}
               <div
-                className="absolute -top-16 -right-16 w-32 h-32 rounded-full blur-3xl opacity-15 transition-opacity duration-500 group-hover:opacity-35 pointer-events-none"
+                className="absolute -top-16 -right-16 w-32 h-32 rounded-full blur-3xl opacity-15 transition-opacity duration-500 group-hover:opacity-40 pointer-events-none"
                 style={{ backgroundColor: item.accent }}
               />
 
               {/* Card Header & Badge */}
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <span className="px-3 py-1 rounded-full bg-white/5 border border-black/10 dark:border-white/10 font-mono text-[11px] font-bold text-[#FF6B00] tracking-widest uppercase">
+                  <span className="px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 font-mono text-[11px] font-bold text-[#FFAA00] tracking-widest uppercase">
                     {item.num} / {item.category}
                   </span>
-                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: item.accent }} />
+                  <span className="w-2 h-2 rounded-full shadow-[0_0_8px_#FFAA00]" style={{ backgroundColor: item.accent }} />
                 </div>
 
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-black dark:text-white leading-snug tracking-tight mb-3 transition-colors duration-300 group-hover:text-[#FF6B00]">
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-white leading-snug tracking-tight mb-3 transition-colors duration-300 group-hover:text-[#FFAA00]">
                   {item.header}
                 </h3>
 
-                <p className="text-black dark:text-white/75 font-normal text-xs sm:text-sm leading-relaxed mb-4">
+                <p className="text-zinc-300 font-normal text-xs sm:text-sm leading-relaxed mb-4">
                   {item.desc}
                 </p>
               </div>
 
               {/* Center Image Container — Balanced & Always Visible */}
-              <div className="relative w-full h-[200px] sm:h-[220px] my-4 rounded-xl overflow-hidden bg-black/40 border border-white/5 flex items-center justify-center p-2">
+              <div className="relative w-full h-[200px] sm:h-[220px] my-4 rounded-xl overflow-hidden bg-black/50 border border-white/10 flex items-center justify-center p-2">
                 <Image
                   src={item.image}
                   alt={item.header}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  className="object-contain object-center transition-transform duration-700 ease-out group-hover:scale-105 filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)]"
+                  className="object-contain object-center transition-transform duration-700 ease-out group-hover:scale-105 filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.7)]"
                 />
               </div>
 
@@ -171,7 +174,7 @@ export default function ImageFanShowcase() {
                   {item.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-2.5 py-1 rounded-md bg-white/5 border border-black/10 dark:border-white/10 text-[10px] font-mono text-black/70 dark:text-white/70"
+                      className="px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/10 text-[10px] font-mono text-zinc-400"
                     >
                       {tag}
                     </span>
@@ -181,7 +184,7 @@ export default function ImageFanShowcase() {
                 <Link
                   href="#contact-section"
                   style={{ backgroundColor: item.accent }}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-black font-display font-extrabold text-xs tracking-wider uppercase shadow-lg transition-all duration-300 hover:brightness-110 hover:shadow-[0_8px_20px_rgba(255,107,0,0.3)]"
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-black font-display font-extrabold text-xs tracking-wider uppercase shadow-lg transition-all duration-300 hover:brightness-110 hover:shadow-[0_8px_20px_rgba(255,138,0,0.4)]"
                 >
                   <span>WORK WITH ME ↗</span>
                 </Link>

@@ -41,14 +41,14 @@ export default function EditorialShowcase() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full min-h-[500px] bg-gray-50 dark:bg-black" />;
+    return <section className="w-full min-h-[500px] bg-[#07080B]" />;
   }
 
   return (
     <section
       ref={sectionRef}
       id="digital-marketing-showcase"
-      className="relative w-full min-h-[65vh] sm:min-h-[75vh] md:min-h-[85vh] bg-gray-50 dark:bg-black text-black dark:text-white py-14 sm:py-24 md:py-28 px-4 sm:px-8 md:px-16 lg:px-20 select-none overflow-hidden flex items-center"
+      className="relative w-full min-h-[65vh] sm:min-h-[75vh] md:min-h-[85vh] bg-[#07080B] text-white py-16 sm:py-24 md:py-28 px-4 sm:px-8 md:px-16 lg:px-20 select-none overflow-hidden flex items-center luxury-mesh-bg"
     >
       {/* ─── 1. FULL-BLEED GLSL SHADER BACKGROUND ─── */}
       <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-85">
@@ -56,7 +56,7 @@ export default function EditorialShowcase() {
       </div>
 
       {/* Vignette Overlay for High Text Legibility */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/80 via-black/40 to-black/85 pointer-events-none" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/85 via-black/40 to-[#07080B] pointer-events-none" />
 
       {/* ─── 2. TRANSPARENT CONTENT ─── */}
       <div className="relative z-20 w-full max-w-[1550px] mx-auto">
@@ -64,23 +64,23 @@ export default function EditorialShowcase() {
 
           {/* Site-Consistent Top Header Row */}
           <div>
-            <div className="flex items-center justify-between text-[10px] xs:text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-3">
+            <div className="flex items-center justify-between text-[10px] xs:text-xs sm:text-sm font-mono text-[#FF8A00] uppercase tracking-widest mb-3">
               <span className="flex items-center gap-2 font-bold">
-                <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse shadow-[0_0_8px_#FF8A00]" />
                 {"// DIGITAL MARKETING & STRATEGY"}
               </span>
-              <span>EST. 2023</span>
+              <span className="text-zinc-400">EST. 2023</span>
             </div>
 
-            {/* Giant Sora Headline */}
-            <h2 className="font-display font-extrabold text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-black dark:text-white leading-none drop-shadow-2xl">
-              MARKETING<span className="text-[#FF6B00]">.</span>
+            {/* Giant Display Headline */}
+            <h2 className="font-display font-black text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-white leading-none drop-shadow-2xl">
+              MARKETING<span className="text-gradient-amber">.</span>
             </h2>
           </div>
 
           {/* Floating Information Paragraph */}
           <div className="max-w-3xl">
-            <p className="font-body text-sm sm:text-lg md:text-xl lg:text-2xl font-normal leading-relaxed sm:leading-relaxed text-black/90 dark:text-white/90 drop-shadow-md">
+            <p className="font-body text-sm sm:text-lg md:text-xl lg:text-2xl font-light leading-relaxed sm:leading-relaxed text-zinc-200 drop-shadow-md">
               Combining creative visual engineering with data-backed digital strategies. I engineer targeted social media campaigns, search engine optimization, and high-converting visual assets that scale brands and capture customer engagement.
             </p>
           </div>

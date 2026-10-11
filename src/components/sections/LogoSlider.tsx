@@ -97,7 +97,7 @@ export default function LogoSlider() {
     const ctx = gsap.context(() => {
       tweenRef.current = gsap.to(track, {
         x: -totalWidth,
-        duration: 20,
+        duration: 22,
         ease: 'none',
         repeat: -1,
       });
@@ -107,54 +107,34 @@ export default function LogoSlider() {
   }, [mounted]);
 
   return (
-    <div
-      style={{
-        padding: '2.5rem 0',
-        overflow: 'hidden',
-        background: '#080808',
-        userSelect: 'none',
-        position: 'relative',
-      }}
-    >
-      <p
-        style={{
-          textAlign: 'center',
-          fontSize: '0.7rem',
-          fontFamily: 'Sora, sans-serif',
-          fontWeight: 600,
-          letterSpacing: '0.22em',
-          textTransform: 'uppercase',
-          color: 'rgba(255,255,255,0.3)',
-          marginBottom: '40px',
-        }}
-      >
-        Technologies &amp; Partners
+    <div className="relative py-12 md:py-16 overflow-hidden bg-[#07080B] border-y border-white/[0.06] select-none">
+      {/* Side Fade Gradient Masks for Seamless Edge Dissolve */}
+      <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-44 bg-gradient-to-r from-[#07080B] via-[#07080B]/80 to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-44 bg-gradient-to-l from-[#07080B] via-[#07080B]/80 to-transparent z-10 pointer-events-none" />
+
+      {/* Header Label */}
+      <p className="text-center font-mono text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-zinc-400 mb-8 flex items-center justify-center gap-2">
+        <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00] animate-pulse" />
+        TECHNOLOGY STACK &amp; INDUSTRY PARTNERS
       </p>
 
+      {/* Marquee Track Container */}
       <div
-        style={{ display: 'flex', overflow: 'hidden', width: '100%' }}
+        className="flex overflow-hidden w-full cursor-grab active:cursor-grabbing"
         onMouseEnter={() => tweenRef.current?.pause()}
         onMouseLeave={() => tweenRef.current?.play()}
       >
         <div
           ref={trackRef}
-          className="flex items-center gap-16 md:gap-20 w-max"
+          className="flex items-center gap-16 md:gap-24 w-max will-change-transform"
         >
           {marqueeItems.map((logo, index) => (
             <div
               key={`${logo.name}-${index}`}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-                opacity: 0.6,
-                transition: 'opacity 0.3s ease, transform 0.3s ease',
-              }}
-              className="hover:!opacity-100 hover:scale-110"
+              className="flex items-center justify-center shrink-0 opacity-40 hover:opacity-100 hover:scale-110 transition-all duration-300 group"
             >
               {logo.svg ? (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="flex items-center justify-center drop-shadow-sm group-hover:drop-shadow-[0_0_12px_rgba(255,138,0,0.5)] transition-all">
                   {logo.svg}
                 </div>
               ) : (
@@ -169,6 +149,7 @@ export default function LogoSlider() {
                     objectFit: 'contain',
                     filter: 'brightness(0) invert(1)',
                   }}
+                  className="group-hover:brightness-125 transition-all"
                 />
               )}
             </div>

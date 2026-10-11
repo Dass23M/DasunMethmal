@@ -41,13 +41,13 @@ export default function MobileMenu() {
   };
 
   return (
-    <nav className="site-mobile-menu bg-white/95 dark:bg-[#0d0d0d]/95 text-black dark:text-white" aria-label="Mobile navigation">
+    <nav className="site-mobile-menu bg-[#07080B]/95 backdrop-blur-2xl text-white" aria-label="Mobile navigation">
       <div className="close-wrap">
         <a href="#" onClick={closeMenu} aria-label="Close mobile navigation menu">
-          <span className="close-label text-black/80 dark:text-white/80 dark:text-white/80 hover:text-[#FF8A00] transition-colors text-[14px] font-medium">Close</span>
+          <span className="close-label text-zinc-300 hover:text-[#FF8A00] transition-colors text-[14px] font-medium">Close</span>
           <div className="close-times">
-            <span className="bar1 bg-gray-50 dark:bg-black dark:bg-white" />
-            <span className="bar2 bg-gray-50 dark:bg-black dark:bg-white" />
+            <span className="bar1 bg-white" />
+            <span className="bar2 bg-white" />
           </div>
         </a>
       </div>

@@ -73,24 +73,24 @@ export default function Portfolio() {
     <section
       id="portfolio-section"
       ref={sectionRef}
-      className="relative min-h-[90vh] md:min-h-[85vh] w-full flex items-center justify-center overflow-hidden bg-gray-50 dark:bg-[#080808]"
-      style={{ minHeight: '100vh' }}
+      className="relative min-h-[90vh] md:min-h-[85vh] w-full flex items-center justify-center overflow-hidden bg-[#07080B] py-20 lg:py-28 text-white"
     >
       <style>{`
         /* ── Portfolio grid ───────────────────── */
         .pf-section-inner {
-          max-width: 1140px;
+          max-width: 1240px;
           margin: 0 auto;
-          padding: 0 16px;
+          padding: 0 20px;
+          width: 100%;
         }
 
         .pf-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
+          gap: 28px;
         }
-        @media (max-width: 900px)  { .pf-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 560px)  { .pf-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 960px)  { .pf-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+        @media (max-width: 600px)  { .pf-grid { grid-template-columns: 1fr; gap: 24px; } }
 
         /* ── Individual card ──────────────────── */
         .pf-card {
@@ -100,10 +100,12 @@ export default function Portfolio() {
           cursor: pointer !important;
           text-decoration: none;
           color: inherit;
-          border-radius: 16px;
+          border-radius: 20px;
           border: 1px solid rgba(255, 255, 255, 0.08);
-          background: #0e0e12;
-          box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+          background: rgba(13, 14, 22, 0.75);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
           will-change: transform, opacity;
           transform: translateZ(0);
           transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -112,9 +114,9 @@ export default function Portfolio() {
         .pf-card:hover {
           border-color: rgba(255, 138, 0, 0.45);
           box-shadow: 
-            0 20px 40px -10px rgba(0, 0, 0, 0.8),
-            0 0 30px rgba(255, 138, 0, 0.18);
-          transform: translateY(-4px);
+            0 20px 45px -10px rgba(0, 0, 0, 0.85),
+            0 0 30px rgba(255, 138, 0, 0.2);
+          transform: translateY(-6px);
         }
 
         .pf-card-img-wrap {

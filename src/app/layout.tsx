@@ -8,6 +8,7 @@ import Loader from '@/components/layout/Loader';
 import GSAPSectionAnimator from '@/components/providers/GSAPSectionAnimator';
 import LenisBackgroundCanvas from '@/components/ui/LenisBackgroundCanvas';
 import CustomCursor from '@/components/ui/CustomCursor';
+import ScrollToTop from '@/components/ui/ScrollToTop';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
 // -----------------------------------------------------------------------------
@@ -306,7 +307,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${display.variable} ${body.variable} bg-black text-white font-sans`}
+        className={`${display.variable} ${body.variable} bg-[#07080B] text-white font-sans`}
         style={{ '--font-mono': '"JetBrains Mono", monospace' } as React.CSSProperties}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
@@ -315,6 +316,9 @@ export default function RootLayout({
             <GSAPSectionAnimator>
               {/* Custom Interactive Cursor */}
               <CustomCursor />
+
+              {/* Floating Scroll To Top with Progress Ring */}
+              <ScrollToTop />
 
               {/* Page loader */}
               <Loader />

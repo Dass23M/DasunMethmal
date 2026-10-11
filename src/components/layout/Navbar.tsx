@@ -119,15 +119,15 @@ export default function Navbar() {
       transition={{ duration: 0.35, ease: "easeInOut" }}
       className={`fixed top-0 left-0 right-0 z-[1002] transition-all duration-300 ${
         scrolled 
-          ? 'bg-black/85 backdrop-blur-xl border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)] py-[14px]' 
-          : 'bg-transparent py-[26px]'
+          ? 'bg-[#07080B]/85 backdrop-blur-2xl border-b border-white/[0.08] shadow-[0_10px_35px_rgba(0,0,0,0.8)] py-[14px]' 
+          : 'bg-transparent py-[24px]'
       }`}
       aria-label="Main navigation"
     >
       {/* Sleek Gradient Scroll Progress Bar - Render only on client to avoid hydration mismatch */}
       {mounted && (
         <motion.div
-          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#FF6B00] via-[#FFAA00] to-[#FF8A00] origin-left shadow-[0_0_10px_rgba(255,138,0,0.85)] z-50 pointer-events-none"
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#FF6B00] via-[#FFAA00] to-[#FF8A00] origin-left shadow-[0_0_12px_rgba(255,138,0,0.9)] z-50 pointer-events-none"
           style={{ scaleX: scrollYProgress }}
         />
       )}
@@ -176,7 +176,7 @@ export default function Navbar() {
 
           {/* Availability Status Badge */}
           <div className="hidden xl:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-[11px] font-mono text-emerald-400 select-none shadow-[0_0_12px_rgba(16,185,129,0.15)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#10B981]" />
             <span>Open to Work</span>
           </div>
         </div>
@@ -212,7 +212,7 @@ function NavLink({
 
   const colorClass = hovered || isActive
     ? 'text-[#FF8A00]'
-    : 'text-black/80 dark:text-white/80 dark:text-white/90';
+    : 'text-zinc-300 hover:text-white';
 
   const underlineBg = 'bg-[#FF8A00]';
 
@@ -222,7 +222,7 @@ function NavLink({
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`p-[10px_7px] block text-[14px] relative no-underline transition-colors duration-300 ${colorClass}`}
+      className={`p-[10px_7px] block text-[14px] relative no-underline transition-colors duration-300 font-medium tracking-wide ${colorClass}`}
     >
       {label}
       <span

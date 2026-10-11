@@ -116,26 +116,26 @@ export default function ScrollRevealGrid() {
     }, [mounted]);
 
     if (!mounted) {
-        return <section className="w-full min-h-[400px] bg-gray-50 dark:bg-[#080808]" />;
+        return <section className="w-full min-h-[400px] bg-[#07080B]" />;
     }
 
     return (
-        <section id="skills-section" ref={sectionRef} className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white py-12 sm:py-20 overflow-hidden select-none">
+        <section id="skills-section" ref={sectionRef} className="w-full bg-[#07080B] text-white py-20 sm:py-28 overflow-hidden select-none luxury-mesh-bg">
             <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
                 <SectionHeading 
+                    category="CAPABILITIES &amp; METRICS"
                     title="ENGINEERING STANDARDS &amp; METRICS" 
                     subtitle="Production-grade development workflows, test-driven reliability, and high-performance user experiences."
-                    theme="dark" 
                 />
 
                 {/* 3-Column Bento Metric Layout with Software Development Focus */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 sm:gap-7 items-stretch">
 
                     {/* ─── COLUMN 1 (LEFT) ─── */}
-                    <div ref={col1Ref} className="lg:col-span-4 flex flex-col gap-5 sm:gap-6 justify-between will-change-transform">
+                    <div ref={col1Ref} className="lg:col-span-4 flex flex-col gap-6 justify-between will-change-transform">
 
                         {/* Top Tech Badge Card */}
-                        <div className="bento-card glass-card-premium rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-sm flex items-center justify-between">
+                        <div className="bento-card obsidian-surface rounded-2xl sm:rounded-3xl p-5 shadow-lg flex items-center justify-between border border-white/10">
                             <div className="flex items-center -space-x-3">
                                 <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-white/20 shadow-sm">
                                     <Image src="/images/person_man_1.jpg" alt="Developer profile 1" fill sizes="44px" className="object-cover" />
@@ -147,27 +147,27 @@ export default function ScrollRevealGrid() {
                                     <Image src="/images/person_man_3.jpg" alt="Developer profile 3" fill sizes="44px" className="object-cover" />
                                 </div>
                             </div>
-                            <span className="font-display text-xs sm:text-sm font-semibold text-black/80 dark:text-white/90 tracking-tight">
+                            <span className="font-display text-xs sm:text-sm font-semibold text-white tracking-tight">
                                 Fullstack &amp; Modern Web Tech
                             </span>
                         </div>
 
                         {/* Bottom Software Craft & Code Quality Card */}
-                        <div className="bento-card glass-card-premium rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between flex-1 min-h-[250px] sm:min-h-[380px]">
+                        <div className="bento-card obsidian-surface rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col justify-between flex-1 min-h-[250px] sm:min-h-[380px] border border-white/10">
                             <div>
                                 <svg className="w-8 h-8 text-[#FF8A00] fill-current mb-4" viewBox="0 0 24 24">
                                     <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                                 </svg>
-                                <p className="font-display font-bold text-base sm:text-lg text-black dark:text-white leading-snug">
+                                <p className="font-display font-bold text-base sm:text-lg text-white leading-relaxed">
                                     Writing clean, modular TypeScript code and building intuitive user interfaces engineered for speed, responsiveness, and seamless performance.
                                 </p>
                             </div>
 
-                            <div className="pt-6 border-t border-black/10 dark:border-white/10">
-                                <span className="font-display font-black text-4xl sm:text-5xl text-black dark:text-white tracking-tight block">
-                                    100<span className="text-[#FF8A00] font-semibold text-3xl sm:text-4xl">%</span>
+                            <div className="pt-6 border-t border-white/10">
+                                <span className="font-display font-black text-4xl sm:text-5xl text-white tracking-tight block">
+                                    100<span className="text-gradient-amber font-semibold text-3xl sm:text-4xl">%</span>
                                 </span>
-                                <span className="font-body text-xs sm:text-sm font-medium text-black/50 dark:text-white/50 block mt-1">
+                                <span className="font-body text-xs sm:text-sm font-medium text-zinc-400 block mt-1">
                                     Clean Architecture &amp; Quality
                                 </span>
                             </div>
@@ -176,10 +176,10 @@ export default function ScrollRevealGrid() {
                     </div>
 
                     {/* ─── COLUMN 2 (MIDDLE WITH 3D IMAGE) ─── */}
-                    <div ref={col2Ref} className="lg:col-span-4 flex flex-col gap-5 sm:gap-6 justify-between will-change-transform">
+                    <div ref={col2Ref} className="lg:col-span-4 flex flex-col gap-6 justify-between will-change-transform">
 
                         {/* Center 3D Showcase Card */}
-                        <div className="bento-card glass-card-premium rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm relative h-[260px] sm:h-[400px] lg:h-[430px] flex items-center justify-center p-4 group">
+                        <div className="bento-card obsidian-surface rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl relative h-[260px] sm:h-[400px] lg:h-[430px] flex items-center justify-center p-4 group border border-white/10">
                             <Image
                                 src="/images/orange1.png"
                                 alt="Futuristic 3D Showcase"
@@ -190,7 +190,7 @@ export default function ScrollRevealGrid() {
                         </div>
 
                         {/* Bottom Vibrant Orange Software Banner */}
-                        <div className="bento-card bg-gradient-to-r from-[#FF6B00] via-[#FFAA00] to-[#FF8A00] rounded-2xl sm:rounded-3xl p-5 sm:p-6 text-black flex items-center justify-between shadow-lg shadow-orange-500/20">
+                        <div className="bento-card bg-gradient-to-r from-[#FF6B00] via-[#FFAA00] to-[#FF8A00] rounded-2xl sm:rounded-3xl p-5 sm:p-6 text-black flex items-center justify-between shadow-lg shadow-orange-500/25">
                             <div>
                                 <span className="font-display font-black text-2xl sm:text-3xl text-black block leading-none">
                                     10+
@@ -209,40 +209,40 @@ export default function ScrollRevealGrid() {
                     </div>
 
                     {/* ─── COLUMN 3 (RIGHT) ─── */}
-                    <div ref={col3Ref} className="lg:col-span-4 flex flex-col gap-5 sm:gap-6 justify-between will-change-transform">
+                    <div ref={col3Ref} className="lg:col-span-4 flex flex-col gap-6 justify-between will-change-transform">
 
                         {/* Top Software Engineering Focus Card */}
-                        <div className="bento-card glass-card-premium rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between flex-1 min-h-[250px] sm:min-h-[380px]">
+                        <div className="bento-card obsidian-surface rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col justify-between flex-1 min-h-[250px] sm:min-h-[380px] border border-white/10">
                             <div>
-                                <p className="font-display font-bold text-base sm:text-lg text-black dark:text-white leading-snug">
+                                <p className="font-display font-bold text-base sm:text-lg text-white leading-relaxed">
                                     Passionate about crafting <span className="text-[#FF8A00] font-black">Next.js &amp; React</span> web platforms, integrating REST APIs, and designing responsive UI design systems.
                                 </p>
                             </div>
 
-                            <div className="pt-6 border-t border-black/10 dark:border-white/10">
-                                <span className="font-display font-black text-4xl sm:text-5xl text-black dark:text-white tracking-tight block">
-                                    15<span className="text-[#FF8A00]">+</span>
+                            <div className="pt-6 border-t border-white/10">
+                                <span className="font-display font-black text-4xl sm:text-5xl text-white tracking-tight block">
+                                    15<span className="text-gradient-amber">+</span>
                                 </span>
-                                <span className="font-body text-xs sm:text-sm font-medium text-black/50 dark:text-white/50 block mt-1">
+                                <span className="font-body text-xs sm:text-sm font-medium text-zinc-400 block mt-1">
                                     Web Builds &amp; Repositories
                                 </span>
                             </div>
                         </div>
 
                         {/* Bottom Available For Work Status Bar */}
-                        <div className="bento-card glass-card-premium rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex items-center justify-between shadow-sm">
+                        <div className="bento-card obsidian-surface rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex items-center justify-between shadow-lg border border-white/10">
                             <div className="flex items-center gap-3">
                                 <span className="relative flex h-2.5 w-2.5">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF8A00] opacity-75" />
-                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FF8A00]" />
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75" />
+                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10B981] shadow-[0_0_8px_#10B981]" />
                                 </span>
-                                <span className="font-display font-semibold text-xs sm:text-sm text-black/80 dark:text-white/90 tracking-tight">
-                                    Available For Work
+                                <span className="font-display font-semibold text-xs sm:text-sm text-white tracking-tight">
+                                    Available For High-Impact Roles
                                 </span>
                             </div>
                             <a
                                 href="#contact-section"
-                                className="w-8 h-8 rounded-full border border-black/20 dark:border-white/20 flex items-center justify-center text-[#FF8A00] font-bold text-base hover:bg-white/10 hover:border-[#FF8A00] transition-colors shadow-xs"
+                                className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-[#FF8A00] font-bold text-base hover:bg-white/10 hover:border-[#FF8A00] transition-colors shadow-xs"
                                 aria-label="Contact Status"
                             >
                                 ↗

@@ -3,8 +3,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const DURATION = 0.25;
-const STAGGER = 0.025;
+const DURATION = 0.28;
+const STAGGER = 0.022;
 
 interface FlipLinkProps {
   label: string;
@@ -21,33 +21,33 @@ const FlipLink = ({ label, handle, href, icon }: FlipLinkProps) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex items-center justify-between w-full py-4 sm:py-6 border-b border-black/10 dark:border-white/10 text-black dark:text-white hover:text-[#FF6B00] transition-colors duration-300 select-none"
+      className="group relative flex items-center justify-between w-full py-5 sm:py-7 border-b border-white/[0.08] text-white hover:text-[#FFAA00] transition-colors duration-300 select-none"
     >
       {/* Left side: Icon Badge + Giant Text */}
       <div className="flex items-center gap-4 sm:gap-8 overflow-hidden">
         {/* Animated Icon Pill */}
         <motion.div
           variants={{
-            initial: { scale: 1, backgroundColor: "rgba(255, 255, 255, 0.06)", color: "#FFFFFF" },
-            hovered: { scale: 1.1, backgroundColor: "#FF6B00", color: "#000000" },
+            initial: { scale: 1, backgroundColor: "rgba(255, 255, 255, 0.04)", color: "#FFFFFF", borderColor: "rgba(255, 255, 255, 0.12)" },
+            hovered: { scale: 1.1, backgroundColor: "#FF8A00", color: "#000000", borderColor: "#FF8A00" },
           }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="w-11 h-11 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center flex-shrink-0 border border-black/15 dark:border-white/15 shadow-md"
+          className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center flex-shrink-0 border shadow-lg"
         >
           {icon}
         </motion.div>
 
         {/* Text Flip Reveal Container */}
         <div
-          className="relative block overflow-hidden whitespace-nowrap text-3xl font-black uppercase sm:text-5xl md:text-6xl lg:text-7xl"
-          style={{ lineHeight: 0.9 }}
+          className="relative block overflow-hidden whitespace-nowrap text-3xl font-black uppercase sm:text-5xl md:text-6xl lg:text-7xl font-display tracking-tight"
+          style={{ lineHeight: 0.95 }}
         >
           <div>
             {label.split("").map((l, i) => (
               <motion.span
                 variants={{
-                  initial: { y: 0 },
-                  hovered: { y: "-100%" },
+                  initial: { y: 0, opacity: 0.95 },
+                  hovered: { y: "-100%", opacity: 0.3 },
                 }}
                 transition={{
                   duration: DURATION,
@@ -61,19 +61,19 @@ const FlipLink = ({ label, handle, href, icon }: FlipLinkProps) => {
               </motion.span>
             ))}
           </div>
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 pointer-events-none">
             {label.split("").map((l, i) => (
               <motion.span
                 variants={{
-                  initial: { y: "100%" },
-                  hovered: { y: 0 },
+                  initial: { y: "100%", opacity: 0 },
+                  hovered: { y: 0, opacity: 1 },
                 }}
                 transition={{
                   duration: DURATION,
                   ease: "easeInOut",
                   delay: STAGGER * i,
                 }}
-                className="inline-block text-[#FF6B00]"
+                className="inline-block text-[#FFAA00]"
                 key={i}
               >
                 {l === " " ? "\u00A0" : l}
@@ -84,15 +84,15 @@ const FlipLink = ({ label, handle, href, icon }: FlipLinkProps) => {
       </div>
 
       {/* Right side: Handle & Animated Arrow Badge */}
-      <div className="hidden sm:flex items-center gap-3 font-mono text-xs sm:text-sm text-black/50 dark:text-white/50 group-hover:text-black dark:text-white transition-colors duration-300">
-        <span>{handle}</span>
+      <div className="hidden sm:flex items-center gap-3 font-mono text-xs sm:text-sm text-zinc-400 group-hover:text-white transition-colors duration-300">
+        <span className="tracking-wider">{handle}</span>
         <motion.span
           variants={{
-            initial: { x: 0, y: 0 },
-            hovered: { x: 4, y: -4 },
+            initial: { x: 0, y: 0, scale: 1 },
+            hovered: { x: 3, y: -3, scale: 1.08 },
           }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="w-8 h-8 rounded-full bg-white/5 border border-black/10 dark:border-white/10 group-hover:bg-[#FF6B00] group-hover:border-[#FF6B00] group-hover:text-black flex items-center justify-center text-sm font-bold transition-colors duration-300"
+          className="w-9 h-9 rounded-full bg-white/[0.04] border border-white/10 group-hover:bg-[#FF8A00] group-hover:border-[#FF8A00] group-hover:text-black flex items-center justify-center text-sm font-bold transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(255,138,0,0.6)]"
         >
           ↗
         </motion.span>
@@ -160,15 +160,18 @@ export default function RevealLinksSection() {
   ];
 
   return (
-    <section id="social-reveal-links" className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white py-16 sm:py-24 px-6 sm:px-12 lg:px-20 select-none">
-      <div className="max-w-[1550px] mx-auto">
+    <section id="social-reveal-links" className="w-full bg-[#07080B] luxury-mesh-bg text-white py-20 sm:py-28 px-6 sm:px-12 lg:px-20 select-none relative overflow-hidden">
+      {/* Ambient background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-[#FF8A00]/5 blur-[140px] pointer-events-none rounded-full" />
+
+      <div className="max-w-[1550px] mx-auto relative z-10">
         {/* Section Header Tag */}
-        <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF6B00] uppercase tracking-widest mb-8 pb-4">
-          <span className="flex items-center gap-2 font-bold">
-            <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse" />
-            {"// CONNECT & SOCIAL CHANNELS"}
+        <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF8A00] uppercase tracking-widest mb-10 pb-4 border-b border-white/[0.08]">
+          <span className="flex items-center gap-2.5 font-bold">
+            <span className="w-2 h-2 rounded-full bg-[#FF8A00] radar-pulse shadow-[0_0_10px_#FF8A00]" />
+            {"// CONNECT & SOCIAL TELEMETRY"}
           </span>
-          <span>EST. 2023</span>
+          <span className="text-zinc-500 font-medium">AVAILABLE GLOBALLY</span>
         </div>
 
         {/* Flip Links Grid */}
@@ -181,4 +184,3 @@ export default function RevealLinksSection() {
     </section>
   );
 }
-

@@ -78,54 +78,54 @@ export default function Testimonials() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full min-h-[400px] bg-gray-50 dark:bg-[#080808]" />;
+    return <section className="w-full min-h-[400px] bg-[#07080B]" />;
   }
 
   // Duplicate items array so infinite marquee wraps 100% seamlessly
   const slides = [...TESTIMONIALS_DATA, ...TESTIMONIALS_DATA];
 
   return (
-    <section id="testimonial-section" className="w-full bg-gray-50 dark:bg-[#080808] text-black dark:text-white py-12 sm:py-20 md:py-24 overflow-hidden select-none">
+    <section id="testimonial-section" className="w-full bg-[#07080B] text-white py-16 sm:py-24 md:py-28 overflow-hidden select-none luxury-mesh-bg">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 mb-8 sm:mb-14">
         <SectionHeading 
+          category="SOCIAL PROOF &amp; REPUTATION"
           title="CLIENT ENDORSEMENTS &amp; TESTIMONIALS" 
           subtitle="Direct feedback from startup founders, product directors, and global engineering collaborators."
-          theme="dark" 
         />
       </div>
 
       {/* ─── CONTINUOUS SMOOTH GSAP INFINITE MARQUEE SLIDER ─── */}
       <div
-        className="w-full overflow-hidden py-2 sm:py-4"
+        className="w-full overflow-hidden py-4"
         onMouseEnter={() => tweenRef.current?.pause()}
         onMouseLeave={() => tweenRef.current?.play()}
       >
-        <div ref={trackRef} className="inline-flex gap-4 sm:gap-8 will-change-transform">
+        <div ref={trackRef} className="inline-flex gap-6 sm:gap-8 will-change-transform">
           {slides.map((card, idx) => (
             <div
               key={`${card.id}-${idx}`}
-              className="w-[78vw] xs:w-[82vw] sm:w-[620px] md:w-[740px] shrink-0 glass-card-premium rounded-[20px] sm:rounded-[32px] p-5 xs:p-6 sm:p-8 flex flex-col md:flex-row gap-4 sm:gap-8 items-center border border-white/[0.08] hover:border-[#FF8A00]/40 shadow-xl transition-all duration-300 group"
+              className="w-[78vw] xs:w-[82vw] sm:w-[620px] md:w-[740px] shrink-0 obsidian-surface rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 flex flex-col md:flex-row gap-6 sm:gap-8 items-center border border-white/10 hover:border-[#FF8A00]/45 shadow-[0_15px_45px_rgba(0,0,0,0.7)] transition-all duration-300 group"
             >
               {/* Text Info Container */}
               <div className="flex-1 flex flex-col justify-between h-full text-left w-full">
                 <div>
                   {/* Brand Logo Tag */}
-                  <div className="flex items-center gap-2 mb-2.5 sm:mb-4">
-                    <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#FF8A00] transition-transform duration-300 group-hover:scale-125" />
-                    <span className="font-display font-bold text-sm sm:text-base md:text-lg text-black dark:text-white tracking-tight">
+                  <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF8A00] transition-transform duration-300 group-hover:scale-125 shadow-[0_0_8px_#FF8A00]" />
+                    <span className="font-display font-bold text-base sm:text-lg text-white tracking-tight">
                       {card.brand}
                     </span>
                   </div>
 
                   {/* Quote */}
-                  <blockquote className="font-body text-xs xs:text-sm sm:text-base text-black/90 dark:text-gray-300 leading-snug sm:leading-relaxed mb-3 sm:mb-8 font-normal">
+                  <blockquote className="font-body text-xs xs:text-sm sm:text-base text-zinc-300 leading-relaxed mb-4 sm:mb-8 font-light">
                     &ldquo;{card.quote}&rdquo;
                   </blockquote>
                 </div>
 
                 {/* Author Info */}
                 <div>
-                  <h3 className="font-display font-bold text-xs sm:text-base md:text-lg text-black dark:text-white leading-tight flex items-center gap-2">
+                  <h3 className="font-display font-bold text-sm sm:text-base md:text-lg text-white leading-tight flex items-center gap-2">
                     {card.name}
                     {card.linkedin && (
                       <a href={card.linkedin} target="_blank" rel="noopener noreferrer" className="text-[#0A66C2] hover:opacity-80 transition-opacity">
@@ -135,11 +135,8 @@ export default function Testimonials() {
                       </a>
                     )}
                   </h3>
-                  <p className="font-body text-[10px] sm:text-sm text-black/70 dark:text-[#A0A0A0] font-medium mt-0.5">
-                    {card.position}
-                  </p>
-                  <p className="font-body text-[9px] sm:text-xs text-black/40 dark:text-white/40 mt-0.5">
-                    {card.location}
+                  <p className="font-body text-xs sm:text-sm text-zinc-400 font-normal mt-0.5">
+                    {card.position} • {card.location}
                   </p>
                 </div>
               </div>

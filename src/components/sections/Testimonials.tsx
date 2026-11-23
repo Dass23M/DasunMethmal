@@ -1,158 +1,190 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import gsap from 'gsap';
-import SectionHeading from '@/components/ui/SectionHeading';
 
 const TESTIMONIALS_DATA = [
   {
     id: 1,
-    brand: 'Trainmate',
+    roleTag: 'FOUNDER OF TRAINMATE',
     quote:
-      'As a founder, finding the right team for Trainmate was a challenge until we discovered Methmal. They quickly onboarded, worked within our budget, and delivered high-quality designs at an impressive pace.',
+      'Working with Methmal completely transformed our digital presence. His strategic thinking, attention to detail and engineering execution helped us ship fast.',
     name: 'George El Nachar',
-    position: 'Founder, Trainmate',
-    location: 'Dubai, United Arab Emirates',
-    image: '/images/editorial_1.png',
-    linkedin: 'https://www.linkedin.com/in/george-elnachar',
+    position: 'FOUNDER, TRAINMATE · DUBAI',
+    image: '/images/person_man_1.jpg',
+    pos: { top: '20%', left: '16%' },
   },
   {
     id: 2,
-    brand: 'Studio Craft',
+    roleTag: 'LEAD AT STUDIO CRAFT',
     quote:
-      'Methmal attention to detail and creative direction exceeded all expectations. The seamless animations and design aesthetic transformed our online presence completely.',
+      'Methmal’s attention to detail and creative direction exceeded expectations. The crisp layout and smooth interactions elevated our entire product.',
     name: 'Sarah Jenkins',
-    position: 'Design Lead, Studio Craft',
-    location: 'London, United Kingdom',
-    image: '/images/editorial_2.png',
-    linkedin: 'https://www.linkedin.com/in/sarah-jenkins',
+    position: 'DESIGN LEAD, STUDIO CRAFT · LONDON',
+    image: '/images/person_woman_1.jpg',
+    pos: { top: '54%', left: '12%' },
   },
   {
     id: 3,
-    brand: 'Nexa Tech',
+    roleTag: 'CEO OF NEXA TECH',
     quote:
-      'Working with Methmal was an incredible experience. The speed, technical precision, and stunning visual layouts brought our product vision to life seamlessly.',
+      'Working with Methmal was an incredible experience. Technical precision, clean architecture, and sharp visual layouts brought our vision to life seamlessly.',
     name: 'Alexander Wright',
-    position: 'CEO, Nexa Tech',
-    location: 'San Francisco, USA',
-    image: '/images/editorial_3.png',
-    linkedin: 'https://www.linkedin.com/in/alexander-wright',
+    position: 'CEO, NEXA TECH · SAN FRANCISCO',
+    image: '/images/person_man_2.jpg',
+    pos: { top: '66%', left: '54%' },
   },
   {
     id: 4,
-    brand: 'Veloce',
+    roleTag: 'DIRECTOR AT VELOCE',
     quote:
-      'Outstanding engineering quality and design vision. Methmal delivered our fullstack web platform on time with buttery-smooth interactions throughout.',
+      'Outstanding full-stack engineering quality and design vision. Methmal delivered our web platform on time with buttery-smooth performance throughout.',
     name: 'Elena Rostova',
-    position: 'Product Director, Veloce',
-    location: 'Berlin, Germany',
-    image: '/images/editorial_4.png',
-    linkedin: 'https://www.linkedin.com/in/elena-rostova',
+    position: 'PRODUCT DIRECTOR, VELOCE · BERLIN',
+    image: '/images/person_woman_2.jpg',
+    pos: { top: '34%', left: '58%' },
   },
 ];
 
 export default function Testimonials() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const tweenRef = useRef<gsap.core.Tween | null>(null);
-  const [mounted, setMounted] = useState(false);
+  const [active, setActive] = useState(0);
+  const current = TESTIMONIALS_DATA[active];
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted || !trackRef.current) return;
-
-    // Double dataset for seamless infinite looping
-    const ctx = gsap.context(() => {
-      tweenRef.current = gsap.to(trackRef.current, {
-        xPercent: -50,
-        duration: 40,
-        ease: 'none',
-        repeat: -1,
-      });
-    }, trackRef);
-
-    return () => ctx.revert();
-  }, [mounted]);
-
-  if (!mounted) {
-    return <section className="w-full min-h-[400px] bg-[#07080B]" />;
-  }
-
-  // Duplicate items array so infinite marquee wraps 100% seamlessly
-  const slides = [...TESTIMONIALS_DATA, ...TESTIMONIALS_DATA];
+  const handlePrev = () =>
+    setActive((prev) => (prev - 1 + TESTIMONIALS_DATA.length) % TESTIMONIALS_DATA.length);
+  const handleNext = () =>
+    setActive((prev) => (prev + 1) % TESTIMONIALS_DATA.length);
 
   return (
-    <section id="testimonial-section" className="w-full bg-[#07080B] text-white py-16 sm:py-24 md:py-28 overflow-hidden select-none luxury-mesh-bg">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 mb-8 sm:mb-14">
-        <SectionHeading 
-          category="SOCIAL PROOF &amp; REPUTATION"
-          title="CLIENT ENDORSEMENTS &amp; TESTIMONIALS" 
-          subtitle="Direct feedback from startup founders, product directors, and global engineering collaborators."
-        />
-      </div>
-
-      {/* ─── CONTINUOUS SMOOTH GSAP INFINITE MARQUEE SLIDER ─── */}
+    <section
+      id="testimonial-section"
+      className="relative w-full bg-[#080808] text-white py-20 sm:py-28 lg:py-32 overflow-hidden border-t border-dashed border-white/[0.12] select-none"
+    >
+      {/* Subtle Dark Olive-Neon Ambient Glow on Left (matching Image 6) */}
       <div
-        className="w-full overflow-hidden py-4"
-        onMouseEnter={() => tweenRef.current?.pause()}
-        onMouseLeave={() => tweenRef.current?.play()}
-      >
-        <div ref={trackRef} className="inline-flex gap-6 sm:gap-8 will-change-transform">
-          {slides.map((card, idx) => (
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/2 left-[18%] -translate-y-1/2 w-[520px] h-[520px] rounded-full bg-[#9CFF00]/[0.07] blur-[140px]"
+      />
+
+      <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 relative z-10">
+        <div className="mb-12">
+          <span className="font-mono text-xs tracking-[0.16em] uppercase text-zinc-400">
+            [TESTIMONIAL]
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+          {/* Left Interactive Floating Client Map (Image 6) */}
+          <div className="lg:col-span-6 relative h-[320px] sm:h-[400px] border border-dashed border-white/[0.1] bg-[#0B0D08]/60 overflow-hidden">
+            {/* Subtle vertical waveform lines at bottom */}
             <div
-              key={`${card.id}-${idx}`}
-              className="w-[78vw] xs:w-[82vw] sm:w-[620px] md:w-[740px] shrink-0 obsidian-surface rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 flex flex-col md:flex-row gap-6 sm:gap-8 items-center border border-white/10 hover:border-[#FF8A00]/45 shadow-[0_15px_45px_rgba(0,0,0,0.7)] transition-all duration-300 group"
+              aria-hidden="true"
+              className="pointer-events-none absolute bottom-0 inset-x-0 h-28 opacity-20 flex items-end justify-around px-6"
             >
-              {/* Text Info Container */}
-              <div className="flex-1 flex flex-col justify-between h-full text-left w-full">
-                <div>
-                  {/* Brand Logo Tag */}
-                  <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF8A00] transition-transform duration-300 group-hover:scale-125 shadow-[0_0_8px_#FF8A00]" />
-                    <span className="font-display font-bold text-base sm:text-lg text-white tracking-tight">
-                      {card.brand}
-                    </span>
+              {[28, 45, 32, 68, 52, 84, 62, 95, 76, 48, 88, 58, 36, 72, 42].map((h, i) => (
+                <span key={i} className="w-px bg-white/60" style={{ height: `${h}%` }} />
+              ))}
+            </div>
+
+            {TESTIMONIALS_DATA.map((item, idx) => {
+              const isSelected = idx === active;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setActive(idx)}
+                  style={{ top: item.pos.top, left: item.pos.left }}
+                  className={`absolute flex items-center gap-2 transition-all duration-300 cursor-pointer group ${
+                    isSelected ? 'z-20 scale-105' : 'z-10 opacity-75 hover:opacity-100'
+                  }`}
+                >
+                  <div
+                    className={`relative w-9 h-9 overflow-hidden border ${
+                      isSelected ? 'border-[#9CFF00]' : 'border-white/30'
+                    }`}
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      sizes="36px"
+                      className={`object-cover ${isSelected ? '' : 'grayscale'}`}
+                    />
                   </div>
 
-                  {/* Quote */}
-                  <blockquote className="font-body text-xs xs:text-sm sm:text-base text-zinc-300 leading-relaxed mb-4 sm:mb-8 font-light">
-                    &ldquo;{card.quote}&rdquo;
-                  </blockquote>
-                </div>
+                  <span
+                    className={`font-mono text-[10px] font-semibold tracking-[0.12em] uppercase px-3 py-1.5 whitespace-nowrap transition-colors ${
+                      isSelected
+                        ? 'bg-[#9CFF00] text-black'
+                        : 'bg-[#9CFF00]/80 text-black group-hover:bg-[#9CFF00]'
+                    }`}
+                  >
+                    {item.roleTag}
+                  </span>
 
-                {/* Author Info */}
+                  {isSelected && (
+                    <span className="w-9 h-9 bg-[#9CFF00] text-black flex items-center justify-center shrink-0">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 1L14.5 9.5L23 12L14.5 14.5L12 23L9.5 14.5L1 12L9.5 9.5L12 1Z" />
+                      </svg>
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right Giant Editorial Pull-Quote + Pagination */}
+          <div className="lg:col-span-6 lg:pl-6 flex flex-col justify-between min-h-[340px]">
+            <blockquote className="font-display font-normal text-2xl sm:text-4xl lg:text-[2.75rem] leading-[1.15] tracking-[-0.03em] text-white mb-10">
+              &ldquo;{current.quote}&rdquo;
+            </blockquote>
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-6 border-t border-dashed border-white/[0.12]">
+              <div className="flex items-center gap-3.5">
+                <div className="relative w-12 h-12 overflow-hidden border border-white/20 shrink-0">
+                  <Image
+                    src={current.image}
+                    alt={current.name}
+                    fill
+                    sizes="48px"
+                    className="object-cover"
+                  />
+                </div>
                 <div>
-                  <h3 className="font-display font-bold text-sm sm:text-base md:text-lg text-white leading-tight flex items-center gap-2">
-                    {card.name}
-                    {card.linkedin && (
-                      <a href={card.linkedin} target="_blank" rel="noopener noreferrer" className="text-[#0A66C2] hover:opacity-80 transition-opacity">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                        </svg>
-                      </a>
-                    )}
-                  </h3>
-                  <p className="font-body text-xs sm:text-sm text-zinc-400 font-normal mt-0.5">
-                    {card.position} • {card.location}
+                  <p className="font-display font-medium text-base text-white leading-tight">
+                    {current.name}
+                  </p>
+                  <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-zinc-400 mt-1">
+                    {current.position}
                   </p>
                 </div>
               </div>
 
-              {/* Portrait Image Side */}
-              <div className="w-full md:w-[250px] lg:w-[280px] h-[140px] xs:h-[160px] sm:h-[300px] shrink-0 relative rounded-lg sm:rounded-2xl overflow-hidden border border-black/10 dark:border-white/5">
-                <Image
-                  src={card.image}
-                  alt={card.name}
-                  fill
-                  sizes="(max-width: 640px) 78vw, 280px"
-                  className="object-cover rounded-lg sm:rounded-2xl"
-                />
+              {/* Sharp Pagination Buttons: <  1 / 4  > */}
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  aria-label="Previous testimonial"
+                  className="w-10 h-10 border border-white/20 hover:border-[#9CFF00] hover:bg-[#9CFF00] hover:text-black text-white flex items-center justify-center transition-colors cursor-pointer font-mono text-sm"
+                >
+                  &lt;
+                </button>
+                <span className="font-mono text-xs tracking-[0.16em] text-zinc-400 min-w-[44px] text-center">
+                  {active + 1}/{TESTIMONIALS_DATA.length}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  aria-label="Next testimonial"
+                  className="w-10 h-10 border border-white/20 hover:border-[#9CFF00] hover:bg-[#9CFF00] hover:text-black text-white flex items-center justify-center transition-colors cursor-pointer font-mono text-sm"
+                >
+                  &gt;
+                </button>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>

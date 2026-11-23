@@ -1,0 +1,79 @@
+'use client';
+
+export default function AcidBanner() {
+  return (
+    <section
+      aria-label="Creative engineering statement"
+      className="relative w-full bg-[#9CFF00] text-black overflow-hidden select-none py-24 sm:py-32 lg:py-40"
+    >
+      {/* Subtle Halftone Texture Overlay */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 halftone-dots opacity-45"
+      />
+
+      {/* Architectural Black Pixel-Step Cutouts (Top) */}
+      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 right-0 flex justify-between">
+        <div className="flex items-start">
+          <div className="w-10 sm:w-14 h-12 sm:h-16 bg-[#080808] ml-6 sm:ml-14" />
+          <div className="w-5 sm:w-7 h-5 sm:h-7 bg-[#080808] mt-12 sm:mt-16" />
+        </div>
+        <div className="flex items-start">
+          <div className="w-10 sm:w-14 h-7 sm:h-9 bg-[#080808] mt-7 sm:mt-9" />
+          <div className="w-24 sm:w-44 h-7 sm:h-9 bg-[#080808]" />
+        </div>
+      </div>
+
+      {/* Architectural Black Pixel-Step Cutouts (Bottom) */}
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0 flex justify-between items-end">
+        <div className="flex items-end">
+          <div className="w-8 sm:w-10 h-6 sm:h-8 bg-[#080808] ml-10 sm:ml-24" />
+          <div className="w-6 sm:w-8 h-6 sm:h-8 bg-[#080808] ml-20 sm:ml-36" />
+          <div className="w-28 sm:w-52 h-6 sm:h-8 bg-[#080808] mb-6 sm:mb-8" />
+          <div className="w-6 sm:w-8 h-6 sm:h-8 bg-[#080808] mb-12 sm:mb-16" />
+        </div>
+        <div className="w-32 sm:w-56 h-7 sm:h-9 bg-[#080808] mr-4 sm:mr-10" />
+      </div>
+
+      {/* Center Statement Typography */}
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="flex flex-wrap items-center justify-center lg:justify-between gap-6 sm:gap-10">
+          <span className="font-display font-medium uppercase tracking-[-0.04em] leading-none text-[clamp(3.2rem,8.5vw,7.75rem)]">
+            I DO
+          </span>
+
+          {/* Thin Geometric × */}
+          <span
+            aria-hidden="true"
+            className="text-3xl sm:text-5xl font-light leading-none text-black/80"
+          >
+            ×
+          </span>
+
+          <span className="font-display font-medium uppercase tracking-[-0.04em] leading-none text-[clamp(3.2rem,8.5vw,7.75rem)]">
+            CREATIVE
+          </span>
+
+          {/* Thin Geometric + */}
+          <span
+            aria-hidden="true"
+            className="hidden lg:inline-block text-4xl sm:text-5xl font-light leading-none text-black/80"
+          >
+            +
+          </span>
+        </div>
+
+        {/* Sub-caption */}
+        <div className="mt-10 sm:mt-14 lg:pl-[46%] font-mono text-[11px] sm:text-xs tracking-[0.14em] uppercase leading-relaxed text-black/85">
+          <div className="flex items-center gap-2 font-semibold">
+            <span className="w-2 h-2 rounded-full bg-black inline-block" />
+            <span>FROM IDEA TO IMPACT</span>
+          </div>
+          <p className="mt-1 text-black/75">
+            EVERY PROJECT STARTS WITH A CLEAR PURPOSE.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}

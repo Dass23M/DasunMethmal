@@ -1,413 +1,314 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useState } from 'react';
 
 export default function Contact() {
-    const sectionRef = useRef<HTMLElement>(null);
-    const cardRef = useRef<HTMLDivElement>(null);
-    const contentRef = useRef<HTMLDivElement>(null);
-    const [mounted, setMounted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+    botcheck: '',
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
+  const [warning, setWarning] = useState('');
 
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-        botcheck: '',
-    });
-    const [errors, setErrors] = useState<Record<string, string>>({});
-    const [submitting, setSubmitting] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [statusMessage, setStatusMessage] = useState('');
-    const [warning, setWarning] = useState('');
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!formData.name.trim()) newErrors.name = 'Please enter your name';
+    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+    if (!formData.message.trim() || formData.message.trim().length < 5) {
+      newErrors.message = 'Please enter a message (at least 5 characters)';
+    }
+    return newErrors;
+  };
 
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+  const handleInput = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
 
-    useEffect(() => {
-        if (!mounted || !sectionRef.current) return;
-
-        const ctx = gsap.context(() => {
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: 'top 80%',
-                },
-            });
-
-            if (cardRef.current) {
-                tl.fromTo(
-                    cardRef.current,
-                    { y: 60, opacity: 0, scale: 0.95 },
-                    { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' },
-                    0
-                );
-            }
-
-            if (contentRef.current) {
-                tl.fromTo(
-                    contentRef.current.children,
-                    { y: 40, opacity: 0 },
-                    { y: 0, opacity: 1, duration: 0.7, stagger: 0.15, ease: 'power3.out' },
-                    0.2
-                );
-            }
-        }, sectionRef);
-
-        return () => ctx.revert();
-    }, [mounted]);
-
-    const validate = () => {
-        const newErrors: Record<string, string> = {};
-        if (!formData.name.trim()) newErrors.name = 'Please enter your name';
-        if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = 'Please enter a valid email address';
-        }
-        if (!formData.message.trim() || formData.message.trim().length < 5) {
-            newErrors.message = 'Please enter a message (at least 5 characters)';
-        }
-        return newErrors;
-    };
-
-    const handleInput = (field: string, value: string) => {
-        setFormData((prev) => ({ ...prev, [field]: value }));
-        if (errors[field]) {
-            setErrors((prev) => {
-                const next = { ...prev };
-                delete next[field];
-                return next;
-            });
-        }
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        const newErrors = validate();
-        if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-            return;
-        }
-
-        setSubmitting(true);
-        setWarning('');
-
-        // 1. Direct Web3Forms submission from browser (Bypasses server proxies & Cloudflare WAF)
-        const web3Key = (process.env.NEXT_PUBLIC_WEB3FORMS_KEY || '').trim();
-        if (web3Key && !web3Key.includes('your_') && web3Key.length > 10) {
-            try {
-                const res = await fetch('https://api.web3forms.com/submit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Accept: 'application/json',
-                    },
-                    body: JSON.stringify({
-                        access_key: web3Key,
-                        name: formData.name.trim(),
-                        email: formData.email.trim(),
-                        subject: formData.subject.trim() || `New Portfolio Message from ${formData.name.trim()}`,
-                        message: formData.message.trim(),
-                        from_name: 'Portfolio Contact Form',
-                    }),
-                });
-
-                const data = await res.json();
-                if (data.success) {
-                    setSuccess(true);
-                    setStatusMessage(data.message || 'Your message was sent successfully!');
-                    setFormData({ name: '', email: '', subject: '', message: '', botcheck: '' });
-                    setSubmitting(false);
-                    return;
-                }
-            } catch (err) {
-                console.warn('Direct Web3Forms submission error, attempting server endpoint fallback...', err);
-            }
-        }
-
-        // 2. Fallback to Server Route (/api/contact)
-        try {
-            const res = await fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
-            const data = await res.json();
-            if (data.ok) {
-                setSuccess(true);
-                setStatusMessage(data.message || 'Your message was sent successfully!');
-                setFormData({ name: '', email: '', subject: '', message: '', botcheck: '' });
-            } else {
-                setWarning(data.message || 'Something went wrong. Please try again.');
-            }
-        } catch {
-            setWarning('Network error. Please check your connection and try again.');
-        } finally {
-            setSubmitting(false);
-        }
-    };
-
-    const handleReset = () => {
-        setSuccess(false);
-        setStatusMessage('');
-        setWarning('');
-        setErrors({});
-    };
-
-    if (!mounted) {
-        return <section className="w-full min-h-screen bg-[#07080B]" />;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
     }
 
-    return (
-        <section id="contact-section" ref={sectionRef} className="w-full bg-[#07080B] text-white py-20 md:py-28 overflow-hidden luxury-mesh-bg">
-            <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-8 md:px-12">
+    setSubmitting(true);
+    setWarning('');
 
-                {/* Main Hero Card Container with Artistic Sunset Gradient Background */}
-                <div className="relative w-full rounded-[24px] sm:rounded-[32px] md:rounded-[48px] overflow-hidden p-4 sm:p-8 md:p-16 flex items-center justify-between min-h-[640px] md:min-h-[720px] shadow-[0_25px_60px_rgba(0,0,0,0.9)] border border-white/10">
+    const web3Key = (process.env.NEXT_PUBLIC_WEB3FORMS_KEY || '').trim();
+    if (web3Key && !web3Key.includes('your_') && web3Key.length > 10) {
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({
+            access_key: web3Key,
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            subject: formData.subject.trim() || `New Portfolio Message from ${formData.name.trim()}`,
+            message: formData.message.trim(),
+            from_name: 'Portfolio Contact Form',
+          }),
+        });
 
-                    {/* Background Sunset Graphic */}
-                    <div className="absolute inset-0 z-0">
-                        <Image
-                            src="/images/contact_bg_sunset.png"
-                            alt="Sunset silhouette background"
-                            fill
-                            priority
-                            sizes="100vw"
-                            className="object-cover object-center"
-                        />
-                        {/* Soft tint gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70 md:bg-gradient-to-r md:from-black/50 md:via-black/30 md:to-transparent z-[1]" />
-                    </div>
+        const data = await res.json();
+        if (data.success) {
+          setSuccess(true);
+          setStatusMessage(data.message || 'Your message was sent successfully!');
+          setFormData({ name: '', email: '', subject: '', message: '', botcheck: '' });
+          setSubmitting(false);
+          return;
+        }
+      } catch {
+        // Fallback to server route below
+      }
+    }
 
-                    {/* Grid Layout inside Sunset Banner */}
-                    <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setSuccess(true);
+        setStatusMessage(data.message || 'Your message was sent successfully!');
+        setFormData({ name: '', email: '', subject: '', message: '', botcheck: '' });
+      } else {
+        setWarning(data.message || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setWarning('Network error. Please check your connection and try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
-                        {/* Left Column: Floating White Contact Form Card */}
-                        <div ref={cardRef} className="lg:col-span-5 w-full flex justify-center lg:justify-start order-2 lg:order-1">
-                            <div className="glass-card-premium text-white rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-5 sm:p-8 w-full max-w-[430px] border border-white/10 select-none">
+  const handleReset = () => {
+    setSuccess(false);
+    setStatusMessage('');
+    setWarning('');
+    setErrors({});
+  };
 
-                                {/* Embedded Header Banner Block */}
-                                <div className="relative h-[95px] rounded-[16px] overflow-hidden flex items-center justify-center shadow-md">
-                                    <Image
-                                        src="/images/contact_bg_sunset.png"
-                                        alt="Header Banner background"
-                                        fill
-                                        sizes="(max-width: 768px) 100vw, 430px"
-                                        className="object-cover"
-                                    />
-                                    <div className="absolute inset-0 bg-black/30" />
-                                    <span className="relative z-10 font-display font-black text-white text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">
-                                        METHMAL®
-                                    </span>
-                                </div>
+  return (
+    <section
+      id="contact-section"
+      className="w-full bg-[#080808] text-white py-20 sm:py-28 border-t border-dashed border-white/[0.12]"
+    >
+      <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Editorial Pitch & Direct Channels */}
+          <div className="lg:col-span-5 space-y-8">
+            <span className="font-mono text-xs tracking-[0.16em] uppercase text-zinc-400 block">
+              [CONTACT]
+            </span>
 
-                                {/* Card Title */}
-                                <h3 className="font-display font-bold text-center text-xl text-white mt-4 mb-4 tracking-tight">
-                                    Reach Out to Me
-                                </h3>
+            <h2 className="font-display font-normal uppercase tracking-[-0.04em] leading-[0.9] text-[clamp(2.8rem,6vw,5.25rem)] text-white">
+              Let&apos;s Build <br />
+              <span className="text-[#9CFF00]">Together_</span>
+            </h2>
 
-                                {/* Form Elements */}
-                                {!success ? (
-                                    <form onSubmit={handleSubmit} noValidate className="space-y-4">
+            <p className="font-body text-sm sm:text-base text-zinc-400 leading-relaxed max-w-md">
+              Available for full-stack web apps, AI integrations, UI/UX engineering, and growth-focused digital builds.
+            </p>
 
-                                        {/* Honeypot Anti-Spam Field */}
-                                        <input
-                                            type="text"
-                                            name="botcheck"
-                                            value={formData.botcheck}
-                                            onChange={(e) => handleInput('botcheck', e.target.value)}
-                                            style={{ display: 'none' }}
-                                            tabIndex={-1}
-                                            autoComplete="off"
-                                        />
+            <div className="pt-6 border-t border-dashed border-white/[0.14] space-y-4 font-mono text-xs tracking-[0.12em]">
+              <div>
+                <span className="text-zinc-500 block uppercase mb-1">EMAIL</span>
+                <a
+                  href="mailto:methmal.liyanage23@gmail.com"
+                  className="text-white hover:text-[#9CFF00] transition-colors"
+                >
+                  methmal.liyanage23@gmail.com
+                </a>
+              </div>
+              <div>
+                <span className="text-zinc-500 block uppercase mb-1">PHONE</span>
+                <a
+                  href="tel:+94703056192"
+                  className="text-white hover:text-[#9CFF00] transition-colors"
+                >
+                  +94 70 3056 192
+                </a>
+              </div>
+              <div>
+                <span className="text-zinc-500 block uppercase mb-1">LOCATION</span>
+                <span className="text-white uppercase">COLOMBO, SRI LANKA · WORLDWIDE</span>
+              </div>
+            </div>
+          </div>
 
-                                        {/* Name Input */}
-                                        <div>
-                                            <label htmlFor="contact-name" className="block text-xs font-semibold text-gray-300 mb-1.5">
-                                                Name*
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="contact-name"
-                                                name="name"
-                                                autoComplete="name"
-                                                placeholder="Emily Johnson"
-                                                value={formData.name}
-                                                onChange={(e) => handleInput('name', e.target.value)}
-                                                className={`w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FF8A00] focus:ring-1 focus:ring-[#FF8A00] transition-all ${
-                                                    errors.name ? 'border-red-500 bg-red-500/10' : ''
-                                                }`}
-                                                aria-invalid={!!errors.name}
-                                            />
-                                            {errors.name && (
-                                                <span className="text-[11px] text-red-500 mt-1 block font-medium">
-                                                    {errors.name}
-                                                </span>
-                                            )}
-                                        </div>
+          {/* Right Brutalist Contact Form */}
+          <div className="lg:col-span-7 bg-[#111111] border border-white/[0.1] p-6 sm:p-10">
+            {!success ? (
+              <form onSubmit={handleSubmit} noValidate className="space-y-6">
+                <input
+                  type="text"
+                  name="botcheck"
+                  value={formData.botcheck}
+                  onChange={(e) => handleInput('botcheck', e.target.value)}
+                  style={{ display: 'none' }}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
 
-                                        {/* Email Input */}
-                                        <div>
-                                            <label htmlFor="contact-email" className="block text-xs font-semibold text-gray-300 mb-1.5">
-                                                E-mail*
-                                            </label>
-                                            <input
-                                                type="email"
-                                                id="contact-email"
-                                                name="email"
-                                                autoComplete="email"
-                                                placeholder="emilyjohnson@gmail.com"
-                                                value={formData.email}
-                                                onChange={(e) => handleInput('email', e.target.value)}
-                                                className={`w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FF8A00] focus:ring-1 focus:ring-[#FF8A00] transition-all ${
-                                                    errors.email ? 'border-red-500 bg-red-500/10' : ''
-                                                }`}
-                                                aria-invalid={!!errors.email}
-                                            />
-                                            {errors.email && (
-                                                <span className="text-[11px] text-red-500 mt-1 block font-medium">
-                                                    {errors.email}
-                                                </span>
-                                            )}
-                                        </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      htmlFor="contact-name"
+                      className="block font-mono text-[10px] tracking-[0.16em] uppercase text-zinc-400 mb-2"
+                    >
+                      NAME *
+                    </label>
+                    <input
+                      type="text"
+                      id="contact-name"
+                      name="name"
+                      autoComplete="name"
+                      placeholder="Your name"
+                      value={formData.name}
+                      onChange={(e) => handleInput('name', e.target.value)}
+                      className={`w-full bg-[#080808] border px-4 py-3.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#9CFF00] transition-colors ${
+                        errors.name ? 'border-red-500' : 'border-white/15'
+                      }`}
+                    />
+                    {errors.name && (
+                      <span className="font-mono text-[11px] text-red-400 mt-1.5 block">
+                        {errors.name}
+                      </span>
+                    )}
+                  </div>
 
-                                        {/* Subject Input (Optional) */}
-                                        <div>
-                                            <label htmlFor="contact-subject" className="block text-xs font-semibold text-gray-300 mb-1.5">
-                                                Subject <span className="text-gray-500 font-normal">(Optional)</span>
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="contact-subject"
-                                                name="subject"
-                                                autoComplete="off"
-                                                placeholder="Project Inquiry / Collaboration"
-                                                value={formData.subject}
-                                                onChange={(e) => handleInput('subject', e.target.value)}
-                                                className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FF8A00] focus:ring-1 focus:ring-[#FF8A00] transition-all"
-                                            />
-                                        </div>
-
-                                        {/* Message Input */}
-                                        <div>
-                                            <label htmlFor="contact-message" className="block text-xs font-semibold text-gray-300 mb-1.5">
-                                                Message*
-                                            </label>
-                                            <textarea
-                                                id="contact-message"
-                                                name="message"
-                                                autoComplete="off"
-                                                rows={3}
-                                                placeholder="Tell me about your project or inquiry..."
-                                                value={formData.message}
-                                                onChange={(e) => handleInput('message', e.target.value)}
-                                                className={`w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FF8A00] focus:ring-1 focus:ring-[#FF8A00] transition-all resize-none h-[95px] ${
-                                                    errors.message ? 'border-red-500 bg-red-500/10' : ''
-                                                }`}
-                                                aria-invalid={!!errors.message}
-                                            />
-                                            {errors.message && (
-                                                <span className="text-[11px] text-red-500 mt-1 block font-medium">
-                                                    {errors.message}
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        {/* Submit Button */}
-                                        <div className="pt-2">
-                                            <button
-                                                type="submit"
-                                                disabled={submitting}
-                                                className="w-full bg-gradient-to-r from-[#FF6B00] via-[#FFAA00] to-[#FF8A00] text-black font-display font-black tracking-widest text-xs uppercase py-4 rounded-xl hover:shadow-[0_0_25px_rgba(255,138,0,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 shadow-md flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed group relative overflow-hidden"
-                                            >
-                                                {submitting ? (
-                                                    <>
-                                                        <svg className="animate-spin h-4 w-4 text-black dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                        </svg>
-                                                        <span>SENDING...</span>
-                                                    </>
-                                                ) : (
-                                                    <span>SEND MESSAGE</span>
-                                                )}
-                                            </button>
-                                        </div>
-
-                                        {warning && (
-                                            <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-xl text-xs text-center font-medium">
-                                                {warning}
-                                            </div>
-                                        )}
-                                    </form>
-                                ) : (
-                                    <div className="py-8 px-4 text-center flex flex-col items-center space-y-4">
-                                        <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center shadow-inner">
-                                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <h4 className="font-display font-bold text-lg text-white mb-1">Thank You!</h4>
-                                            <p className="text-xs text-gray-400 max-w-[280px] leading-relaxed">
-                                                {statusMessage || 'Your message has been sent successfully. I will get back to you soon!'}
-                                            </p>
-                                        </div>
-                                        <button
-                                            type="button"
-                                            onClick={handleReset}
-                                            className="mt-2 text-xs font-semibold text-white underline underline-offset-4 hover:opacity-70 transition-opacity"
-                                        >
-                                            Send another message
-                                        </button>
-                                    </div>
-                                )}
-
-                            </div>
-                        </div>
-
-                        {/* Right Column: Giant Typography & Subhead */}
-                        <div ref={contentRef} className="lg:col-span-7 flex flex-col justify-between h-full space-y-8 lg:space-y-16 order-1 lg:order-2">
-
-                            <div>
-                                {/* Top Pill Badge */}
-                                <div className="inline-flex items-center gap-2 bg-black/50 border border-white/10 backdrop-blur-md text-white px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase shadow-md mb-8">
-                                    <span className="text-[#FF8A00] text-sm">❇</span>
-                                    <span>CONTACT ME</span>
-                                </div>
-
-                                {/* Giant Headline */}
-                                <h2 className="font-display font-black text-black dark:text-white uppercase tracking-tight leading-[0.95] text-[clamp(2.5rem,6.5vw,5.5rem)] text-left drop-shadow-lg">
-                                    LET’S CREATE <br />
-                                    TOGETHER
-                                </h2>
-                            </div>
-
-                            {/* Bottom Right Sub-section */}
-                            <div className="flex items-start gap-4 max-w-[440px] pt-4">
-                                <span className="text-[#FF8A00] text-xl mt-1 flex-shrink-0 animate-pulse">✦</span>
-                                <div>
-                                    <h4 className="font-display font-bold uppercase text-black dark:text-white tracking-wider text-sm sm:text-base mb-2">
-                                        RESULTS-DRIVEN SOLUTIONS
-                                    </h4>
-                                    <p className="text-black dark:text-gray-300 text-xs sm:text-sm leading-relaxed font-normal">
-                                        Refining the design through feedback and testing to ensure the best user experience.
-                                    </p>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
+                  <div>
+                    <label
+                      htmlFor="contact-email"
+                      className="block font-mono text-[10px] tracking-[0.16em] uppercase text-zinc-400 mb-2"
+                    >
+                      EMAIL *
+                    </label>
+                    <input
+                      type="email"
+                      id="contact-email"
+                      name="email"
+                      autoComplete="email"
+                      placeholder="you@company.com"
+                      value={formData.email}
+                      onChange={(e) => handleInput('email', e.target.value)}
+                      className={`w-full bg-[#080808] border px-4 py-3.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#9CFF00] transition-colors ${
+                        errors.email ? 'border-red-500' : 'border-white/15'
+                      }`}
+                    />
+                    {errors.email && (
+                      <span className="font-mono text-[11px] text-red-400 mt-1.5 block">
+                        {errors.email}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
-            </div>
-        </section>
-    );
+                <div>
+                  <label
+                    htmlFor="contact-subject"
+                    className="block font-mono text-[10px] tracking-[0.16em] uppercase text-zinc-400 mb-2"
+                  >
+                    SUBJECT (OPTIONAL)
+                  </label>
+                  <input
+                    type="text"
+                    id="contact-subject"
+                    name="subject"
+                    placeholder="Web App / UI Design / AI System"
+                    value={formData.subject}
+                    onChange={(e) => handleInput('subject', e.target.value)}
+                    className="w-full bg-[#080808] border border-white/15 px-4 py-3.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#9CFF00] transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="contact-message"
+                    className="block font-mono text-[10px] tracking-[0.16em] uppercase text-zinc-400 mb-2"
+                  >
+                    PROJECT DETAILS *
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    rows={5}
+                    placeholder="Tell me about your timeline, goals, and what we're building..."
+                    value={formData.message}
+                    onChange={(e) => handleInput('message', e.target.value)}
+                    className={`w-full bg-[#080808] border px-4 py-3.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#9CFF00] transition-colors resize-none ${
+                      errors.message ? 'border-red-500' : 'border-white/15'
+                    }`}
+                  />
+                  {errors.message && (
+                    <span className="font-mono text-[11px] text-red-400 mt-1.5 block">
+                      {errors.message}
+                    </span>
+                  )}
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="chamfer-btn w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#9CFF00] hover:bg-[#B4FF3D] text-black font-mono font-bold text-xs tracking-[0.16em] uppercase px-8 py-4 transition-colors disabled:opacity-60 cursor-pointer"
+                  >
+                    <span>{submitting ? 'SENDING...' : 'SEND MESSAGE'}</span>
+                    <span>&gt;</span>
+                  </button>
+                </div>
+
+                {warning && (
+                  <div className="p-3 bg-red-950/50 border border-red-500/40 text-red-300 font-mono text-xs">
+                    {warning}
+                  </div>
+                )}
+              </form>
+            ) : (
+              <div className="py-12 text-center space-y-5">
+                <div className="w-14 h-14 bg-[#9CFF00] text-black mx-auto flex items-center justify-center font-mono text-2xl font-bold">
+                  ✓
+                </div>
+                <h3 className="font-display text-2xl font-medium text-white">
+                  Message Received
+                </h3>
+                <p className="font-body text-sm text-zinc-400 max-w-sm mx-auto">
+                  {statusMessage || 'Thanks for reaching out. I will get back to you shortly.'}
+                </p>
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  className="font-mono text-xs tracking-[0.14em] uppercase text-[#9CFF00] hover:underline cursor-pointer"
+                >
+                  SEND ANOTHER MESSAGE
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }

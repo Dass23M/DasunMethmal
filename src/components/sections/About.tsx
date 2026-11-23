@@ -1,323 +1,96 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import SectionHeading from "@/components/ui/SectionHeading";
+import Link from 'next/link';
 
-const GALLERY_IMAGES = [
-  {
-    src: "/images/developer-1.png",
-    alt: "Mobile App Architecture",
-    title: "01 / APP ARCHITECTURE",
-  },
-  {
-    src: "/images/developer-3.png",
-    alt: "Fullstack Platform",
-    title: "02 / FULLSTACK PLATFORM",
-  },
-  {
-    src: "/images/developer-7.png",
-    alt: "UI/UX & Brand Identity",
-    title: "03 / UI/UX & BRANDING",
-  },
-];
+interface AboutProps {
+  showMoreLink?: boolean;
+}
 
-export default function About() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const heroImageRef = useRef<HTMLDivElement>(null);
-  const aboutTextRef = useRef<HTMLDivElement>(null);
-  const galleryRef = useRef<HTMLDivElement>(null);
-  const footerCtaRef = useRef<HTMLDivElement>(null);
-
-  const [mounted, setMounted] = useState(false);
-  const [emailText, setEmailText] = useState("methmal.liyanage23@gmail.com");
-  const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText("methmal.liyanage23@gmail.com");
-    setEmailText("email copied to clipboard!");
-    setCopied(true);
-    setTimeout(() => {
-      setEmailText("methmal.liyanage23@gmail.com");
-      setCopied(false);
-    }, 2400);
-  };
-
-  useEffect(() => {
-    if (!mounted || !containerRef.current) return;
-
-    let ctx: { revert: () => void } | null = null;
-
-    Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
-      ([{ default: gsap }, { ScrollTrigger }]) => {
-        gsap.registerPlugin(ScrollTrigger);
-
-        ctx = gsap.context(() => {
-      const isMobile = window.innerWidth < 768;
-
-      // 1. Luxury Apple-Style Hero Portrait Reveal on Scroll Down
-      if (heroImageRef.current) {
-        gsap.fromTo(
-          heroImageRef.current,
-          {
-            scale: isMobile ? 0.92 : 0.85,
-            y: isMobile ? 40 : 0,
-            opacity: 0,
-            clipPath: isMobile ? "inset(8% 0% 8% 0%)" : "inset(0% 0% 0% 0%)",
-            filter: isMobile ? "none" : "blur(8px)",
-          },
-          {
-            scale: 1,
-            y: 0,
-            opacity: 1,
-            clipPath: "inset(0% 0% 0% 0%)",
-            filter: "none",
-            duration: isMobile ? 1.2 : 1.5,
-            ease: "expo.out",
-            scrollTrigger: {
-              trigger: heroImageRef.current,
-              start: isMobile ? "top 88%" : "top 80%",
-              toggleActions: "play none none reverse",
-            },
-          },
-        );
-      }
-
-      // 2. Editorial About Text Staggered Slide Up
-      if (aboutTextRef.current) {
-        gsap.fromTo(
-          aboutTextRef.current,
-          { y: isMobile ? 45 : 35, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: isMobile ? 1.2 : 1.2,
-            ease: "expo.out",
-            scrollTrigger: {
-              trigger: aboutTextRef.current,
-              start: isMobile ? "top 90%" : "top 85%",
-              toggleActions: "play none none reverse",
-            },
-          },
-        );
-      }
-
-      // 3. Vertical Clip-Path Reveal for Gallery Items
-      if (galleryRef.current) {
-        const galleryItems =
-          galleryRef.current.querySelectorAll(".gallery-item-img");
-        galleryItems.forEach((item, index) => {
-          gsap.fromTo(
-            item,
-            { clipPath: "inset(100% 0 0 0)" },
-            {
-              clipPath: "inset(0% 0 0 0)",
-              duration: 1.0,
-              delay: index * 0.08,
-              ease: "power3.inOut",
-              scrollTrigger: {
-                trigger: item.parentElement,
-                start: "top 85%",
-              },
-            },
-          );
-        });
-
-        // Gallery Caption Reveal
-        const caption = galleryRef.current.querySelector(".gallery-caption");
-        if (caption) {
-          gsap.fromTo(
-            caption,
-            { y: 30, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 1.0,
-              ease: "expo.out",
-              scrollTrigger: {
-                trigger: caption,
-                start: "top 85%",
-              },
-            },
-          );
-        }
-      }
-
-      // 4. Footer CTA & Display Wave Reveal
-      if (footerCtaRef.current) {
-        gsap.fromTo(
-          footerCtaRef.current,
-          { y: 25, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.9,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: footerCtaRef.current,
-              start: "top 85%",
-            },
-          },
-        );
-
-        const svgPaths =
-          containerRef.current?.querySelectorAll(".footer-svg-path");
-        if (svgPaths && svgPaths.length > 0) {
-          svgPaths.forEach((path, index) => {
-            gsap.fromTo(
-              path,
-              { opacity: 0, y: 35 },
-              {
-                opacity: 1,
-                y: 0,
-                duration: 0.9,
-                delay: index * 0.06,
-                ease: "power3.out",
-                scrollTrigger: {
-                  trigger: path.parentElement,
-                  start: "top 90%",
-                },
-              },
-            );
-          });
-        }
-      }
-    }, containerRef);
-  });
-
-  return () => ctx?.revert();
-}, [mounted]);
-
-  if (!mounted) {
-    return <section className="w-full h-screen bg-[#000000]" />;
-  }
-
+export default function About({ showMoreLink = true }: AboutProps) {
   return (
     <section
       id="about-section"
-      ref={containerRef}
-      className="w-full bg-[#07080B] text-white select-none relative overflow-hidden py-20 sm:py-28 font-body luxury-mesh-bg"
+      className="relative w-full bg-[#080808] text-white py-20 sm:py-28 lg:py-32 overflow-hidden border-t border-dashed border-white/[0.12]"
     >
-      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
-        <SectionHeading 
-          title="ABOUT &amp; ENGINEERING BACKGROUND" 
-          subtitle="Software Engineering graduate from Cardiff Metropolitan University specializing in full-stack architecture & growth."
-          category="BACKGROUND &amp; IDENTITY"
-        />
-
-        {/* ─── 1. TOP EDITORIAL SVG TITLE BANNER ─── */}
-        <div className="w-full mb-10 sm:mb-14 pb-6">
-          <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF8A00] uppercase tracking-widest mb-3">
-            <span>{"// ABOUT METHMAL"}</span>
-            <span>EST. 2023</span>
-          </div>
-
-          <div className="relative w-full overflow-hidden">
-            <h2 className="font-display font-black text-3xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-white leading-none">
-              METHMAL<span className="text-gradient-amber">.</span>
-            </h2>
-          </div>
-        </div>
-
-        {/* ─── 2. HERO ROW SPLIT: PORTRAIT LEFT / ABOUT TEXT RIGHT ─── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-end mb-14 sm:mb-20">
-          {/* Left Column (5 Cols): Grayscale Portrait Image */}
-          <div className="lg:col-span-5">
-            <div
-              ref={heroImageRef}
-              className="relative w-full max-w-sm lg:max-w-none mx-auto aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-[0_15px_45px_rgba(0,0,0,0.8)] bg-[#0D0E15] group"
-            >
-              <Image
-                src="/images/methmal2.png"
-                alt="Methmal Portrait"
-                fill
-                sizes="(max-width: 1024px) 100vw, 42vw"
-                className="object-cover grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
-              <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-white font-mono text-xs">
-                <span className="font-bold tracking-wider">METHMAL®</span>
-                <span className="text-[#FF8A00] font-semibold">
-                  FULLSTACK &amp; MARKETING
-                </span>
+      <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 relative z-10">
+        {/* Top Meta Bar: Emblem + Live Availability Left / Giant ® 2026 Watermark Right */}
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-8 mb-16 sm:mb-24">
+          <div className="space-y-6">
+            {/* Circular Starburst Stamp */}
+            <div className="w-12 h-12 border border-white/15 bg-[#121212] flex items-center justify-center">
+              <div className="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center">
+                <svg width="14" height="14" viewBox="0 0 32 32" fill="currentColor">
+                  <path d="M16 0L18.2 12.2L27.3 4.7L19.8 13.8L32 16L19.8 18.2L27.3 27.3L18.2 19.8L16 32L13.8 19.8L4.7 27.3L12.2 18.2L0 16L12.2 13.8L4.7 4.7L13.8 12.2L16 0Z" />
+                </svg>
               </div>
             </div>
-          </div>
 
-          {/* Spacer Column (2 Cols) */}
-          <div className="hidden lg:block lg:col-span-2" />
-
-          {/* Right Column (5 Cols): Editorial Journey Text */}
-          <div className="lg:col-span-5">
-            <div ref={aboutTextRef} className="space-y-5">
-              <span className="font-mono text-xs font-bold text-[#FF8A00] tracking-widest uppercase block">
-                001 / PHILOSOPHY &amp; ARCHITECTURAL VISION
-              </span>
-              <p className="font-body text-sm sm:text-base md:text-lg text-zinc-200 leading-relaxed font-normal">
-                I am a fullstack software engineer and digital marketer
-                exploring the intersection of modern web architecture and
-                creative growth strategy. Building digital solutions as a craft,
-                my work embodies the transformation of complex ideas into
-                seamless, production-grade applications.
-              </p>
-              <p className="font-body text-sm sm:text-base md:text-lg text-zinc-400 leading-relaxed font-light">
-                Through deliberate practice and technical precision, I find that
-                clean code provides structure in times of uncertainty and offers
-                rare clarity when scaling user experiences. Each platform
-                becomes both a foundation and a window into growth.
+            <div className="space-y-1.5 font-mono text-[11px] tracking-[0.14em] uppercase">
+              <div className="flex items-center gap-2.5 text-white">
+                <span className="w-2 h-2 rounded-full bg-[#9CFF00] shadow-[0_0_8px_#9CFF00]" />
+                <span>OPEN FOR NEW PROJECTS</span>
+              </div>
+              <p className="text-zinc-500">
+                LET&apos;S CREATE SOMETHING REMARKABLE TOGETHER.
               </p>
             </div>
+          </div>
+
+          {/* Giant ® 2026 Watermark */}
+          <div
+            aria-hidden="true"
+            className="hidden sm:flex items-start font-display font-medium leading-none select-none text-white/[0.12] tracking-[-0.04em]"
+          >
+            <span className="text-4xl lg:text-6xl mr-2 mt-2">®</span>
+            <span className="text-7xl lg:text-[9.5rem]">2026</span>
           </div>
         </div>
 
-
-        {/* ─── 4. FOOTER SECTION WITH GIANT STAGGERED DISPLAY & CONTACT CTA ─── */}
-        <div className="footer pt-16 flex flex-col items-center justify-between text-center relative">
-          {/* Interactive Contact Button & Email Copy */}
-          <div
-            ref={footerCtaRef}
-            className="footer-cta flex flex-col items-center gap-3 mb-16 z-10"
-          >
-            <button
-              onClick={handleCopyEmail}
-              className="group relative px-10 py-4 rounded-full bg-[#FF8A00] text-black font-display font-extrabold text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(255,138,0,0.4)] hover:shadow-[0_0_30px_rgba(255,138,0,0.6)] transition-all duration-300 hover:scale-105 overflow-hidden"
-            >
-              <span className="relative z-10 block transition-transform duration-300 group-hover:-translate-y-full">
-                + GET IN TOUCH
-              </span>
-              <span className="absolute inset-0 z-10 flex items-center justify-center translate-y-full transition-transform duration-300 group-hover:translate-y-0 text-white font-display font-extrabold text-sm tracking-wider uppercase">
-                SEND EMAIL
-              </span>
-              <div className="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-            </button>
-
-            <div
-              onClick={handleCopyEmail}
-              className="font-mono text-sm sm:text-base text-black/90 dark:text-white/90 cursor-pointer hover:text-[#FF6B00] transition-colors flex items-center gap-1"
-            >
-              <span className="text-[#FF6B00]">[</span>
-              <span>{emailText}</span>
-              <span className="text-[#FF6B00]">]</span>
-            </div>
-            {copied && (
-              <span className="text-emerald-400 font-mono text-xs animate-pulse">
-                COPIED!
-              </span>
-            )}
+        {/* Main Editorial Statement Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+          {/* Left Column: Bracketed Label */}
+          <div className="lg:col-span-3">
+            <span className="font-mono text-xs tracking-[0.16em] uppercase text-zinc-400">
+              [ABOUT ME]
+            </span>
           </div>
 
-          {/* Giant Bottom Display Text Wave */}
-          <div className="w-full overflow-hidden">
-            <div className="flex items-center justify-center gap-4 sm:gap-8 font-display font-black text-4xl sm:text-7xl md:text-8xl lg:text-[7rem] text-black dark:text-white/20 uppercase tracking-tighter">
-              <span className="footer-svg-path">CRAFT</span>
-              <span className="footer-svg-path text-[#FF6B00]">•</span>
-              <span className="footer-svg-path">VISION</span>
-              <span className="footer-svg-path text-[#FF6B00]">•</span>
-              <span className="footer-svg-path">IMPACT</span>
+          {/* Right Column: Oversized Editorial Paragraph with Neon Green Inline Badge */}
+          <div className="lg:col-span-9">
+            <h2 className="font-display font-normal text-2xl sm:text-4xl lg:text-[3.35rem] leading-[1.12] tracking-[-0.03em] text-white">
+              <span className="hidden sm:inline-block w-20 lg:w-28" aria-hidden="true" />
+              Dasun Methmal is a Sri Lanka-based Creative Engineer, building scalable web apps,{' '}
+              <span
+                aria-hidden="true"
+                className="inline-flex items-center gap-2.5 bg-[#9CFF00] text-black px-3.5 py-1 align-middle text-lg sm:text-2xl lg:text-3xl font-mono font-normal mx-1"
+              >
+                <span>+</span>
+                <span>×</span>
+                <span>+</span>
+              </span>{' '}
+              digital products and AI-powered experiences for modern businesses.
+            </h2>
+
+            {/* Bottom Metadata & Link */}
+            <div className="mt-14 sm:mt-20 pt-6 border-t border-dashed border-white/[0.12] flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+              <div className="font-body text-sm">
+                <p className="text-white font-medium">
+                  Based in Sri Lanka · Worldwide
+                </p>
+                <p className="text-zinc-500 mt-0.5">
+                  Cardiff Met Software Engineering Graduate · Building Since 2023
+                </p>
+              </div>
+
+              {showMoreLink && (
+                <Link
+                  href="/about"
+                  className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] uppercase text-white hover:text-[#9CFF00] transition-colors"
+                >
+                  <span>MORE ABOUT ME</span>
+                  <span className="text-[#9CFF00]">&gt;</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>

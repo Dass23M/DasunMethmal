@@ -1,140 +1,98 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useState } from 'react';
 
 const FAQ_ITEMS = [
   {
-    question: 'Can I update the site myself?',
+    question: 'Can I update the website myself after launch?',
     answer:
-      'Yes, absolutely! We build completely custom, manageable websites with intuitive content management capabilities so you can easily update text, images, and content without technical hassle.',
+      'Yes. I build clean, modular architectures with structured data or CMS integrations so you can easily update content without touching core code.',
   },
   {
-    question: 'How long does a project take?',
+    question: 'How long does a typical project take?',
     answer:
-      'Most projects fall between 2 and 8 weeks, depending on complexity. A brand identity with a simple website might take closer to two weeks, while a larger project with UX, UI, and custom development takes longer.',
+      'Focused landing pages and brand websites take 1–2 weeks. Full-stack web applications and AI-integrated platforms typically span 3–8 weeks.',
   },
   {
-    question: 'Do I need to have a brand before starting?',
+    question: 'Do I need final designs before we start?',
     answer:
-      'Not at all! We provide end-to-end design solutions, including full brand strategy, logo creation, design systems, and web application development from scratch.',
+      'Not at all. I handle end-to-end product execution — from UX structure and visual direction to full-stack engineering and deployment.',
   },
   {
-    question: 'Do you offer support after launch?',
+    question: 'Do you provide ongoing post-launch support?',
     answer:
-      'Yes, we provide ongoing post-launch maintenance, continuous performance monitoring, updates, and dedicated technical support to ensure your product performs seamlessly.',
+      'Yes. I offer post-launch performance monitoring, feature iterations, SEO tuning, and technical support.',
   },
   {
-    question: 'What’s your typical process?',
+    question: 'What is your primary engineering stack?',
     answer:
-      'Our workflow spans 4 streamlined phases: Strategic Discovery & Planning, UI/UX Conceptual Design, High-Performance Development, and Thorough Quality Testing prior to deployment.',
+      'Next.js, React, TypeScript, Node.js, Express, Python/Flask for ML microservices, PostgreSQL, MongoDB, and Tailwind CSS.',
   },
 ];
 
 export default function FaqSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [openIndex, setOpenIndex] = useState<number | null>(2); // Item 3 open by default
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const toggleAccordion = (index: number) => {
-    setOpenIndex((prev) => (prev === index ? null : index));
-  };
-
-  if (!mounted) {
-    return <section className="w-full min-h-[500px] bg-black" />;
-  }
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <section
-      ref={sectionRef}
       id="faq-section"
-      className="w-full py-20 lg:py-28 bg-[#07080B] text-white flex items-center justify-center overflow-hidden select-none luxury-mesh-bg"
+      className="w-full py-20 sm:py-28 bg-[#080808] text-white border-t border-dashed border-white/[0.12] select-none"
     >
-      <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-8 md:px-16 lg:px-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 xl:gap-24 items-start">
-          
-          {/* Left Column: Stacked Display Title */}
-          <div className="lg:col-span-5 flex flex-col justify-center">
-            <div className="flex items-center gap-2 font-mono text-xs font-bold text-[#FF8A00] uppercase tracking-widest mb-4">
-              <span className="w-2 h-2 rounded-full bg-[#FF8A00] radar-pulse" />
-              <span>{"// FREQUENT INQUIRIES"}</span>
-            </div>
-            <h2 className="font-display font-black uppercase tracking-tighter text-white text-[clamp(2.4rem,4.5vw,4.5rem)] leading-[0.9] text-left">
-              <span className="block">FREQUENTLY</span>
-              <span className="block mt-1">ASKED</span>
-              <span className="block mt-1 text-transparent [-webkit-text-stroke:1.8px_rgba(255,138,0,0.85)]">
-                QUESTIONS
-              </span>
+      <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          <div className="lg:col-span-4 space-y-4">
+            <span className="font-mono text-xs tracking-[0.16em] uppercase text-zinc-400 block">
+              [FAQ]
+            </span>
+            <h2 className="font-display font-normal uppercase tracking-[-0.04em] leading-[0.92] text-4xl sm:text-5xl text-white">
+              Common <br />
+              <span className="text-[#9CFF00]">Questions_</span>
             </h2>
-            <p className="font-body text-sm sm:text-base text-zinc-400 mt-6 leading-relaxed max-w-md font-light">
-              Clear answers regarding engagement models, design-to-production turnaround, post-launch scaling, and technology stack.
-            </p>
           </div>
 
-          {/* Right Column: Clean Glass Accordion List */}
-          <div className="lg:col-span-7 w-full space-y-4">
+          <div className="lg:col-span-8 divide-y divide-white/[0.1] border-y border-white/[0.1]">
             {FAQ_ITEMS.map((item, idx) => {
               const isOpen = openIndex === idx;
-
               return (
-                <div
-                  key={idx}
-                  className={`obsidian-surface rounded-2xl p-5 sm:p-6 transition-all duration-300 border ${
-                    isOpen ? 'border-[#FF8A00]/50 shadow-[0_4px_30px_rgba(255,138,0,0.12)] bg-[#12141F]' : 'border-white/10 hover:border-white/20'
-                  }`}
-                >
-                  {/* Header Clickable Row */}
+                <div key={idx} className="py-5 sm:py-6">
                   <button
-                    onClick={() => toggleAccordion(idx)}
-                    className="w-full flex items-center justify-between text-left group gap-4 focus:outline-none"
+                    type="button"
+                    onClick={() => setOpenIndex((prev) => (prev === idx ? null : idx))}
                     aria-expanded={isOpen}
+                    className="w-full flex items-center justify-between text-left gap-4 group cursor-pointer"
                   >
-                    <span
-                      className={`font-display font-bold text-base sm:text-lg md:text-[1.1rem] tracking-tight transition-colors duration-300 ${
-                        isOpen ? 'text-[#FF8A00]' : 'text-white group-hover:text-[#FF8A00]'
-                      }`}
-                    >
-                      {item.question}
+                    <span className="flex items-center gap-4">
+                      <span className="font-mono text-xs text-zinc-500">
+                        {String(idx + 1).padStart(2, '0')}
+                      </span>
+                      <span
+                        className={`font-display text-base sm:text-xl transition-colors ${
+                          isOpen ? 'text-[#9CFF00]' : 'text-white group-hover:text-[#9CFF00]'
+                        }`}
+                      >
+                        {item.question}
+                      </span>
                     </span>
-
-                    {/* Circular Action Toggle Button */}
                     <span
-                      className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm sm:text-base flex-shrink-0 transition-all duration-300 border ${
+                      className={`w-8 h-8 border flex items-center justify-center font-mono text-sm shrink-0 transition-colors ${
                         isOpen
-                          ? 'bg-[#FF8A00] text-black border-[#FF8A00] rotate-45'
-                          : 'bg-white/5 text-white/80 border-white/10 group-hover:bg-[#FF8A00] group-hover:text-black group-hover:border-[#FF8A00]'
+                          ? 'bg-[#9CFF00] text-black border-[#9CFF00]'
+                          : 'border-white/20 text-white group-hover:border-[#9CFF00]'
                       }`}
                     >
-                      +
+                      {isOpen ? '−' : '+'}
                     </span>
                   </button>
 
-                  {/* Expandable Answer Box */}
-                  <div
-                    className={`grid transition-all duration-300 ease-in-out ${
-                      isOpen
-                        ? 'grid-rows-[1fr] opacity-100 mt-4'
-                        : 'grid-rows-[0fr] opacity-0 mt-0 pointer-events-none'
-                    }`}
-                  >
-                    <div className="overflow-hidden">
-                      <p className="font-body text-white/70 text-xs sm:text-sm leading-relaxed max-w-[620px] font-light">
-                        {item.answer}
-                      </p>
-                    </div>
-                  </div>
+                  {isOpen && (
+                    <p className="font-body text-sm sm:text-base text-zinc-400 leading-relaxed pt-4 pl-8 sm:pl-9 max-w-2xl">
+                      {item.answer}
+                    </p>
+                  )}
                 </div>
               );
             })}
           </div>
-
         </div>
       </div>
     </section>

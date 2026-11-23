@@ -48,7 +48,7 @@ export default function ScrollToTop() {
           transition={{ duration: 0.3, ease: 'easeOut' }}
           onClick={scrollToTop}
           aria-label="Scroll back to top"
-          className="fixed bottom-6 right-6 z-[990] w-12 h-12 rounded-full bg-[#0B0C12]/85 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.6)] flex items-center justify-center text-white hover:text-[#FF8A00] hover:border-[#FF8A00]/50 transition-colors group cursor-pointer"
+          className="fixed bottom-6 right-6 z-[990] w-12 h-12 rounded-full bg-[#181818]/90 backdrop-blur-xl border border-white/15 flex items-center justify-center text-white hover:text-black hover:bg-[#9CFF00] hover:border-[#9CFF00] transition-colors group cursor-pointer"
         >
           {/* Circular SVG Scroll Progress Ring */}
           <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 44 44">
@@ -57,16 +57,16 @@ export default function ScrollToTop() {
               cy="22"
               r="18"
               fill="none"
-              stroke="rgba(255, 255, 255, 0.08)"
-              strokeWidth="2.5"
+              stroke="rgba(255, 255, 255, 0.1)"
+              strokeWidth="2"
             />
             <circle
               cx="22"
               cy="22"
               r="18"
               fill="none"
-              stroke="#FF8A00"
-              strokeWidth="2.5"
+              stroke="#9CFF00"
+              strokeWidth="2"
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
               strokeLinecap="round"

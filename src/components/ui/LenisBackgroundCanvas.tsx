@@ -80,9 +80,9 @@ export default function LenisBackgroundCanvas() {
     const particles: Particle[] = [];
 
     const colors = [
-      'rgba(255, 107, 0, 0.5)',   // Brand Orange
-      'rgba(255, 168, 0, 0.35)',  // Gold Accent
-      'rgba(255, 255, 255, 0.2)',  // White
+      'rgba(255, 107, 0, 0.28)',   // Brand Orange
+      'rgba(234, 88, 12, 0.2)',    // Warm Amber
+      'rgba(24, 24, 27, 0.12)',    // Subtle Ink
     ];
 
     for (let i = 0; i < particleCount; i++) {

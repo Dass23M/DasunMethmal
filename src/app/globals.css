@@ -8,9 +8,11 @@
    BASE STYLES
    ============================================ */
 :root {
-  --accent: #FF8A00;
-  --dark: #191919;
-  --card-dark: #212121;
+  --accent: #9CFF00;
+  --accent-hover: #B4FF3D;
+  --dark: #080808;
+  --card-dark: #111111;
+  --surface: #141414;
   
   /* Hallmark typography scale (1.25 ratio) */
   --text-xs:   0.64rem;   /* 10.24px */
@@ -313,24 +315,24 @@ a:hover {
    ============================================ */
 .site-mobile-menu {
   position: fixed;
-  z-index: 1009;
+  z-index: 1020;
   height: 100svh;
-  background: rgba(13, 13, 13, 0.95);
+  background: rgba(12, 12, 12, 0.98);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 138, 0, 0.2);
-  width: min(300px, 85vw);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  width: min(320px, 85vw);
   overflow-y: auto;
-  padding-top: 30px;
+  padding-top: 24px;
   left: 0;
   transform: translateX(-100%);
-  transition: 0.6s transform cubic-bezier(0.16, 1, 0.3, 1);
+  transition: 0.45s transform cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: none;
 }
 
 body.offcanvas .site-mobile-menu {
   transform: translateX(0%);
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 16px 0 48px rgba(0, 0, 0, 0.75);
 }
 
 .site-mobile-menu .close-wrap {
@@ -1804,47 +1806,56 @@ textarea.form-control {
 }
 
 ::-webkit-scrollbar-track {
-  background: #070709;
+  background: #080808;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.16);
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 0px;
   transition: background 0.25s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #FF8A00;
-  box-shadow: 0 0 10px rgba(255, 138, 0, 0.6);
+  background: #9CFF00;
 }
 
-/* Luxury Glassmorphic Panels */
+/* Chamfered sharp brutalist button matching reference */
+.chamfer-btn {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+
+/* Subtle dark film-grain & editorial halftone texture */
+.editorial-noise {
+  background-color: #080808;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+.halftone-dots {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.22) 1.25px, transparent 1.25px);
+  background-size: 9px 9px;
+}
+
+.halftone-dots-light {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 10px 10px;
+}
+
+/* Clean Elevated Dark Editorial Panel */
 .glass-card-premium {
-  background: rgba(14, 14, 18, 0.72);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 
-    0 10px 30px -10px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: border-color 0.25s ease, transform 0.25s ease;
 }
 
 .glass-card-premium:hover {
-  border-color: rgba(255, 138, 0, 0.35);
-  box-shadow: 
-    0 20px 40px -15px rgba(0, 0, 0, 0.7),
-    0 0 25px rgba(255, 138, 0, 0.12),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
-  transform: translateY(-3px);
+  border-color: rgba(156, 255, 0, 0.55);
 }
 
-/* High-End Text Gradients */
+/* Text Gradients */
 .text-gradient-amber {
-  background: linear-gradient(135deg, #FFFFFF 0%, #FFAA00 50%, #FF8A00 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #9CFF00;
 }
 
 .text-gradient-silver {
@@ -1927,35 +1938,26 @@ textarea.form-control {
   transform: translateX(100%);
 }
 
-/* Luxury Multi-Point Mesh Background */
+/* Clean Light Mesh Background */
 .luxury-mesh-bg {
-  background-color: #07080B;
+  background-color: #FAFAFA;
   background-image: 
-    radial-gradient(circle at 15% 15%, rgba(255, 138, 0, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.04) 0%, transparent 45%),
-    radial-gradient(circle at 50% 75%, rgba(255, 138, 0, 0.06) 0%, transparent 50%),
-    radial-gradient(circle at 80% 90%, rgba(129, 140, 248, 0.03) 0%, transparent 40%);
+    radial-gradient(circle at 15% 15%, rgba(255, 107, 0, 0.04) 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(255, 107, 0, 0.03) 0%, transparent 45%);
 }
 
-/* Obsidian Glass Surface */
+/* Light Elevated Surface */
 .obsidian-surface {
-  background: rgba(13, 14, 21, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 
-    0 10px 30px -10px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px -4px rgba(0, 0, 0, 0.06);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .obsidian-surface:hover {
-  border-color: rgba(255, 138, 0, 0.4);
-  box-shadow: 
-    0 20px 45px -15px rgba(0, 0, 0, 0.8),
-    0 0 30px rgba(255, 138, 0, 0.15),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
-  transform: translateY(-4px);
+  border-color: rgba(255, 107, 0, 0.35);
+  box-shadow: 0 14px 32px -10px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
 }
 
 /* Kinetic Gradient Shimmer Headline */

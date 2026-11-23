@@ -45,21 +45,21 @@ export type GithubCalendarProps = {
 
 const THEMES: Record<string, ThemeColors> = {
   github: {
-    level0: "#ffffff",
-    level1: "#0e4429",
-    level2: "#006d32",
-    level3: "#26a641",
-    level4: "#39d353",
+    level0: "#ebedf0",
+    level1: "#9be9a8",
+    level2: "#40c463",
+    level3: "#30a14e",
+    level4: "#216e39",
   },
 };
 
 const DARK_THEMES: Record<string, ThemeColors> = {
   github: {
-    level0: "#0a0a0a",
-    level1: "#0e4429",
-    level2: "#006d32",
-    level3: "#26a641",
-    level4: "#39d353",
+    level0: "#171717",
+    level1: "#2A4008",
+    level2: "#4B7A00",
+    level3: "#74BF00",
+    level4: "#9CFF00",
   },
 };
 
@@ -324,8 +324,7 @@ export const GithubCalendar = memo(function GithubCalendar({
     const checkDark = () => {
       setIsDark(
         document.documentElement.classList.contains("dark") ||
-          document.body.classList.contains("dark") ||
-          true,
+          document.body.classList.contains("dark"),
       );
     };
 
@@ -842,8 +841,8 @@ export const GithubCalendar = memo(function GithubCalendar({
   return (
     <div
       className={cn(
-        "w-fit mx-auto overflow-x-hidden border rounded-2xl transition-all duration-500 bg-[#0c0c0e]/90 backdrop-blur-xl border-black/10 dark:border-white/10 p-4 sm:p-6 shadow-2xl",
-        gameActive ? "bg-[#07080B] border-neutral-800" : "",
+        "w-fit mx-auto overflow-x-hidden border transition-all duration-500 bg-[#0F0F0F] border-white/10 p-4 sm:p-6",
+        gameActive ? "bg-[#080808] border-[#9CFF00]/40" : "",
         className,
       )}
     >
@@ -981,7 +980,7 @@ export const GithubCalendar = memo(function GithubCalendar({
 
               return (
                 <div
-                  className="pointer-events-none absolute z-50 rounded-lg bg-zinc-900 border border-black/10 dark:border-white/10 px-3 py-1.5 text-xs font-medium text-black dark:text-white shadow-xl whitespace-nowrap"
+                  className="pointer-events-none absolute z-50 rounded-lg bg-zinc-900 border border-zinc-800 px-3 py-1.5 text-xs font-medium text-white shadow-lg whitespace-nowrap"
                   style={{
                     left: tooltip.x,
                     top: tooltip.y,
@@ -990,7 +989,7 @@ export const GithubCalendar = memo(function GithubCalendar({
                 >
                   {tooltipText}
                   {/* Small arrow pointing down */}
-                  <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rotate-45 bg-zinc-900 border-r border-b border-black/10 dark:border-white/10" />
+                  <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rotate-45 bg-zinc-900 border-r border-b border-zinc-800" />
                 </div>
               );
             })()}
@@ -999,7 +998,7 @@ export const GithubCalendar = memo(function GithubCalendar({
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
           {/* legend (left) */}
           {showLegend && (
-            <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-400 shrink-0 mt-0.5">
+            <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-500 shrink-0 mt-0.5">
               <div className="flex items-center gap-1.5">
                 <span>Less</span>
                 {([0, 1, 2, 3, 4] as ContributionLevel[]).map((level) => (
@@ -1016,21 +1015,21 @@ export const GithubCalendar = memo(function GithubCalendar({
               </div>
 
               {/* Game Mode Switch */}
-              <div className="flex items-center gap-2 border-l border-black/10 dark:border-white/10 pl-4">
-                <span className="text-xs text-zinc-300 font-mono select-none">
-                  🕹️ Arcade Game Mode
+              <div className="flex items-center gap-2 border-l border-white/10 pl-4">
+                <span className="text-xs text-zinc-400 font-mono select-none">
+                  Arcade Mode
                 </span>
                 <button
                   onClick={() => setGameActive(!gameActive)}
                   className={cn(
                     "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none",
-                    gameActive ? "bg-[#FF6B00]" : "bg-neutral-800",
+                    gameActive ? "bg-[#9CFF00]" : "bg-zinc-800",
                   )}
                 >
                   <span
                     className={cn(
                       "pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out",
-                      gameActive ? "translate-x-4" : "translate-x-0",
+                      gameActive ? "translate-x-4 bg-black" : "translate-x-0",
                     )}
                   />
                 </button>
@@ -1045,17 +1044,17 @@ export const GithubCalendar = memo(function GithubCalendar({
                 href={`https://github.com/${username}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-x-1.5 text-zinc-400 hover:text-black dark:text-white transition-colors select-none"
+                className="flex items-center gap-x-1.5 text-zinc-400 hover:text-white transition-colors select-none"
               >
-                <span className="font-semibold text-black dark:text-white">
+                <span className="font-semibold text-white">
                   @{username}
                 </span>
                 <span>contributed</span>
-                <span className="font-bold text-[#39d353]">
+                <span className="font-bold text-[#9CFF00]">
                   {stats.total.toLocaleString()}
                 </span>
-                <span>commits &amp; PRs this year</span>
-                <span className="text-[#FF6B00] font-semibold underline decoration-[#FF6B00]/40 underline-offset-4">
+                <span>this year</span>
+                <span className="text-[#9CFF00] font-semibold">
                   ↗
                 </span>
               </a>

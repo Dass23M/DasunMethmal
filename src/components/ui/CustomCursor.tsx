@@ -76,16 +76,16 @@ export default function CustomCursor() {
       {/* Precision Center Dot */}
       <div
         ref={dotRef}
-        className="hidden md:block fixed top-0 left-0 w-2 h-2 rounded-full bg-[#FFAA00] pointer-events-none z-[9999] shadow-[0_0_8px_#FF8A00] will-change-transform"
+        className="hidden md:block fixed top-0 left-0 w-2 h-2 bg-[#9CFF00] pointer-events-none z-[9999] will-change-transform"
       />
 
-      {/* Smooth Trailing Frosted Glow Aura Ring */}
+      {/* Smooth Trailing Ring */}
       <div
         ref={ringRef}
         className={`hidden md:block fixed top-0 left-0 rounded-full pointer-events-none z-[9998] border transition-all duration-300 will-change-transform ${
           isHovering
-            ? 'w-14 h-14 border-[#FF8A00]/70 bg-[#FF8A00]/10 shadow-[0_0_20px_rgba(255,138,0,0.3)] backdrop-blur-[2px]'
-            : 'w-8 h-8 border-white/20 bg-transparent'
+            ? 'w-12 h-12 border-[#9CFF00] bg-[#9CFF00]/10'
+            : 'w-7 h-7 border-white/25 bg-transparent'
         }`}
       />
     </>

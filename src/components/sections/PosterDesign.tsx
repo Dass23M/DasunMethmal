@@ -51,37 +51,37 @@ interface Scene {
 const SCENES: Scene[] = [
   {
     id: 's0',
-    tag: 'Digital Marketing — Visual Strategy',
-    heading: ['STRATEGIC', 'DIGITAL', 'MARKETING'],
+    tag: 'Visual Strategy',
+    heading: ['STRATEGIC', 'MARKETING'],
     isH1: true,
-    body: 'High-converting ad creatives, viral social visuals, and data-driven brand campaigns. Combining high-impact visual design with targeted growth strategies to maximize reach, engagement, and ROI.',
+    body: 'High-converting ad creatives and brand campaigns built for reach and ROI.',
     ctaNext: { label: 'Explore', idx: 1 },
     ctaBack: null,
     align: 'left',
   },
   {
     id: 's1',
-    tag: '01 — Brand & Identity',
-    heading: ['DISTINCT', 'VISUAL', 'IDENTITY'],
-    body: 'Building unforgettable visual assets that command attention across channels. From social media posters to display ads, every graphic aligns with brand positioning and audience psychology.',
+    tag: '01 — Identity',
+    heading: ['VISUAL', 'IDENTITY'],
+    body: 'Distinctive brand assets aligned with positioning and audience clarity.',
     ctaNext: { label: 'Turn', idx: 2 },
     ctaBack: { label: 'Back', idx: 0 },
     align: 'right',
   },
   {
     id: 's2',
-    tag: '02 — Campaign Visuals',
-    heading: ['MULTI-CHANNEL', 'CAMPAIGNS'],
-    body: 'Targeted ad banners, promotional posters, and performance creatives crafted for Meta, Google, and LinkedIn ads. Engineered to capture attention and stop the scroll instantly.',
+    tag: '02 — Campaigns',
+    heading: ['AD', 'CAMPAIGNS'],
+    body: 'Scroll-stopping banners and posters for Meta, Google, and LinkedIn.',
     ctaNext: { label: 'Turn', idx: 3 },
     ctaBack: { label: 'Back', idx: 1 },
     align: 'left',
   },
   {
     id: 's3',
-    tag: '03 — Performance Marketing',
-    heading: ['DATA-DRIVEN', 'CREATIVITY'],
-    body: 'Combining creative storytelling with real-time analytics and audience targeting. Visual designs optimized for maximum click-through rates (CTR) and customer acquisition cost (CAC) efficiency.',
+    tag: '03 — Performance',
+    heading: ['DATA-DRIVEN', 'CREATIVE'],
+    body: 'Visuals optimized for click-through rate and acquisition efficiency.',
     stats: [
       { num: '3.5x', label: 'Avg ROAS' },
       { num: '45%', label: 'Higher CTR' },
@@ -93,18 +93,18 @@ const SCENES: Scene[] = [
   },
   {
     id: 's4',
-    tag: '04 — Social Media Growth',
-    heading: ['CONTENT', 'THAT', 'ENGAGES'],
-    body: 'Carousel ads, visual infographics, and promotional key visuals tailored for modern social algorithms. Transforming casual viewers into engaged followers and loyal brand advocates.',
+    tag: '04 — Social',
+    heading: ['CONTENT', 'THAT ENGAGES'],
+    body: 'Carousels and key visuals tailored for modern social feeds.',
     ctaNext: { label: 'Turn', idx: 5 },
     ctaBack: { label: 'Back', idx: 3 },
     align: 'left',
   },
   {
     id: 's5',
-    tag: '05 — Conversion Optimization',
-    heading: ['DESIGNED', 'FOR', 'REVENUE'],
-    body: 'Every layout, color palette, and call-to-action is structured to drive user conversions. Turning creative poster visuals into scalable digital revenue for your business.',
+    tag: '05 — Conversion',
+    heading: ['BUILT FOR', 'REVENUE'],
+    body: 'Layouts and visual hierarchy structured to drive measurable conversions.',
     ctaNext: { label: 'Begin again', idx: 0 },
     ctaBack: { label: 'Back', idx: 4 },
     align: 'right',
@@ -134,7 +134,7 @@ function ArrowLeft() {
 export default function PosterDesign() {
   const [mounted, setMounted] = useState(false);
   // Only theme requires React re-renders; everything else is direct DOM
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [theme, setTheme] = useState<'dark' | 'light'>('light');
 
   // Refs for RAF-driven DOM updates (no re-renders per frame)
   const outerRef       = useRef<HTMLDivElement>(null);
@@ -245,7 +245,7 @@ export default function PosterDesign() {
   if (!mounted) {
     return (
       <div
-        className="relative w-full overflow-hidden bg-[#07080B]"
+        className="relative w-full overflow-hidden bg-white"
         style={{ minHeight: '100vh' }}
       />
     );
@@ -262,7 +262,7 @@ export default function PosterDesign() {
 
       {/* ── Section heading (scrolls away before cube sticks) ───────────── */}
       <div className="pcg-header">
-        <SectionHeading title="DIGITAL MARKETING & POSTER DESIGN" theme="dark" />
+        <SectionHeading title="Brand & Visuals" theme="dark" />
       </div>
 
       {/* ── Scroll area ─────────────────────────────────────────────────── */}
@@ -356,15 +356,6 @@ export default function PosterDesign() {
             <div ref={captionNameRef} className="pcg-caption-name">
               {FACE_NAMES[0]}
             </div>
-          </div>
-
-          {/* Credit — right-center (rotated) */}
-          <div className="pcg-credit">
-            <a
-              href="#contact-section"
-            >
-              Digital Marketing &amp; Strategy
-            </a>
           </div>
 
         </div>{/* /pcg-stage */}
@@ -480,35 +471,37 @@ export default function PosterDesign() {
 // the portfolio page.
 
 const STYLES = `
-/* ── Tokens — Brand: Orange / White / Black ── */
+/* ── Tokens — Clean Light Mode ── */
 .pcg-outer {
-  --dark-bg:     #07080B;
-  --dark-fg:     #ffffff;
-  --dark-muted:  #94a3b8;
-  --light-bg:    #07080B;
-  --light-fg:    #ffffff;
-  --light-muted: #94a3b8;
-  --accent-dark: #FF8A00;
-  --accent-lt:   #FFAA00;
+  --dark-bg:     #FFFFFF;
+  --dark-fg:     #09090B;
+  --dark-muted:  #71717A;
+  --light-bg:    #FFFFFF;
+  --light-fg:    #09090B;
+  --light-muted: #71717A;
+  --accent-dark: #FF6B00;
+  --accent-lt:   #FF6B00;
 
-  --bg:     var(--dark-bg);
-  --fg:     var(--dark-fg);
-  --muted:  var(--dark-muted);
-  --accent: var(--accent-dark);
+  --bg:     var(--light-bg);
+  --fg:     var(--light-fg);
+  --muted:  var(--light-muted);
+  --accent: var(--accent-lt);
 
   --font-display: 'Sora', sans-serif;
   --font-body:    'Inter', sans-serif;
   --hairline:     0.0625rem;
   --ui-inset:     2rem;
   --nav-x:        calc(var(--ui-inset) + 0.125rem);
-  --card-bg:      rgba(13, 14, 21, 0.85);
-  --card-border:  rgba(255, 138, 0, 0.28);
+  --card-bg:      rgba(255, 255, 255, 0.9);
+  --card-border:  rgba(0, 0, 0, 0.1);
   --z-ui:         20;
 
   position: relative;
   background: var(--bg);
   color:      var(--fg);
   font-family: var(--font-body);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   transition: background 0.3s ease, color 0.3s ease;
 }
 
@@ -517,8 +510,8 @@ const STYLES = `
   --fg:          var(--light-fg);
   --muted:       var(--light-muted);
   --accent:      var(--accent-lt);
-  --card-bg:     rgba(255, 255, 255, 0.72);
-  --card-border: rgba(255, 107, 0, 0.18);
+  --card-bg:     rgba(255, 255, 255, 0.9);
+  --card-border: rgba(0, 0, 0, 0.1);
 }
 
 /* ── Section heading row ── */

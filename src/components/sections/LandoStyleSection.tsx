@@ -66,86 +66,69 @@ export default function LandoStyleSection() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full h-[650px] bg-[#000000]" />;
+    return <section className="w-full h-[650px] bg-[#FAFAFA]" />;
   }
 
-  const marqueeText1 = "WE DID IT TOGETHER • CRAFTING DIGITAL DREAMS • DRIVEN BY CODE • SCALING BRANDS WORLDWIDE • ";
-  const marqueeText2 = "FOREVER AMBITIOUS • BOUNDLESS CREATIVITY • UNMATCHED PERFORMANCE • DESIGN & DEVELOPMENT • ";
+  const marqueeText1 = "DESIGN • CODE • GROWTH • ";
+  const marqueeText2 = "CREATIVE ENGINEERING • DIGITAL STRATEGY • ";
 
   return (
     <section
       ref={sectionRef}
       id="landostyle-section"
-      className="relative w-full min-h-[700px] md:min-h-[850px] bg-[#07080B] text-white overflow-hidden select-none flex flex-col justify-between py-12 md:py-16 luxury-mesh-bg"
+      className="relative w-full min-h-[650px] md:min-h-[780px] bg-[#FAFAFA] text-zinc-950 overflow-hidden select-none flex flex-col justify-center py-16 md:py-20"
     >
-
-      {/* ─── 2. TOP HEADER NAVIGATION BAR ─── */}
-      <div className="relative z-30 w-full max-w-[1440px] mx-auto px-5 sm:px-10 flex items-center justify-between">
-        {/* Left Brand Title */}
-        <div className="flex items-center gap-2">
-          <span className="font-display font-black text-xl sm:text-2xl tracking-tighter text-white uppercase">
-            METHMAL<span className="text-gradient-amber">.</span>
-          </span>
-        </div>
-      </div>
-
-      {/* ─── 3. CENTER HERO CONTAINER WITH BACKDROP MARQUEE & PORTRAIT OVERLAY ─── */}
-      <div className="relative z-10 w-full my-auto py-12 md:py-20 flex items-center justify-center">
+      {/* ─── CENTER HERO CONTAINER WITH BACKDROP MARQUEE & PORTRAIT OVERLAY ─── */}
+      <div className="relative z-10 w-full my-auto py-12 md:py-16 flex items-center justify-center">
 
         {/* BACKGROUND CONTINUOUS GIANT MARQUEE TEXT LAYER */}
         <div className="absolute inset-0 flex flex-col justify-center gap-4 sm:gap-6 overflow-hidden pointer-events-none opacity-85 select-none">
           {/* Row 1: Leftward Scrolling Giant Headline */}
           <div className="w-max flex whitespace-nowrap" ref={marquee1Ref}>
-            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-[#FF8A00] leading-none pr-8">
+            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-[#FF6B00] leading-none pr-8">
               {marqueeText1}
             </span>
-            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-[#FF8A00] leading-none pr-8">
+            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-[#FF6B00] leading-none pr-8">
               {marqueeText1}
             </span>
           </div>
 
           {/* Row 2: Rightward Scrolling Secondary Giant Headline */}
           <div className="w-max flex whitespace-nowrap" ref={marquee2Ref}>
-            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-white/80 leading-none pr-8">
+            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-zinc-900/15 leading-none pr-8">
               {marqueeText2}
             </span>
-            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-white/80 leading-none pr-8">
+            <span className="font-display font-black text-[12vw] sm:text-[10vw] md:text-[8.5vw] uppercase tracking-tighter text-zinc-900/15 leading-none pr-8">
               {marqueeText2}
             </span>
           </div>
         </div>
 
-        {/* CENTER PORTRAIT CARD & NEON SIGNATURE OVERLAY */}
-        <div className="relative z-20 w-[280px] xs:w-[320px] sm:w-[420px] md:w-[480px] aspect-[4/5] sm:aspect-[3/4] rounded-2xl overflow-visible group">
+        {/* CENTER PORTRAIT CARD & SIGNATURE OVERLAY */}
+        <div className="relative z-20 w-[280px] xs:w-[320px] sm:w-[420px] md:w-[460px] aspect-[4/5] sm:aspect-[3/4] rounded-2xl overflow-visible group">
 
           {/* Main Portrait Frame */}
-          <div className="relative w-full h-full rounded-2xl overflow-hidden border-2 border-black/20 dark:border-white/20 shadow-2xl bg-[#1c201a]">
+          <div className="relative w-full h-full rounded-2xl overflow-hidden border border-zinc-200 shadow-[0_20px_50px_rgba(0,0,0,0.12)] bg-zinc-100">
             <Image
               src="/images/methmal1.png"
               alt="Methmal Portrait"
               fill
               priority
-              sizes="(max-width: 768px) 320px, 480px"
+              sizes="(max-width: 768px) 320px, 460px"
               className="object-cover object-top grayscale contrast-125 transition-transform duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0"
             />
-            {/* Subtle Vignette & Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+            {/* Subtle Vignette */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/15" />
 
             {/* Bottom Card Title */}
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-black dark:text-white z-10">
-              <div>
-                <p className="font-display font-extrabold text-sm sm:text-base tracking-wide uppercase">
-                  METHMAL
-                </p>
-                <p className="font-mono text-[10px] sm:text-xs text-[#FF6B00] font-semibold">
-                  FULLSTACK &amp; MARKETING
-                </p>
-              </div>
-              <span className="w-2.5 h-2.5 rounded-full bg-[#FF6B00] animate-ping" />
+            <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-white z-10">
+              <p className="font-display font-bold text-sm tracking-wide uppercase">
+                Dasun Methmal
+              </p>
             </div>
           </div>
 
-          {/* OVERLAY NEON SIGNATURE GRAPHIC (OVERLAPPING PORTRAIT BORDERS) */}
+          {/* OVERLAY SIGNATURE GRAPHIC */}
           <div className="absolute inset-0 -top-10 -bottom-10 -left-12 -right-12 pointer-events-none z-30 flex items-center justify-center">
             <svg
               ref={signatureRef}
@@ -154,7 +137,6 @@ export default function LandoStyleSection() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              {/* Dynamic stylized neon signature path overlay matching Norris style */}
               <path
                 d="M40 220 Q 90 40, 210 90 T 380 50 Q 480 30, 420 120 T 260 210 Q 200 240, 240 150 T 320 180"
                 stroke="#FF6B00"
@@ -169,7 +151,6 @@ export default function LandoStyleSection() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              {/* Secondary loop flourish */}
               <path
                 d="M 180 240 Q 290 280, 410 230"
                 stroke="#FFA800"
@@ -181,18 +162,6 @@ export default function LandoStyleSection() {
 
         </div>
 
-      </div>
-
-      {/* ─── 4. BOTTOM STATUS BAR ─── */}
-      <div className="relative z-30 w-full max-w-[1440px] mx-auto px-5 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-black/70 dark:text-white/70 pt-4">
-        <div className="flex items-center gap-3">
-          <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse" />
-          <span>BASED IN SRI LANKA / AVAILABLE FOR GLOBAL REMOTE WORK</span>
-        </div>
-        <div className="flex items-center gap-6">
-          <span>CREATIVE ENGINE</span>
-          <span className="text-[#FF6B00]">©2026 METHMAL®</span>
-        </div>
       </div>
     </section>
   );

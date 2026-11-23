@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import SectionHeading from "@/components/ui/SectionHeading";
 
 const DURATION = 0.28;
 const STAGGER = 0.022;
@@ -21,18 +22,18 @@ const FlipLink = ({ label, handle, href, icon }: FlipLinkProps) => {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex items-center justify-between w-full py-5 sm:py-7 border-b border-white/[0.08] text-white hover:text-[#FFAA00] transition-colors duration-300 select-none"
+      className="group relative flex items-center justify-between w-full py-5 sm:py-7 border-b border-zinc-200 text-zinc-950 hover:text-[#FF6B00] transition-colors duration-300 select-none"
     >
       {/* Left side: Icon Badge + Giant Text */}
       <div className="flex items-center gap-4 sm:gap-8 overflow-hidden">
         {/* Animated Icon Pill */}
         <motion.div
           variants={{
-            initial: { scale: 1, backgroundColor: "rgba(255, 255, 255, 0.04)", color: "#FFFFFF", borderColor: "rgba(255, 255, 255, 0.12)" },
-            hovered: { scale: 1.1, backgroundColor: "#FF8A00", color: "#000000", borderColor: "#FF8A00" },
+            initial: { scale: 1, backgroundColor: "#F4F4F5", color: "#18181B", borderColor: "#E4E4E7" },
+            hovered: { scale: 1.08, backgroundColor: "#FF6B00", color: "#FFFFFF", borderColor: "#FF6B00" },
           }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center flex-shrink-0 border shadow-lg"
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center flex-shrink-0 border"
         >
           {icon}
         </motion.div>
@@ -46,7 +47,7 @@ const FlipLink = ({ label, handle, href, icon }: FlipLinkProps) => {
             {label.split("").map((l, i) => (
               <motion.span
                 variants={{
-                  initial: { y: 0, opacity: 0.95 },
+                  initial: { y: 0, opacity: 1 },
                   hovered: { y: "-100%", opacity: 0.3 },
                 }}
                 transition={{
@@ -73,7 +74,7 @@ const FlipLink = ({ label, handle, href, icon }: FlipLinkProps) => {
                   ease: "easeInOut",
                   delay: STAGGER * i,
                 }}
-                className="inline-block text-[#FFAA00]"
+                className="inline-block text-[#FF6B00]"
                 key={i}
               >
                 {l === " " ? "\u00A0" : l}
@@ -84,7 +85,7 @@ const FlipLink = ({ label, handle, href, icon }: FlipLinkProps) => {
       </div>
 
       {/* Right side: Handle & Animated Arrow Badge */}
-      <div className="hidden sm:flex items-center gap-3 font-mono text-xs sm:text-sm text-zinc-400 group-hover:text-white transition-colors duration-300">
+      <div className="hidden sm:flex items-center gap-3 font-mono text-xs sm:text-sm text-zinc-500 group-hover:text-zinc-950 transition-colors duration-300">
         <span className="tracking-wider">{handle}</span>
         <motion.span
           variants={{
@@ -92,7 +93,7 @@ const FlipLink = ({ label, handle, href, icon }: FlipLinkProps) => {
             hovered: { x: 3, y: -3, scale: 1.08 },
           }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="w-9 h-9 rounded-full bg-white/[0.04] border border-white/10 group-hover:bg-[#FF8A00] group-hover:border-[#FF8A00] group-hover:text-black flex items-center justify-center text-sm font-bold transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(255,138,0,0.6)]"
+          className="w-9 h-9 rounded-full bg-zinc-100 border border-zinc-200 group-hover:bg-[#FF6B00] group-hover:border-[#FF6B00] group-hover:text-white flex items-center justify-center text-sm font-bold transition-all duration-300"
         >
           ↗
         </motion.span>
@@ -160,19 +161,9 @@ export default function RevealLinksSection() {
   ];
 
   return (
-    <section id="social-reveal-links" className="w-full bg-[#07080B] luxury-mesh-bg text-white py-20 sm:py-28 px-6 sm:px-12 lg:px-20 select-none relative overflow-hidden">
-      {/* Ambient background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-[#FF8A00]/5 blur-[140px] pointer-events-none rounded-full" />
-
-      <div className="max-w-[1550px] mx-auto relative z-10">
-        {/* Section Header Tag */}
-        <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-[#FF8A00] uppercase tracking-widest mb-10 pb-4 border-b border-white/[0.08]">
-          <span className="flex items-center gap-2.5 font-bold">
-            <span className="w-2 h-2 rounded-full bg-[#FF8A00] radar-pulse shadow-[0_0_10px_#FF8A00]" />
-            {"// CONNECT & SOCIAL TELEMETRY"}
-          </span>
-          <span className="text-zinc-500 font-medium">AVAILABLE GLOBALLY</span>
-        </div>
+    <section id="social-reveal-links" className="w-full bg-white text-zinc-950 py-24 sm:py-32 px-5 sm:px-8 select-none relative overflow-hidden border-y border-zinc-200/80">
+      <div className="max-w-[1240px] mx-auto relative z-10">
+        <SectionHeading title="Connect" />
 
         {/* Flip Links Grid */}
         <div className="flex flex-col items-start w-full">

@@ -59,40 +59,24 @@ export default function EditorialShowcase() {
       <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/85 via-black/40 to-[#07080B] pointer-events-none" />
 
       {/* ─── 2. TRANSPARENT CONTENT ─── */}
-      <div className="relative z-20 w-full max-w-[1550px] mx-auto">
-        <div ref={contentRef} className="w-full space-y-6 sm:space-y-8 md:space-y-10">
+      <div className="relative z-20 w-full max-w-[1240px] mx-auto">
+        <div ref={contentRef} className="w-full space-y-6 sm:space-y-8">
+          <h2 className="font-display font-black text-4xl sm:text-6xl md:text-7xl lg:text-[6rem] uppercase tracking-tight text-white leading-none">
+            Marketing<span className="text-[#FF8A00]">.</span>
+          </h2>
 
-          {/* Site-Consistent Top Header Row */}
-          <div>
-            <div className="flex items-center justify-between text-[10px] xs:text-xs sm:text-sm font-mono text-[#FF8A00] uppercase tracking-widest mb-3">
-              <span className="flex items-center gap-2 font-bold">
-                <span className="w-2 h-2 rounded-full bg-[#FF8A00] animate-pulse shadow-[0_0_8px_#FF8A00]" />
-                {"// DIGITAL MARKETING & STRATEGY"}
-              </span>
-              <span className="text-zinc-400">EST. 2023</span>
-            </div>
-
-            {/* Giant Display Headline */}
-            <h2 className="font-display font-black text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-[6.2rem] uppercase tracking-tight text-white leading-none drop-shadow-2xl">
-              MARKETING<span className="text-gradient-amber">.</span>
-            </h2>
-          </div>
-
-          {/* Floating Information Paragraph */}
-          <div className="max-w-3xl">
-            <p className="font-body text-sm sm:text-lg md:text-xl lg:text-2xl font-light leading-relaxed sm:leading-relaxed text-zinc-200 drop-shadow-md">
-              Combining creative visual engineering with data-backed digital strategies. I engineer targeted social media campaigns, search engine optimization, and high-converting visual assets that scale brands and capture customer engagement.
+          <div className="max-w-xl">
+            <p className="font-body text-base sm:text-lg md:text-xl font-normal leading-relaxed text-zinc-300">
+              Targeted campaigns, technical SEO, and high-converting visuals built to scale modern brands.
             </p>
           </div>
 
-          {/* Liquid Metal WebGL Shader Button */}
           <div className="pt-2">
             <LiquidMetalButton
-              label="EXPLORE MARKETING & DESIGNS"
+              label="VIEW WORK"
               href="#poster-design-section"
             />
           </div>
-
         </div>
       </div>
     </section>

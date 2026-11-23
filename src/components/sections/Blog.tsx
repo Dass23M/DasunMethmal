@@ -41,12 +41,8 @@ export default function Blog() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-20 relative z-10">
         
         {/* Header Section */}
-        <div className="mb-12 sm:mb-16">
-          <SectionHeading
-            category="THOUGHT LEADERSHIP"
-            title="LATEST INSIGHTS &amp; WRITINGS"
-            subtitle="Exploring the intersection of fullstack engineering, digital marketing strategy, and applied artificial intelligence."
-          />
+        <div className="mb-12">
+          <SectionHeading title="Journal" />
         </div>
 
         {/* Blog Grid */}

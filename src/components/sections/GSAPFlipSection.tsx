@@ -337,13 +337,13 @@ export default function GSAPFlipSection() {
     };
   }, [mounted]);
 
-  if (!mounted) return <section className="w-full h-screen bg-[#07080B]" />;
+  if (!mounted) return <section className="w-full h-screen bg-[#FAFAFA]" />;
 
   return (
     <div
       ref={containerRef}
       id="services-section"
-      className="relative w-full overflow-hidden bg-[#07080B] text-white"
+      className="relative w-full overflow-hidden bg-[#FAFAFA] text-zinc-950"
       style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
     >
       {/* ── 3D Ring Canvas Background (fixed to viewport) ───── */}
@@ -364,24 +364,6 @@ export default function GSAPFlipSection() {
         }}
       />
 
-      {/* ── Responsive Top Navigation Bar (Clean Line-Free) ── */}
-      <nav
-        className="fixed top-0 left-0 right-0 flex justify-between items-center pointer-events-none px-5 md:px-12 py-4 md:py-6"
-        style={{ zIndex: 100 }}
-      >
-        <span className="font-mono text-[0.6rem] tracking-[0.25em] text-black/40 dark:text-white/40 uppercase">
-          SYSTEM :: GSAP_FLIP
-        </span>
-        <div
-          ref={navStatusRef}
-          className="flex items-center gap-2"
-          style={{ fontFamily: '"Courier New", Courier, monospace', fontSize: '0.6rem', letterSpacing: '0.15em', color: '#ff4d00', opacity: 0 }}
-        >
-          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#ff4d00', animation: 'gsapflip-blink 1.4s ease-in-out infinite' }} />
-          <span>ONLINE</span>
-        </div>
-      </nav>
-
       {/* ── Sidebar Progress (Desktop Only) ────────────────── */}
       <div
         ref={sidebarRef}
@@ -394,40 +376,11 @@ export default function GSAPFlipSection() {
               width: activeSidebar === i ? 32 : 20,
               height: 2,
               borderRadius: 2,
-              background: activeSidebar === i ? '#ff4d00' : 'rgba(255,255,255,0.15)',
+              background: activeSidebar === i ? '#FF6B00' : 'rgba(0,0,0,0.14)',
               transition: 'width 0.4s, background 0.4s',
             }} />
           </div>
         ))}
-      </div>
-
-      {/* ── HUD Corner Readout (Desktop & Tablet) ─────── */}
-      <div
-        ref={hudTLRef}
-        className="fixed pointer-events-none hidden sm:block font-mono text-[0.58rem] tracking-[0.2em] text-orange-500/50 uppercase"
-        style={{ top: '4.5rem', left: '2.5rem', zIndex: 100, opacity: 0 }}
-      >
-        [ 3D_MATRIX ]
-      </div>
-
-      <div
-        ref={hudBRRef}
-        className="fixed pointer-events-none hidden sm:flex flex-col items-end"
-        style={{ bottom: '2rem', right: '2.5rem', zIndex: 100, opacity: 0, gap: '0.5rem' }}
-      >
-        <div
-          ref={hudReadoutRef}
-          style={{
-            fontFamily: '"Courier New", Courier, monospace',
-            fontSize: '0.6rem',
-            letterSpacing: '0.12em',
-            color: 'rgba(255,255,255,0.2)',
-            lineHeight: 1.8,
-            textAlign: 'right',
-          }}
-        >
-          X: +0.000<br />Y: +0.000<br />Z: +7.000
-        </div>
       </div>
 
       {/* ── Scrollable Sections Container ──────────────────── */}
@@ -436,102 +389,50 @@ export default function GSAPFlipSection() {
         {/* SECTION 1 — Hero */}
         <section
           id="gsapflip-section-1"
-          className="min-h-[85vh] md:min-h-screen mb-12 sm:mb-20 md:mb-[35vh] flex flex-col justify-between px-5 sm:px-8 md:px-12 pt-20 sm:pt-24 md:pt-32 pb-10 relative"
+          className="min-h-[85vh] md:min-h-screen mb-12 sm:mb-20 md:mb-[30vh] flex flex-col justify-center items-center px-5 sm:px-8 md:px-12 py-24 relative"
         >
-          <div className="flex flex-col items-center pt-4 md:pt-[4vh]">
-            <div className="mb-4 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-500/10 text-orange-400 text-[0.62rem] sm:text-xs font-mono tracking-[0.2em] uppercase">
-              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-              Fullstack &amp; Web Development
-            </div>
+          <div className="flex flex-col items-center text-center">
             <h2
-              className="gsapflip-hero-title text-[clamp(2.4rem,7vw,7.5rem)] font-extrabold leading-[0.98] tracking-tight text-center uppercase"
+              className="gsapflip-hero-title font-display text-[clamp(2.4rem,7vw,7rem)] font-extrabold leading-[0.98] tracking-tight text-center uppercase text-zinc-950"
               style={{ opacity: 0, transform: 'translateY(30px)' }}
             >
-              The future<br />is <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-500 to-orange-600">fracture.</span>
+              Built for <span className="text-[#FF6B00]">Scale.</span>
             </h2>
 
             <div
-              className="gsapflip-hero-meta text-center mt-5 md:mt-8"
+              className="gsapflip-hero-meta text-center mt-5"
               style={{ opacity: 0, transform: 'translateY(20px)' }}
             >
-              <p className="text-base sm:text-lg md:text-xl text-black dark:text-white/85 font-normal max-w-[36ch] sm:max-w-[42ch] leading-relaxed mx-auto block">
-                Crafting modern web applications, high-converting platforms, and seamless digital solutions.
+              <p className="font-body text-base sm:text-lg text-zinc-600 font-normal max-w-[38ch] leading-relaxed mx-auto">
+                Modern web applications engineered for speed and clarity.
               </p>
             </div>
-          </div>
-
-          <div
-            className="gsapflip-hover-hint absolute bottom-28 md:bottom-52 left-1/2 -translate-x-1/2 whitespace-nowrap"
-            style={{
-              fontFamily: '"Courier New", Courier, monospace',
-              fontSize: '0.58rem',
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.3)',
-              opacity: 0,
-            }}
-          >
-            ↑ Touch or scroll to interact ↑
-          </div>
-
-          <div className="flex justify-center items-end relative w-full pt-8">
-            <div
-              className="gsapflip-hero-cta flex flex-col items-center gap-3 pointer-events-auto cursor-pointer group"
-              style={{ opacity: 0, transform: 'translateY(20px)' }}
-            >
-              <span className="font-mono text-[0.62rem] tracking-[0.25em] uppercase text-black/40 dark:text-white/40 group-hover:text-orange-400 transition-colors">
-                Scroll to explore
-              </span>
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/[0.03] hover:bg-orange-500/20 transition-all flex items-center justify-center animate-[gsapflip-float_2.5s_ease-in-out_infinite]">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                  <path d="M8 2v12M3 9l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-              </div>
-            </div>
-
-            <div
-              ref={heroCoordsRef}
-              className="gsapflip-hero-coords hidden sm:block absolute bottom-0 right-0"
-              style={{
-                fontFamily: '"Courier New", Courier, monospace',
-                fontSize: '0.58rem', letterSpacing: '0.12em',
-                color: 'rgba(255,255,255,0.2)', textAlign: 'right',
-                opacity: 0, lineHeight: 1.8,
-              }}
-              dangerouslySetInnerHTML={{ __html: 'φ 000.00° · θ 000.00°<br />FRAGMENTS: 350+ · CELLS: 22×22' }}
-            />
           </div>
         </section>
 
         {/* SECTION 2 — Architecture */}
         <section
           id="gsapflip-section-2"
-          className="min-h-fit md:min-h-screen mb-12 sm:mb-20 md:mb-[35vh] grid grid-cols-1 md:grid-cols-2 items-center px-4 sm:px-8 md:px-12 max-w-7xl mx-auto"
+          className="min-h-fit md:min-h-screen mb-12 sm:mb-20 md:mb-[30vh] grid grid-cols-1 md:grid-cols-2 items-center px-4 sm:px-8 md:px-12 max-w-6xl mx-auto"
         >
           <div className="hidden md:block min-h-[60vh]" />
-          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-12 py-10 sm:py-14 md:py-16 rounded-3xl obsidian-surface pointer-events-auto border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.7)]">
-            <div className="sec-num font-mono text-[0.6rem] tracking-[0.2em] text-zinc-500 mb-4 opacity-0">
-              02 / 03
-            </div>
-            <p className="sec-tag font-mono text-xs tracking-[0.25em] uppercase text-[#FF8A00] mb-3 opacity-0" style={{ transform: 'translateY(15px)' }}>
-              {"// Development Approach"}
-            </p>
-            <h2 className="sec-h2 text-[clamp(1.8rem,3.8vw,3.5rem)] font-extrabold leading-[1.08] tracking-tight mb-5 text-white opacity-0" style={{ transform: 'translateY(25px)' }}>
-              Clean Code.<br />Seamless Performance.
+          <div className="flex flex-col justify-center px-7 sm:px-10 py-10 sm:py-12 rounded-2xl bg-white/95 backdrop-blur-xl pointer-events-auto border border-zinc-200 shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
+            <h2 className="sec-h2 font-display text-[clamp(1.75rem,3.4vw,3rem)] font-bold leading-[1.1] tracking-tight mb-4 text-zinc-950 opacity-0" style={{ transform: 'translateY(25px)' }}>
+              Clean Code.<br />Fast Performance.
             </h2>
-            <p className="sec-body text-sm sm:text-base md:text-lg leading-relaxed text-zinc-300 max-w-[42ch] mb-8 font-normal opacity-0" style={{ transform: 'translateY(15px)' }}>
-              Every project is engineered for speed, responsiveness, and business growth. I combine clean Next.js architecture with modern UI interactions to turn your vision into a production-ready web application.
+            <p className="sec-body font-body text-sm sm:text-base leading-relaxed text-zinc-600 max-w-[38ch] mb-8 font-normal opacity-0" style={{ transform: 'translateY(15px)' }}>
+              Next.js architecture paired with refined interactions for production-ready web products.
             </p>
 
-            <div className="stats grid grid-cols-3 gap-3 pt-2 opacity-0" style={{ transform: 'translateY(15px)' }}>
+            <div className="stats grid grid-cols-3 gap-3 opacity-0" style={{ transform: 'translateY(15px)' }}>
               {[
                 { n: '100%', l: 'Responsive' },
                 { n: '<1s', l: 'Fast Load' },
                 { n: 'SEO', l: 'Optimized' }
               ].map((s) => (
-                <div key={s.l} className="bg-white/[0.04] border border-white/[0.08] backdrop-blur-md rounded-2xl p-3 sm:p-4 text-center transition-all hover:bg-white/[0.08] hover:border-[#FF8A00]/30">
-                  <div className="text-lg sm:text-2xl md:text-3xl font-extrabold text-[#FF8A00] leading-none">{s.n}</div>
-                  <div className="font-mono text-[0.55rem] sm:text-[0.62rem] tracking-wider uppercase text-zinc-400 mt-2">{s.l}</div>
+                <div key={s.l} className="bg-[#FAFAFA] border border-zinc-200 rounded-xl p-3 sm:p-4 text-center">
+                  <div className="text-lg sm:text-2xl font-display font-bold text-[#FF6B00] leading-none">{s.n}</div>
+                  <div className="font-mono text-[10px] tracking-wider uppercase text-zinc-500 mt-2">{s.l}</div>
                 </div>
               ))}
             </div>
@@ -541,34 +442,28 @@ export default function GSAPFlipSection() {
         {/* SECTION 3 — Interaction */}
         <section
           id="gsapflip-section-3"
-          className="min-h-fit md:min-h-screen mb-12 sm:mb-16 md:mb-[15vh] grid grid-cols-1 md:grid-cols-2 items-center px-4 sm:px-8 md:px-12 max-w-7xl mx-auto"
+          className="min-h-fit md:min-h-screen mb-12 sm:mb-16 md:mb-[12vh] grid grid-cols-1 md:grid-cols-2 items-center px-4 sm:px-8 md:px-12 max-w-6xl mx-auto"
         >
-          <div className="flex flex-col justify-center px-6 sm:px-10 md:px-12 py-10 sm:py-14 md:py-16 rounded-3xl obsidian-surface pointer-events-auto border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.7)]">
-            <div className="sec-num font-mono text-[0.6rem] tracking-[0.2em] text-zinc-500 mb-4 opacity-0">
-              03 / 03
-            </div>
-            <p className="sec-tag font-mono text-xs tracking-[0.25em] uppercase text-[#FF8A00] mb-3 opacity-0" style={{ transform: 'translateY(15px)' }}>
-              {"// Services & Value"}
-            </p>
-            <h2 className="sec-h2 text-[clamp(1.8rem,3.8vw,3.5rem)] font-extrabold leading-[1.08] tracking-tight mb-5 text-white opacity-0" style={{ transform: 'translateY(25px)' }}>
-              Custom Web Solutions.<br />Built For Growth.
+          <div className="flex flex-col justify-center px-7 sm:px-10 py-10 sm:py-12 rounded-2xl bg-white/95 backdrop-blur-xl pointer-events-auto border border-zinc-200 shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
+            <h2 className="sec-h2 font-display text-[clamp(1.75rem,3.4vw,3rem)] font-bold leading-[1.1] tracking-tight mb-4 text-zinc-950 opacity-0" style={{ transform: 'translateY(25px)' }}>
+              Custom Solutions.<br />Built For Growth.
             </h2>
-            <p className="sec-body text-sm sm:text-base md:text-lg leading-relaxed text-zinc-300 max-w-[42ch] mb-8 font-normal opacity-0" style={{ transform: 'translateY(15px)' }}>
-              Whether you need a modern business website, custom web application, or high-converting landing page, I deliver scalable digital solutions crafted to attract and convert new clients.
+            <p className="sec-body font-body text-sm sm:text-base leading-relaxed text-zinc-600 max-w-[38ch] mb-8 font-normal opacity-0" style={{ transform: 'translateY(15px)' }}>
+              Scalable websites and web apps designed to convert.
             </p>
 
-            <ul className="feat-list flex flex-col gap-2.5 pt-2 opacity-0" style={{ transform: 'translateY(15px)' }}>
+            <ul className="feat-list flex flex-col gap-2.5 opacity-0" style={{ transform: 'translateY(15px)' }}>
               {[
-                'Fullstack Web Apps · Next.js & React',
-                'Responsive & Mobile-First UI/UX Design',
-                'SEO Optimization & High Performance',
-                'Fast Turnaround & Dedicated Support',
+                'Fullstack Web Apps',
+                'UI/UX Design Systems',
+                'Technical SEO & Speed',
+                'Dedicated Support',
               ].map((feat, i) => (
                 <li
                   key={i}
-                  className="flex items-center gap-3.5 px-4 py-3 sm:py-3.5 rounded-2xl bg-white/[0.04] border border-white/[0.06] hover:bg-white/[0.08] hover:border-[#FF8A00]/25 transition-all text-xs sm:text-sm md:text-base text-zinc-200 font-medium font-mono"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#FAFAFA] border border-zinc-200 text-xs sm:text-sm text-zinc-800 font-medium"
                 >
-                  <span className="w-2 h-2 rounded-full bg-[#FF8A00] shadow-[0_0_8px_#FF8A00]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF6B00]" />
                   <span>{feat}</span>
                 </li>
               ))}

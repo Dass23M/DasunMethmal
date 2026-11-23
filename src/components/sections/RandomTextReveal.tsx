@@ -16,7 +16,7 @@ export default function RandomTextReveal() {
   const textRef = useRef<HTMLHeadingElement>(null);
   const [mounted, setMounted] = useState(false);
 
-  const textContent = "Engineering high-performance web applications, custom digital platforms, and data-driven growth strategies that transform ambitious brands into industry leaders with speed, precision, and architectural excellence.";
+  const textContent = "Crafting fast web products and growth strategies with precision and clarity.";
 
   useEffect(() => {
     setMounted(true);
@@ -112,20 +112,17 @@ export default function RandomTextReveal() {
   }, [mounted, textContent]);
 
   if (!mounted) {
-    return <div className="w-full py-20 lg:py-32 bg-[#07080B]" />;
+    return <div className="w-full py-20 lg:py-32 bg-[#FAFAFA]" />;
   }
 
   return (
     <div
       ref={containerRef}
-      className="w-full py-20 lg:py-32 bg-[#07080B] luxury-mesh-bg flex items-center justify-center select-none relative z-10 overflow-hidden"
+      className="w-full py-24 lg:py-32 bg-[#FAFAFA] flex items-center justify-center select-none relative z-10 overflow-hidden"
     >
-      {/* Ambient background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[250px] bg-[#FF8A00]/5 blur-[120px] pointer-events-none rounded-full" />
-
       <h3
         ref={textRef}
-        className="font-display text-white text-xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-medium leading-[1.4] tracking-tight max-w-[44ch] text-center px-5 sm:px-8 md:px-12 relative z-10"
+        className="font-display text-zinc-950 text-xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-semibold leading-[1.4] tracking-tight max-w-[40ch] text-center px-5 sm:px-8 md:px-12 relative z-10"
       >
         {textContent}
       </h3>

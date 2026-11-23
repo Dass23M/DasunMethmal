@@ -73,7 +73,7 @@ export default function Portfolio() {
     <section
       id="portfolio-section"
       ref={sectionRef}
-      className="relative min-h-[90vh] md:min-h-[85vh] w-full flex items-center justify-center overflow-hidden bg-[#07080B] py-20 lg:py-28 text-white"
+      className="relative min-h-[90vh] md:min-h-[85vh] w-full flex items-center justify-center overflow-hidden bg-[#FAFAFA] py-24 lg:py-32 text-zinc-950"
     >
       <style>{`
         /* ── Portfolio grid ───────────────────── */
@@ -100,30 +100,26 @@ export default function Portfolio() {
           cursor: pointer !important;
           text-decoration: none;
           color: inherit;
-          border-radius: 20px;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          background: rgba(13, 14, 22, 0.75);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+          border-radius: 18px;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          background: #FFFFFF;
+          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
           will-change: transform, opacity;
           transform: translateZ(0);
-          transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .pf-card:hover {
-          border-color: rgba(255, 138, 0, 0.45);
-          box-shadow: 
-            0 20px 45px -10px rgba(0, 0, 0, 0.85),
-            0 0 30px rgba(255, 138, 0, 0.2);
-          transform: translateY(-6px);
+          border-color: rgba(255, 107, 0, 0.45);
+          box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.12);
+          transform: translateY(-5px);
         }
 
         .pf-card-img-wrap {
           position: relative;
           overflow: hidden;
           line-height: 0;
-          border-radius: 15px;
+          border-radius: 17px;
         }
 
         .pf-card-img-wrap img {
@@ -135,21 +131,20 @@ export default function Portfolio() {
         }
 
         .pf-card:hover .pf-card-img-wrap img {
-          transform: scale(1.06);
+          transform: scale(1.05);
         }
 
-        /* ── Hover overlay ───────────────────────
-           pointer-events: none → NEVER blocks clicks */
+        /* ── Hover overlay ─────────────────────── */
         .pf-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 55%, transparent 100%);
+          background: linear-gradient(to top, rgba(9,9,11,0.86) 0%, rgba(9,9,11,0.28) 55%, transparent 100%);
           display: flex;
           flex-direction: column;
           justify-content: flex-end;
           padding: 24px 24px 20px;
           opacity: 0;
-          transition: opacity 0.35s ease;
+          transition: opacity 0.3s ease;
           pointer-events: none;
         }
 
@@ -160,7 +155,7 @@ export default function Portfolio() {
         .pf-overlay-title {
           color: #fff;
           font-size: 16px;
-          font-weight: 800;
+          font-weight: 700;
           margin: 0 0 6px;
           font-family: var(--font-display), sans-serif;
           line-height: 1.3;
@@ -168,10 +163,10 @@ export default function Portfolio() {
         }
 
         .pf-overlay-cat {
-          color: rgba(255, 255, 255, 0.65);
+          color: rgba(255, 255, 255, 0.72);
           font-size: 11px;
           font-family: var(--font-mono), monospace;
-          margin: 0 0 16px;
+          margin: 0 0 14px;
           text-transform: uppercase;
           letter-spacing: 0.08em;
         }
@@ -181,28 +176,22 @@ export default function Portfolio() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          background: #FF8A00;
-          color: #000;
+          background: #FF6B00;
+          color: #fff;
           font-size: 11px;
-          font-weight: 800;
+          font-weight: 700;
           font-family: var(--font-display), sans-serif;
-          letter-spacing: 0.1em;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
-          padding: 8px 18px;
+          padding: 8px 16px;
           border-radius: 9999px;
           width: fit-content;
-          box-shadow: 0 0 15px rgba(255, 138, 0, 0.5);
           transform: translateY(8px);
-          transition: transform 0.3s ease, background 0.2s ease, box-shadow 0.2s ease;
+          transition: transform 0.3s ease, background 0.2s ease;
         }
 
         .pf-card:hover .pf-view-btn {
           transform: translateY(0);
-        }
-
-        .pf-view-btn:hover {
-          background: #FFAA00;
-          box-shadow: 0 0 25px rgba(255, 138, 0, 0.8);
         }
 
         /* ── Count badge ──────────────────────── */
@@ -210,29 +199,24 @@ export default function Portfolio() {
           position: absolute;
           top: 14px;
           left: 14px;
-          background: rgba(0, 0, 0, 0.8);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 138, 0, 0.35);
-          color: #FF8A00;
+          background: rgba(255, 255, 255, 0.92);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          color: #18181B;
           font-size: 0.7rem;
           font-weight: 700;
-          letter-spacing: 0.1em;
+          letter-spacing: 0.08em;
           padding: 4px 10px;
           border-radius: 9999px;
           font-family: var(--font-mono), monospace;
           pointer-events: none;
           z-index: 2;
-          box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
       `}</style>
 
       <div className="pf-section-inner">
-        <SectionHeading 
-          title="FEATURED DIGITAL WORKS" 
-          subtitle="Engineered web applications, full-stack digital architectures, and interactive experiences."
-          theme="dark" 
-        />
+        <SectionHeading title="Selected Works" />
 
         <div className="pf-grid">
           {portfolioItems.map((item, idx) => (

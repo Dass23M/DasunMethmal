@@ -123,7 +123,7 @@ export function ImageStreamHero({
               return (
                 <div
                   key={`${name}-${i}`}
-                  className={cn(card, "absolute overflow-hidden shadow-2xl border border-white/20 bg-[#0D0E15]")}
+                  className={cn(card, "absolute overflow-hidden shadow-xl border border-zinc-200 bg-white")}
                   style={{
                     left: "50%",
                     top: `${axis}%`,
@@ -175,10 +175,25 @@ const DEFAULT_STREAM_IMAGES: StreamImage[] = [
 ];
 
 export default function InfiniteGallery3D() {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <section
+        id="3d-stream-section"
+        className="w-full bg-[#FAFAFA] min-h-[500px] sm:min-h-[650px] md:min-h-[750px]"
+      />
+    );
+  }
+
   return (
     <section
       id="3d-stream-section"
-      className="w-full bg-[#07080B] luxury-mesh-bg text-white py-16 sm:py-24 md:py-28 relative overflow-hidden select-none min-h-[500px] sm:min-h-[650px] md:min-h-[750px]"
+      className="w-full bg-[#FAFAFA] text-zinc-950 py-16 sm:py-24 md:py-28 relative overflow-hidden select-none min-h-[500px] sm:min-h-[650px] md:min-h-[750px]"
     >
       <ImageStreamHero
         images={DEFAULT_STREAM_IMAGES}
@@ -187,29 +202,20 @@ export default function InfiniteGallery3D() {
         axis={52}
         className="w-full min-h-[500px] sm:min-h-[650px] md:min-h-[750px] flex flex-col justify-between"
       >
-        {/* Header Badge & Title Overlay - Responsive Scaling */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center pt-6 sm:pt-8">
-          <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white/[0.04] border border-white/10 font-mono text-[10px] sm:text-xs text-[#FF8A00] tracking-widest uppercase mb-3 sm:mb-4 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#FF8A00] radar-pulse shadow-[0_0_8px_#FF8A00]" />
-            <span>003 // 3D CORRIDOR SHOWCASE</span>
-          </div>
-
-          <h2 className="font-display font-extrabold text-2xl xs:text-3xl sm:text-5xl md:text-6xl text-white uppercase tracking-tight leading-tight sm:leading-none drop-shadow-2xl">
-            INFINITE CREATIVE <span className="text-[#FF8A00] animate-shimmer-text">STREAM.</span>
+        {/* Header Overlay */}
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center pt-8 sm:pt-10">
+          <h2 className="font-display font-bold text-3xl sm:text-5xl md:text-6xl text-zinc-950 uppercase tracking-tight leading-none">
+            Visual <span className="text-[#FF6B00]">Archive.</span>
           </h2>
-
-          <p className="font-body text-xs sm:text-sm md:text-base text-zinc-300 max-w-xl mx-auto mt-3 sm:mt-4 leading-relaxed font-light px-2">
-            An immersive 3D perspective corridor streaming software architecture, visual designs, and growth campaigns continuously toward the viewer.
-          </p>
         </div>
 
-        {/* Bottom CTA Action Button - Mobile Responsive Target */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center pb-8 sm:pb-10 mt-auto pt-12 sm:pt-16">
+        {/* Bottom CTA */}
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center pb-8 sm:pb-10 mt-auto pt-12">
           <Link
             href="#portfolio-section"
-            className="inline-flex items-center justify-center gap-2 bg-[#FF8A00] hover:bg-[#FF8A00]/90 text-black font-display font-bold text-xs sm:text-sm px-5 sm:px-6 py-2.5 sm:py-3 rounded-full transition-all transform hover:scale-105 shadow-xl shadow-[#FF8A00]/20 uppercase tracking-wider w-full xs:w-auto"
+            className="inline-flex items-center justify-center gap-2 bg-zinc-950 hover:bg-[#FF6B00] text-white font-display font-semibold text-xs sm:text-sm px-6 py-3 rounded-full transition-colors uppercase tracking-wider shadow-sm"
           >
-            Explore All Works ↗
+            View Works ↗
           </Link>
         </div>
       </ImageStreamHero>

@@ -103,16 +103,16 @@ export default function OnCraftOffCraft() {
   }, [mounted]);
 
   if (!mounted) {
-    return <section className="w-full h-[600px] bg-[#07080B]" />;
+    return <section className="w-full h-[600px] bg-white" />;
   }
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[720px] lg:min-h-[800px] bg-[#07080B] text-white overflow-hidden select-none py-20 lg:py-28 flex items-center justify-center luxury-mesh-bg"
+      className="relative w-full min-h-[680px] lg:min-h-[760px] bg-white text-zinc-950 overflow-hidden select-none py-24 lg:py-32 flex items-center justify-center border-y border-zinc-200/80"
     >
-      {/* ─── 1. LIGHT TOPOGRAPHIC CONTOUR LINES SVG BACKGROUND ─── */}
-      <div className="absolute inset-0 pointer-events-none opacity-20">
+      {/* ─── 1. SUBTLE TOPOGRAPHIC CONTOUR LINES SVG BACKGROUND ─── */}
+      <div className="absolute inset-0 pointer-events-none opacity-25">
         <svg
           className="w-full h-full object-cover"
           xmlns="http://www.w3.org/2000/svg"
@@ -122,32 +122,31 @@ export default function OnCraftOffCraft() {
           <path
             d="M-100,120 Q300,20 700,180 T1500,80"
             fill="none"
-            stroke="rgba(255,255,255,0.15)"
+            stroke="rgba(0,0,0,0.08)"
             strokeWidth="1.2"
             strokeDasharray="6 6"
           />
           <path
             d="M-100,320 Q250,480 800,280 T1600,420"
             fill="none"
-            stroke="#FF8A00"
+            stroke="rgba(255,107,0,0.28)"
             strokeWidth="1.5"
           />
           <path
             d="M-100,520 Q450,380 900,600 T1600,550"
             fill="none"
-            stroke="rgba(255,255,255,0.15)"
+            stroke="rgba(0,0,0,0.06)"
             strokeWidth="1"
-            opacity="0.5"
           />
           <path
             d="M-100,720 Q200,850 750,680 T1600,780"
             fill="none"
-            stroke="#FF8A00"
+            stroke="rgba(255,107,0,0.22)"
             strokeWidth="1.2"
             strokeDasharray="8 6"
           />
-          <circle cx="720" cy="450" r="320" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" opacity="0.15" />
-          <circle cx="720" cy="450" r="480" fill="none" stroke="#FF8A00" strokeWidth="0.5" opacity="0.2" />
+          <circle cx="720" cy="450" r="320" fill="none" stroke="rgba(0,0,0,0.05)" strokeWidth="0.8" />
+          <circle cx="720" cy="450" r="480" fill="none" stroke="rgba(255,107,0,0.12)" strokeWidth="0.8" />
         </svg>
       </div>
 
@@ -179,25 +178,25 @@ export default function OnCraftOffCraft() {
           <div className="flex flex-col items-center md:items-start group">
             {/* Giant Stacked Title */}
             <div className="relative mb-4">
-              <span className="font-display font-light text-5xl sm:text-6xl lg:text-7xl tracking-tight text-white block leading-none">
+              <span className="font-display font-light text-5xl sm:text-6xl lg:text-7xl tracking-tight text-zinc-950 block leading-none">
                 ON
               </span>
-              <span className="font-display font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter text-white block leading-none mt-1">
+              <span className="font-display font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter text-zinc-950 block leading-none mt-1">
                 CRAFT
               </span>
 
-              {/* Dynamic Neon Brush Overlay over "ON CRAFT" */}
+              {/* Dynamic Brush Overlay over "ON CRAFT" */}
               <svg
                 ref={brushOverlayRef}
-                className="absolute -top-3 -left-4 sm:-left-6 w-[120%] h-[130%] pointer-events-none filter drop-shadow-[0_0_12px_rgba(255,138,0,0.7)]"
+                className="absolute -top-3 -left-4 sm:-left-6 w-[120%] h-[130%] pointer-events-none"
                 viewBox="0 0 260 120"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M15 65 Q 45 15, 110 35 T 225 25 Q 255 20, 240 70 T 130 95 Q 40 100, 25 55"
-                  stroke="#FF8A00"
-                  strokeWidth="7"
+                  stroke="#FF6B00"
+                  strokeWidth="6"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
@@ -205,14 +204,14 @@ export default function OnCraftOffCraft() {
             </div>
 
             {/* Description */}
-            <p className="font-body text-xs sm:text-sm md:text-base text-zinc-300 font-light leading-relaxed max-w-sm mb-6">
-              Fullstack web development, custom Next.js applications, 3D interactive interfaces, and production cloud architecture.
+            <p className="font-body text-sm sm:text-base text-zinc-600 font-normal leading-relaxed max-w-xs mb-6">
+              Full-stack Next.js platforms and interactive web systems.
             </p>
 
-            {/* Neon Orange Action Button */}
+            {/* Action Button */}
             <Link
               href="#portfolio-section"
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-[#FF6B00] to-[#FFAA00] text-black flex items-center justify-center font-bold text-xl sm:text-2xl shadow-[0_0_20px_rgba(255,138,0,0.4)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(255,138,0,0.7)]"
+              className="w-12 h-12 rounded-2xl bg-zinc-950 hover:bg-[#FF6B00] text-white flex items-center justify-center font-bold text-xl transition-all duration-200 hover:scale-105"
               aria-label="View Engineering Projects"
             >
               ⤤
@@ -223,23 +222,23 @@ export default function OnCraftOffCraft() {
           <div className="flex flex-col items-center md:items-start group">
             {/* Giant Stacked Title */}
             <div className="relative mb-4">
-              <span className="font-display font-light text-5xl sm:text-6xl lg:text-7xl tracking-tight text-white block leading-none">
+              <span className="font-display font-light text-5xl sm:text-6xl lg:text-7xl tracking-tight text-zinc-950 block leading-none">
                 OFF
               </span>
-              <span className="font-display font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter text-white block leading-none mt-1">
+              <span className="font-display font-black text-5xl sm:text-6xl lg:text-7xl tracking-tighter text-zinc-950 block leading-none mt-1">
                 CRAFT
               </span>
             </div>
 
             {/* Description */}
-            <p className="font-body text-xs sm:text-sm md:text-base text-zinc-300 font-light leading-relaxed max-w-sm mb-6">
-              Data-driven growth marketing, SEO strategies, viral social media campaigns, visual branding, and high-converting creative assets.
+            <p className="font-body text-sm sm:text-base text-zinc-600 font-normal leading-relaxed max-w-xs mb-6">
+              SEO, performance marketing, and brand direction.
             </p>
 
-            {/* Neon Orange Action Button */}
+            {/* Action Button */}
             <Link
               href="#contact-section"
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/10 border border-white/20 text-[#FF8A00] flex items-center justify-center font-bold text-xl sm:text-2xl shadow-md transition-all duration-300 hover:bg-[#FF8A00] hover:text-black hover:scale-110 hover:shadow-[0_0_30px_rgba(255,138,0,0.6)]"
+              className="w-12 h-12 rounded-2xl bg-zinc-100 border border-zinc-200 text-zinc-950 flex items-center justify-center font-bold text-xl transition-all duration-200 hover:bg-[#FF6B00] hover:text-white hover:border-[#FF6B00] hover:scale-105"
               aria-label="View Marketing Campaigns"
             >
               ⤤

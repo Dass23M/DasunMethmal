@@ -14,7 +14,7 @@ export default function ContactPage() {
   return (
     <>
       <Navbar />
-      <main className="w-full bg-[#080808] text-white pt-24">
+      <main className="w-full bg-[#080808] text-white pt-16 sm:pt-24">
         <Contact />
         <FaqSection />
       </main>

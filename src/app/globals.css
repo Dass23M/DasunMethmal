@@ -46,7 +46,9 @@
 }
 
 html {
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -55,7 +57,9 @@ body {
   line-height: 1.7;
   font-weight: 400;
   position: relative;
-  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -1769,29 +1773,13 @@ textarea.form-control {
 }
 
 /* ============================================
-   UI/UX ACCESSIBILITY TYPOGRAPHY STANDARDS (MOBILE)
+   MOBILE TOUCH & SAFE OVERFLOW UTILITIES
    ============================================ */
 @media (max-width: 767.98px) {
-  /* Scale up micro-text & small labels on mobile to min 12px-14px for readability */
-  .font-mono.text-\[8px\],
-  .font-mono.text-\[8\.5px\],
-  .font-mono.text-\[9px\] {
-    font-size: 12px !important;
-    letter-spacing: 0.16em !important;
-  }
-
-  .font-mono.text-\[10px\],
-  .font-mono.text-\[11px\],
-  .text-\[10px\],
-  .text-\[11px\] {
-    font-size: 13px !important;
-  }
-
-  .font-inter.text-\[11px\],
-  .font-mono.text-xs,
-  .text-xs {
-    font-size: 14px !important;
-    line-height: 1.6 !important;
+  input,
+  textarea,
+  select {
+    font-size: 16px;
   }
 }
 

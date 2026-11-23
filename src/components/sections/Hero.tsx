@@ -90,38 +90,41 @@ export default function Hero() {
             delay: 1.3,
           });
 
-          // 6. Smooth scroll-linked parallax as user scrolls past hero
-          gsap.to('.hero-headline-wrap', {
-            y: -52,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: heroRef.current,
-              start: 'top top',
-              end: 'bottom top',
-              scrub: 0.8,
-            },
-          });
+          // 6. Smooth scroll-linked parallax (desktop only for 120Hz native mobile touch scroll)
+          const mm = gsap.matchMedia();
+          mm.add('(min-width: 768px)', () => {
+            gsap.to('.hero-headline-wrap', {
+              y: -52,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: heroRef.current,
+                start: 'top top',
+                end: 'bottom top',
+                scrub: 0.8,
+              },
+            });
 
-          gsap.to('.hero-crosshair', {
-            rotate: 135,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: heroRef.current,
-              start: 'top top',
-              end: 'bottom top',
-              scrub: 0.8,
-            },
-          });
+            gsap.to('.hero-crosshair', {
+              rotate: 135,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: heroRef.current,
+                start: 'top top',
+                end: 'bottom top',
+                scrub: 0.8,
+              },
+            });
 
-          gsap.to('.hero-portrait-img', {
-            yPercent: 10,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: heroRef.current,
-              start: 'top top',
-              end: 'bottom top',
-              scrub: 0.8,
-            },
+            gsap.to('.hero-portrait-img', {
+              yPercent: 10,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: heroRef.current,
+                start: 'top top',
+                end: 'bottom top',
+                scrub: 0.8,
+              },
+            });
           });
         }, heroRef);
       }
@@ -134,7 +137,7 @@ export default function Hero() {
     <section
       ref={heroRef}
       id="home-section"
-      className="relative min-h-screen pt-28 sm:pt-32 pb-10 bg-[#080808] text-white overflow-hidden flex flex-col justify-between"
+      className="relative min-h-[100svh] pt-24 sm:pt-32 pb-8 sm:pb-10 bg-[#080808] text-white overflow-hidden flex flex-col justify-between"
     >
       {/* Subtle Architectural Halftone Diagonal Texture */}
       <div
@@ -143,19 +146,19 @@ export default function Hero() {
       />
 
       {/* Main Hero Canvas */}
-      <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 relative z-10 flex-1 flex flex-col justify-center py-8 lg:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-end">
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 relative z-10 flex-1 flex flex-col justify-center py-6 sm:py-8 lg:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-end">
           {/* Left: Giant Editorial Display Headline with Masked Clip-Up */}
           <div className="hero-headline-wrap lg:col-span-7 xl:col-span-7 will-change-transform">
             <h1 className="font-display font-medium tracking-[-0.045em] leading-[0.88] select-none">
-              <span className="block overflow-hidden pb-2">
-                <span className="hero-line-inner block text-[#9CFF00] text-[clamp(4.2rem,12vw,10.5rem)] will-change-transform">
+              <span className="block overflow-hidden pb-1.5 sm:pb-2">
+                <span className="hero-line-inner block text-[#9CFF00] text-[clamp(3rem,13vw,10.5rem)] will-change-transform">
                   Think
                   <span className="hero-underscore inline-block w-[0.42em] h-[0.075em] bg-[#9CFF00] ml-2 align-baseline translate-y-[0.06em]" />
                 </span>
               </span>
-              <span className="block overflow-hidden pb-2">
-                <span className="hero-line-inner block text-white text-[clamp(4.2rem,12vw,10.5rem)] mt-1 will-change-transform">
+              <span className="block overflow-hidden pb-1.5 sm:pb-2">
+                <span className="hero-line-inner block text-white text-[clamp(3rem,13vw,10.5rem)] mt-1 will-change-transform">
                   Different
                 </span>
               </span>
@@ -163,24 +166,24 @@ export default function Hero() {
           </div>
 
           {/* Right: Crosshair + Discipline List + Shutter-Revealed Editorial Portrait */}
-          <div className="lg:col-span-5 xl:col-span-5 flex flex-col sm:flex-row lg:flex-row items-start sm:items-end justify-end gap-6">
+          <div className="lg:col-span-5 xl:col-span-5 flex flex-col sm:flex-row lg:flex-row items-stretch sm:items-end justify-end gap-5 sm:gap-6">
             {/* Crosshair + Interactive Services Stack */}
-            <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto sm:h-[270px] lg:h-[290px] py-1">
+            <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto sm:h-[270px] lg:h-[290px] py-1 gap-4">
               <div
-                className="hero-crosshair relative w-7 h-7 text-white/85 shrink-0 will-change-transform"
+                className="hero-crosshair relative w-6 h-6 sm:w-7 sm:h-7 text-white/85 shrink-0 will-change-transform"
                 aria-hidden="true"
               >
                 <span className="absolute left-1/2 top-0 bottom-0 w-px bg-current -translate-x-1/2" />
                 <span className="absolute top-1/2 left-0 right-0 h-px bg-current -translate-y-1/2" />
               </div>
 
-              <ul className="list-none m-0 p-0 text-right font-display text-sm sm:text-[15px] leading-[1.5] text-zinc-200 font-medium">
+              <ul className="list-none m-0 p-0 grid grid-cols-2 sm:block gap-x-5 gap-y-1 text-left sm:text-right font-display text-xs sm:text-[15px] leading-[1.5] text-zinc-200 font-medium">
                 {DISCIPLINES.map((item) => (
                   <li
                     key={item}
-                    className="hero-discipline-item group flex items-center justify-end gap-2 cursor-default"
+                    className="hero-discipline-item group flex items-center sm:justify-end gap-2 cursor-default"
                   >
-                    <span className="w-0 group-hover:w-3 h-px bg-[#9CFF00] transition-all duration-300" />
+                    <span className="hidden sm:inline-block w-0 group-hover:w-3 h-px bg-[#9CFF00] transition-all duration-300" />
                     <span className="group-hover:text-[#9CFF00] transition-colors duration-200">
                       {item}
                     </span>
@@ -190,7 +193,7 @@ export default function Hero() {
             </div>
 
             {/* Square Monochrome Editorial Motion Card */}
-            <div className="hero-portrait-frame relative w-full sm:w-[270px] lg:w-[290px] aspect-square overflow-hidden bg-[#141414] border border-white/10 group shrink-0">
+            <div className="hero-portrait-frame relative w-full max-w-[340px] sm:max-w-none sm:w-[270px] lg:w-[290px] aspect-[5/4] sm:aspect-square overflow-hidden bg-[#141414] border border-white/10 group shrink-0">
               <img
                 src="/images/methmal2.png"
                 alt="Dasun Methmal Creative Engineer"

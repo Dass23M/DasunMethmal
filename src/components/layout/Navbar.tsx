@@ -16,9 +16,16 @@ const NAV_LINKS = [
 export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [scrollPct, setScrollPct] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollPct(max > 0 ? Math.min(100, Math.max(0, (y / max) * 100)) : 0);
+    };
+
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -31,23 +38,34 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 md:left-14 right-0 z-[1002] transition-all duration-300 ${
+      className={`fixed top-0 left-0 md:left-14 right-0 z-[1002] transition-colors duration-300 ${
         scrolled
-          ? 'bg-[#080808]/92 backdrop-blur-xl border-b border-dashed border-white/[0.14]'
-          : 'bg-[#080808]/75 backdrop-blur-md border-b border-dashed border-white/[0.12]'
+          ? 'bg-[#080808]/95 backdrop-blur-xl border-b border-dashed border-white/[0.14]'
+          : 'bg-[#080808]/80 backdrop-blur-md border-b border-dashed border-white/[0.12]'
       }`}
     >
-      <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 h-20 flex items-center justify-between gap-4 relative">
-        {/* Left: Minimal Navigation Links (Desktop) / Brand + Menu (Mobile) */}
-        <div className="flex items-center gap-4">
+      {/* Mobile-only neon top scroll progress bar (replaces desktop LeftRail scroll bar) */}
+      <div className="md:hidden absolute bottom-0 left-0 right-0 h-[2px] bg-white/[0.06] pointer-events-none">
+        <div
+          className="h-full bg-[#9CFF00] origin-left transition-[width] duration-75 ease-out"
+          style={{ width: `${scrollPct}%` }}
+        />
+      </div>
+
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 h-16 sm:h-20 flex items-center justify-between gap-3 relative">
+        {/* Left: Brand (Mobile) / Minimal Links (Desktop) */}
+        <div className="flex items-center gap-3">
           <Link
             href="/"
-            aria-label="Home"
-            className="md:hidden w-8 h-8 flex items-center justify-center text-white hover:text-[#9CFF00] transition-colors"
+            aria-label="Dasun Methmal Home"
+            className="md:hidden inline-flex items-center gap-2 text-white hover:text-[#9CFF00] transition-colors py-1"
           >
-            <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor">
+            <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" className="text-[#9CFF00] shrink-0">
               <path d="M16 0L18.2 12.2L27.3 4.7L19.8 13.8L32 16L19.8 18.2L27.3 27.3L18.2 19.8L16 32L13.8 19.8L4.7 27.3L12.2 18.2L0 16L12.2 13.8L4.7 4.7L13.8 12.2L16 0Z" />
             </svg>
+            <span className="font-mono text-xs font-bold tracking-[0.16em] uppercase text-white">
+              METHMAL
+            </span>
           </Link>
 
           <nav aria-label="Primary navigation" className="hidden lg:flex items-center">
@@ -85,13 +103,14 @@ export default function Navbar() {
         </div>
 
         {/* Right: Magnetic Chamfered CTA + Mobile Toggle */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <Magnetic strength={0.2}>
             <Link
               href="/contact"
-              className="chamfer-btn inline-flex items-center gap-2 bg-white hover:bg-[#9CFF00] text-black font-mono font-bold text-[11px] tracking-[0.12em] uppercase px-5 py-3 transition-colors duration-200"
+              className="chamfer-btn inline-flex items-center gap-1.5 sm:gap-2 bg-white hover:bg-[#9CFF00] text-black font-mono font-bold text-[10px] sm:text-[11px] tracking-[0.12em] uppercase px-3.5 sm:px-5 py-2.5 sm:py-3 transition-colors duration-200 whitespace-nowrap"
             >
-              <span>SCHEDULE A CALL</span>
+              <span className="sm:hidden">BOOK CALL</span>
+              <span className="hidden sm:inline">SCHEDULE A CALL</span>
               <span aria-hidden="true">&gt;</span>
             </Link>
           </Magnetic>
@@ -100,7 +119,7 @@ export default function Navbar() {
             type="button"
             onClick={toggleMenu}
             aria-label="Open mobile menu"
-            className="lg:hidden inline-flex items-center justify-center px-3 py-2.5 border border-white/20 text-white hover:border-[#9CFF00] hover:text-[#9CFF00] font-mono text-[11px] tracking-widest uppercase transition-colors"
+            className="lg:hidden inline-flex items-center justify-center px-3 py-2.5 min-h-[38px] border border-white/20 text-white hover:border-[#9CFF00] hover:text-[#9CFF00] font-mono text-[10px] sm:text-[11px] tracking-[0.14em] uppercase transition-colors active:scale-95"
           >
             MENU
           </button>

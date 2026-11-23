@@ -15,12 +15,41 @@ export default function AcidBanner() {
         gsap.registerPlugin(ScrollTrigger);
 
         ctx = gsap.context(() => {
-          // Opposing horizontal scroll drift
-          gsap.fromTo(
-            '.acid-word-left',
-            { x: -38 },
-            {
-              x: 24,
+          const mm = gsap.matchMedia();
+
+          mm.add('(min-width: 768px)', () => {
+            gsap.fromTo(
+              '.acid-word-left',
+              { x: -38 },
+              {
+                x: 24,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: sectionRef.current,
+                  start: 'top bottom',
+                  end: 'bottom top',
+                  scrub: 0.9,
+                },
+              }
+            );
+
+            gsap.fromTo(
+              '.acid-word-right',
+              { x: 38 },
+              {
+                x: -24,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: sectionRef.current,
+                  start: 'top bottom',
+                  end: 'bottom top',
+                  scrub: 0.9,
+                },
+              }
+            );
+
+            gsap.to('.acid-cross', {
+              rotate: 180,
               ease: 'none',
               scrollTrigger: {
                 trigger: sectionRef.current,
@@ -28,14 +57,10 @@ export default function AcidBanner() {
                 end: 'bottom top',
                 scrub: 0.9,
               },
-            }
-          );
+            });
 
-          gsap.fromTo(
-            '.acid-word-right',
-            { x: 38 },
-            {
-              x: -24,
+            gsap.to('.acid-plus', {
+              rotate: -135,
               ease: 'none',
               scrollTrigger: {
                 trigger: sectionRef.current,
@@ -43,33 +68,9 @@ export default function AcidBanner() {
                 end: 'bottom top',
                 scrub: 0.9,
               },
-            }
-          );
-
-          // Geometric × and + smooth scroll rotation
-          gsap.to('.acid-cross', {
-            rotate: 180,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 0.9,
-            },
+            });
           });
 
-          gsap.to('.acid-plus', {
-            rotate: -135,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 0.9,
-            },
-          });
-
-          // Pixel cutouts crisp slide entrance
           gsap.fromTo(
             '.acid-cutout-top',
             { yPercent: -100 },
@@ -79,7 +80,8 @@ export default function AcidBanner() {
               ease: 'expo.out',
               scrollTrigger: {
                 trigger: sectionRef.current,
-                start: 'top 82%',
+                start: 'top 85%',
+                once: true,
               },
             }
           );
@@ -93,12 +95,12 @@ export default function AcidBanner() {
               ease: 'expo.out',
               scrollTrigger: {
                 trigger: sectionRef.current,
-                start: 'top 75%',
+                start: 'top 80%',
+                once: true,
               },
             }
           );
 
-          // Sub-caption fade up
           gsap.fromTo(
             '.acid-caption',
             { opacity: 0, y: 20 },
@@ -109,7 +111,8 @@ export default function AcidBanner() {
               ease: 'expo.out',
               scrollTrigger: {
                 trigger: sectionRef.current,
-                start: 'top 72%',
+                start: 'top 80%',
+                once: true,
               },
             }
           );
@@ -162,20 +165,20 @@ export default function AcidBanner() {
       </div>
 
       {/* Center Statement Typography */}
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
-        <div className="flex flex-wrap items-center justify-center lg:justify-between gap-6 sm:gap-10">
-          <span className="acid-word-left font-display font-medium uppercase tracking-[-0.04em] leading-none text-[clamp(3.2rem,8.5vw,7.75rem)] will-change-transform">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+        <div className="flex flex-wrap items-center justify-center lg:justify-between gap-4 sm:gap-10">
+          <span className="acid-word-left font-display font-medium uppercase tracking-[-0.04em] leading-none text-[clamp(2.4rem,11vw,7.75rem)] will-change-transform">
             I DO
           </span>
 
           <span
             aria-hidden="true"
-            className="acid-cross inline-block text-3xl sm:text-5xl font-light leading-none text-black/80 will-change-transform"
+            className="acid-cross inline-block text-2xl sm:text-5xl font-light leading-none text-black/80 will-change-transform"
           >
             ×
           </span>
 
-          <span className="acid-word-right font-display font-medium uppercase tracking-[-0.04em] leading-none text-[clamp(3.2rem,8.5vw,7.75rem)] will-change-transform">
+          <span className="acid-word-right font-display font-medium uppercase tracking-[-0.04em] leading-none text-[clamp(2.4rem,11vw,7.75rem)] will-change-transform">
             CREATIVE
           </span>
 
@@ -188,8 +191,8 @@ export default function AcidBanner() {
         </div>
 
         {/* Sub-caption */}
-        <div className="acid-caption mt-10 sm:mt-14 lg:pl-[46%] font-mono text-[11px] sm:text-xs tracking-[0.14em] uppercase leading-relaxed text-black/85">
-          <div className="flex items-center gap-2 font-semibold">
+        <div className="acid-caption mt-8 sm:mt-14 text-center lg:text-left lg:pl-[46%] font-mono text-[10px] sm:text-xs tracking-[0.14em] uppercase leading-relaxed text-black/85">
+          <div className="flex items-center justify-center lg:justify-start gap-2 font-semibold">
             <span className="w-2 h-2 rounded-full bg-black inline-block" />
             <span>FROM IDEA TO IMPACT</span>
           </div>

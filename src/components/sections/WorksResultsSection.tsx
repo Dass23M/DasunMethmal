@@ -135,12 +135,12 @@ export default function WorksResultsSection({
     <section
       ref={sectionRef}
       id="portfolio-section"
-      className="w-full bg-[#080808] text-white py-20 sm:py-28 select-none"
+      className="w-full bg-[#080808] text-white py-16 sm:py-28 select-none"
     >
-      <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* Giant Stacked Editorial Heading */}
-        <div className="wr-heading flex flex-col md:flex-row md:items-end justify-between gap-6 pb-12 sm:pb-16">
-          <h2 className="font-display font-normal uppercase tracking-[-0.04em] leading-[0.88] text-white text-[clamp(3.6rem,9.5vw,8rem)]">
+        <div className="wr-heading flex flex-col md:flex-row md:items-end justify-between gap-6 pb-10 sm:pb-16">
+          <h2 className="font-display font-normal uppercase tracking-[-0.04em] leading-[0.88] text-white text-[clamp(2.85rem,12vw,8rem)]">
             <span className="block overflow-hidden">
               <span className="wr-title-line block will-change-transform">THE</span>
             </span>

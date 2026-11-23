@@ -6,9 +6,10 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 /**
- * Lenis Smooth Scroll Provider.
- * Provides smooth inertia scrolling, connects to window.lenis,
- * and synchronizes with GSAP ScrollTrigger.
+ * Smooth Scroll Provider:
+ * - Desktop (pointer: fine, >= 1024px): Lenis smooth inertia wheel synced with GSAP ScrollTrigger.
+ * - Mobile & Touch devices: Native hardware-accelerated momentum scrolling (120Hz/60Hz)
+ *   with ScrollTrigger.config({ ignoreMobileResize: true }) so URL bar shifts never jitter.
  */
 export default function SmoothScrollProvider({
   children,
@@ -16,62 +17,66 @@ export default function SmoothScrollProvider({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    // Disable browser default scroll restoration & force start at top (0,0)
-    if (typeof window !== 'undefined') {
-      if ('scrollRestoration' in window.history) {
-        window.history.scrollRestoration = 'manual';
-      }
-      window.scrollTo(0, 0);
-    }
+    if (typeof window === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
+    const isDesktopPointer =
+      window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 1024;
 
-    // Initialize Lenis
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.5,
-    });
+    let lenis: Lenis | null = null;
+    let updateLenis: ((time: number) => void) | null = null;
 
-    (window as any).lenis = lenis;
+    if (!prefersReduced && isDesktopPointer) {
+      lenis = new Lenis({
+        duration: 1.15,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+      });
 
-    // Synchronize Lenis with GSAP ScrollTrigger & GSAP Ticker
-    lenis.on('scroll', ScrollTrigger.update);
+      (window as any).lenis = lenis;
+      lenis.on('scroll', ScrollTrigger.update);
 
-    const updateLenis = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-    gsap.ticker.add(updateLenis);
-    gsap.ticker.lagSmoothing(0);
+      updateLenis = (time: number) => {
+        lenis?.raf(time * 1000);
+      };
+      gsap.ticker.add(updateLenis);
+      gsap.ticker.lagSmoothing(0);
+    }
 
-    // Anchor smooth click interceptor
+    // Smooth anchor click interceptor (works on both desktop Lenis & native mobile)
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const anchorLink = target.closest('a');
       if (!anchorLink) return;
 
       const href = anchorLink.getAttribute('href');
-      if (href && href.startsWith('#')) {
-        e.preventDefault();
-        const element = document.querySelector(href) as HTMLElement | null;
-        if (element) {
-          lenis.scrollTo(element, { offset: 0, duration: 1.2 });
+      if (!href) return;
+
+      let hash: string | null = null;
+      if (href.startsWith('#') && href.length > 1) {
+        hash = href;
+      } else if (href.includes('#')) {
+        const [pathPart, hashPart] = href.split('#');
+        if (hashPart && (window.location.pathname === pathPart || pathPart === '' || pathPart === '/')) {
+          hash = `#${hashPart}`;
         }
-      } else if (href && href.includes('#')) {
-        const parts = href.split('#');
-        const hash = '#' + parts[1];
-        if (window.location.pathname === parts[0] || parts[0] === '' || parts[0] === '/') {
-          e.preventDefault();
-          const element = document.querySelector(hash) as HTMLElement | null;
-          if (element) {
-            lenis.scrollTo(element, { offset: 0, duration: 1.2 });
-          }
-        }
+      }
+
+      if (!hash) return;
+      const element = document.querySelector(hash) as HTMLElement | null;
+      if (!element) return;
+
+      e.preventDefault();
+      if (lenis) {
+        lenis.scrollTo(element, { offset: 0, duration: 1.1 });
+      } else {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     };
 
@@ -79,13 +84,14 @@ export default function SmoothScrollProvider({
 
     return () => {
       document.removeEventListener('click', handleAnchorClick);
-      gsap.ticker.remove(updateLenis);
-      lenis.off('scroll', ScrollTrigger.update);
-      lenis.destroy();
-      delete (window as any).lenis;
+      if (updateLenis) gsap.ticker.remove(updateLenis);
+      if (lenis) {
+        lenis.off('scroll', ScrollTrigger.update);
+        lenis.destroy();
+        delete (window as any).lenis;
+      }
     };
   }, []);
 
   return <>{children}</>;
 }
-

@@ -28,8 +28,8 @@ export default function Footer() {
         });
       }
 
-      if (!reduced) {
-        // Giant starburst rotates smoothly as footer enters viewport
+      if (!reduced && window.innerWidth >= 768) {
+        // Giant starburst rotates smoothly as footer enters viewport (desktop)
         gsap.fromTo(
           '.footer-starburst-spin',
           { rotate: -65 },
@@ -64,16 +64,16 @@ export default function Footer() {
       className="site-footer w-full bg-[#080808] text-white select-none border-t border-white/[0.1] overflow-hidden"
     >
       {/* Top Bar: Giant Starburst Left + Quick Contact Card Right */}
-      <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 relative">
-        <div className="flex items-start justify-between pt-0 pb-12 sm:pb-16">
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 relative">
+        <div className="flex items-start justify-between gap-3 pt-0 pb-10 sm:pb-16">
           {/* Partial Giant White Starburst cutting from top edge */}
-          <div aria-hidden="true" className="-mt-12 sm:-mt-16 text-white pointer-events-none">
+          <div aria-hidden="true" className="-mt-8 sm:-mt-16 text-white pointer-events-none shrink-0">
             <svg
               width="150"
               height="150"
               viewBox="0 0 120 120"
               fill="currentColor"
-              className="footer-starburst-spin w-28 h-28 sm:w-40 sm:h-40 will-change-transform"
+              className="footer-starburst-spin w-20 h-20 sm:w-40 sm:h-40 will-change-transform"
             >
               <path d="M60 0L68 46L102 18L74 52L120 60L74 68L102 102L68 74L60 120L52 74L18 102L46 68L0 60L46 52L18 18L52 46L60 0Z" />
             </svg>
@@ -82,7 +82,7 @@ export default function Footer() {
           {/* Crisp White Quick Contact Badge */}
           <Link
             href="/contact"
-            className="mt-4 bg-white hover:bg-[#9CFF00] text-black px-4 py-2.5 flex items-center gap-3.5 transition-colors duration-200"
+            className="mt-3 sm:mt-4 bg-white hover:bg-[#9CFF00] text-black px-3 sm:px-4 py-2 sm:py-2.5 flex items-center gap-2.5 sm:gap-3.5 transition-colors duration-200 shrink-0"
           >
             <div className="font-mono leading-tight">
               <span className="block text-[11px] font-bold tracking-[0.12em] uppercase">
@@ -234,7 +234,7 @@ export default function Footer() {
           {Array.from({ length: 8 }).map((_, i) => (
             <span
               key={i}
-              className="inline-flex items-center gap-6 sm:gap-8 px-4 sm:px-6 font-display font-medium uppercase tracking-[-0.02em] text-3xl sm:text-5xl leading-none"
+              className="inline-flex items-center gap-5 sm:gap-8 px-3 sm:px-6 font-display font-medium uppercase tracking-[-0.02em] text-2xl sm:text-5xl leading-none"
             >
               <span>DASUN METHMAL</span>
               <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor" className="w-6 h-6 sm:w-8 sm:h-8 shrink-0">

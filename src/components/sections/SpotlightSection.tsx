@@ -52,35 +52,36 @@ export default function SpotlightSection() {
         gsap.registerPlugin(ScrollTrigger);
 
         ctx = gsap.context(() => {
-          // Scroll-scrubbed subtle drift on the top-right neon geometric cutout
-          gsap.fromTo(
-            '.spot-neon-block',
-            { y: -24, x: 18 },
-            {
-              y: 28,
-              x: -10,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 1,
-              },
-            }
-          );
+          if (window.innerWidth >= 768) {
+            gsap.fromTo(
+              '.spot-neon-block',
+              { y: -24, x: 18 },
+              {
+                y: 28,
+                x: -10,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: sectionRef.current,
+                  start: 'top bottom',
+                  end: 'bottom top',
+                  scrub: 1,
+                },
+              }
+            );
+          }
 
-          // Main frame crisp reveal
           gsap.fromTo(
             '.spot-stage',
-            { opacity: 0, y: 36 },
+            { opacity: 0, y: 28 },
             {
               opacity: 1,
               y: 0,
-              duration: 0.9,
+              duration: 0.8,
               ease: 'expo.out',
               scrollTrigger: {
                 trigger: sectionRef.current,
-                start: 'top 80%',
+                start: 'top 84%',
+                once: true,
               },
             }
           );
@@ -97,8 +98,8 @@ export default function SpotlightSection() {
       aria-label="Creative vision spotlight"
       className="relative w-full bg-[#080808] text-white py-20 sm:py-28 overflow-hidden border-t border-dashed border-white/[0.12] select-none"
     >
-      <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 relative">
-        <div className="spot-stage relative border border-white/[0.1] p-6 sm:p-10 lg:p-14 overflow-hidden bg-[#0C0C0C]">
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 relative">
+        <div className="spot-stage relative border border-white/[0.1] p-4 sm:p-10 lg:p-14 overflow-hidden bg-[#0C0C0C]">
           {/* Acid-Green Top-Right Cutout Accent with Scroll Parallax */}
           <div
             aria-hidden="true"
@@ -161,7 +162,7 @@ export default function SpotlightSection() {
             </div>
 
             {/* 5-Thumbnail Selector Strip */}
-            <div className="mt-10 grid grid-cols-5 gap-3 sm:gap-5 w-full max-w-2xl">
+            <div className="mt-8 sm:mt-10 grid grid-cols-5 gap-2 sm:gap-5 w-full max-w-2xl">
               {SPOTLIGHT_ITEMS.map((item, idx) => {
                 const isActive = idx === activeIdx;
                 return (

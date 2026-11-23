@@ -156,7 +156,7 @@ export default function Contact() {
               [CONTACT]
             </span>
 
-            <h2 className="font-display font-normal uppercase tracking-[-0.04em] leading-[0.9] text-[clamp(2.8rem,6vw,5.25rem)] text-white">
+            <h2 className="font-display font-normal uppercase tracking-[-0.04em] leading-[0.9] text-[clamp(2.4rem,10.5vw,5.25rem)] text-white">
               Let&apos;s Build <br />
               <span className="text-[#9CFF00]">Together_</span>
             </h2>
@@ -303,7 +303,7 @@ export default function Contact() {
                 </div>
 
                 <div className="pt-2">
-                  <Magnetic strength={0.18}>
+                  <Magnetic strength={0.18} className="w-full sm:w-auto">
                     <button
                       type="submit"
                       disabled={submitting}

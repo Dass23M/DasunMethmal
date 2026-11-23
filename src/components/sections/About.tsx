@@ -48,72 +48,47 @@ export default function About({ showMoreLink = true }: AboutProps) {
         gsap.registerPlugin(ScrollTrigger);
 
         ctx = gsap.context(() => {
-          // 1. Scroll-scrubbed word-by-word illumination (Apple / Awwwards editorial feel)
-          const words = sectionRef.current?.querySelectorAll('.about-scrub-word');
-          if (words && words.length > 0) {
+          const mm = gsap.matchMedia();
+
+          // Desktop: Full scroll-scrubbed word illumination + stamp & watermark parallax
+          mm.add('(min-width: 768px)', () => {
+            const words = sectionRef.current?.querySelectorAll('.about-scrub-word');
+            if (words && words.length > 0) {
+              gsap.fromTo(
+                words,
+                { opacity: 0.18 },
+                {
+                  opacity: 1,
+                  stagger: 0.08,
+                  ease: 'none',
+                  scrollTrigger: {
+                    trigger: '.about-statement-wrap',
+                    start: 'top 84%',
+                    end: 'bottom 58%',
+                    scrub: 0.85,
+                  },
+                }
+              );
+            }
+
             gsap.fromTo(
-              words,
-              { opacity: 0.18 },
+              '.about-neon-pill',
+              { scale: 0.82, opacity: 0.2 },
               {
+                scale: 1,
                 opacity: 1,
-                stagger: 0.08,
-                ease: 'none',
+                ease: 'expo.out',
                 scrollTrigger: {
                   trigger: '.about-statement-wrap',
-                  start: 'top 84%',
-                  end: 'bottom 58%',
-                  scrub: 0.85,
+                  start: 'top 76%',
+                  end: 'top 46%',
+                  scrub: 0.8,
                 },
               }
             );
-          }
 
-          // 2. Inline neon-green [+ × +] badge crisp scale-in + gentle spin on ×
-          gsap.fromTo(
-            '.about-neon-pill',
-            { scale: 0.82, opacity: 0.2 },
-            {
-              scale: 1,
-              opacity: 1,
-              ease: 'expo.out',
-              scrollTrigger: {
-                trigger: '.about-statement-wrap',
-                start: 'top 76%',
-                end: 'top 46%',
-                scrub: 0.8,
-              },
-            }
-          );
-
-          gsap.to('.about-pill-x', {
-            rotate: 180,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1,
-            },
-          });
-
-          // 3. Circular starburst stamp continuous scroll rotation
-          gsap.to('.about-stamp-star', {
-            rotate: 360,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1.2,
-            },
-          });
-
-          // 4. Giant ® 2026 watermark smooth horizontal drift
-          gsap.fromTo(
-            '.about-year-watermark',
-            { x: 45 },
-            {
-              x: -25,
+            gsap.to('.about-pill-x', {
+              rotate: 180,
               ease: 'none',
               scrollTrigger: {
                 trigger: sectionRef.current,
@@ -121,8 +96,53 @@ export default function About({ showMoreLink = true }: AboutProps) {
                 end: 'bottom top',
                 scrub: 1,
               },
-            }
-          );
+            });
+
+            gsap.to('.about-stamp-star', {
+              rotate: 360,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: sectionRef.current,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1.2,
+              },
+            });
+
+            gsap.fromTo(
+              '.about-year-watermark',
+              { x: 45 },
+              {
+                x: -25,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: sectionRef.current,
+                  start: 'top bottom',
+                  end: 'bottom top',
+                  scrub: 1,
+                },
+              }
+            );
+          });
+
+          // Mobile: Lightweight one-shot entrance (zero scroll-scrub lag on touch devices)
+          mm.add('(max-width: 767px)', () => {
+            gsap.fromTo(
+              '.about-statement-wrap',
+              { opacity: 0, y: 24 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.75,
+                ease: 'expo.out',
+                scrollTrigger: {
+                  trigger: '.about-statement-wrap',
+                  start: 'top 88%',
+                  once: true,
+                },
+              }
+            );
+          });
         }, sectionRef);
       }
     );
@@ -188,7 +208,7 @@ export default function About({ showMoreLink = true }: AboutProps) {
           </div>
 
           <div className="about-statement-wrap lg:col-span-9">
-            <h2 className="font-display font-normal text-2xl sm:text-4xl lg:text-[3.35rem] leading-[1.14] tracking-[-0.03em] text-white">
+            <h2 className="font-display font-normal text-[1.65rem] sm:text-4xl lg:text-[3.35rem] leading-[1.2] sm:leading-[1.14] tracking-[-0.03em] text-white">
               <span className="hidden sm:inline-block w-20 lg:w-28" aria-hidden="true" />
               {LEAD_PART_1.map((word, i) => (
                 <span key={`p1-${i}`} className="about-scrub-word inline-block mr-[0.26em]">
@@ -197,7 +217,7 @@ export default function About({ showMoreLink = true }: AboutProps) {
               ))}
               <span
                 aria-hidden="true"
-                className="about-neon-pill inline-flex items-center gap-2.5 bg-[#9CFF00] text-black px-3.5 py-1 align-middle text-lg sm:text-2xl lg:text-3xl font-mono font-normal mr-[0.26em] will-change-transform"
+                className="about-neon-pill inline-flex items-center gap-2 bg-[#9CFF00] text-black px-2.5 sm:px-3.5 py-0.5 sm:py-1 align-middle text-base sm:text-2xl lg:text-3xl font-mono font-normal mr-[0.26em] will-change-transform"
               >
                 <span>+</span>
                 <span className="about-pill-x inline-block will-change-transform">×</span>

@@ -108,9 +108,58 @@ export default function Testimonials() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
-          {/* Left Interactive Floating Client Map */}
-          <div className="testi-reveal lg:col-span-6 relative h-[320px] sm:h-[400px] border border-dashed border-white/[0.1] bg-[#0B0D08]/60 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* Mobile & Tablet (<1024px): Clean 2x2 Touch-Friendly Client Selector Grid */}
+          <div className="testi-reveal lg:hidden grid grid-cols-2 gap-2.5">
+            {TESTIMONIALS_DATA.map((item, idx) => {
+              const isSelected = idx === active;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setActive(idx)}
+                  className={`flex items-center gap-2.5 p-2.5 border text-left transition-all duration-200 cursor-pointer active:scale-[0.98] ${
+                    isSelected
+                      ? 'bg-[#9CFF00] text-black border-[#9CFF00]'
+                      : 'bg-[#111111] text-white border-white/15 hover:border-white/35'
+                  }`}
+                >
+                  <div
+                    className={`relative w-9 h-9 overflow-hidden shrink-0 border ${
+                      isSelected ? 'border-black/25' : 'border-white/20'
+                    }`}
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      sizes="36px"
+                      className={`object-cover ${isSelected ? '' : 'grayscale'}`}
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <span
+                      className={`block font-display text-xs font-semibold truncate ${
+                        isSelected ? 'text-black' : 'text-white'
+                      }`}
+                    >
+                      {item.name}
+                    </span>
+                    <span
+                      className={`block font-mono text-[9px] tracking-[0.1em] uppercase truncate ${
+                        isSelected ? 'text-black/75' : 'text-zinc-400'
+                      }`}
+                    >
+                      {item.roleTag}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Desktop (>=1024px): Interactive Floating Client Map */}
+          <div className="testi-reveal hidden lg:block lg:col-span-6 relative h-[400px] border border-dashed border-white/[0.1] bg-[#0B0D08]/60 overflow-hidden">
             {/* Subtle animated vertical waveform lines at bottom */}
             <div
               aria-hidden="true"
@@ -194,16 +243,16 @@ export default function Testimonials() {
           </div>
 
           {/* Right Giant Editorial Pull-Quote + Smooth AnimatePresence */}
-          <div className="testi-reveal lg:col-span-6 lg:pl-6 flex flex-col justify-between min-h-[340px]">
-            <div className="min-h-[210px] flex items-center">
+          <div className="testi-reveal lg:col-span-6 lg:pl-6 flex flex-col justify-between min-h-[260px] lg:min-h-[340px]">
+            <div className="min-h-[140px] sm:min-h-[200px] flex items-center">
               <AnimatePresence mode="wait">
                 <motion.blockquote
                   key={current.id}
-                  initial={{ opacity: 0, y: 18 }}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -14 }}
-                  transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-display font-normal text-2xl sm:text-4xl lg:text-[2.75rem] leading-[1.15] tracking-[-0.03em] text-white mb-10"
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+                  className="font-display font-normal text-xl sm:text-3xl lg:text-[2.75rem] leading-[1.2] sm:leading-[1.15] tracking-[-0.025em] text-white mb-6 sm:mb-10"
                 >
                   &ldquo;{current.quote}&rdquo;
                 </motion.blockquote>

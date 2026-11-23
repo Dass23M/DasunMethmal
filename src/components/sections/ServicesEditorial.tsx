@@ -160,7 +160,7 @@ export default function ServicesEditorial() {
               );
             }
 
-            if (img) {
+            if (img && window.innerWidth >= 768) {
               gsap.fromTo(
                 img,
                 { y: -14 },

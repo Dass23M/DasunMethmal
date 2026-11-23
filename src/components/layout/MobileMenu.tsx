@@ -72,16 +72,14 @@ export default function MobileMenu() {
       </ul>
 
       <div className="px-6 pt-8 space-y-3">
-        <a
-          href="/Dasun Methmal CV.pdf"
-          download
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          href="/contact"
+          onClick={() => closeMenu()}
           className="chamfer-btn w-full inline-flex items-center justify-center gap-2 bg-[#9CFF00] text-black font-mono font-bold text-xs tracking-widest uppercase py-3"
         >
-          <span>DOWNLOAD CV</span>
-          <span>↓</span>
-        </a>
+          <span>SCHEDULE A CALL</span>
+          <span>&gt;</span>
+        </Link>
         <p className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest pt-2">
           COLOMBO, SRI LANKA · WORLDWIDE
         </p>

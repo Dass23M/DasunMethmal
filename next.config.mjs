@@ -16,6 +16,19 @@ const nextConfig = {
     if (!isProd) {
       return [
         {
+          source: '/((?!_next/static|_next/image|images|favicon).*)',
+          headers: [
+            {
+              key: 'Clear-Site-Data',
+              value: '"cache"',
+            },
+            {
+              key: 'Cache-Control',
+              value: 'no-store, no-cache, must-revalidate',
+            },
+          ],
+        },
+        {
           source: '/_next/static/:path*',
           headers: [
             {
@@ -47,12 +60,6 @@ const nextConfig = {
         ],
       },
     ];
-  },
-  webpack: (config, { dev }) => {
-    if (dev) {
-      config.cache = { type: 'memory' };
-    }
-    return config;
   },
 };
 

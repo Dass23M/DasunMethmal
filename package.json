@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "node -e \"const fs=require('fs'),cp=require('child_process');const cwd=fs.realpathSync.native(process.cwd());process.exit(cp.spawnSync(process.execPath,[require.resolve('next/dist/bin/next'),'dev',...process.argv.slice(1)],{cwd,stdio:'inherit'}).status??1)\"",
+    "build": "node -e \"const fs=require('fs'),cp=require('child_process');const cwd=fs.realpathSync.native(process.cwd());process.exit(cp.spawnSync(process.execPath,[require.resolve('next/dist/bin/next'),'build',...process.argv.slice(1)],{cwd,stdio:'inherit'}).status??1)\"",
     "start": "next start",
     "lint": "next lint"
   },

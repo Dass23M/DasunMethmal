@@ -3,8 +3,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import FooterMarquee from '@/components/sections/FooterMarquee';
-import MouseScroll from '@/components/ui/MouseScroll';
 import { blogPosts } from '@/data/blog';
 
 interface Props {
@@ -17,58 +15,20 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props) {
   const post = blogPosts.find((p) => p.slug === params.slug);
-  const title = post ? `${post.title} — Journal by Dasun Methmal` : 'Journal — Dasun Methmal';
-  const description = post
-    ? `${post.title} by ${post.author}. ${post.description}`
-    : 'Dasun Methmal Fullstack Developer & AI Engineer design journal.';
+  const title = post ? `${post.title} — Blog` : 'Blog';
+  const description = post ? post.description : 'Editorial design & engineering note by Dasun Methmal.';
   const canonicalUrl = `https://www.dasunmethmal.com/blog/${params.slug}`;
   const image = post?.heroImage || post?.image || '/images/cover_bg_2.png';
 
   return {
     title,
     description,
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    openGraph: {
-      title,
-      description,
-      url: canonicalUrl,
-      type: 'article',
-      images: [
-        {
-          url: image,
-          alt: title,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: [image],
-    },
+    alternates: { canonical: canonicalUrl },
+    openGraph: { title, description, url: canonicalUrl, type: 'article', images: [{ url: image, alt: title }] },
+    twitter: { card: 'summary_large_image', title, description, images: [image] },
   };
 }
 
-/**
- * Blog single page.
- * - Full-screen parallax hero with post title and meta
- * - Article content with images
- * - Threaded comments list
- * - Leave a comment form
- * - Post navigation (prev/next)
- */
 export default function BlogSinglePage({ params }: Props) {
   const postIndex = blogPosts.findIndex((p) => p.slug === params.slug);
   if (postIndex === -1) notFound();
@@ -76,276 +36,115 @@ export default function BlogSinglePage({ params }: Props) {
   const prevPost = postIndex > 0 ? blogPosts[postIndex - 1] : null;
   const nextPost = postIndex < blogPosts.length - 1 ? blogPosts[postIndex + 1] : null;
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.description,
-    image: post.heroImage || post.image,
-    author: {
-      '@type': 'Person',
-      name: post.author || 'Dasun Methmal',
-      url: 'https://www.dasunmethmal.com',
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Dasun Methmal',
-      url: 'https://www.dasunmethmal.com',
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `https://www.dasunmethmal.com/blog/${post.slug}`,
-    },
-    datePublished: post.date,
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <div className="site-inner">
-        <Navbar />
+      <Navbar />
+      <main className="w-full bg-[#080808] text-white pt-24">
+        <article className="w-full max-w-[1040px] mx-auto px-5 sm:px-8 lg:px-12 py-14 sm:py-20">
+          {/* Top Breadcrumb */}
+          <div className="flex items-center justify-between pb-6 mb-10 border-b border-dashed border-white/[0.15] font-mono text-xs tracking-[0.14em] uppercase">
+            <Link href="/blog" className="text-zinc-400 hover:text-[#9CFF00] transition-colors">
+              &lt; BACK TO BLOG
+            </Link>
+            <span className="text-[#9CFF00]">[{post.categoryLabel}]</span>
+          </div>
 
-        {/* Hero */}
-        <div
-          className="cover-v1 overlay page-cover-fixed"
-          style={{
-            backgroundImage: `url('${post.heroImage || post.image}')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          <div className="page-cover-inner">
-            <div style={{ textAlign: 'center', maxWidth: '720px', padding: '0 8px' }}>
-              <h1 className="blog-heading">{post.title}</h1>
-              <p style={{ fontSize: '16px', color: '#fff', marginTop: '12px' }}>
-                By {post.author} on {post.date} &bull; {post.readTime}
-              </p>
+          {/* Header */}
+          <div className="space-y-5 mb-12">
+            <div className="flex flex-wrap items-center gap-4 font-mono text-[11px] tracking-[0.14em] uppercase text-zinc-400">
+              <span>BY {post.author}</span>
+              <span className="w-1 h-1 bg-[#9CFF00]" />
+              <span>{post.date}</span>
+              <span className="w-1 h-1 bg-[#9CFF00]" />
+              <span>{post.readTime}</span>
+            </div>
+
+            <h1 className="font-display font-medium text-3xl sm:text-5xl lg:text-6xl tracking-[-0.03em] leading-[1.04] text-white">
+              {post.title}
+            </h1>
+
+            <p className="font-body text-base sm:text-xl text-zinc-400 leading-relaxed max-w-2xl">
+              {post.description}
+            </p>
+          </div>
+
+          {/* Hero Artwork */}
+          <div className="relative w-full aspect-[16/10] bg-[#111111] border border-white/[0.1] overflow-hidden mb-12">
+            <Image
+              src={post.heroImage || post.image}
+              alt={post.title}
+              fill
+              priority
+              sizes="(max-width: 1040px) 100vw, 1040px"
+              className="object-cover"
+            />
+          </div>
+
+          {/* Article Body */}
+          <div className="space-y-6 font-body text-base sm:text-lg text-zinc-300 leading-relaxed max-w-3xl">
+            <h2 className="font-display text-2xl sm:text-3xl text-white font-medium pt-2">
+              Design Direction &amp; Visual Hierarchy
+            </h2>
+            <p>
+              Strong digital visuals start with deliberate restraint: clear focal hierarchy, disciplined grid alignment, and high-contrast typography that commands attention without visual clutter.
+            </p>
+            <p>
+              For {post.title.toLowerCase()}, every composition element was structured to guide the eye immediately from headline to core message while maintaining sharp legibility across desktop and mobile feeds.
+            </p>
+
+            {/* Tools Used */}
+            <div className="pt-8 border-t border-dashed border-white/[0.15]">
+              <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-zinc-500 block mb-3">
+                TOOLS USED
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {post.tools.map((tool) => (
+                  <span
+                    key={tool}
+                    className="bg-[#E5E5E5] text-black font-mono text-[10px] font-semibold tracking-[0.14em] uppercase px-3 py-1"
+                  >
+                    {tool}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-          <MouseScroll targetId="blog-single-section" />
-        </div>
 
-        {/* Blog content */}
-        <div id="blog-single-section" className="unslate-section">
-          <div style={{ maxWidth: '1140px', margin: '0 auto', padding: '0 15px' }}>
-            <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+          {/* Post Pagination */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-16 pt-10 border-t border-dashed border-white/[0.15]">
+            {prevPost ? (
+              <Link
+                href={`/blog/${prevPost.slug}`}
+                className="group bg-[#111111] hover:bg-[#9CFF00] border border-white/[0.1] p-6 transition-colors"
+              >
+                <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-zinc-500 group-hover:text-black block mb-2">
+                  &lt; PREVIOUS
+                </span>
+                <span className="font-display text-lg text-white group-hover:text-black block">
+                  {prevPost.title}
+                </span>
+              </Link>
+            ) : (
+              <div />
+            )}
 
-              <h3 style={{ marginBottom: '20px', color: '#fff', fontWeight: 700 }}>
-                On her way she met a copy
-              </h3>
-              <p style={{ marginBottom: '20px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.8' }}>
-                Far far away, behind the word mountains, far from the countries Vokalia and
-                Consonantia, there live the blind texts. Separated they live in Bookmarksgrove
-                right at the coast of the Semantics, a large language ocean.
-              </p>
-              <p style={{ marginBottom: '20px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.8' }}>
-                A small river named Duden flows by their place and supplies it with the necessary
-                regelialia. It is a paradisematic country, in which roasted parts of sentences fly
-                into your mouth.
-              </p>
-              <p style={{ marginBottom: '20px' }}>
-                <Image
-                  src="/images/work_1_a_full.jpg"
-                  alt="Blog image"
-                  width={700}
-                  height={467}
-                  style={{ width: '100%', height: 'auto' }}
-                />
-              </p>
-              <p style={{ marginBottom: '20px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.8' }}>
-                Even the all-powerful Pointing has no control about the blind texts it is an almost
-                unorthographic life One day however a small line of blind text by the name of Lorem
-                Ipsum decided to leave for the far World of Grammar.
-              </p>
-              <p style={{ marginBottom: '20px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.8' }}>
-                The Big Oxmox advised her not to do so, because there were thousands of bad Commas,
-                wild Question Marks and devious Semikoli, but the Little Blind Text didn&apos;t listen.
-              </p>
-              <p style={{ marginBottom: '30px' }}>
-                <Image
-                  src="/images/work_1_full.jpg"
-                  alt="Blog image 2"
-                  width={700}
-                  height={467}
-                  style={{ width: '100%', height: 'auto' }}
-                />
-              </p>
-              <p style={{ marginBottom: '30px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.8' }}>
-                When she reached the first hills of the Italic Mountains, she had a last view back
-                on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and
-                the subline of her own road, the Line Lane.
-              </p>
-
-              {/* Categories / Tags */}
-              <div style={{ paddingTop: '30px', borderTop: '1px solid rgba(255,255,255,0.1)', marginBottom: '30px' }}>
-                <p style={{ fontWeight: 700, color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>
-                  Categories:{' '}
-                  <a href="#" style={{ color: '#fff' }}>Design</a>,{' '}
-                  <a href="#" style={{ color: '#fff' }}>Events</a>{' '}
-                  &nbsp; Tags:{' '}
-                  <a href="#" style={{ color: '#fff' }}>#html</a>,{' '}
-                  <a href="#" style={{ color: '#fff' }}>#trends</a>
-                </p>
-              </div>
-
-              {/* Post navigation */}
-              <div className="post-navigation">
-                <div className="post-nav-prev">
-                  {prevPost && (
-                    <Link href={`/blog/${prevPost.slug}`}>
-                      <span className="post-nav-label">Previous Post</span>
-                      <span className="post-nav-title">{prevPost.title}</span>
-                    </Link>
-                  )}
-                </div>
-                <div className="post-nav-next">
-                  {nextPost && (
-                    <Link href={`/blog/${nextPost.slug}`}>
-                      <span className="post-nav-label">Next Post</span>
-                      <span className="post-nav-title">{nextPost.title}</span>
-                    </Link>
-                  )}
-                </div>
-              </div>
-
-              {/* Comments */}
-              <div style={{ paddingTop: '50px' }}>
-                <h3 style={{ marginBottom: '40px', color: '#fff', fontWeight: 700, fontSize: '22px' }}>
-                  6 Comments
-                </h3>
-
-                <ul className="comment-list">
-                  <CommentItem
-                    name="Irish Smith"
-                    date="January 9, 2018 at 2:21pm"
-                    image="/images/person_woman_2.jpg"
-                  />
-                  <li style={{ listStyle: 'none', width: '100%', marginBottom: '30px' }}>
-                    <div style={{ display: 'flex', gap: '20px' }}>
-                      <div className="comment-vcard">
-                        <Image
-                          src="/images/person_woman_1.jpg"
-                          alt="Christine Stewart"
-                          width={50}
-                          height={50}
-                          style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
-                        />
-                      </div>
-                      <div className="comment-body">
-                        <h3 style={{ fontSize: '20px', color: '#fff', marginBottom: '4px' }}>Christine Stewart</h3>
-                        <div className="comment-meta">January 9, 2018 at 2:21pm</div>
-                        <p style={{ color: 'rgba(255,255,255,0.8)', marginBottom: '8px' }}>
-                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus.
-                        </p>
-                        <a href="#" className="reply-btn">Reply</a>
-                      </div>
-                    </div>
-                    {/* Nested children */}
-                    <ul className="comment-children" style={{ paddingLeft: '60px', listStyle: 'none', marginTop: '20px' }}>
-                      <CommentItem
-                        name="Chintan Patel"
-                        date="January 9, 2018 at 2:21pm"
-                        image="/images/person_man_3.jpg"
-                      />
-                      <ul className="comment-children" style={{ paddingLeft: '60px', listStyle: 'none', marginTop: '20px' }}>
-                        <CommentItem
-                          name="John Doe"
-                          date="January 9, 2018 at 2:21pm"
-                          image="/images/person_man_2.jpg"
-                        />
-                        <ul className="comment-children" style={{ paddingLeft: '60px', listStyle: 'none', marginTop: '20px' }}>
-                          <CommentItem
-                            name="Ben Afflick"
-                            date="January 9, 2018 at 2:21pm"
-                            image="/images/person_man_1.jpg"
-                          />
-                        </ul>
-                      </ul>
-                    </ul>
-                  </li>
-                  <CommentItem
-                    name="Jean Doe"
-                    date="January 9, 2018 at 2:21pm"
-                    image="/images/person_woman_3.jpg"
-                  />
-                </ul>
-              </div>
-
-              {/* Comment Form */}
-              <div style={{ paddingTop: '50px', marginBottom: '60px' }}>
-                <h3 style={{ marginBottom: '40px', color: '#fff', fontWeight: 700, fontSize: '22px' }}>
-                  Leave a comment
-                </h3>
-                <form className="form-outline" action="#">
-                  <div className="form-group" style={{ position: 'relative', marginBottom: '50px' }}>
-                    <label htmlFor="comment-name">Name *</label>
-                    <input type="text" id="comment-name" name="name" autoComplete="name" className="form-control" />
-                  </div>
-                  <div className="form-group" style={{ position: 'relative', marginBottom: '50px' }}>
-                    <label htmlFor="comment-email">Email *</label>
-                    <input type="email" id="comment-email" name="email" autoComplete="email" className="form-control" />
-                  </div>
-                  <div className="form-group" style={{ position: 'relative', marginBottom: '50px' }}>
-                    <label htmlFor="comment-website">Website</label>
-                    <input type="url" id="comment-website" name="website" autoComplete="url" className="form-control" />
-                  </div>
-                  <div className="form-group" style={{ position: 'relative', marginBottom: '50px' }}>
-                    <label htmlFor="comment-message">Message</label>
-                    <textarea id="comment-message" name="message" autoComplete="off" rows={5} className="form-control" />
-                  </div>
-                  <div>
-                    <button type="submit" className="btn-outline-pill">
-                      Post Comment
-                    </button>
-                  </div>
-                </form>
-              </div>
-
-            </div>
+            {nextPost && (
+              <Link
+                href={`/blog/${nextPost.slug}`}
+                className="group bg-[#111111] hover:bg-[#9CFF00] border border-white/[0.1] p-6 transition-colors text-left sm:text-right"
+              >
+                <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-zinc-500 group-hover:text-black block mb-2">
+                  NEXT &gt;
+                </span>
+                <span className="font-display text-lg text-white group-hover:text-black block">
+                  {nextPost.title}
+                </span>
+              </Link>
+            )}
           </div>
-        </div>
-
-        {/* Dual-band animated marquee above footer */}
-        <FooterMarquee />
-      </div>
-
+        </article>
+      </main>
       <Footer />
     </>
-  );
-}
-
-function CommentItem({
-  name,
-  date,
-  image,
-}: {
-  name: string;
-  date: string;
-  image: string;
-}) {
-  return (
-    <li style={{ listStyle: 'none', display: 'flex', gap: '20px', marginBottom: '30px', width: '100%' }}>
-      <div className="comment-vcard">
-        <Image
-          src={image}
-          alt={name}
-          width={50}
-          height={50}
-          style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
-        />
-      </div>
-      <div className="comment-body">
-        <h3 style={{ fontSize: '20px', color: '#fff', marginBottom: '4px' }}>{name}</h3>
-        <div className="comment-meta">{date}</div>
-        <p style={{ color: 'rgba(255,255,255,0.8)', marginBottom: '8px' }}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum
-          necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure!
-        </p>
-        <a href="#" className="reply-btn">Reply</a>
-      </div>
-    </li>
   );
 }

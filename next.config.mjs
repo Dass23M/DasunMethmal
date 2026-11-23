@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-// Automatically ensure template images are copied to public/images when Next.js loads
+// Automatically ensure template images are copied to public/images without overwriting unchanged files
 try {
   const srcDir = path.resolve('./images');
   const destDir = path.resolve('./public/images');
@@ -9,30 +9,31 @@ try {
   if (fs.existsSync(srcDir)) {
     fs.mkdirSync(destDir, { recursive: true });
 
-    function copyRecursiveSync(src, dest) {
+    function copyIfNeeded(src, dest) {
       if (!fs.existsSync(src)) return;
       const stats = fs.statSync(src);
       if (stats.isDirectory()) {
         fs.mkdirSync(dest, { recursive: true });
         fs.readdirSync(src).forEach((childItemName) => {
-          copyRecursiveSync(
+          copyIfNeeded(
             path.join(src, childItemName),
             path.join(dest, childItemName)
           );
         });
       } else {
-        fs.copyFileSync(src, dest);
+        if (!fs.existsSync(dest) || fs.statSync(dest).mtimeMs < stats.mtimeMs) {
+          fs.copyFileSync(src, dest);
+        }
       }
     }
 
-    copyRecursiveSync(srcDir, destDir);
-    console.log('[Unfold Next.js] Synced images from ./images to ./public/images');
+    copyIfNeeded(srcDir, destDir);
   }
-
-
 } catch (err) {
   console.error('[Unfold Next.js] Failed to auto-copy images:', err);
 }
+
+const isProd = process.env.NODE_ENV === 'production';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -48,6 +49,21 @@ const nextConfig = {
   },
   compiler: {},
   async headers() {
+    if (!isProd) {
+      // Never cache unhashed dev chunks in the browser — prevents stale webpack.js & hydration errors
+      return [
+        {
+          source: '/_next/static/:path*',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            },
+          ],
+        },
+      ];
+    }
+
     return [
       {
         source: '/images/:path*',
@@ -70,9 +86,9 @@ const nextConfig = {
     ];
   },
   webpack: (config, { dev }) => {
-    // Disable disk cache in development to resolve Windows file rename locks (ENOENT 0.pack.gz_)
+    // Use stable in-memory cache in dev on Windows (avoids disk lock ENOENT and stale module factories)
     if (dev) {
-      config.cache = false;
+      config.cache = { type: 'memory' };
     }
     return config;
   },

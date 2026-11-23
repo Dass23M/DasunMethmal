@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Magnetic from '@/components/ui/Magnetic';
 
 const NAV_LINKS = [
   { label: 'ABOUT', href: '/about' },
@@ -83,15 +84,17 @@ export default function Navbar() {
           <span className="text-white">(SRI LANKA)</span>
         </div>
 
-        {/* Right: Chamfered CTA + Mobile Toggle */}
+        {/* Right: Magnetic Chamfered CTA + Mobile Toggle */}
         <div className="flex items-center gap-3">
-          <Link
-            href="/contact"
-            className="chamfer-btn inline-flex items-center gap-2 bg-white hover:bg-[#9CFF00] text-black font-mono font-bold text-[11px] tracking-[0.12em] uppercase px-5 py-3 transition-colors duration-200"
-          >
-            <span>SCHEDULE A CALL</span>
-            <span aria-hidden="true">&gt;</span>
-          </Link>
+          <Magnetic strength={0.2}>
+            <Link
+              href="/contact"
+              className="chamfer-btn inline-flex items-center gap-2 bg-white hover:bg-[#9CFF00] text-black font-mono font-bold text-[11px] tracking-[0.12em] uppercase px-5 py-3 transition-colors duration-200"
+            >
+              <span>SCHEDULE A CALL</span>
+              <span aria-hidden="true">&gt;</span>
+            </Link>
+          </Magnetic>
 
           <button
             type="button"

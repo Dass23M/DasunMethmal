@@ -1,8 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Magnetic from '@/components/ui/Magnetic';
 
 export default function Contact() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -110,15 +112,46 @@ export default function Contact() {
     setErrors({});
   };
 
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let ctx: { revert: () => void } | null = null;
+    Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(
+      ([{ default: gsap }, { ScrollTrigger }]) => {
+        gsap.registerPlugin(ScrollTrigger);
+        ctx = gsap.context(() => {
+          gsap.fromTo(
+            '.contact-reveal',
+            { opacity: 0, y: 28 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.85,
+              stagger: 0.1,
+              ease: 'expo.out',
+              scrollTrigger: {
+                trigger: sectionRef.current,
+                start: 'top 82%',
+              },
+            }
+          );
+        }, sectionRef);
+      }
+    );
+    return () => ctx?.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="contact-section"
       className="w-full bg-[#080808] text-white py-20 sm:py-28 border-t border-dashed border-white/[0.12]"
     >
       <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Editorial Pitch & Direct Channels */}
-          <div className="lg:col-span-5 space-y-8">
+          <div className="contact-reveal lg:col-span-5 space-y-8">
             <span className="font-mono text-xs tracking-[0.16em] uppercase text-zinc-400 block">
               [CONTACT]
             </span>
@@ -159,7 +192,7 @@ export default function Contact() {
           </div>
 
           {/* Right Brutalist Contact Form */}
-          <div className="lg:col-span-7 bg-[#111111] border border-white/[0.1] p-6 sm:p-10">
+          <div className="contact-reveal lg:col-span-7 bg-[#111111] border border-white/[0.1] p-6 sm:p-10">
             {!success ? (
               <form onSubmit={handleSubmit} noValidate className="space-y-6">
                 <input
@@ -270,14 +303,16 @@ export default function Contact() {
                 </div>
 
                 <div className="pt-2">
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="chamfer-btn w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#9CFF00] hover:bg-[#B4FF3D] text-black font-mono font-bold text-xs tracking-[0.16em] uppercase px-8 py-4 transition-colors disabled:opacity-60 cursor-pointer"
-                  >
-                    <span>{submitting ? 'SENDING...' : 'SEND MESSAGE'}</span>
-                    <span>&gt;</span>
-                  </button>
+                  <Magnetic strength={0.18}>
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className="chamfer-btn w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#9CFF00] hover:bg-[#B4FF3D] text-black font-mono font-bold text-xs tracking-[0.16em] uppercase px-8 py-4 transition-colors disabled:opacity-60 cursor-pointer"
+                    >
+                      <span>{submitting ? 'SENDING...' : 'SEND MESSAGE'}</span>
+                      <span>&gt;</span>
+                    </button>
+                  </Magnetic>
                 </div>
 
                 {warning && (

@@ -4,21 +4,49 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Magnetic from '@/components/ui/Magnetic';
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const footerRef = useRef<HTMLElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
+  const marqueeTweenRef = useRef<gsap.core.Tween | null>(null);
 
   useEffect(() => {
-    if (!marqueeRef.current) return;
+    if (!footerRef.current) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    gsap.registerPlugin(ScrollTrigger);
+
     const ctx = gsap.context(() => {
-      gsap.to(marqueeRef.current, {
-        xPercent: -50,
-        duration: 28,
-        ease: 'none',
-        repeat: -1,
-      });
-    });
+      if (marqueeRef.current && !reduced) {
+        marqueeTweenRef.current = gsap.to(marqueeRef.current, {
+          xPercent: -50,
+          duration: 26,
+          ease: 'none',
+          repeat: -1,
+        });
+      }
+
+      if (!reduced) {
+        // Giant starburst rotates smoothly as footer enters viewport
+        gsap.fromTo(
+          '.footer-starburst-spin',
+          { rotate: -65 },
+          {
+            rotate: 55,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: footerRef.current,
+              start: 'top bottom',
+              end: 'bottom bottom',
+              scrub: 1,
+            },
+          }
+        );
+      }
+    }, footerRef);
+
     return () => ctx.revert();
   }, []);
 
@@ -31,13 +59,22 @@ export default function Footer() {
   };
 
   return (
-    <footer className="site-footer w-full bg-[#080808] text-white select-none border-t border-white/[0.1] overflow-hidden">
-      {/* Top Bar: Giant Starburst Left + Quick Contact Card Right (Image 8) */}
+    <footer
+      ref={footerRef}
+      className="site-footer w-full bg-[#080808] text-white select-none border-t border-white/[0.1] overflow-hidden"
+    >
+      {/* Top Bar: Giant Starburst Left + Quick Contact Card Right */}
       <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 relative">
         <div className="flex items-start justify-between pt-0 pb-12 sm:pb-16">
           {/* Partial Giant White Starburst cutting from top edge */}
           <div aria-hidden="true" className="-mt-12 sm:-mt-16 text-white pointer-events-none">
-            <svg width="150" height="150" viewBox="0 0 120 120" fill="currentColor" className="w-28 h-28 sm:w-40 sm:h-40">
+            <svg
+              width="150"
+              height="150"
+              viewBox="0 0 120 120"
+              fill="currentColor"
+              className="footer-starburst-spin w-28 h-28 sm:w-40 sm:h-40 will-change-transform"
+            >
               <path d="M60 0L68 46L102 18L74 52L120 60L74 68L102 102L68 74L60 120L52 74L18 102L46 68L0 60L46 52L18 18L52 46L60 0Z" />
             </svg>
           </div>
@@ -149,30 +186,21 @@ export default function Footer() {
                     TIKTOK
                   </a>
                 </li>
-                <li>
-                  <a
-                    href="/Dasun Methmal CV.pdf"
-                    download
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-[#9CFF00] transition-colors"
-                  >
-                    RESUME PDF
-                  </a>
-                </li>
               </ul>
             </div>
 
-            {/* Circular TOP Button (Image 8) */}
-            <button
-              type="button"
-              onClick={scrollToTop}
-              aria-label="Back to top"
-              className="w-20 h-20 rounded-full bg-[#1C1C1C] hover:bg-[#9CFF00] text-white hover:text-black border border-white/10 flex flex-col items-center justify-center gap-1 font-mono text-[10px] tracking-[0.16em] uppercase transition-colors cursor-pointer shrink-0 self-end sm:self-center"
-            >
-              <span className="text-sm leading-none">↑</span>
-              <span>TOP</span>
-            </button>
+            {/* Circular Magnetic TOP Button */}
+            <Magnetic strength={0.28} className="self-end sm:self-center">
+              <button
+                type="button"
+                onClick={scrollToTop}
+                aria-label="Back to top"
+                className="w-20 h-20 rounded-full bg-[#1C1C1C] hover:bg-[#9CFF00] text-white hover:text-black border border-white/10 flex flex-col items-center justify-center gap-1 font-mono text-[10px] tracking-[0.16em] uppercase transition-colors cursor-pointer shrink-0"
+              >
+                <span className="text-sm leading-none">↑</span>
+                <span>TOP</span>
+              </button>
+            </Magnetic>
           </div>
         </div>
 
@@ -196,8 +224,12 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Full-Width Solid Acid-Green Marquee Ticker (Image 8) */}
-      <div className="w-full bg-[#9CFF00] text-black py-3.5 sm:py-4 overflow-hidden">
+      {/* Bottom Full-Width Solid Acid-Green Marquee Ticker (smoothly slows on hover) */}
+      <div
+        className="w-full bg-[#9CFF00] text-black py-3.5 sm:py-4 overflow-hidden"
+        onMouseEnter={() => marqueeTweenRef.current?.timeScale(0.35)}
+        onMouseLeave={() => marqueeTweenRef.current?.timeScale(1)}
+      >
         <div ref={marqueeRef} className="inline-flex items-center whitespace-nowrap will-change-transform">
           {Array.from({ length: 8 }).map((_, i) => (
             <span

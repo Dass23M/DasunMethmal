@@ -153,9 +153,13 @@ type APIResponse = {
   contributions: { date: string; count: number; level: number }[];
 };
 
-async function fetchContributions(username: string): Promise<ContributionData> {
+async function fetchContributions(
+  username: string,
+  signal?: AbortSignal,
+): Promise<ContributionData> {
   const res = await fetch(
-    `https://github-contributions-api.jogruber.de/v4/${username}`,
+    `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(username)}`,
+    { signal },
   );
   if (!res.ok) {
     throw new Error(
@@ -345,14 +349,25 @@ export const GithubCalendar = memo(function GithubCalendar({
 
   useEffect(() => {
     if (!username) return;
+    const controller = new AbortController();
     setFetchedData(null);
     setFetchError(null);
     setLoading(true);
 
-    fetchContributions(username)
-      .then((d) => setFetchedData(d))
-      .catch((e) => setFetchError(e instanceof Error ? e.message : String(e)))
-      .finally(() => setLoading(false));
+    fetchContributions(username, controller.signal)
+      .then((d) => {
+        if (!controller.signal.aborted) setFetchedData(d);
+      })
+      .catch((e) => {
+        if (!controller.signal.aborted) {
+          setFetchError(e instanceof Error ? e.message : String(e));
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+
+    return () => controller.abort();
   }, [username]);
 
   // ── Choose data source ─────────────────────────────────────────────────

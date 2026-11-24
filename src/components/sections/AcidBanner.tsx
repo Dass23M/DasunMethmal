@@ -1,126 +1,216 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+interface PixelBox {
+  top: string;
+  left: string;
+  size: string;
+  peakOpacity: number;
+  delay: number;
+  hold: number;
+  pause: number;
+  desktopOnly?: boolean;
+  hollow?: boolean;
+}
+
+// Curated architectural pixel-matrix boxes positioned in negative-space zones
+// so they harmonize with the top/bottom cutouts without obscuring "I DO × CREATIVE"
+const PIXEL_BOXES: PixelBox[] = [
+  // Upper negative-space band
+  { top: '12%', left: '16%', size: 'w-4 h-4 sm:w-5 sm:h-5', peakOpacity: 0.9, delay: 0.0, hold: 0.7, pause: 1.8 },
+  { top: '18%', left: '24%', size: 'w-3 h-3 sm:w-3.5 sm:h-3.5', peakOpacity: 0.75, delay: 1.4, hold: 0.5, pause: 2.2, desktopOnly: true },
+  { top: '9%', left: '34%', size: 'w-5 h-5 sm:w-6 sm:h-6', peakOpacity: 0.85, delay: 0.6, hold: 0.9, pause: 2.0 },
+  { top: '20%', left: '43%', size: 'w-3 h-3 sm:w-4 sm:h-4', peakOpacity: 0.55, delay: 2.1, hold: 0.6, pause: 2.4, hollow: true },
+  { top: '11%', left: '54%', size: 'w-4 h-4 sm:w-5 sm:h-5', peakOpacity: 0.85, delay: 1.1, hold: 0.8, pause: 1.9, desktopOnly: true },
+  { top: '17%', left: '66%', size: 'w-3.5 h-3.5 sm:w-4 sm:h-4', peakOpacity: 0.8, delay: 0.3, hold: 0.65, pause: 2.3 },
+  { top: '10%', left: '75%', size: 'w-5 h-5 sm:w-6 sm:h-6', peakOpacity: 0.9, delay: 1.9, hold: 0.85, pause: 1.7, desktopOnly: true },
+  { top: '23%', left: '84%', size: 'w-3 h-3 sm:w-4 sm:h-4', peakOpacity: 0.75, delay: 0.8, hold: 0.6, pause: 2.1 },
+
+  // Side flanks & subtle mid-field depth boxes
+  { top: '36%', left: '4%', size: 'w-4 h-4 sm:w-5 sm:h-5', peakOpacity: 0.85, delay: 1.6, hold: 0.75, pause: 2.0 },
+  { top: '54%', left: '3%', size: 'w-3 h-3 sm:w-3.5 sm:h-3.5', peakOpacity: 0.7, delay: 0.4, hold: 0.55, pause: 2.5, desktopOnly: true },
+  { top: '34%', left: '30%', size: 'w-3 h-3 sm:w-4 sm:h-4', peakOpacity: 0.28, delay: 2.4, hold: 0.7, pause: 2.6, desktopOnly: true },
+  { top: '62%', left: '36%', size: 'w-3.5 h-3.5 sm:w-4 sm:h-4', peakOpacity: 0.35, delay: 1.0, hold: 0.6, pause: 2.2, hollow: true },
+  { top: '33%', left: '91%', size: 'w-4 h-4 sm:w-5 sm:h-5', peakOpacity: 0.85, delay: 0.5, hold: 0.8, pause: 1.9 },
+  { top: '60%', left: '93%', size: 'w-3 h-3 sm:w-4 sm:h-4', peakOpacity: 0.8, delay: 2.0, hold: 0.65, pause: 2.3, desktopOnly: true },
+
+  // Lower negative-space band
+  { top: '76%', left: '12%', size: 'w-4 h-4 sm:w-5 sm:h-5', peakOpacity: 0.9, delay: 0.9, hold: 0.8, pause: 1.9 },
+  { top: '83%', left: '21%', size: 'w-3 h-3 sm:w-4 sm:h-4', peakOpacity: 0.75, delay: 2.3, hold: 0.55, pause: 2.1, desktopOnly: true },
+  { top: '74%', left: '44%', size: 'w-4 h-4 sm:w-5 sm:h-5', peakOpacity: 0.8, delay: 1.3, hold: 0.7, pause: 2.4 },
+  { top: '84%', left: '56%', size: 'w-3.5 h-3.5 sm:w-4 sm:h-4', peakOpacity: 0.85, delay: 0.2, hold: 0.75, pause: 1.8, desktopOnly: true },
+  { top: '78%', left: '68%', size: 'w-5 h-5 sm:w-6 sm:h-6', peakOpacity: 0.85, delay: 1.7, hold: 0.9, pause: 2.0 },
+  { top: '72%', left: '78%', size: 'w-3 h-3 sm:w-4 sm:h-4', peakOpacity: 0.65, delay: 0.7, hold: 0.6, pause: 2.5, hollow: true },
+  { top: '82%', left: '86%', size: 'w-4 h-4 sm:w-5 sm:h-5', peakOpacity: 0.9, delay: 2.5, hold: 0.7, pause: 1.8 },
+];
 
 export default function AcidBanner() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!sectionRef.current) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    let ctx: { revert: () => void } | null = null;
-    Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(
-      ([{ default: gsap }, { ScrollTrigger }]) => {
-        gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger);
 
-        ctx = gsap.context(() => {
-          const mm = gsap.matchMedia();
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
 
-          mm.add('(min-width: 768px)', () => {
-            gsap.fromTo(
-              '.acid-word-left',
-              { x: -38 },
-              {
-                x: 24,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: sectionRef.current,
-                  start: 'top bottom',
-                  end: 'bottom top',
-                  scrub: 0.9,
-                },
-              }
-            );
+      // 1. Living architectural black pixel boxes appear & disappear smoothly
+      const pixelTimelines: gsap.core.Timeline[] = [];
+      const boxEls = sectionRef.current?.querySelectorAll<HTMLElement>('.acid-pixel-box');
 
-            gsap.fromTo(
-              '.acid-word-right',
-              { x: 38 },
-              {
-                x: -24,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: sectionRef.current,
-                  start: 'top bottom',
-                  end: 'bottom top',
-                  scrub: 0.9,
-                },
-              }
-            );
+      boxEls?.forEach((el, idx) => {
+        const cfg = PIXEL_BOXES[idx];
+        if (!cfg) return;
 
-            gsap.to('.acid-cross', {
-              rotate: 180,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 0.9,
-              },
-            });
+        gsap.set(el, { opacity: 0, scale: 0.35 });
 
-            gsap.to('.acid-plus', {
-              rotate: -135,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 0.9,
-              },
-            });
+        const boxTl = gsap.timeline({
+          repeat: -1,
+          delay: cfg.delay,
+          repeatDelay: cfg.pause,
+        });
+
+        boxTl
+          .to(el, {
+            opacity: cfg.peakOpacity,
+            scale: 1,
+            duration: 0.42,
+            ease: 'expo.out',
+          })
+          .to(el, {
+            opacity: cfg.peakOpacity,
+            duration: cfg.hold,
+            ease: 'none',
+          })
+          .to(el, {
+            opacity: 0,
+            scale: 0.4,
+            duration: 0.48,
+            ease: 'power3.in',
           });
 
-          gsap.fromTo(
-            '.acid-cutout-top',
-            { yPercent: -100 },
-            {
-              yPercent: 0,
-              duration: 0.85,
-              ease: 'expo.out',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top 85%',
-                once: true,
-              },
-            }
-          );
+        pixelTimelines.push(boxTl);
+      });
 
-          gsap.fromTo(
-            '.acid-cutout-bottom',
-            { yPercent: 100 },
-            {
-              yPercent: 0,
-              duration: 0.85,
-              ease: 'expo.out',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top 80%',
-                once: true,
-              },
-            }
-          );
+      // Pause pixel matrix when scrolled outside viewport for 120fps scroll performance
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        onEnter: () => pixelTimelines.forEach((t) => t.resume()),
+        onEnterBack: () => pixelTimelines.forEach((t) => t.resume()),
+        onLeave: () => pixelTimelines.forEach((t) => t.pause()),
+        onLeaveBack: () => pixelTimelines.forEach((t) => t.pause()),
+      });
 
-          gsap.fromTo(
-            '.acid-caption',
-            { opacity: 0, y: 20 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: 'expo.out',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top 80%',
-                once: true,
-              },
-            }
-          );
-        }, sectionRef);
-      }
-    );
+      // 2. Desktop scroll-scrubbed horizontal typography & geometric cross/plus rotation
+      mm.add('(min-width: 768px)', () => {
+        gsap.fromTo(
+          '.acid-word-left',
+          { x: -38 },
+          {
+            x: 24,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 0.9,
+            },
+          }
+        );
 
-    return () => ctx?.revert();
+        gsap.fromTo(
+          '.acid-word-right',
+          { x: 38 },
+          {
+            x: -24,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 0.9,
+            },
+          }
+        );
+
+        gsap.to('.acid-cross', {
+          rotate: 180,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.9,
+          },
+        });
+
+        gsap.to('.acid-plus', {
+          rotate: -135,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.9,
+          },
+        });
+      });
+
+      // 3. Top & bottom pixel cutouts + caption entrance
+      gsap.fromTo(
+        '.acid-cutout-top',
+        { yPercent: -100 },
+        {
+          yPercent: 0,
+          duration: 0.85,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 85%',
+            once: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        '.acid-cutout-bottom',
+        { yPercent: 100 },
+        {
+          yPercent: 0,
+          duration: 0.85,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            once: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        '.acid-caption',
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            once: true,
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -134,6 +224,24 @@ export default function AcidBanner() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 halftone-dots opacity-45"
       />
+
+      {/* Animated Architectural Black Pixel Boxes (Appear & Disappear Matrix) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+      >
+        {PIXEL_BOXES.map((box, idx) => (
+          <span
+            key={idx}
+            style={{ top: box.top, left: box.left }}
+            className={`acid-pixel-box absolute will-change-transform ${box.size} ${
+              box.hollow
+                ? 'border-2 border-[#080808] bg-transparent'
+                : 'bg-[#080808]'
+            } ${box.desktopOnly ? 'hidden sm:block' : 'block'}`}
+          />
+        ))}
+      </div>
 
       {/* Architectural Black Pixel-Step Cutouts (Top) */}
       <div

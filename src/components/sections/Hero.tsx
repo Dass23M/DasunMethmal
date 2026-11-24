@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Magnetic from '@/components/ui/Magnetic';
 
 const DISCIPLINES = [
@@ -12,126 +14,248 @@ const DISCIPLINES = [
   'Digital Growth',
 ];
 
+const WORD_TOP = 'Think'.split('');
+const WORD_BOTTOM = 'Different'.split('');
+
 export default function Hero() {
-  const [mounted, setMounted] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (!heroRef.current) return;
 
-  useEffect(() => {
-    if (!mounted || !heroRef.current) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-    let ctx: { revert: () => void } | null = null;
-    Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(
-      ([{ default: gsap }, { ScrollTrigger }]) => {
-        gsap.registerPlugin(ScrollTrigger);
+    let autoTurnTl: gsap.core.Timeline | null = null;
+    let fallbackTimer: number | null = null;
+    let started = false;
 
-        ctx = gsap.context(() => {
-          const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+    // Create GSAP context FIRST before defining callbacks that call ctx.add()
+    const ctx = gsap.context(() => {}, heroRef);
 
-          // 1. Masked split-line headline reveal
-          tl.fromTo(
-            '.hero-line-inner',
-            { yPercent: 110, opacity: 0 },
-            { yPercent: 0, opacity: 1, duration: 1.05, stagger: 0.12 },
-            0.15
-          )
-            // 2. Editorial portrait vertical shutter reveal + gentle zoom settle
-            .fromTo(
-              '.hero-portrait-frame',
-              { clipPath: 'inset(100% 0% 0% 0%)' },
-              { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'power4.inOut' },
-              0.25
-            )
-            .fromTo(
-              '.hero-portrait-img',
-              { scale: 1.18 },
-              { scale: 1.0, duration: 1.35, ease: 'expo.out' },
-              0.25
-            )
-            // 3. Crosshair spin + discipline list cascade
-            .fromTo(
-              '.hero-crosshair',
-              { opacity: 0, rotate: -90, scale: 0.6 },
-              { opacity: 1, rotate: 0, scale: 1, duration: 0.8 },
-              0.45
-            )
-            .fromTo(
-              '.hero-discipline-item',
-              { opacity: 0, x: 18 },
-              { opacity: 1, x: 0, duration: 0.65, stagger: 0.07 },
-              0.5
-            )
-            // 4. Bottom hairline & tags reveal
-            .fromTo(
-              '.hero-bottom-line',
-              { scaleX: 0, transformOrigin: 'left center' },
-              { scaleX: 1, duration: 0.9, ease: 'expo.out' },
-              0.6
-            )
-            .fromTo(
-              '.hero-bottom-meta',
-              { opacity: 0, y: 14 },
-              { opacity: 1, y: 0, duration: 0.7, stagger: 0.08 },
-              0.72
-            );
+    const runFullTurnWave = () => {
+      const wave = gsap.timeline();
+      wave
+        .fromTo(
+          '.hero-char-top',
+          {
+            rotateY: 0,
+            transformPerspective: 1000,
+            transformOrigin: '50% 50%',
+          },
+          {
+            rotateY: 360,
+            duration: 1.15,
+            stagger: 0.055,
+            ease: 'power2.inOut',
+          },
+          0
+        )
+        .fromTo(
+          '.hero-char-bottom',
+          {
+            rotateY: 0,
+            transformPerspective: 1000,
+            transformOrigin: '50% 50%',
+          },
+          {
+            rotateY: 360,
+            duration: 1.15,
+            stagger: 0.045,
+            ease: 'power2.inOut',
+          },
+          0.26
+        )
+        .set('.hero-char-top, .hero-char-bottom', { rotateY: 0 });
+      return wave;
+    };
 
-          // 5. Subtle blinking cursor pulse on the neon underscore
-          gsap.to('.hero-underscore', {
-            opacity: 0.28,
-            duration: 0.75,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-            delay: 1.3,
-          });
-
-          // 6. Smooth scroll-linked parallax (desktop only for 120Hz native mobile touch scroll)
-          const mm = gsap.matchMedia();
-          mm.add('(min-width: 768px)', () => {
-            gsap.to('.hero-headline-wrap', {
-              y: -52,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: heroRef.current,
-                start: 'top top',
-                end: 'bottom top',
-                scrub: 0.8,
-              },
-            });
-
-            gsap.to('.hero-crosshair', {
-              rotate: 135,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: heroRef.current,
-                start: 'top top',
-                end: 'bottom top',
-                scrub: 0.8,
-              },
-            });
-
-            gsap.to('.hero-portrait-img', {
-              yPercent: 10,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: heroRef.current,
-                start: 'top top',
-                end: 'bottom top',
-                scrub: 0.8,
-              },
-            });
-          });
-        }, heroRef);
+    const playEntrance = () => {
+      if (started || !heroRef.current) return;
+      started = true;
+      if (fallbackTimer) {
+        window.clearTimeout(fallbackTimer);
+        fallbackTimer = null;
       }
-    );
 
-    return () => ctx?.revert();
-  }, [mounted]);
+      ctx.add(() => {
+        const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+
+        // 1. Crisp entrance for "Think" & "Different" + immediate smooth 360° full turn
+        tl.fromTo(
+          '.hero-char-top',
+          {
+            opacity: 0,
+            y: 28,
+            rotateY: 0,
+            transformPerspective: 1000,
+            transformOrigin: '50% 50%',
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.55,
+            stagger: 0.04,
+            ease: 'power3.out',
+          },
+          0
+        )
+          .fromTo(
+            '.hero-underscore',
+            { scaleX: 0, opacity: 0, transformOrigin: 'left center' },
+            { scaleX: 1, opacity: 1, duration: 0.5, ease: 'expo.out' },
+            0.25
+          )
+          .fromTo(
+            '.hero-char-bottom',
+            {
+              opacity: 0,
+              y: 28,
+              rotateY: 0,
+              transformPerspective: 1000,
+              transformOrigin: '50% 50%',
+            },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.55,
+              stagger: 0.035,
+              ease: 'power3.out',
+            },
+            0.16
+          )
+          // Full 360° smooth kinetic turn right after words appear clearly on screen
+          .add(runFullTurnWave(), 0.42)
+          // 2. Editorial portrait vertical shutter reveal + gentle zoom settle
+          .fromTo(
+            '.hero-portrait-frame',
+            { clipPath: 'inset(100% 0% 0% 0%)' },
+            { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.05, ease: 'power4.inOut' },
+            0.12
+          )
+          .fromTo(
+            '.hero-portrait-img',
+            { scale: 1.16 },
+            { scale: 1.0, duration: 1.25, ease: 'expo.out' },
+            0.12
+          )
+          // 3. Crosshair spin + discipline list cascade
+          .fromTo(
+            '.hero-crosshair',
+            { opacity: 0, rotate: -90, scale: 0.6 },
+            { opacity: 1, rotate: 0, scale: 1, duration: 0.75 },
+            0.28
+          )
+          .fromTo(
+            '.hero-discipline-item',
+            { opacity: 0, x: 18 },
+            { opacity: 1, x: 0, duration: 0.6, stagger: 0.06 },
+            0.34
+          )
+          // 4. Bottom hairline & tags reveal
+          .fromTo(
+            '.hero-bottom-line',
+            { scaleX: 0, transformOrigin: 'left center' },
+            { scaleX: 1, duration: 0.85, ease: 'expo.out' },
+            0.42
+          )
+          .fromTo(
+            '.hero-bottom-meta',
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.65, stagger: 0.07 },
+            0.52
+          );
+
+        // 5. Subtle blinking cursor pulse on the neon underscore
+        gsap.to('.hero-underscore', {
+          opacity: 0.28,
+          duration: 0.75,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+          delay: 1.1,
+        });
+
+        // 6. Automatic smooth 360° full-turn repeat every 3.8s (paused when scrolled away)
+        autoTurnTl = gsap.timeline({
+          repeat: -1,
+          repeatDelay: 3.8,
+          delay: 3.8,
+        });
+        autoTurnTl.add(runFullTurnWave(), 0);
+
+        ScrollTrigger.create({
+          trigger: heroRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          onLeave: () => autoTurnTl?.pause(),
+          onEnterBack: () => autoTurnTl?.resume(),
+        });
+      });
+    };
+
+    // Wait for preloader ONLY if it is actively mounted on screen; otherwise play immediately
+    const preloaderEl = document.getElementById('site-preloader');
+    const loaderAlreadyDone =
+      Boolean((window as unknown as { __loaderRevealed?: boolean }).__loaderRevealed) ||
+      !preloaderEl;
+
+    if (loaderAlreadyDone) {
+      playEntrance();
+    } else {
+      // Hide chars briefly only while preloader is actively covering the viewport
+      ctx.add(() => {
+        gsap.set('.hero-char-top, .hero-char-bottom', { opacity: 0, y: 28 });
+      });
+      window.addEventListener('site-loader-reveal', playEntrance, { once: true });
+      fallbackTimer = window.setTimeout(playEntrance, 2800);
+    }
+
+    // 7. Smooth scroll-linked parallax (desktop only for 120Hz native mobile touch scroll)
+    ctx.add(() => {
+      const mm = gsap.matchMedia();
+      mm.add('(min-width: 768px)', () => {
+        gsap.to('.hero-headline-wrap', {
+          y: -52,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.8,
+          },
+        });
+
+        gsap.to('.hero-crosshair', {
+          rotate: 135,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.8,
+          },
+        });
+
+        gsap.to('.hero-portrait-img', {
+          yPercent: 10,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.8,
+          },
+        });
+      });
+    });
+
+    return () => {
+      window.removeEventListener('site-loader-reveal', playEntrance);
+      if (fallbackTimer) window.clearTimeout(fallbackTimer);
+      autoTurnTl?.kill();
+      ctx.revert();
+    };
+  }, []);
 
   return (
     <section
@@ -148,18 +272,41 @@ export default function Hero() {
       {/* Main Hero Canvas */}
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 relative z-10 flex-1 flex flex-col justify-center py-6 sm:py-8 lg:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-end">
-          {/* Left: Giant Editorial Display Headline with Masked Clip-Up */}
+          {/* Left: Giant Editorial Display Headline with 3D Full-Turn Kinetic Typography */}
           <div className="hero-headline-wrap lg:col-span-7 xl:col-span-7 will-change-transform">
-            <h1 className="font-display font-medium tracking-[-0.045em] leading-[0.88] select-none">
-              <span className="block overflow-hidden pb-1.5 sm:pb-2">
-                <span className="hero-line-inner block text-[#9CFF00] text-[clamp(3rem,13vw,10.5rem)] will-change-transform">
-                  Think
+            <h1
+              aria-label="Think Different"
+              className="font-display font-medium tracking-[-0.045em] leading-[0.88] select-none"
+            >
+              <span
+                aria-hidden="true"
+                className="block pb-1.5 sm:pb-2 [perspective:1100px] [transform-style:preserve-3d]"
+              >
+                <span className="inline-flex items-baseline text-[#9CFF00] text-[clamp(3rem,13vw,10.5rem)]">
+                  {WORD_TOP.map((char, idx) => (
+                    <span
+                      key={`top-${idx}`}
+                      className="hero-char-top inline-block will-change-transform"
+                    >
+                      {char}
+                    </span>
+                  ))}
                   <span className="hero-underscore inline-block w-[0.42em] h-[0.075em] bg-[#9CFF00] ml-2 align-baseline translate-y-[0.06em]" />
                 </span>
               </span>
-              <span className="block overflow-hidden pb-1.5 sm:pb-2">
-                <span className="hero-line-inner block text-white text-[clamp(3rem,13vw,10.5rem)] mt-1 will-change-transform">
-                  Different
+              <span
+                aria-hidden="true"
+                className="block pb-1.5 sm:pb-2 mt-1 [perspective:1100px] [transform-style:preserve-3d]"
+              >
+                <span className="inline-flex items-baseline text-white text-[clamp(3rem,13vw,10.5rem)]">
+                  {WORD_BOTTOM.map((char, idx) => (
+                    <span
+                      key={`bottom-${idx}`}
+                      className="hero-char-bottom inline-block will-change-transform"
+                    >
+                      {char}
+                    </span>
+                  ))}
                 </span>
               </span>
             </h1>

@@ -73,6 +73,18 @@ export default function Loader() {
         },
         "-=0.4"
       );
+
+      // 5. Notify Hero right as curtain clears the viewport so "Think Different" turn is 100% visible
+      tl.call(
+        () => {
+          if (typeof window !== 'undefined') {
+            (window as unknown as { __loaderRevealed?: boolean }).__loaderRevealed = true;
+            window.dispatchEvent(new CustomEvent('site-loader-reveal'));
+          }
+        },
+        undefined,
+        "-=0.18"
+      );
     }, overlayRef);
 
     return () => {

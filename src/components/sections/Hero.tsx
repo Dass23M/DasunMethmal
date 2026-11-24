@@ -193,14 +193,14 @@ export default function Hero() {
             </div>
 
             {/* Square Monochrome Editorial Motion Card */}
-            <div className="hero-portrait-frame relative w-full max-w-[340px] sm:max-w-none sm:w-[270px] lg:w-[290px] aspect-[5/4] sm:aspect-square overflow-hidden bg-[#141414] border border-white/10 group shrink-0">
+            <div className="hero-portrait-frame relative w-full max-w-[340px] sm:max-w-none sm:w-[270px] lg:w-[290px] aspect-square overflow-hidden bg-[#141414] border border-white/10 group shrink-0">
               <img
                 src="/images/methmal2.png"
                 alt="Dasun Methmal Creative Engineer"
-                className="hero-portrait-img w-full h-full object-cover object-top grayscale contrast-125 brightness-95 transition-[filter,transform] duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0 will-change-transform"
+                className="hero-portrait-img w-full h-full object-cover object-[50%_13%] grayscale contrast-125 brightness-95 transition-[filter,transform] duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0 will-change-transform"
               />
-              <div className="absolute inset-0 bg-gradient-to-tr from-black/50 via-transparent to-white/10 pointer-events-none" />
-              <div className="absolute bottom-3 left-3 bg-black/80 backdrop-blur-sm border border-white/15 px-2.5 py-1 font-mono text-[10px] tracking-[0.16em] text-[#9CFF00] uppercase">
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/40 via-transparent to-white/10 pointer-events-none" />
+              <div className="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm border border-white/15 px-2.5 py-1 font-mono text-[10px] tracking-[0.16em] text-[#9CFF00] uppercase">
                 DASUN METHMAL
               </div>
             </div>

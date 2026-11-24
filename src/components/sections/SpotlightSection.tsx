@@ -143,7 +143,8 @@ export default function SpotlightSection() {
                   src={current.image}
                   alt={current.title}
                   fill
-                  sizes="(max-width: 640px) 90vw, 380px"
+                  quality={80}
+                  sizes="(max-width: 640px) 320px, 380px"
                   className="object-cover object-top"
                 />
               </div>
@@ -180,7 +181,8 @@ export default function SpotlightSection() {
                       src={item.image}
                       alt={item.title}
                       fill
-                      sizes="120px"
+                      quality={75}
+                      sizes="(max-width: 640px) 72px, 120px"
                       className={`object-cover object-top transition-all duration-300 ${isActive ? '' : 'grayscale'}`}
                     />
                   </button>

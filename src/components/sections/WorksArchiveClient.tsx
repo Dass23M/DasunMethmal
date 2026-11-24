@@ -68,7 +68,8 @@ export default function WorksArchiveClient() {
                 src={item.image}
                 alt={item.title}
                 fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                quality={80}
+                sizes="(max-width: 640px) 360px, (max-width: 1024px) 46vw, 32vw"
                 className="object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
               />
               <span className="absolute top-3 left-3 bg-[#080808]/90 border border-white/15 text-[#9CFF00] font-mono text-[10px] font-bold tracking-[0.14em] px-2.5 py-0.5">

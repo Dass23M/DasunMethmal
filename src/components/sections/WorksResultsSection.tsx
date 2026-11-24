@@ -201,7 +201,8 @@ export default function WorksResultsSection({
                       src={item.image}
                       alt={item.title}
                       fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
+                      quality={80}
+                      sizes="(max-width: 640px) 360px, (max-width: 1024px) 46vw, 30vw"
                       className="wr-card-img object-cover grayscale-[35%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 ease-out will-change-transform"
                     />
                     <span className="absolute top-3 left-3 bg-[#080808]/90 border border-white/15 text-[#9CFF00] font-mono text-[10px] font-bold tracking-[0.14em] px-2 py-0.5">

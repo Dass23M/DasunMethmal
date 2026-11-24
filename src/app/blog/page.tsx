@@ -40,7 +40,8 @@ export default function BlogPage() {
                     src={post.image}
                     alt={post.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    quality={80}
+                    sizes="(max-width: 640px) 360px, (max-width: 1024px) 46vw, 32vw"
                     className="object-cover grayscale-[25%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
                   />
                   <span className="absolute top-3 left-3 bg-[#E5E5E5] text-black font-mono text-[10px] font-bold tracking-[0.14em] uppercase px-2.5 py-0.5">

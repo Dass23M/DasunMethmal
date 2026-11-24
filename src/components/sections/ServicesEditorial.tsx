@@ -255,7 +255,8 @@ export default function ServicesEditorial() {
                       src={service.image}
                       alt={service.title}
                       fill
-                      sizes="260px"
+                      quality={80}
+                      sizes="(max-width: 640px) 220px, 260px"
                       className="object-contain grayscale contrast-125 mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-110"
                     />
                   </div>

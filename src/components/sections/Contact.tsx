@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Magnetic from '@/components/ui/Magnetic';
 
 export default function Contact() {
@@ -20,11 +22,15 @@ export default function Contact() {
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.name.trim()) newErrors.name = 'Please enter your name';
-    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+    const name = formData.name.trim();
+    const email = formData.email.trim();
+    const message = formData.message.trim();
+
+    if (!name || name.length < 2) newErrors.name = 'Please enter your name (at least 2 characters)';
+    if (!email || !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/.test(email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    if (!formData.message.trim() || formData.message.trim().length < 5) {
+    if (!message || message.length < 5) {
       newErrors.message = 'Please enter a message (at least 5 characters)';
     }
     return newErrors;
@@ -52,38 +58,6 @@ export default function Contact() {
     setSubmitting(true);
     setWarning('');
 
-    const web3Key = (process.env.NEXT_PUBLIC_WEB3FORMS_KEY || '').trim();
-    if (web3Key && !web3Key.includes('your_') && web3Key.length > 10) {
-      try {
-        const res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: JSON.stringify({
-            access_key: web3Key,
-            name: formData.name.trim(),
-            email: formData.email.trim(),
-            subject: formData.subject.trim() || `New Portfolio Message from ${formData.name.trim()}`,
-            message: formData.message.trim(),
-            from_name: 'Portfolio Contact Form',
-          }),
-        });
-
-        const data = await res.json();
-        if (data.success) {
-          setSuccess(true);
-          setStatusMessage(data.message || 'Your message was sent successfully!');
-          setFormData({ name: '', email: '', subject: '', message: '', botcheck: '' });
-          setSubmitting(false);
-          return;
-        }
-      } catch {
-        // Fallback to server route below
-      }
-    }
-
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -91,7 +65,7 @@ export default function Contact() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if (data.ok) {
+      if (res.ok && data.ok) {
         setSuccess(true);
         setStatusMessage(data.message || 'Your message was sent successfully!');
         setFormData({ name: '', email: '', subject: '', message: '', botcheck: '' });
@@ -116,30 +90,27 @@ export default function Contact() {
     if (!sectionRef.current) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    let ctx: { revert: () => void } | null = null;
-    Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(
-      ([{ default: gsap }, { ScrollTrigger }]) => {
-        gsap.registerPlugin(ScrollTrigger);
-        ctx = gsap.context(() => {
-          gsap.fromTo(
-            '.contact-reveal',
-            { opacity: 0, y: 28 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.85,
-              stagger: 0.1,
-              ease: 'expo.out',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top 82%',
-              },
-            }
-          );
-        }, sectionRef);
-      }
-    );
-    return () => ctx?.revert();
+    gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.contact-reveal',
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          stagger: 0.1,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 82%',
+            once: true,
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -218,6 +189,7 @@ export default function Contact() {
                       id="contact-name"
                       name="name"
                       autoComplete="name"
+                      maxLength={100}
                       placeholder="Your name"
                       value={formData.name}
                       onChange={(e) => handleInput('name', e.target.value)}
@@ -244,6 +216,7 @@ export default function Contact() {
                       id="contact-email"
                       name="email"
                       autoComplete="email"
+                      maxLength={254}
                       placeholder="you@company.com"
                       value={formData.email}
                       onChange={(e) => handleInput('email', e.target.value)}
@@ -270,6 +243,7 @@ export default function Contact() {
                     type="text"
                     id="contact-subject"
                     name="subject"
+                    maxLength={150}
                     placeholder="Web App / UI Design / AI System"
                     value={formData.subject}
                     onChange={(e) => handleInput('subject', e.target.value)}
@@ -288,6 +262,7 @@ export default function Contact() {
                     id="contact-message"
                     name="message"
                     rows={5}
+                    maxLength={5000}
                     placeholder="Tell me about your timeline, goals, and what we're building..."
                     value={formData.message}
                     onChange={(e) => handleInput('message', e.target.value)}

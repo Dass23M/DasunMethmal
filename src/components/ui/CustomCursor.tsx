@@ -6,11 +6,12 @@ import gsap from 'gsap';
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  const isVisibleRef = useRef(false);
+  const isHoveringRef = useRef(false);
   const [isHovering, setIsHovering] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || window.matchMedia('(max-width: 768px)').matches) {
+    if (typeof window === 'undefined' || window.matchMedia('(max-width: 768px), (pointer: coarse)').matches) {
       return;
     }
 
@@ -32,32 +33,35 @@ export default function CustomCursor() {
       ringX(e.clientX);
       ringY(e.clientY);
 
-      if (!isVisible) {
-        setIsVisible(true);
-        gsap.to([dot, ring], { opacity: 1, duration: 0.3 });
+      if (!isVisibleRef.current) {
+        isVisibleRef.current = true;
+        gsap.to([dot, ring], { opacity: 1, duration: 0.3, overwrite: 'auto' });
       }
     };
 
     const onMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const interactive = Boolean(
         target.tagName.toLowerCase() === 'a' ||
-        target.tagName.toLowerCase() === 'button' ||
-        target.closest('a') ||
-        target.closest('button') ||
-        target.closest('.pf-card') ||
-        target.closest('.glass-card-premium') ||
-        target.classList.contains('cursor-pointer')
-      ) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
+          target.tagName.toLowerCase() === 'button' ||
+          target.closest('a') ||
+          target.closest('button') ||
+          target.closest('.pf-card') ||
+          target.closest('.glass-card-premium') ||
+          target.classList.contains('cursor-pointer')
+      );
+      if (interactive !== isHoveringRef.current) {
+        isHoveringRef.current = interactive;
+        setIsHovering(interactive);
       }
     };
 
     const onMouseLeave = () => {
-      setIsVisible(false);
-      gsap.to([dot, ring], { opacity: 0, duration: 0.2 });
+      if (isVisibleRef.current) {
+        isVisibleRef.current = false;
+        gsap.to([dot, ring], { opacity: 0, duration: 0.2, overwrite: 'auto' });
+      }
     };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
@@ -69,7 +73,7 @@ export default function CustomCursor() {
       document.removeEventListener('mouseover', onMouseOver);
       document.documentElement.removeEventListener('mouseleave', onMouseLeave);
     };
-  }, [isVisible]);
+  }, []);
 
   return (
     <>

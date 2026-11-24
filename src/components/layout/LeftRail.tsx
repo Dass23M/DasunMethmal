@@ -1,31 +1,39 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
 /**
  * Persistent left vertical architectural rail (desktop)
  * - Top: 8-point starburst emblem (home)
- * - Middle: live neon-green vertical scroll progress indicator
+ * - Middle: live GPU-accelerated neon-green vertical scroll indicator (zero React re-renders)
  * - Bottom: high-contrast white square quick menu / X toggle
  */
 export default function LeftRail() {
-  const [scrollPct, setScrollPct] = useState(0);
+  const thumbRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
+    let rafId = 0;
+
+    const update = () => {
+      rafId = 0;
+      if (!thumbRef.current) return;
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      if (max <= 0) {
-        setScrollPct(0);
-        return;
-      }
-      setScrollPct(Math.min(100, Math.max(0, (window.scrollY / max) * 100)));
+      const ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      thumbRef.current.style.transform = `translate3d(0, ${ratio * 120}px, 0)`;
     };
 
-    onScroll();
+    const onScroll = () => {
+      if (!rafId) rafId = window.requestAnimationFrame(update);
+    };
+
+    update();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const toggleMenu = () => {
@@ -67,10 +75,9 @@ export default function LeftRail() {
       {/* Center Live Vertical Scroll Track */}
       <div className="relative w-[3px] h-40 bg-white/15 overflow-hidden">
         <div
-          className="absolute left-0 right-0 h-10 bg-[#9CFF00] transition-transform duration-100 ease-out"
-          style={{
-            transform: `translateY(${(scrollPct / 100) * 120}px)`,
-          }}
+          ref={thumbRef}
+          className="absolute left-0 right-0 h-10 bg-[#9CFF00] will-change-transform"
+          style={{ transform: 'translate3d(0, 0, 0)' }}
         />
       </div>
 

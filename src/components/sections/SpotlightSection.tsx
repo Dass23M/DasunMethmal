@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { AnimatePresence, motion } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const SPOTLIGHT_ITEMS = [
   {
@@ -39,6 +40,8 @@ const SPOTLIGHT_ITEMS = [
 
 export default function SpotlightSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const metaRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const current = SPOTLIGHT_ITEMS[activeIdx];
 
@@ -46,51 +49,64 @@ export default function SpotlightSection() {
     if (!sectionRef.current) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    let ctx: { revert: () => void } | null = null;
-    Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(
-      ([{ default: gsap }, { ScrollTrigger }]) => {
-        gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger);
 
-        ctx = gsap.context(() => {
-          if (window.innerWidth >= 768) {
-            gsap.fromTo(
-              '.spot-neon-block',
-              { y: -24, x: 18 },
-              {
-                y: 28,
-                x: -10,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: sectionRef.current,
-                  start: 'top bottom',
-                  end: 'bottom top',
-                  scrub: 1,
-                },
-              }
-            );
+    const ctx = gsap.context(() => {
+      if (window.innerWidth >= 768) {
+        gsap.fromTo(
+          '.spot-neon-block',
+          { y: -24, x: 18 },
+          {
+            y: 28,
+            x: -10,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1,
+            },
           }
-
-          gsap.fromTo(
-            '.spot-stage',
-            { opacity: 0, y: 28 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: 'expo.out',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top 84%',
-                once: true,
-              },
-            }
-          );
-        }, sectionRef);
+        );
       }
-    );
 
-    return () => ctx?.revert();
+      gsap.fromTo(
+        '.spot-stage',
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 84%',
+            once: true,
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
+
+  // Smooth shutter crossfade on item switch (replaces framer-motion)
+  useEffect(() => {
+    if (frameRef.current) {
+      gsap.fromTo(
+        frameRef.current,
+        { opacity: 0, scale: 1.07 },
+        { opacity: 1, scale: 1, duration: 0.45, ease: 'expo.out', overwrite: 'auto' }
+      );
+    }
+    if (metaRef.current) {
+      gsap.fromTo(
+        metaRef.current,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.35, ease: 'expo.out', overwrite: 'auto' }
+      );
+    }
+  }, [activeIdx]);
 
   return (
     <section
@@ -122,43 +138,26 @@ export default function SpotlightSection() {
           {/* Center Large Portrait / Feature Frame with Smooth Shutter Crossfade */}
           <div className="relative z-10 flex flex-col items-center text-center mt-2">
             <div className="relative w-full max-w-[340px] sm:max-w-[380px] aspect-[4/5] bg-[#161616] border border-white/15 overflow-hidden shadow-2xl">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={current.id}
-                  initial={{ opacity: 0, scale: 1.08 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={current.image}
-                    alt={current.title}
-                    fill
-                    sizes="(max-width: 640px) 90vw, 380px"
-                    className="object-cover object-top"
-                  />
-                </motion.div>
-              </AnimatePresence>
+              <div ref={frameRef} className="absolute inset-0 will-change-transform">
+                <Image
+                  src={current.image}
+                  alt={current.title}
+                  fill
+                  sizes="(max-width: 640px) 90vw, 380px"
+                  className="object-cover object-top"
+                />
+              </div>
             </div>
 
             <div className="mt-6 min-h-[60px]">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={current.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <h3 className="font-display font-medium text-xl sm:text-2xl tracking-[0.04em] uppercase text-white">
-                    {current.title}
-                  </h3>
-                  <p className="font-body text-sm text-zinc-400 mt-1">
-                    {current.role}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
+              <div ref={metaRef} className="will-change-transform">
+                <h3 className="font-display font-medium text-xl sm:text-2xl tracking-[0.04em] uppercase text-white">
+                  {current.title}
+                </h3>
+                <p className="font-body text-sm text-zinc-400 mt-1">
+                  {current.role}
+                </p>
+              </div>
             </div>
 
             {/* 5-Thumbnail Selector Strip */}

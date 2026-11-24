@@ -3,6 +3,8 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { portfolioItems } from '@/data/portfolio';
 import Magnetic from '@/components/ui/Magnetic';
 
@@ -22,113 +24,112 @@ export default function WorksResultsSection({
     if (!sectionRef.current) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    let ctx: { revert: () => void } | null = null;
-    Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(
-      ([{ default: gsap }, { ScrollTrigger }]) => {
-        gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger);
 
-        ctx = gsap.context(() => {
-          // 1. Giant THE / RESULTS masked reveal
+    const ctx = gsap.context(() => {
+      // 1. Giant THE / RESULTS masked reveal
+      gsap.fromTo(
+        '.wr-title-line',
+        { yPercent: 105, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.95,
+          stagger: 0.12,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: '.wr-heading',
+            start: 'top 85%',
+            once: true,
+          },
+        }
+      );
+
+      // 2. Staggered editorial curtain reveal on project cards
+      const cards = sectionRef.current?.querySelectorAll('.wr-project-card');
+      cards?.forEach((card, i) => {
+        const media = card.querySelector('.wr-card-media');
+        const img = card.querySelector('.wr-card-img');
+
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 32 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.85,
+            delay: (i % 2) * 0.1,
+            ease: 'expo.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 88%',
+              once: true,
+            },
+          }
+        );
+
+        if (media) {
           gsap.fromTo(
-            '.wr-title-line',
-            { yPercent: 105, opacity: 0 },
+            media,
+            { clipPath: 'inset(0% 0% 100% 0%)' },
             {
-              yPercent: 0,
-              opacity: 1,
+              clipPath: 'inset(0% 0% 0% 0%)',
               duration: 0.95,
-              stagger: 0.12,
-              ease: 'expo.out',
+              delay: (i % 2) * 0.1,
+              ease: 'power4.inOut',
               scrollTrigger: {
-                trigger: '.wr-heading',
-                start: 'top 85%',
+                trigger: card,
+                start: 'top 88%',
+                once: true,
               },
             }
           );
+        }
 
-          // 2. Staggered editorial curtain reveal on project cards
-          const cards = sectionRef.current?.querySelectorAll('.wr-project-card');
-          cards?.forEach((card, i) => {
-            const media = card.querySelector('.wr-card-media');
-            const img = card.querySelector('.wr-card-img');
-
-            gsap.fromTo(
-              card,
-              { opacity: 0, y: 32 },
-              {
-                opacity: 1,
-                y: 0,
-                duration: 0.85,
-                delay: (i % 2) * 0.1,
-                ease: 'expo.out',
-                scrollTrigger: {
-                  trigger: card,
-                  start: 'top 88%',
-                },
-              }
-            );
-
-            if (media) {
-              gsap.fromTo(
-                media,
-                { clipPath: 'inset(0% 0% 100% 0%)' },
-                {
-                  clipPath: 'inset(0% 0% 0% 0%)',
-                  duration: 0.95,
-                  delay: (i % 2) * 0.1,
-                  ease: 'power4.inOut',
-                  scrollTrigger: {
-                    trigger: card,
-                    start: 'top 88%',
-                  },
-                }
-              );
-            }
-
-            if (img) {
-              gsap.fromTo(
-                img,
-                { scale: 1.14 },
-                {
-                  scale: 1,
-                  duration: 1.15,
-                  delay: (i % 2) * 0.1,
-                  ease: 'expo.out',
-                  scrollTrigger: {
-                    trigger: card,
-                    start: 'top 88%',
-                  },
-                }
-              );
-            }
-          });
-
-          // 3. Animated count-up metrics inside the acid-green [NUMBERS] panel
-          const counters = sectionRef.current?.querySelectorAll<HTMLElement>('[data-count-to]');
-          counters?.forEach((el) => {
-            const target = parseFloat(el.dataset.countTo || '0');
-            const suffix = el.dataset.suffix || '';
-            const decimals = parseInt(el.dataset.decimals || '0', 10);
-            const obj = { val: 0 };
-
-            gsap.to(obj, {
-              val: target,
-              duration: 1.4,
+        if (img) {
+          gsap.fromTo(
+            img,
+            { scale: 1.14 },
+            {
+              scale: 1,
+              duration: 1.15,
+              delay: (i % 2) * 0.1,
               ease: 'expo.out',
               scrollTrigger: {
-                trigger: '.wr-numbers-card',
-                start: 'top 82%',
+                trigger: card,
+                start: 'top 88%',
                 once: true,
               },
-              onUpdate: () => {
-                el.textContent = `${obj.val.toFixed(decimals)}${suffix}`;
-              },
-            });
-          });
-        }, sectionRef);
-      }
-    );
+            }
+          );
+        }
+      });
 
-    return () => ctx?.revert();
+      // 3. Animated count-up metrics inside the acid-green [NUMBERS] panel
+      const counters = sectionRef.current?.querySelectorAll<HTMLElement>('[data-count-to]');
+      counters?.forEach((el) => {
+        const target = parseFloat(el.dataset.countTo || '0');
+        const suffix = el.dataset.suffix || '';
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        const obj = { val: 0 };
+
+        gsap.to(obj, {
+          val: target,
+          duration: 1.4,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: '.wr-numbers-card',
+            start: 'top 82%',
+            once: true,
+          },
+          onUpdate: () => {
+            el.textContent = `${obj.val.toFixed(decimals)}${suffix}`;
+          },
+        });
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (

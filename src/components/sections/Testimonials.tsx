@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { AnimatePresence, motion } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const TESTIMONIALS_DATA = [
   {
@@ -51,6 +52,8 @@ const WAVE_HEIGHTS = [28, 45, 32, 68, 52, 84, 62, 95, 76, 48, 88, 58, 36, 72, 42
 
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
+  const quoteRef = useRef<HTMLQuoteElement>(null);
+  const authorRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const current = TESTIMONIALS_DATA[active];
 
@@ -58,31 +61,86 @@ export default function Testimonials() {
     if (!sectionRef.current) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    let ctx: { revert: () => void } | null = null;
-    Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(
-      ([{ default: gsap }, { ScrollTrigger }]) => {
-        gsap.registerPlugin(ScrollTrigger);
-        ctx = gsap.context(() => {
-          gsap.fromTo(
-            '.testi-reveal',
-            { opacity: 0, y: 28 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.9,
-              stagger: 0.12,
-              ease: 'expo.out',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top 80%',
-              },
-            }
-          );
-        }, sectionRef);
-      }
-    );
-    return () => ctx?.revert();
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.testi-reveal',
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          stagger: 0.12,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            once: true,
+          },
+        }
+      );
+
+      // Gentle ambient motion on waveform bars & desktop client pins (paused off-screen)
+      const ambientTweens: gsap.core.Tween[] = [];
+
+      const bars = sectionRef.current?.querySelectorAll<HTMLElement>('.testi-wave-bar');
+      bars?.forEach((bar, i) => {
+        ambientTweens.push(
+          gsap.to(bar, {
+            scaleY: 0.55 + (i % 4) * 0.14,
+            duration: 1.2 + (i % 5) * 0.25,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+          })
+        );
+      });
+
+      const pins = sectionRef.current?.querySelectorAll<HTMLElement>('.testi-map-pin');
+      pins?.forEach((pin, idx) => {
+        ambientTweens.push(
+          gsap.to(pin, {
+            y: idx % 2 === 0 ? -5 : 5,
+            duration: 2.2 + idx * 0.35,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+          })
+        );
+      });
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        onEnter: () => ambientTweens.forEach((t) => t.resume()),
+        onEnterBack: () => ambientTweens.forEach((t) => t.resume()),
+        onLeave: () => ambientTweens.forEach((t) => t.pause()),
+        onLeaveBack: () => ambientTweens.forEach((t) => t.pause()),
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
+
+  // Smooth pull-quote & author swap transition (replaces framer-motion)
+  useEffect(() => {
+    if (quoteRef.current) {
+      gsap.fromTo(
+        quoteRef.current,
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'expo.out', overwrite: 'auto' }
+      );
+    }
+    if (authorRef.current) {
+      gsap.fromTo(
+        authorRef.current,
+        { opacity: 0, x: -10 },
+        { opacity: 1, x: 0, duration: 0.34, ease: 'expo.out', overwrite: 'auto' }
+      );
+    }
+  }, [active]);
 
   const handlePrev = () =>
     setActive((prev) => (prev - 1 + TESTIMONIALS_DATA.length) % TESTIMONIALS_DATA.length);
@@ -166,17 +224,9 @@ export default function Testimonials() {
               className="pointer-events-none absolute bottom-0 inset-x-0 h-28 opacity-25 flex items-end justify-around px-6"
             >
               {WAVE_HEIGHTS.map((h, i) => (
-                <motion.span
+                <span
                   key={i}
-                  animate={{
-                    scaleY: [1, 0.55 + ((i + active) % 4) * 0.14, 1],
-                  }}
-                  transition={{
-                    duration: 2.2 + (i % 5) * 0.35,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                  className="w-px bg-white/60 origin-bottom"
+                  className="testi-wave-bar w-px bg-white/60 origin-bottom will-change-transform"
                   style={{ height: `${h}%` }}
                 />
               ))}
@@ -185,20 +235,12 @@ export default function Testimonials() {
             {TESTIMONIALS_DATA.map((item, idx) => {
               const isSelected = idx === active;
               return (
-                <motion.button
+                <button
                   key={item.id}
                   type="button"
                   onClick={() => setActive(idx)}
-                  animate={{
-                    y: isSelected ? -4 : [0, idx % 2 === 0 ? -5 : 5, 0],
-                  }}
-                  transition={
-                    isSelected
-                      ? { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
-                      : { duration: 4.5 + idx * 0.6, repeat: Infinity, ease: 'easeInOut' }
-                  }
                   style={{ top: item.pos.top, left: item.pos.left }}
-                  className={`absolute flex items-center gap-2 transition-opacity duration-300 cursor-pointer group ${
+                  className={`testi-map-pin absolute flex items-center gap-2 transition-opacity duration-300 cursor-pointer group will-change-transform ${
                     isSelected ? 'z-20' : 'z-10 opacity-70 hover:opacity-100'
                   }`}
                 >
@@ -227,67 +269,48 @@ export default function Testimonials() {
                   </span>
 
                   {isSelected && (
-                    <motion.span
-                      layoutId="active-testimonial-star"
-                      transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-                      className="w-9 h-9 bg-[#9CFF00] text-black flex items-center justify-center shrink-0"
-                    >
+                    <span className="w-9 h-9 bg-[#9CFF00] text-black flex items-center justify-center shrink-0">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 1L14.5 9.5L23 12L14.5 14.5L12 23L9.5 14.5L1 12L9.5 9.5L12 1Z" />
                       </svg>
-                    </motion.span>
+                    </span>
                   )}
-                </motion.button>
+                </button>
               );
             })}
           </div>
 
-          {/* Right Giant Editorial Pull-Quote + Smooth AnimatePresence */}
+          {/* Right Giant Editorial Pull-Quote */}
           <div className="testi-reveal lg:col-span-6 lg:pl-6 flex flex-col justify-between min-h-[260px] lg:min-h-[340px]">
             <div className="min-h-[140px] sm:min-h-[200px] flex items-center">
-              <AnimatePresence mode="wait">
-                <motion.blockquote
-                  key={current.id}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-display font-normal text-xl sm:text-3xl lg:text-[2.75rem] leading-[1.2] sm:leading-[1.15] tracking-[-0.025em] text-white mb-6 sm:mb-10"
-                >
-                  &ldquo;{current.quote}&rdquo;
-                </motion.blockquote>
-              </AnimatePresence>
+              <blockquote
+                ref={quoteRef}
+                className="font-display font-normal text-xl sm:text-3xl lg:text-[2.75rem] leading-[1.2] sm:leading-[1.15] tracking-[-0.025em] text-white mb-6 sm:mb-10 will-change-transform"
+              >
+                &ldquo;{current.quote}&rdquo;
+              </blockquote>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-6 border-t border-dashed border-white/[0.12]">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={current.id}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 10 }}
-                  transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex items-center gap-3.5"
-                >
-                  <div className="relative w-12 h-12 overflow-hidden border border-white/20 shrink-0">
-                    <Image
-                      src={current.image}
-                      alt={current.name}
-                      fill
-                      sizes="48px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <p className="font-display font-medium text-base text-white leading-tight">
-                      {current.name}
-                    </p>
-                    <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-zinc-400 mt-1">
-                      {current.position}
-                    </p>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+              <div ref={authorRef} className="flex items-center gap-3.5 will-change-transform">
+                <div className="relative w-12 h-12 overflow-hidden border border-white/20 shrink-0">
+                  <Image
+                    src={current.image}
+                    alt={current.name}
+                    fill
+                    sizes="48px"
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <p className="font-display font-medium text-base text-white leading-tight">
+                    {current.name}
+                  </p>
+                  <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-zinc-400 mt-1">
+                    {current.position}
+                  </p>
+                </div>
+              </div>
 
               {/* Sharp Pagination Buttons */}
               <div className="flex items-center gap-3">

@@ -3,6 +3,8 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Magnetic from '@/components/ui/Magnetic';
 
 export interface ServiceRowItem {
@@ -97,91 +99,89 @@ export default function ServicesEditorial() {
     if (!sectionRef.current) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    let ctx: { revert: () => void } | null = null;
-    Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(
-      ([{ default: gsap }, { ScrollTrigger }]) => {
-        gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger);
 
-        ctx = gsap.context(() => {
-          const rows = sectionRef.current?.querySelectorAll('.svc-row');
-          rows?.forEach((row) => {
-            const line = row.querySelector('.svc-line');
-            const copy = row.querySelectorAll('.svc-reveal');
-            const art = row.querySelector('.svc-art-tile');
-            const img = row.querySelector('.svc-art-img');
+    const ctx = gsap.context(() => {
+      const rows = sectionRef.current?.querySelectorAll('.svc-row');
+      rows?.forEach((row) => {
+        const line = row.querySelector('.svc-line');
+        const copy = row.querySelectorAll('.svc-reveal');
+        const art = row.querySelector('.svc-art-tile');
+        const img = row.querySelector('.svc-art-img');
 
-            if (line) {
-              gsap.fromTo(
-                line,
-                { scaleX: 0, transformOrigin: 'left center' },
-                {
-                  scaleX: 1,
-                  duration: 0.9,
-                  ease: 'expo.out',
-                  scrollTrigger: {
-                    trigger: row,
-                    start: 'top 86%',
-                  },
-                }
-              );
+        if (line) {
+          gsap.fromTo(
+            line,
+            { scaleX: 0, transformOrigin: 'left center' },
+            {
+              scaleX: 1,
+              duration: 0.9,
+              ease: 'expo.out',
+              scrollTrigger: {
+                trigger: row,
+                start: 'top 86%',
+                once: true,
+              },
             }
+          );
+        }
 
-            if (copy.length > 0) {
-              gsap.fromTo(
-                copy,
-                { opacity: 0, y: 28 },
-                {
-                  opacity: 1,
-                  y: 0,
-                  duration: 0.85,
-                  stagger: 0.08,
-                  ease: 'expo.out',
-                  scrollTrigger: {
-                    trigger: row,
-                    start: 'top 84%',
-                  },
-                }
-              );
+        if (copy.length > 0) {
+          gsap.fromTo(
+            copy,
+            { opacity: 0, y: 28 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.85,
+              stagger: 0.08,
+              ease: 'expo.out',
+              scrollTrigger: {
+                trigger: row,
+                start: 'top 84%',
+                once: true,
+              },
             }
+          );
+        }
 
-            if (art) {
-              gsap.fromTo(
-                art,
-                { clipPath: 'inset(100% 0% 0% 0%)' },
-                {
-                  clipPath: 'inset(0% 0% 0% 0%)',
-                  duration: 0.95,
-                  ease: 'power4.inOut',
-                  scrollTrigger: {
-                    trigger: row,
-                    start: 'top 82%',
-                  },
-                }
-              );
+        if (art) {
+          gsap.fromTo(
+            art,
+            { clipPath: 'inset(100% 0% 0% 0%)' },
+            {
+              clipPath: 'inset(0% 0% 0% 0%)',
+              duration: 0.95,
+              ease: 'power4.inOut',
+              scrollTrigger: {
+                trigger: row,
+                start: 'top 82%',
+                once: true,
+              },
             }
+          );
+        }
 
-            if (img && window.innerWidth >= 768) {
-              gsap.fromTo(
-                img,
-                { y: -14 },
-                {
-                  y: 14,
-                  ease: 'none',
-                  scrollTrigger: {
-                    trigger: row,
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: 0.9,
-                  },
-                }
-              );
+        if (img && window.innerWidth >= 768) {
+          gsap.fromTo(
+            img,
+            { y: -14 },
+            {
+              y: 14,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: row,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 0.9,
+              },
             }
-          });
-        }, sectionRef);
-      }
-    );
+          );
+        }
+      });
+    }, sectionRef);
 
-    return () => ctx?.revert();
+    return () => ctx.revert();
   }, []);
 
   return (

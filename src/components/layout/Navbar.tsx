@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Magnetic from '@/components/ui/Magnetic';
@@ -16,19 +16,38 @@ const NAV_LINKS = [
 export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const [scrollPct, setScrollPct] = useState(0);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const scrolledRef = useRef(false);
 
   useEffect(() => {
-    const onScroll = () => {
+    let rafId = 0;
+
+    const update = () => {
+      rafId = 0;
       const y = window.scrollY;
-      setScrolled(y > 24);
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollPct(max > 0 ? Math.min(100, Math.max(0, (y / max) * 100)) : 0);
+      const isScrolled = y > 24;
+      if (isScrolled !== scrolledRef.current) {
+        scrolledRef.current = isScrolled;
+        setScrolled(isScrolled);
+      }
+
+      if (progressBarRef.current) {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const ratio = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+        progressBarRef.current.style.transform = `scaleX(${ratio})`;
+      }
     };
 
-    onScroll();
+    const onScroll = () => {
+      if (!rafId) rafId = window.requestAnimationFrame(update);
+    };
+
+    update();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const toggleMenu = (e: React.MouseEvent) => {
@@ -44,11 +63,12 @@ export default function Navbar() {
           : 'bg-[#080808]/80 backdrop-blur-md border-b border-dashed border-white/[0.12]'
       }`}
     >
-      {/* Mobile-only neon top scroll progress bar (replaces desktop LeftRail scroll bar) */}
+      {/* Mobile-only GPU neon top scroll progress bar (zero React re-renders) */}
       <div className="md:hidden absolute bottom-0 left-0 right-0 h-[2px] bg-white/[0.06] pointer-events-none">
         <div
-          className="h-full bg-[#9CFF00] origin-left transition-[width] duration-75 ease-out"
-          style={{ width: `${scrollPct}%` }}
+          ref={progressBarRef}
+          className="h-full w-full bg-[#9CFF00] origin-left will-change-transform"
+          style={{ transform: 'scaleX(0)' }}
         />
       </div>
 

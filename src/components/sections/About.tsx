@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Magnetic from '@/components/ui/Magnetic';
 
 interface AboutProps {
@@ -39,115 +41,165 @@ export default function About({ showMoreLink = true }: AboutProps) {
 
   useEffect(() => {
     if (!sectionRef.current) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) return;
 
-    let ctx: { revert: () => void } | null = null;
-    Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(
-      ([{ default: gsap }, { ScrollTrigger }]) => {
-        gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger);
 
-        ctx = gsap.context(() => {
-          const mm = gsap.matchMedia();
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
 
-          // Desktop: Full scroll-scrubbed word illumination + stamp & watermark parallax
-          mm.add('(min-width: 768px)', () => {
-            const words = sectionRef.current?.querySelectorAll('.about-scrub-word');
-            if (words && words.length > 0) {
-              gsap.fromTo(
-                words,
-                { opacity: 0.18 },
-                {
-                  opacity: 1,
-                  stagger: 0.08,
-                  ease: 'none',
-                  scrollTrigger: {
-                    trigger: '.about-statement-wrap',
-                    start: 'top 84%',
-                    end: 'bottom 58%',
-                    scrub: 0.85,
-                  },
-                }
-              );
-            }
+      // Eyebrow label subtle editorial anchor
+      gsap.fromTo(
+        '.about-eyebrow',
+        { opacity: 0, x: -20 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.75,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.about-statement-wrap',
+            start: 'top 86%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
 
-            gsap.fromTo(
-              '.about-neon-pill',
-              { scale: 0.82, opacity: 0.2 },
-              {
-                scale: 1,
-                opacity: 1,
-                ease: 'expo.out',
-                scrollTrigger: {
-                  trigger: '.about-statement-wrap',
-                  start: 'top 76%',
-                  end: 'top 46%',
-                  scrub: 0.8,
-                },
-              }
-            );
+      // Desktop & Tablet: Real-world editorial right-to-left glide + staggered typographic settle
+      mm.add('(min-width: 768px)', () => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.about-statement-wrap',
+            start: 'top 84%',
+            toggleActions: 'play none none reverse',
+          },
+        });
 
-            gsap.to('.about-pill-x', {
-              rotate: 180,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 1,
-              },
-            });
+        // 1. Whole editorial block glides smoothly in from the right
+        tl.fromTo(
+          '.about-statement-heading',
+          { x: 96, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 1.05,
+            ease: 'power4.out',
+          },
+          0
+        )
+          // 2. Organic right-to-left typographic wave across words + neon badge
+          .fromTo(
+            '.about-flow-token',
+            { x: 36, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.85,
+              stagger: 0.026,
+              ease: 'expo.out',
+            },
+            0.06
+          )
+          // 3. Bottom metadata & CTA follow cleanly from the right
+          .fromTo(
+            '.about-statement-footer',
+            { x: 48, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.85,
+              ease: 'power3.out',
+            },
+            0.34
+          );
 
-            gsap.to('.about-stamp-star', {
-              rotate: 360,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 1.2,
-              },
-            });
+        // Subtle continuous scroll-linked micro-motion on decorative accents
+        gsap.to('.about-pill-x', {
+          rotate: 180,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+          },
+        });
 
-            gsap.fromTo(
-              '.about-year-watermark',
-              { x: 45 },
-              {
-                x: -25,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: sectionRef.current,
-                  start: 'top bottom',
-                  end: 'bottom top',
-                  scrub: 1,
-                },
-              }
-            );
-          });
+        gsap.to('.about-stamp-star', {
+          rotate: 360,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2,
+          },
+        });
 
-          // Mobile: Lightweight one-shot entrance (zero scroll-scrub lag on touch devices)
-          mm.add('(max-width: 767px)', () => {
-            gsap.fromTo(
-              '.about-statement-wrap',
-              { opacity: 0, y: 24 },
-              {
-                opacity: 1,
-                y: 0,
-                duration: 0.75,
-                ease: 'expo.out',
-                scrollTrigger: {
-                  trigger: '.about-statement-wrap',
-                  start: 'top 88%',
-                  once: true,
-                },
-              }
-            );
-          });
-        }, sectionRef);
-      }
-    );
+        gsap.fromTo(
+          '.about-year-watermark',
+          { x: 45 },
+          {
+            x: -25,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1,
+            },
+          }
+        );
+      });
 
-    return () => ctx?.revert();
+      // Mobile: Butter-smooth GPU-only right-to-left slide entrance (once, zero touch scroll lag)
+      mm.add('(max-width: 767px)', () => {
+        const mobileTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.about-statement-wrap',
+            start: 'top 86%',
+            once: true,
+          },
+        });
+
+        mobileTl
+          .fromTo(
+            '.about-statement-heading',
+            { x: 64, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.9,
+              ease: 'power4.out',
+            },
+            0
+          )
+          .fromTo(
+            '.about-flow-token',
+            { x: 20, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.7,
+              stagger: 0.018,
+              ease: 'expo.out',
+            },
+            0.05
+          )
+          .fromTo(
+            '.about-statement-footer',
+            { x: 36, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.75,
+              ease: 'power3.out',
+            },
+            0.28
+          );
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -202,36 +254,41 @@ export default function About({ showMoreLink = true }: AboutProps) {
         {/* Main Editorial Statement Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           <div className="lg:col-span-3">
-            <span className="font-mono text-xs tracking-[0.16em] uppercase text-zinc-400">
+            <span className="about-eyebrow inline-block font-mono text-xs tracking-[0.16em] uppercase text-zinc-400 will-change-transform">
               [ABOUT ME]
             </span>
           </div>
 
           <div className="about-statement-wrap lg:col-span-9">
-            <h2 className="font-display font-normal text-[1.65rem] sm:text-4xl lg:text-[3.35rem] leading-[1.2] sm:leading-[1.14] tracking-[-0.03em] text-white">
+            <h2 className="about-statement-heading font-display font-normal text-[1.65rem] sm:text-4xl lg:text-[3.35rem] leading-[1.2] sm:leading-[1.14] tracking-[-0.03em] text-white will-change-transform">
               <span className="hidden sm:inline-block w-20 lg:w-28" aria-hidden="true" />
               {LEAD_PART_1.map((word, i) => (
-                <span key={`p1-${i}`} className="about-scrub-word inline-block mr-[0.26em]">
-                  {word}
+                <span key={`p1-${i}`}>
+                  <span className="about-flow-token inline-block will-change-transform">
+                    {word}
+                  </span>{' '}
                 </span>
               ))}
               <span
                 aria-hidden="true"
-                className="about-neon-pill inline-flex items-center gap-2 bg-[#9CFF00] text-black px-2.5 sm:px-3.5 py-0.5 sm:py-1 align-middle text-base sm:text-2xl lg:text-3xl font-mono font-normal mr-[0.26em] will-change-transform"
+                className="about-flow-token about-neon-pill inline-flex items-center gap-2 bg-[#9CFF00] text-black px-2.5 sm:px-3.5 py-0.5 sm:py-1 align-middle text-base sm:text-2xl lg:text-3xl font-mono font-normal mr-[0.18em] will-change-transform"
               >
                 <span>+</span>
                 <span className="about-pill-x inline-block will-change-transform">×</span>
                 <span>+</span>
-              </span>
+              </span>{' '}
               {LEAD_PART_2.map((word, i) => (
-                <span key={`p2-${i}`} className="about-scrub-word inline-block mr-[0.26em]">
-                  {word}
+                <span key={`p2-${i}`}>
+                  <span className="about-flow-token inline-block will-change-transform">
+                    {word}
+                  </span>
+                  {i < LEAD_PART_2.length - 1 ? ' ' : ''}
                 </span>
               ))}
             </h2>
 
             {/* Bottom Metadata & Magnetic Link */}
-            <div className="mt-14 sm:mt-20 pt-6 border-t border-dashed border-white/[0.12] flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+            <div className="about-statement-footer mt-14 sm:mt-20 pt-6 border-t border-dashed border-white/[0.12] flex flex-col sm:flex-row sm:items-end justify-between gap-6 will-change-transform">
               <div className="font-body text-sm">
                 <p className="text-white font-medium">
                   Based in Sri Lanka · Worldwide

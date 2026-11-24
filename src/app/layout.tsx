@@ -7,7 +7,6 @@ import LeftRail from '@/components/layout/LeftRail';
 import Loader from '@/components/layout/Loader';
 import CustomCursor from '@/components/ui/CustomCursor';
 import ScrollToTop from '@/components/ui/ScrollToTop';
-import { ThemeProvider } from '@/components/providers/ThemeProvider';
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dasunmethmal.com';
@@ -134,18 +133,16 @@ export default function RootLayout({
           } as React.CSSProperties
         }
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
-          <SmoothScrollProvider>
-            <CustomCursor />
-            <ScrollToTop />
-            <Loader />
-            <LeftRail />
-            <MobileMenu />
-            <div className="unslate_co--site-wrap md:pl-14 min-h-screen bg-[#080808] editorial-noise">
-              {children}
-            </div>
-          </SmoothScrollProvider>
-        </ThemeProvider>
+        <SmoothScrollProvider>
+          <CustomCursor />
+          <ScrollToTop />
+          <Loader />
+          <LeftRail />
+          <MobileMenu />
+          <div className="unslate_co--site-wrap md:pl-14 min-h-screen bg-[#080808] editorial-noise">
+            {children}
+          </div>
+        </SmoothScrollProvider>
       </body>
     </html>
   );

@@ -2,17 +2,20 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
 /**
- * Hardened Contact Form API Route
- * - Origin verification & sliding-window IP rate limiting
- * - Strict payload size & field length validation
- * - HTML entity escaping & CRLF header-injection stripping
- * - Server-only delivery via Web3Forms, Resend, or Nodemailer SMTP
+ * Hardened Server-Side Contact API Route
+ * - Primary: Resend REST API (server-side only, 3,000 free emails/month)
+ * - Optional Fallback: Gmail / SMTP via Nodemailer
+ * - Security: Same-origin verification, bounded IP sliding-window rate limiting,
+ *   16 KB payload cap, strict field validation, CRLF header stripping, and HTML escaping.
  */
 
 const MAX_BODY_BYTES = 16_384; // 16 KB max request payload
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
 const RATE_LIMIT_MAX_REQUESTS = 5;
 const MAX_TRACKED_IPS = 1000;
+
+const DEFAULT_RECEIVER_EMAIL = 'methmal.liyanage23@gmail.com';
+const DEFAULT_RESEND_FROM = 'Dasun Methmal Portfolio <onboarding@resend.dev>';
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
@@ -33,7 +36,6 @@ function checkRateLimit(ip: string): { allowed: boolean; retryAfterSec: number }
   const now = Date.now();
   const windowStart = now - RATE_LIMIT_WINDOW_MS;
 
-  // Prune old entries if map grows large
   if (ipRequestLog.size >= MAX_TRACKED_IPS && !ipRequestLog.has(ip)) {
     ipRequestLog.forEach((timestamps, key) => {
       const fresh = timestamps.filter((ts) => ts > windowStart);
@@ -57,7 +59,7 @@ function checkRateLimit(ip: string): { allowed: boolean; retryAfterSec: number }
 
 function isAllowedOrigin(request: Request): boolean {
   const origin = request.headers.get('origin');
-  if (!origin) return true; // Non-browser / same-origin requests without Origin header
+  if (!origin) return true;
 
   const host = request.headers.get('host');
   try {
@@ -94,6 +96,58 @@ function escapeHtml(value: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+function cleanEnv(value?: string): string {
+  return (value || '').trim().replace(/^["']|["']$/g, '');
+}
+
+function isPlaceholder(value: string): boolean {
+  return !value || /your_|YOUR_|example|placeholder|xxxx/i.test(value) || value.length < 10;
+}
+
+function buildEmailHtml(
+  safeName: string,
+  safeEmail: string,
+  safeSubject: string,
+  safeMessage: string
+): string {
+  return `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #080808; color: #ffffff; border: 1px solid #222222; padding: 28px;">
+      <div style="border-bottom: 1px dashed #2a2a2a; padding-bottom: 16px; margin-bottom: 20px;">
+        <span style="display: inline-block; background: #9CFF00; color: #000000; font-family: monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; padding: 4px 10px; text-transform: uppercase;">
+          NEW PORTFOLIO INQUIRY
+        </span>
+        <h2 style="margin: 14px 0 0; font-size: 22px; font-weight: 600; color: #ffffff;">
+          ${safeSubject}
+        </h2>
+      </div>
+
+      <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px;">
+        <tr>
+          <td style="padding: 6px 0; color: #9ca3af; width: 90px; font-family: monospace; font-size: 12px;">FROM</td>
+          <td style="padding: 6px 0; color: #ffffff; font-weight: 500;">${safeName}</td>
+        </tr>
+        <tr>
+          <td style="padding: 6px 0; color: #9ca3af; font-family: monospace; font-size: 12px;">EMAIL</td>
+          <td style="padding: 6px 0;">
+            <a href="mailto:${safeEmail}" style="color: #9CFF00; text-decoration: none;">${safeEmail}</a>
+          </td>
+        </tr>
+      </table>
+
+      <div style="background: #111111; border: 1px solid #262626; padding: 18px;">
+        <div style="font-family: monospace; font-size: 11px; letter-spacing: 0.14em; color: #9ca3af; margin-bottom: 10px; text-transform: uppercase;">
+          MESSAGE
+        </div>
+        <p style="margin: 0; white-space: pre-wrap; line-height: 1.65; color: #e4e4e7; font-size: 14px;">${safeMessage}</p>
+      </div>
+
+      <p style="margin: 20px 0 0; font-family: monospace; font-size: 11px; color: #71717a;">
+        Sent via dasunmethmal.com contact form · Reply directly to respond to ${safeName}.
+      </p>
+    </div>
+  `;
 }
 
 export async function POST(request: Request) {
@@ -140,7 +194,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 3. Honeypot spam check (return silent 200 without revealing detection)
+    // 3. Honeypot spam check (silent 200 without revealing bot trap)
     if (typeof body.botcheck === 'string' && body.botcheck.trim().length > 0) {
       return NextResponse.json({ ok: true, message: 'Message sent successfully!' });
     }
@@ -195,58 +249,25 @@ export async function POST(request: Request) {
       );
     }
 
-    const emailSubject = rawSubject || `New Portfolio Contact Message from ${rawName}`;
-    const safeNameHtml = escapeHtml(rawName);
-    const safeEmailHtml = escapeHtml(rawEmail);
-    const safeSubjectHtml = escapeHtml(emailSubject);
-    const safeMessageHtml = escapeHtml(rawMessage);
+    const emailSubject = rawSubject || `New Portfolio Message from ${rawName}`;
+    const htmlBody = buildEmailHtml(
+      escapeHtml(rawName),
+      escapeHtml(rawEmail),
+      escapeHtml(emailSubject),
+      escapeHtml(rawMessage)
+    );
+    const textBody = `Name: ${rawName}\nEmail: ${rawEmail}\nSubject: ${emailSubject}\n\nMessage:\n${rawMessage}`;
 
-    // 6. Delivery Provider 1: Web3Forms (server-side only)
-    const rawWeb3Key = process.env.WEB3FORMS_ACCESS_KEY || process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
-    const web3Key = rawWeb3Key?.trim().replace(/^["']|["']$/g, '');
-    const isPlaceholder = (k?: string) =>
-      !k || k.includes('your_') || k.includes('YOUR_') || k.length < 10;
+    const recipientEmail =
+      cleanEnv(process.env.CONTACT_RECEIVER_EMAIL) ||
+      cleanEnv(process.env.SMTP_USER) ||
+      DEFAULT_RECEIVER_EMAIL;
 
-    if (web3Key && !isPlaceholder(web3Key)) {
+    // 6. Primary Provider: Resend REST API (100% Server-Side)
+    const resendKey = cleanEnv(process.env.RESEND_API_KEY);
+    if (!isPlaceholder(resendKey)) {
       try {
-        const res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: JSON.stringify({
-            access_key: web3Key,
-            name: rawName,
-            email: rawEmail,
-            subject: emailSubject,
-            message: rawMessage,
-            from_name: 'Portfolio Contact Form',
-          }),
-          signal: AbortSignal.timeout(10_000),
-        });
-
-        const textResponse = await res.text();
-        let data: { success?: boolean; message?: string } = {};
-        try {
-          data = JSON.parse(textResponse);
-        } catch {
-          console.warn('Web3Forms returned a non-JSON response.');
-        }
-
-        if (data.success) {
-          return NextResponse.json({ ok: true, message: 'Message sent successfully!' });
-        }
-      } catch (err) {
-        console.error('Web3Forms delivery failed:', err instanceof Error ? err.message : 'Unknown error');
-      }
-    }
-
-    // 7. Delivery Provider 2: Resend API
-    const resendKey = process.env.RESEND_API_KEY?.trim();
-    const recipientEmail = process.env.CONTACT_RECEIVER_EMAIL || process.env.SMTP_USER;
-    if (resendKey && recipientEmail) {
-      try {
+        const fromAddress = cleanEnv(process.env.RESEND_FROM_EMAIL) || DEFAULT_RESEND_FROM;
         const res = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
@@ -254,21 +275,12 @@ export async function POST(request: Request) {
             Authorization: `Bearer ${resendKey}`,
           },
           body: JSON.stringify({
-            from: 'Portfolio Contact Form <onboarding@resend.dev>',
-            to: recipientEmail,
+            from: fromAddress,
+            to: [recipientEmail],
             reply_to: rawEmail,
             subject: emailSubject,
-            html: `
-              <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-                <h2 style="color: #000;">New Contact Form Message</h2>
-                <p><strong>Name:</strong> ${safeNameHtml}</p>
-                <p><strong>Email:</strong> ${safeEmailHtml}</p>
-                <p><strong>Subject:</strong> ${safeSubjectHtml}</p>
-                <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
-                <p><strong>Message:</strong></p>
-                <p style="white-space: pre-wrap; background: #f9f9f9; padding: 15px; border-radius: 8px;">${safeMessageHtml}</p>
-              </div>
-            `,
+            text: textBody,
+            html: htmlBody,
           }),
           signal: AbortSignal.timeout(10_000),
         });
@@ -276,46 +288,42 @@ export async function POST(request: Request) {
         if (res.ok) {
           return NextResponse.json({ ok: true, message: 'Message sent successfully!' });
         }
+
+        const errData = (await res.json().catch(() => ({}))) as { message?: string };
+        console.error(`Resend API error (${res.status}): ${errData.message || 'Delivery rejected'}`);
       } catch (err) {
-        console.error('Resend delivery failed:', err instanceof Error ? err.message : 'Unknown error');
+        console.error(
+          'Resend network error:',
+          err instanceof Error ? err.message : 'Unknown error'
+        );
       }
     }
 
-    // 8. Delivery Provider 3: Gmail / SMTP (Nodemailer with file/URL access disabled)
-    const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER;
-    const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD;
-    if (smtpUser && smtpPass) {
+    // 7. Optional Fallback: Gmail / SMTP (Nodemailer with file & URL access disabled)
+    const smtpUser = cleanEnv(process.env.SMTP_USER || process.env.GMAIL_USER);
+    const smtpPass = cleanEnv(process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD);
+    if (smtpUser && smtpPass && !isPlaceholder(smtpPass)) {
       try {
+        const smtpPort = Number(process.env.SMTP_PORT) || 465;
         const transporter = nodemailer.createTransport({
-          host: process.env.SMTP_HOST || 'smtp.gmail.com',
-          port: Number(process.env.SMTP_PORT) || 465,
-          secure: (process.env.SMTP_PORT || '465') === '465',
+          host: cleanEnv(process.env.SMTP_HOST) || 'smtp.gmail.com',
+          port: smtpPort,
+          secure: smtpPort === 465,
           auth: {
             user: smtpUser,
             pass: smtpPass,
           },
         });
 
-        const receiver = process.env.CONTACT_RECEIVER_EMAIL || smtpUser;
-
         await transporter.sendMail({
           from: `"Portfolio Contact" <${smtpUser}>`,
           replyTo: rawEmail,
-          to: receiver,
+          to: recipientEmail,
           subject: emailSubject,
           disableFileAccess: true,
           disableUrlAccess: true,
-          text: `Name: ${rawName}\nEmail: ${rawEmail}\nSubject: ${emailSubject}\n\nMessage:\n${rawMessage}`,
-          html: `
-            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-              <h2 style="color: #111; margin-top: 0;">New Message from ${safeNameHtml}</h2>
-              <p><strong>Email:</strong> <a href="mailto:${safeEmailHtml}">${safeEmailHtml}</a></p>
-              <p><strong>Subject:</strong> ${safeSubjectHtml}</p>
-              <div style="background-color: #f5f5f7; padding: 16px; border-radius: 8px; margin-top: 16px;">
-                <p style="margin: 0; white-space: pre-wrap;">${safeMessageHtml}</p>
-              </div>
-            </div>
-          `,
+          text: textBody,
+          html: htmlBody,
         });
 
         return NextResponse.json({ ok: true, message: 'Message sent successfully!' });
@@ -324,7 +332,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // 9. Honest error response if no provider delivered (never silently drop leads or log PII)
+    // 8. Honest error response if no email provider delivered
     return NextResponse.json(
       {
         ok: false,

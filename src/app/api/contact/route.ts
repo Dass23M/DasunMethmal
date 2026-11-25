@@ -14,7 +14,7 @@ const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
 const RATE_LIMIT_MAX_REQUESTS = 5;
 const MAX_TRACKED_IPS = 1000;
 
-const DEFAULT_RECEIVER_EMAIL = 'methmal.liyanage23@gmail.com';
+const DEFAULT_RECEIVER_EMAIL = 'dasunmethmal23@gmail.com';
 const DEFAULT_RESEND_FROM = 'Dasun Methmal Portfolio <onboarding@resend.dev>';
 
 const EMAIL_REGEX =
@@ -337,7 +337,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         message:
-          'Message delivery is temporarily unavailable. Please email methmal.liyanage23@gmail.com directly.',
+          'Message delivery is temporarily unavailable. Please email dasunmethmal23@gmail.com directly.',
       },
       { status: 503 }
     );

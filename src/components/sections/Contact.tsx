@@ -140,10 +140,10 @@ export default function Contact() {
               <div>
                 <span className="text-zinc-500 block uppercase mb-1">EMAIL</span>
                 <a
-                  href="mailto:methmal.liyanage23@gmail.com"
+                  href="mailto:dasunmethmal23@gmail.com"
                   className="text-white hover:text-[#9CFF00] transition-colors"
                 >
-                  methmal.liyanage23@gmail.com
+                  dasunmethmal23@gmail.com
                 </a>
               </div>
               <div>

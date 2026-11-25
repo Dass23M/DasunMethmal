@@ -216,10 +216,10 @@ export default function Footer() {
           </div>
 
           <a
-            href="mailto:methmal.liyanage23@gmail.com"
+            href="mailto:dasunmethmal23@gmail.com"
             className="font-mono text-xs text-zinc-400 hover:text-[#9CFF00] transition-colors"
           >
-            methmal.liyanage23@gmail.com
+            dasunmethmal23@gmail.com
           </a>
         </div>
       </div>
